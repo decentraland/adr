@@ -1,5 +1,4 @@
-
-Permalink: https://github.com/decentraland/adr/blob/main/ADR/2020-10-06-state-sync.md
+# State sync for builder-in-world
 
 ## Context and Problem Statement
 
