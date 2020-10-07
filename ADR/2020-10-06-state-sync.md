@@ -1,20 +1,27 @@
----
-participants: [pablo, nico chamo, eordano, mendez]
----
 
-# Domain of the problem
+Permalink: https://github.com/decentraland/adr/blob/main/ADR/2020-10-06-state-sync.md
 
-1. State
+## Context and Problem Statement
 
-2. Syncronization
+We need to find a sustainable path to develop the builder in world without compromising future plans and also enabling experimenting with the static scene definition initiatives and new SDK.
 
-3. Behavior
+The domain of the problem can be divided in three big chunks:
 
-# Renderer owns the state alternative
+* State management
+
+* Synchronization
+
+* Behavior
+
+Today we are deciding on the State management.
+
+## Options
+
+### Option 1 - Renderer owns the state
 
 In this approach the owner of the "edited" state is the renderer.
 
-## Initial load
+#### Initial load
 
 <!--
 ```sequence
@@ -32,7 +39,7 @@ worker--&gt;renderer: inform state
 -->
 ![images/fig-initial-load.svg](images/fig-initial-load.svg)
 
-## Initial scene loading (while others are editing)
+#### Initial scene loading (while others are editing)
 
 <!--
 ```sequence
@@ -54,7 +61,7 @@ p2p--&gt;renderer: process update
 -->
 ![images/fig-initial-scene-loading-while-others-are-editing.svg](images/fig-initial-scene-loading-while-others-are-editing.svg)
 
-## Save state
+#### Save state
 
 Save the current snapshot of the static scene
 
@@ -71,7 +78,7 @@ kernel-&gt;builder_server: generate code and store
 -->
 ![images/fig-initial-scene-loading-while-others-are-editing-1.svg](images/fig-initial-scene-loading-while-others-are-editing-1.svg)
 
-## Broadcast updates
+#### Broadcast updates
 
 After a change in state (i.e. builder action)
 
@@ -88,7 +95,7 @@ renderer--&gt;p2p: update-msg
 -->
 ![images/fig-initial-scene-loading-while-others-are-editing-2.svg](images/fig-initial-scene-loading-while-others-are-editing-2.svg)
 
-## Receive updates
+#### Receive updates
 
 From other connected scenes.
 
@@ -108,15 +115,13 @@ renderer-&gt;renderer: process changes 🔧
 
 * Do we want to have a back and forward edition from builder and builder in world?
 
-<!-- * How many different smart items are there? (To generate systems) -->
-
 ---
 
-# Scene owns the state alternative
+### Option 2 - Scene owns the state
 
 In this approach, the scene code is owner of the state at all times.  
 
-## Initial load
+#### Initial load
 
 <!--
 ```sequence
@@ -137,7 +142,7 @@ worker-&gt;kernel: init p2p bus
 -->
 ![images/fig-initial-load-1.svg](images/fig-initial-load-1.svg)
 
-## Receive updates
+#### Receive updates
 
 From other connected scenes.
 
@@ -159,7 +164,7 @@ worker--&gt;renderer: inform state
 -->
 ![images/fig-initial-load-1-1.svg](images/fig-initial-load-1-1.svg)
 
-## Broadcast updates (v0)
+#### Broadcast updates (v0)
 
 After a change in state (i.e. builder action)
 
@@ -182,7 +187,7 @@ worker-&gt;worker: process changes 🔧
 -->
 ![images/fig-initial-load-1-2.svg](images/fig-initial-load-1-2.svg)
 
-## Broadcast updates (v1)
+#### Broadcast updates (v1)
 
 After a change in state (i.e. builder action)
 
@@ -204,7 +209,7 @@ worker--&gt;p2p: broadcast update-msg
 -->
 ![images/fig-initial-load-1-3.svg](images/fig-initial-load-1-3.svg)
 
-## Save state
+#### Save state
 
 Save the current snapshot of the static scene
 
@@ -225,7 +230,7 @@ worker-&gt;worker: save JSON (POST?)
 -->
 ![images/fig-initial-load-1-4.svg](images/fig-initial-load-1-4.svg)
 
-# State (third alternative, new builder worker owns the state)
+### Option 3 - new worker owns the state
 
 <!--
 ```sequence
@@ -239,10 +244,9 @@ renderer--&gt;p2p: update-msg (for broadcast)
 p2p--&gt;new_worker: update-msg
 ```
 -->
-![images/fig-state-third-alternative-new-builder-worker-owns-the-state.svg](images/fig-state-third-alternative-new-builder-worker-owns-the-state.svg)
+![images/fig-option-3---new-worker-owns-the-state.svg](images/fig-option-3---new-worker-owns-the-state.svg)
 
-
-# Alternatives
+## Decision Outcome
 
 #### Alternative 1
 
@@ -274,6 +278,12 @@ p2p--&gt;new_worker: update-msg
 
 * Can work as a foundation for new runtime
 
-#### Risks
+# Participants
 
-* When we launch builder in world there is a chance that people start creating smart items we need to maintain
+- Nicolas Chamo
+
+- Pablo de Haro
+
+- Esteban Ordano
+
+- Agustin Mendez
