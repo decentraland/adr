@@ -2,6 +2,7 @@
 [_Documenting Architecture Decisions_](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)
 
 - [2020-10-06-state-sync.md](ADR/2020-10-06-state-sync.md)
+- [2020-10-08-explorer-packages-organization.md](ADR/2020-10-08-explorer-packages-organization.md)
 
 ## Template
 
