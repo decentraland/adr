@@ -125,21 +125,20 @@ digraph G {
         unity [shape=note,shape=box3d];
         builder [shape=note];
         label = "Kernel";
-        color=blue
+        color=blue;
     }
     subgraph cluster_3 {
 
     "decentraland-renderer" -&gt; "entrypoints";
 
-        
-    sagas-&gt;app;
-    react-&gt;app;
-    css-&gt;app;
+    css-&gt;app;   
     redux-&gt;app;
-    web3providers-&gt;app;
+    react-&gt;app;
+    sagas-&gt;app;
+    web3-&gt;app;
     unity-&gt;app;
     preview-&gt;app;
-    app [shape=box3d];
+
     app [label="app &amp; preview"];
     app-&gt;"website";
     app-&gt;"preview.js";
