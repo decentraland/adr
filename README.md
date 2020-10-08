@@ -1,4 +1,4 @@
-# Architecture Design Records
+# Architecture Decisions Records
 [_Documenting Architecture Decisions_](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)
 
 - [2020-10-06-state-sync.md](ADR/2020-10-06-state-sync.md)
