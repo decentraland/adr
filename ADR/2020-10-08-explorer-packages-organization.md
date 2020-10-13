@@ -1,5 +1,5 @@
 
-# Explorer packages organization
+# 2020-10-08 - Explorer packages organization
 
 ## Context and Problem Statement
 
