@@ -1,8 +1,13 @@
 # Architecture Decisions Records
-[_Documenting Architecture Decisions_](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)
 
+- [2020-10-05-documenting-architecture-decisions.md](ADR/2020-10-05-documenting-architecture-decisions.md)
 - [2020-10-06-state-sync.md](ADR/2020-10-06-state-sync.md)
 - [2020-10-08-explorer-packages-organization.md](ADR/2020-10-08-explorer-packages-organization.md)
+- [2020-10-13-L2-collections-arq.md](ADR/2020-10-13-L2-collections-arq.md)
+
+## How to?
+
+Read [the ADR explaining the rationale](ADR/2020-10-05-documenting-architecture-decisions.md), by Michael Nygard.
 
 ## Template
 
@@ -14,21 +19,38 @@ If you want, there is a template you can use to start with. It is extremely usef
 Here is the template:
 
 ```markdown
-# (title)
+# YYYY-MM-DD - (title)
 
 ## Context and Problem Statement
 
-Describe the context and problem statement, e.g., in free form using two to three sentences. You may want to articulate the problem in form of a question.
+This section describes the forces at play, including technological, political, social, and
+project local. These forces are probably in tension, and should be called out as such.
+The language in this section is value-neutral. It is simply describing facts.
 
-## Considered Options
+## Considered options
 
 * option 1
 * option 2
 * option 3
 
-## Decision Outcome
+## Decision
 
-We choose [option 1] because [justification]
+This section describes our response to these forces. It is stated in full sentences,
+with active voice. "We will …"
+
+## Status
+
+Accepted (or "proposed", "deprecated" or "superseded"). A decision may be "proposed"
+if the project stakeholders haven't agreed with it yet, or "accepted" once it is agreed.
+If a later ADR changes or reverses a decision, it may be marked as "deprecated" or
+"superseded" with a reference to its replacement.
+
+## Consequences
+
+This section describes the resulting context, after applying the decision. All consequences
+should be listed here, not just the "positive" ones. A particular decision may have
+positive, negative, and neutral consequences, but all of them affect the team and project
+in the future.
 
 ## Participants
 
