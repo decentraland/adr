@@ -1,5 +1,5 @@
 
-# 2020-10-05 - Documenting architecture decisions
+# Documenting architecture decisions
 
 ## Context
 
@@ -25,7 +25,7 @@ We will keep a collection of records for "architecturally significant" decisions
 
 An architecture decision record is a short text file in a format similar to an Alexandrian pattern. (Though the decisions themselves are not necessarily patterns, they share the characteristic balancing of forces.) Each record describes a set of forces and a single decision in response to those forces. Note that the decision is the central piece here, so specific forces may appear in multiple ADRs.
 
-We will keep ADRs in the project repository under `adr/YYYY-MM-DD-title.md`
+We will keep ADRs in the project repository under `docs/ADR-####-title.md`
 
 We should use a lightweight text formatting language like Markdown or Textile.
 

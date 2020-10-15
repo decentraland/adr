@@ -1,5 +1,5 @@
 
-# 2020-10-08 - Explorer packages organization
+# Explorer packages organization
 
 ## Context and Problem Statement
 
@@ -70,7 +70,7 @@ digraph G {
 }
 ```
 -->
-![images/fig-explorer-packages-organization.svg](images/fig-explorer-packages-organization.svg)
+![resources/fig-explorer-packages-organization.svg](resources/fig-explorer-packages-organization.svg)
 
 ## Considered Options
 
@@ -148,7 +148,7 @@ digraph G {
 }
 ```
 -->
-![images/fig-explorer-packages-organization-1.svg](images/fig-explorer-packages-organization-1.svg)
+![resources/fig-explorer-packages-organization-1.svg](resources/fig-explorer-packages-organization-1.svg)
 
 ## Decision Outcome
 
@@ -171,3 +171,5 @@ Staged execution:
 - Marcos Nuñez Cortés
 
 - Pablo de Haro
+
+Date: 2020-10-08
