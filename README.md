@@ -1,19 +1,22 @@
 # Architecture Decisions Records
 
-- [ADR-1 - Documenting architecture decisions](doc/arch/ADR-1-documenting-architecture-decisions.md)
-- [ADR-2 - State sync for builder-in-world](doc/arch/ADR-2-state-sync-for-builder-in-world.md)
-- [ADR-3 - Explorer packages organization](doc/arch/ADR-3-explorer-packages-organization.md)
-- [ADR-4 - Collections architecture in L1 & L2](doc/arch/ADR-4-collections-architecture-in-L1-L2.md)
+- [ADR-1 - Documenting architecture decisions](docs/ADR-1-documenting-architecture-decisions.md)
+- [ADR-2 - State sync for builder-in-world](docs/ADR-2-state-sync-for-builder-in-world.md)
+- [ADR-3 - Explorer packages organization](docs/ADR-3-explorer-packages-organization.md)
+- [ADR-4 - Collections architecture in L1 & L2](docs/ADR-4-collections-architecture-in-L1-L2.md)
+- [ADR-5 - How to organize ADR files](docs/ADR-5-how-to-organize-adr-files.md)
 
 ## How to?
 
-Read [the ADR explaining the rationale](doc/arch/ADR-1-documenting-architecture-decisions.md), by Michael Nygard.
+Read [the ADR explaining the rationale](docs/ADR-1-documenting-architecture-decisions.md), by Michael Nygard.
 
 ## Template
 
-For consistency, please name your files using incremental numbers in the shape `doc/arch/ADR-###-title-using-dashes.md`.
+For consistency, please name your files using incremental numbers in the shape `docs/ADR-###-title-using-dashes.md`.
 
-To organize the files, please save the assets in a folder for each document using the same ADR number: `doc/arch/images/ADR-###/{filename}`.
+To organize the files, please save the assets in a folder for each document using the same ADR number: `docs/resources/ADR-###/{filename}`.
+
+More info: [ADR-5 - How to organize ADR files](docs/ADR-5-how-to-organize-adr-files.md).
 
 Feel free to write the documents in the way that is more convenient to you.  
 If you want, there is a template you can use to start with:

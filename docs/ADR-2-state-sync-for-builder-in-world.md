@@ -36,7 +36,7 @@ worker-&gt;worker: load scene (???)
 worker--&gt;renderer: inform state
 ```
 -->
-![images/fig-initial-load.svg](images/fig-initial-load.svg)
+![resources/fig-initial-load.svg](resources/fig-initial-load.svg)
 
 #### Initial scene loading (while others are editing)
 
@@ -58,7 +58,7 @@ user-&gt;renderer: perform changes (if allowed)
 p2p--&gt;renderer: process update
 ```
 -->
-![images/fig-initial-scene-loading-while-others-are-editing.svg](images/fig-initial-scene-loading-while-others-are-editing.svg)
+![resources/fig-initial-scene-loading-while-others-are-editing.svg](resources/fig-initial-scene-loading-while-others-are-editing.svg)
 
 #### Save state
 
@@ -75,7 +75,7 @@ renderer-&gt;kernel: save {serialized state}
 kernel-&gt;builder_server: generate code and store
 ```
 -->
-![images/fig-initial-scene-loading-while-others-are-editing-1.svg](images/fig-initial-scene-loading-while-others-are-editing-1.svg)
+![resources/fig-initial-scene-loading-while-others-are-editing-1.svg](resources/fig-initial-scene-loading-while-others-are-editing-1.svg)
 
 #### Broadcast updates
 
@@ -92,7 +92,7 @@ renderer-&gt;renderer: process changes 🔧
 renderer--&gt;p2p: update-msg
 ```
 -->
-![images/fig-initial-scene-loading-while-others-are-editing-2.svg](images/fig-initial-scene-loading-while-others-are-editing-2.svg)
+![resources/fig-initial-scene-loading-while-others-are-editing-2.svg](resources/fig-initial-scene-loading-while-others-are-editing-2.svg)
 
 #### Receive updates
 
@@ -108,7 +108,7 @@ p2p--&gt;renderer: update-msg
 renderer-&gt;renderer: process changes 🔧
 ```
 -->
-![images/fig-initial-scene-loading-while-others-are-editing-3.svg](images/fig-initial-scene-loading-while-others-are-editing-3.svg)
+![resources/fig-initial-scene-loading-while-others-are-editing-3.svg](resources/fig-initial-scene-loading-while-others-are-editing-3.svg)
 
 #### Open questions
 
@@ -139,7 +139,7 @@ worker-&gt;worker: connect to synchronization bus
 worker-&gt;kernel: init p2p bus
 ```
 -->
-![images/fig-initial-load-1.svg](images/fig-initial-load-1.svg)
+![resources/fig-initial-load-1.svg](resources/fig-initial-load-1.svg)
 
 #### Receive updates
 
@@ -161,7 +161,7 @@ worker-&gt;worker: process changes 🔧
 worker--&gt;renderer: inform state
 ```
 -->
-![images/fig-initial-load-1-1.svg](images/fig-initial-load-1-1.svg)
+![resources/fig-initial-load-1-1.svg](resources/fig-initial-load-1-1.svg)
 
 #### Broadcast updates (v0)
 
@@ -184,7 +184,7 @@ renderer-&gt;worker: update-msg
 worker-&gt;worker: process changes 🔧
 ```
 -->
-![images/fig-initial-load-1-2.svg](images/fig-initial-load-1-2.svg)
+![resources/fig-initial-load-1-2.svg](resources/fig-initial-load-1-2.svg)
 
 #### Broadcast updates (v1)
 
@@ -206,7 +206,7 @@ worker-&gt;worker: process changes 🔧
 worker--&gt;p2p: broadcast update-msg
 ```
 -->
-![images/fig-initial-load-1-3.svg](images/fig-initial-load-1-3.svg)
+![resources/fig-initial-load-1-3.svg](resources/fig-initial-load-1-3.svg)
 
 #### Save state
 
@@ -227,7 +227,7 @@ worker-&gt;worker: serialize scene
 worker-&gt;worker: save JSON (POST?)
 ```
 -->
-![images/fig-initial-load-1-4.svg](images/fig-initial-load-1-4.svg)
+![resources/fig-initial-load-1-4.svg](resources/fig-initial-load-1-4.svg)
 
 ### Option 3 - new worker owns the state
 
@@ -243,7 +243,7 @@ renderer--&gt;p2p: update-msg (for broadcast)
 p2p--&gt;new_worker: update-msg
 ```
 -->
-![images/fig-option-3---new-worker-owns-the-state.svg](images/fig-option-3---new-worker-owns-the-state.svg)
+![resources/fig-option-3---new-worker-owns-the-state.svg](resources/fig-option-3---new-worker-owns-the-state.svg)
 
 ## Decision Outcome
 

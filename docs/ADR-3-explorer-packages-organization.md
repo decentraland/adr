@@ -70,7 +70,7 @@ digraph G {
 }
 ```
 -->
-![images/fig-explorer-packages-organization.svg](images/fig-explorer-packages-organization.svg)
+![resources/fig-explorer-packages-organization.svg](resources/fig-explorer-packages-organization.svg)
 
 ## Considered Options
 
@@ -148,7 +148,7 @@ digraph G {
 }
 ```
 -->
-![images/fig-explorer-packages-organization-1.svg](images/fig-explorer-packages-organization-1.svg)
+![resources/fig-explorer-packages-organization-1.svg](resources/fig-explorer-packages-organization-1.svg)
 
 ## Decision Outcome
 
