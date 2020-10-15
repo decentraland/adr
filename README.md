@@ -3,7 +3,7 @@
 - [2020-10-05-documenting-architecture-decisions.md](ADR/2020-10-05-documenting-architecture-decisions.md)
 - [2020-10-06-state-sync.md](ADR/2020-10-06-state-sync.md)
 - [2020-10-08-explorer-packages-organization.md](ADR/2020-10-08-explorer-packages-organization.md)
-- [2020-10-13-L2-collections-arq.md](ADR/2020-10-13-L2-collections-arq.md)
+- [2020-10-13-collections-architecture-in-l1-l2.md](ADR/2020-10-13-collections-architecture-in-l1-l2.md)
 
 ## How to?
 
@@ -29,9 +29,9 @@ The language in this section is value-neutral. It is simply describing facts.
 
 ## Considered options
 
-* option 1
-* option 2
-* option 3
+- option 1
+- option 2
+- option 3
 
 ## Decision
 
@@ -58,5 +58,4 @@ in the future.
 - Bob
 - Christy
 - Doug
-
 ```
