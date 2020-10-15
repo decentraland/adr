@@ -1,4 +1,4 @@
-# State sync for builder-in-world
+# 2020-10-06 - State sync for builder-in-world
 
 ## Context and Problem Statement
 
