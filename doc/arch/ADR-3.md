@@ -1,5 +1,5 @@
 
-# 2020-10-08 - Explorer packages organization
+# ADR-3 - Explorer packages organization
 
 ## Context and Problem Statement
 
@@ -171,3 +171,5 @@ Staged execution:
 - Marcos Nuñez Cortés
 
 - Pablo de Haro
+
+Date: 2020-10-08

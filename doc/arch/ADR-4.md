@@ -1,4 +1,4 @@
-# 2020-10-13 - Collections architecture in L1 & L2
+# ADR-4 - Collections architecture in L1 & L2
 
 ## Context and Problem Statement
 
@@ -87,7 +87,7 @@ digraph {
 ```
 -->
 
-![images/2020-10-13-collections-architecture-in-l1-l2/fig-alternative-1-exact-collections-replication.svg](images/2020-10-13-collections-architecture-in-l1-l2/fig-alternative-1-exact-collections-replication.svg)
+![images/ADR-4/fig-alternative-1-exact-collections-replication.svg](images/ADR-4/fig-alternative-1-exact-collections-replication.svg)
 
 Collections will be created through a Collection factory by users.
 
@@ -135,7 +135,7 @@ L1_Bridge-&gt;L1_Collection_1: Mint token_1
 ```
 -->
 
-![images/2020-10-13-collections-architecture-in-l1-l2/fig-l2-to-l1.svg](images/2020-10-13-collections-architecture-in-l1-l2/fig-l2-to-l1.svg)
+![images/ADR-4/fig-l2-to-l1.svg](images/ADR-4/fig-l2-to-l1.svg)
 
 #### L1 to L2
 
@@ -159,7 +159,7 @@ L2_Collection_1-&gt;User: Transfer token_1
 ```
 -->
 
-![images/2020-10-13-collections-architecture-in-l1-l2/fig-l1-to-l2.svg](images/2020-10-13-collections-architecture-in-l1-l2/fig-l1-to-l2.svg)
+![images/ADR-4/fig-l1-to-l2.svg](images/ADR-4/fig-l1-to-l2.svg)
 
 ### Alternative 2: Minimalist Collection replication
 
@@ -210,7 +210,7 @@ digraph {
 ```
 -->
 
-![images/2020-10-13-collections-architecture-in-l1-l2/fig-alternative-2-minimalist-collection-replication.svg](images/2020-10-13-collections-architecture-in-l1-l2/fig-alternative-2-minimalist-collection-replication.svg)
+![images/ADR-4/fig-alternative-2-minimalist-collection-replication.svg](images/ADR-4/fig-alternative-2-minimalist-collection-replication.svg)
 
 Collections will be created through a Collection factory by users.
 
@@ -260,7 +260,7 @@ L1_Bridge-&gt;L1_Collection: Mint token_1
 ```
 -->
 
-![images/2020-10-13-collections-architecture-in-l1-l2/fig-l2-to-l1-1.svg](images/2020-10-13-collections-architecture-in-l1-l2/fig-l2-to-l1-1.svg)
+![images/ADR-4/fig-l2-to-l1-1.svg](images/ADR-4/fig-l2-to-l1-1.svg)
 
 #### L1 to L2
 
@@ -283,7 +283,7 @@ L2_Collection_1-&gt;User: Transfer token_1
 ```
 -->
 
-![images/2020-10-13-collections-architecture-in-l1-l2/fig-l1-to-l2-1.svg](images/2020-10-13-collections-architecture-in-l1-l2/fig-l1-to-l2-1.svg)
+![images/ADR-4/fig-l1-to-l2-1.svg](images/ADR-4/fig-l1-to-l2-1.svg)
 
 ## Decision Outcome
 
@@ -387,14 +387,11 @@ OpenSea (L2): opensea.com/matic/tokens/{collection_l2_1}/{token}
 
 # Participants
 
-- Esteban
+- Esteban Ordano
+- Ignacio Mazzara
+- Marcelo Alaniz
+- Nicolas Santangelo
+- Juan Cazala
+- Agustin Mendez
 
-- Nacho
-
-- Marce
-
-- Nico
-
-- Juanca
-
-- Agus
+Date: 2020-10-13

@@ -1,9 +1,9 @@
 # Architecture Decisions Records
 
-- [2020-10-05-documenting-architecture-decisions.md](ADR/2020-10-05-documenting-architecture-decisions.md)
-- [2020-10-06-state-sync.md](ADR/2020-10-06-state-sync.md)
-- [2020-10-08-explorer-packages-organization.md](ADR/2020-10-08-explorer-packages-organization.md)
-- [2020-10-13-collections-architecture-in-l1-l2.md](ADR/2020-10-13-collections-architecture-in-l1-l2.md)
+- [ADR-1 - Documenting architecture decisions](doc/arch/ADR-1.md)
+- [ADR-2 - State sync for builder-in-world](doc/arch/ADR-2.md)
+- [ADR-3 - Explorer packages organization](doc/arch/ADR-3.md)
+- [ADR-4 - Collections architecture in L1 & L2](doc/arch/ADR-4.md)
 
 ## How to?
 
@@ -11,15 +11,15 @@ Read [the ADR explaining the rationale](ADR/2020-10-05-documenting-architecture-
 
 ## Template
 
-For consistency, please name your file and the images' subfolder prefixed with the creation date `ADR/YYYY-MM-DD-adr-title.md` and `ADR/images/YYYY-MM-DD-adr-title/**.[svg|png|jpg|gif|**]` respectively.
+For consistency, please name your files using incremental numbers in the shape `doc/arch/ADR-###.md`.
+
+To organize the files, please save the assets in a folder for each document using the same ADR number: `doc/arch/images/ADR-###/{filename}`.
 
 Feel free to write the documents in the way that is more convenient to you.
-If you want, there is a template you can use to start with. It is extremely useful to add
-
-Here is the template:
+If you want, there is a template you can use to start with:
 
 ```markdown
-# YYYY-MM-DD - (title)
+# ADR-### - (title)
 
 ## Context and Problem Statement
 
@@ -53,6 +53,8 @@ positive, negative, and neutral consequences, but all of them affect the team an
 in the future.
 
 ## Participants
+
+Date: YYYY-MM-DD
 
 - Alice
 - Bob

@@ -1,4 +1,4 @@
-# 2020-10-06 - State sync for builder-in-world
+# ADR-2 - State sync for builder-in-world
 
 ## Context and Problem Statement
 
@@ -286,3 +286,5 @@ p2p--&gt;new_worker: update-msg
 - Esteban Ordano
 
 - Agustin Mendez
+
+Date: 2020-10-06

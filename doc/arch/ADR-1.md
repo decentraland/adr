@@ -1,5 +1,5 @@
 
-# 2020-10-05 - Documenting architecture decisions
+# ADR-1 - Documenting architecture decisions
 
 ## Context
 
