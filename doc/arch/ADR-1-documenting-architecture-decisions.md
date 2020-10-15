@@ -1,5 +1,5 @@
 
-# ADR-1 - Documenting architecture decisions
+# Documenting architecture decisions
 
 ## Context
 

@@ -1,25 +1,25 @@
 # Architecture Decisions Records
 
-- [ADR-1 - Documenting architecture decisions](doc/arch/ADR-1.md)
-- [ADR-2 - State sync for builder-in-world](doc/arch/ADR-2.md)
-- [ADR-3 - Explorer packages organization](doc/arch/ADR-3.md)
-- [ADR-4 - Collections architecture in L1 & L2](doc/arch/ADR-4.md)
+- [ADR-1 - Documenting architecture decisions](doc/arch/ADR-1-documenting-architecture-decisions.md)
+- [ADR-2 - State sync for builder-in-world](doc/arch/ADR-2-state-sync-for-builder-in-world.md)
+- [ADR-3 - Explorer packages organization](doc/arch/ADR-3-explorer-packages-organization.md)
+- [ADR-4 - Collections architecture in L1 & L2](doc/arch/ADR-4-collections-architecture-in-L1-L2.md)
 
 ## How to?
 
-Read [the ADR explaining the rationale](ADR/2020-10-05-documenting-architecture-decisions.md), by Michael Nygard.
+Read [the ADR explaining the rationale](doc/arch/ADR-1-documenting-architecture-decisions.md), by Michael Nygard.
 
 ## Template
 
-For consistency, please name your files using incremental numbers in the shape `doc/arch/ADR-###.md`.
+For consistency, please name your files using incremental numbers in the shape `doc/arch/ADR-###-title-using-dashes.md`.
 
 To organize the files, please save the assets in a folder for each document using the same ADR number: `doc/arch/images/ADR-###/{filename}`.
 
-Feel free to write the documents in the way that is more convenient to you.
+Feel free to write the documents in the way that is more convenient to you.  
 If you want, there is a template you can use to start with:
 
 ```markdown
-# ADR-### - (title)
+# (title)
 
 ## Context and Problem Statement
 

@@ -1,4 +1,4 @@
-# ADR-4 - Collections architecture in L1 & L2
+# Collections architecture in L1 & L2
 
 ## Context and Problem Statement
 

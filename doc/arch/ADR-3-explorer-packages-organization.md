@@ -1,5 +1,5 @@
 
-# ADR-3 - Explorer packages organization
+# Explorer packages organization
 
 ## Context and Problem Statement
 

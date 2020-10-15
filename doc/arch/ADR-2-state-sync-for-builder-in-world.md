@@ -1,4 +1,4 @@
-# ADR-2 - State sync for builder-in-world
+# State sync for builder-in-world
 
 ## Context and Problem Statement
 
