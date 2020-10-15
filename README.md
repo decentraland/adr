@@ -11,7 +11,7 @@ Read [the ADR explaining the rationale](ADR/2020-10-05-documenting-architecture-
 
 ## Template
 
-For consistency, please name your file prefixed with the creation date `ADR/YYYY-MM-DD-adr-title.md`.
+For consistency, please name your file and the images' subfolder prefixed with the creation date `ADR/YYYY-MM-DD-adr-title.md` and `ADR/images/YYYY-MM-DD-adr-title/**.[svg|png|jpg|gif|**]` respectively.
 
 Feel free to write the documents in the way that is more convenient to you.
 If you want, there is a template you can use to start with. It is extremely useful to add
