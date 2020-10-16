@@ -7,6 +7,7 @@
 - [ADR-5 - How to organize ADR files](docs/ADR-5-how-to-organize-adr-files.md)
 - [ADR-6 - Git style guide](docs/ADR-6-git-style-guide.md)
 - [ADR-7 - Standards repository](docs/ADR-7-standards-repository.md)
+- [ADR-8 - DAO content server and local content servers](docs/ADR-8-dao-content-servers-and-local-content-servers.md)
 
 ## How to?
 
