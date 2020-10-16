@@ -5,6 +5,7 @@
 - [ADR-3 - Explorer packages organization](docs/ADR-3-explorer-packages-organization.md)
 - [ADR-4 - Collections architecture in L1 & L2](docs/ADR-4-collections-architecture-in-L1-L2.md)
 - [ADR-5 - How to organize ADR files](docs/ADR-5-how-to-organize-adr-files.md)
+- [ADR-6 - Git style guide](docs/ADR-6-git-style-guide)
 
 ## How to?
 
