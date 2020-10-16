@@ -18,7 +18,7 @@
 
 ## Decision Outcome
 * Enable custom Catalyst servers from Explorer
-* Define action plan for broadcasting/commiting local deployments to the DAO servers.
+* Define action plan for broadcasting/commiting local deployments to the DAO servers. [issue](https://github.com/decentraland/catalyst/issues/195)
 
 ## Participants
 
