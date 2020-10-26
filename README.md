@@ -10,6 +10,7 @@
 - [ADR-8 - DAO content server and local content servers](docs/ADR-8-dao-content-servers-and-local-content-servers.md)
 - [ADR-9 - `DecentralandInterface` evolution plan](docs/ADR-9-DecentralandInterface-evolution-plan.md)
 - [ADR-10 - Profile deployment debouncing](docs/ADR-10-profile-deployment-debouncing.md)
+- [ADR-11 - Add version to content-as-bundle URL](docs/ADR-11-add-version-to-content-as-bundle-url.md)
 
 ## How to?
 
