@@ -9,6 +9,7 @@
 - [ADR-7 - Standards repository](docs/ADR-7-standards-repository.md)
 - [ADR-8 - DAO content server and local content servers](docs/ADR-8-dao-content-servers-and-local-content-servers.md)
 - [ADR-9 - `DecentralandInterface` evolution plan](docs/ADR-9-DecentralandInterface-evolution-plan.md)
+- [ADR-10 - Profile deployment debouncing](docs/ADR-10-profile-deployment-debouncing.md)
 
 ## How to?
 
