@@ -11,6 +11,7 @@
 - [ADR-9 - `DecentralandInterface` evolution plan](docs/ADR-9-DecentralandInterface-evolution-plan.md)
 - [ADR-10 - Profile deployment debouncing](docs/ADR-10-profile-deployment-debouncing.md)
 - [ADR-11 - Add version to content-as-bundle URL](docs/ADR-11-add-version-to-content-as-bundle-url.md)
+- [ADR-12 - Documentation as a priority](docs/ADR-12-documentation-as-a-priority.md)
 
 ## How to?
 
