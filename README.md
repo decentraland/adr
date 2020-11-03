@@ -12,6 +12,8 @@
 - [ADR-10 - Profile deployment debouncing](docs/ADR-10-profile-deployment-debouncing.md)
 - [ADR-11 - Add version to content-as-bundle URL](docs/ADR-11-add-version-to-content-as-bundle-url.md)
 - [ADR-12 - Documentation as a priority](docs/ADR-12-documentation-as-a-priority.md)
+- [ADR-13 - Custom UI modes for builder in world](docs/ADR-13-custom-ui-modes-for-builder-in-world.md)
+- [ADR-14 - L1 & L2 Governance Smart Contracts Architecture](docs/ADR-14-l1-l2-governance-smart-contracts-architecture.md)
 
 ## How to?
 
@@ -25,7 +27,7 @@ To organize the files, please save the assets in a folder for each document usin
 
 More info: [ADR-5 - How to organize ADR files](docs/ADR-5-how-to-organize-adr-files.md).
 
-Feel free to write the documents in the way that is more convenient to you.  
+Feel free to write the documents in the way that is more convenient to you.
 If you want, there is a template you can use to start with:
 
 ```markdown
