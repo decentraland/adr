@@ -2,13 +2,13 @@
 
 ## Context and Problem Statement
 
-For L1, Decentraland has a DAO where people, part of the community, can vote and make decisions from basic signaling to execute an onchain action.
+For L1, Decentraland has a DAO where people, part of the community, can vote and make decisions from basic signaling to executing an on-chain action.
 
-Decentraland needs to scale and give a better experience to their users by using a L2 (second layer).
+Decentraland needs to scale and give a better experience to its users by using an L2 (second layer).
 
 Users will interact with the same set of smart contracts like the Marketplace and Bid in L1, and new
 
-ones like the upcoming store for collections' primary sales. Every smart contract which uses MANA but not only, has
+ones like the upcoming store for collections' primary sales. Every smart contract which uses MANA but, not only, has
 
 protocol parameters that must be managed by some kind of governance.
 
@@ -192,9 +192,9 @@ digraph {
 
 ### Cons
 
-- A lot of MANA locked on each layers
+- A lot of MANA locked on each layer.
 
-- Voting Power devided between layers which can not be sum for on-chain voting.
+- Voting Power divided between layers that can not be summed for on-chain voting.
 
 ### Implications
 
@@ -214,7 +214,7 @@ digraph {
 
 ### Cons
 
-- Risky by transmitting all the messages by the same bridge. An smart contract upgrade and a marketplace fee change will go to the same smart contract.
+- Risky by transmitting all the messages by the same bridge. A smart contract upgrade and a marketplace fee change will go to the same smart contract.
 
 ### Implications
 
@@ -242,7 +242,7 @@ digraph {
 
 - **Do we want to have a DAO in L2?**: No.
 
-- **Does it work with snapshots?**: Depends on aragon releases. It should be alternatives 2 or 3, voting power should be in L1.
+- **Does it work with snapshots?**: Depends on Aragon releases. It should be alternatives 2 or 3, voting power should be in L1.
 
 - **Comparison between gas prices between alternatives**: Probably alternative 3 is marginally cheaper due to lack of checks.
 
@@ -256,6 +256,6 @@ digraph {
 
   - We should wait to see the release from Aragon (govern with snapshot) to evaluate possibilities, there is not much we can do to make L1 voting cheaper.
 
-  - There are alternatives for frequent voting (i.e. collections) using a group with privilages in L2 (committee).
+  - There are alternatives for frequent voting (i.e. collections) using a group with privileges in L2 (committee).
 
   - Unfrequent voting (like marketplace fees and committee members changes) can be kept in L1, while frequent voting (collection moderation) can happen in L2.
