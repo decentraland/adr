@@ -1,4 +1,3 @@
-
 # L1 & L2 Collections Approval Flow
 
 ## Context and Problem Statement
@@ -17,7 +16,7 @@ The management of L2's collections could be handle by the DAO or by a special on
 
 <!--
 ```dot
-// ![images/fig-l1-l2-exact-replication.svg](images/fig-l1-l2-exact-replication.svg)
+// ![resources/ADR-15/fig-l1-l2-exact-replication.svg](resources/ADR-15/fig-l1-l2-exact-replication.svg)
 digraph {
     rankdir=TB
     graph [fontname = "arial", fontsize="10", color="grey", fontcolor="grey"]
@@ -48,25 +47,26 @@ digraph {
         bridge_l2 -&gt; collection_1 [color=blue, label=" approve/reject "]
         bridge_l2 -&gt; collection_2 [color=blue, label=" approve/reject "]
         bridge_l2 -&gt; collection_3 [color=blue, label=" approve/reject "]
-        bridge_l2 -&gt; collection_4 [color=blue, label=" approve/reject "]   
+        bridge_l2 -&gt; collection_4 [color=blue, label=" approve/reject "]
     }
-    
+
     bridge_l1 -&gt; bridge_l2
     bridge_l2 -&gt; bridge_l1
 }
 ```
 -->
-![images/l1-l2-collections-approval-flow/fig-l1-l2-collections-approval-flow-1.svg](images/l1-l2-collections-approval-flow/fig-l1-l2-collections-approval-flow-1.svg)
+
+![resources/ADR-15/fig-l1-l2-collections-approval-flow-1.svg](resources/ADR-15/fig-l1-l2-collections-approval-flow-1.svg)
 
 #### With DAO
 
 _**Entity** = DAO_
 
-##### Manage Collections  ( > 2 transaction)
+##### Manage Collections ( > 2 transaction)
 
-* A vote to approve/reject a collection in L2 must be started in the Decentraland's DAO in L1.
+- A vote to approve/reject a collection in L2 must be started in the Decentraland's DAO in L1.
 
-* At vote enactment, a message will be forwarded from L1 to L2 by a bridge ending up with the collection approved/rejected in L2.
+- At vote enactment, a message will be forwarded from L1 to L2 by a bridge ending up with the collection approved/rejected in L2.
 
 <!--
 ```sequence
@@ -88,17 +88,18 @@ L1_Bridge-&gt;L2_Bridge: Approve/Reject Collection_1
 L2_Bridge-&gt;L2_Collection_1: Approve/Reject
 ```
 -->
-![images/l1-l2-collections-approval-flow/fig-l1-l2-collections-approval-flow-1-1.svg](images/l1-l2-collections-approval-flow/fig-l1-l2-collections-approval-flow-1-1.svg)
+
+![resources/ADR-15/fig-l1-l2-collections-approval-flow-1-1.svg](resources/ADR-15/fig-l1-l2-collections-approval-flow-1-1.svg)
 
 #### With Committee/Board
 
 _**Entity** = Committee smart contract which will check if the sender of the transaction has balance of an specific token controlled by the Dencetraland's DAO as the SAB token_
 
-##### Add/Remove Members  ( > 2 transaction)
+##### Add/Remove Members ( > 2 transaction)
 
-* A member of the community creates a vote to add/remove someone from the committe/board on the Decentraland DAO.
+- A member of the community creates a vote to add/remove someone from the committe/board on the Decentraland DAO.
 
-* Once the vote is encated, that person will be add/removed from the committe.
+- Once the vote is encated, that person will be add/removed from the committe.
 
 <!--
 ```sequence
@@ -116,13 +117,14 @@ User_1-&gt;L1_DAO: Enact Vote_1 lock
 L1_DAO-&gt;L1_Committee: Add/Remove someone from the committee
 ```
 -->
-![images/l1-l2-collections-approval-flow/fig-l1-l2-collections-approval-flow-1-2.svg](images/l1-l2-collections-approval-flow/fig-l1-l2-collections-approval-flow-1-2.svg)
+
+![resources/ADR-15/fig-l1-l2-collections-approval-flow-1-2.svg](resources/ADR-15/fig-l1-l2-collections-approval-flow-1-2.svg)
 
 ##### Manage Collections (1 transaction)
 
-* A member of the committee sends a transaction to the Committee smart contract in L1, to approve/reject a collection in L2.
+- A member of the committee sends a transaction to the Committee smart contract in L1, to approve/reject a collection in L2.
 
-* The transaction creates a message that will be forwarded from L1 to L2 by a bridge, ending up with the collection approved/rejected in L2.
+- The transaction creates a message that will be forwarded from L1 to L2 by a bridge, ending up with the collection approved/rejected in L2.
 
 <!--
 ```sequence
@@ -138,7 +140,8 @@ L1_Bridge-&gt;L2_Bridge: Approve/Reject Collection_1
 L2_Bridge-&gt;L2_Collection_1: Approve/Reject
 ```
 -->
-![images/l1-l2-collections-approval-flow/fig-l1-l2-collections-approval-flow-1-3.svg](images/l1-l2-collections-approval-flow/fig-l1-l2-collections-approval-flow-1-3.svg)
+
+![resources/ADR-15/fig-l1-l2-collections-approval-flow-1-3.svg](resources/ADR-15/fig-l1-l2-collections-approval-flow-1-3.svg)
 
 ### Alternative 2. DAO in L1 manage an entity, moderation happens in L2
 
@@ -146,7 +149,7 @@ The management of L2's collections will be done by an **Entity** in L2. The **En
 
 <!--
 ```dot
-// ![images/fig-l1-l2-exact-replication.svg](images/fig-l1-l2-exact-replication.svg)
+// ![resources/ADR-15/fig-l1-l2-exact-replication.svg](resources/ADR-15/fig-l1-l2-exact-replication.svg)
 digraph {
     rankdir=TB
     graph [fontname = "arial", fontsize="10", color="grey", fontcolor="grey"]
@@ -179,25 +182,26 @@ digraph {
         entity -&gt; collection_1 [color=blue, label=" approve/reject "]
         entity -&gt; collection_2 [color=blue, label=" approve/reject "]
         entity -&gt; collection_3 [color=blue, label=" approve/reject "]
-        entity -&gt; collection_4 [color=blue, label=" approve/reject "]   
+        entity -&gt; collection_4 [color=blue, label=" approve/reject "]
     }
-    
+
     bridge_l1 -&gt; bridge_l2
     bridge_l2 -&gt; bridge_l1
 }
 ```
 -->
-![images/l1-l2-collections-approval-flow/fig-l1-l2-collections-approval-flow-1-4.svg](images/l1-l2-collections-approval-flow/fig-l1-l2-collections-approval-flow-1-4.svg)
+
+![resources/ADR-15/fig-l1-l2-collections-approval-flow-1-4.svg](resources/ADR-15/fig-l1-l2-collections-approval-flow-1-4.svg)
 
 #### Use cases
 
 _**Entity** = Committee smart contract which will check if the sender of the transaction is part of the committee chosen on L1. If so, it will forward the message to the collections_
 
-##### Add/Remove Members  ( > 2 transaction)
+##### Add/Remove Members ( > 2 transaction)
 
-* A member of the community creates a vote to add/remove someone from the committe/board on the Decentraland DAO.
+- A member of the community creates a vote to add/remove someone from the committe/board on the Decentraland DAO.
 
-* At vote enactment, a message will be forwarded from L1 to L2 by a bridge ending up with the member added/removed from the **Entity** in L2.
+- At vote enactment, a message will be forwarded from L1 to L2 by a bridge ending up with the member added/removed from the **Entity** in L2.
 
 <!--
 ```sequence
@@ -219,13 +223,14 @@ L1_Bridge-&gt;L2_Bridge: Add/Remove someone from the committee
 L2_Bridge-&gt;L2_Committee: Add/Remove someone
 ```
 -->
-![images/l1-l2-collections-approval-flow/fig-l1-l2-collections-approval-flow-1-5.svg](images/l1-l2-collections-approval-flow/fig-l1-l2-collections-approval-flow-1-5.svg)
+
+![resources/ADR-15/fig-l1-l2-collections-approval-flow-1-5.svg](resources/ADR-15/fig-l1-l2-collections-approval-flow-1-5.svg)
 
 ##### Manage Collections (1 transaction)
 
-* A member of the committee sends a transaction to the Committee smart contract to approve/reject a collection in L2. 
+- A member of the committee sends a transaction to the Committee smart contract to approve/reject a collection in L2.
 
-* The transaction creates a message that will be forwarded to the collection, ending up with the collection approved/rejected.
+- The transaction creates a message that will be forwarded to the collection, ending up with the collection approved/rejected.
 
 <!--
 ```sequence
@@ -237,7 +242,8 @@ Committee_User-&gt;L2_Committee: Approve/Reject Collection_1
 L2_Committee-&gt;L2_Collection_1: Approve/Reject
 ```
 -->
-![images/l1-l2-collections-approval-flow/fig-l1-l2-collections-approval-flow-1-6.svg](images/l1-l2-collections-approval-flow/fig-l1-l2-collections-approval-flow-1-6.svg)
+
+![resources/ADR-15/fig-l1-l2-collections-approval-flow-1-6.svg](resources/ADR-15/fig-l1-l2-collections-approval-flow-1-6.svg)
 
 ### Alternative 3. Collections curated by staking and challenging
 
@@ -245,7 +251,7 @@ The management of L2's collections will be done by creator in L2. Protocol param
 
 <!--
 ```dot
-// ![images/fig-l1-l2-exact-replication.svg](images/fig-l1-l2-exact-replication.svg)
+// ![resources/ADR-15/fig-l1-l2-exact-replication.svg](resources/ADR-15/fig-l1-l2-exact-replication.svg)
 digraph {
     rankdir=TB
     graph [fontname = "arial", fontsize="10", color="grey", fontcolor="grey"]
@@ -279,9 +285,9 @@ digraph {
         collections_curator -&gt; collection_1 [color=blue, label=" approve/reject "]
         collections_curator -&gt; collection_2 [color=blue, label=" approve/reject "]
         collections_curator -&gt; collection_3 [color=blue, label=" approve/reject "]
-        collections_curator -&gt; collection_4 [color=blue, label=" approve/reject "]   
+        collections_curator -&gt; collection_4 [color=blue, label=" approve/reject "]
     }
-    
+
     creator_1 [label="creator"]
     creator_2 [label="creator"]
     creator_3 [label="creator"]
@@ -291,33 +297,34 @@ digraph {
     creator_2 -&gt; collections_curator [color=black, label="  Publish/Vote/Challenge"]
     creator_3 -&gt; collections_curator [color=black, label="  Publish/Vote/Challenge"]
     creator_4 -&gt; collections_curator [color=black, label="  Publish/Vote/Challenge"]
-    
+
 
     bridge_l1 -&gt; bridge_l2
 }
 ```
 -->
-![images/l1-l2-collections-approval-flow/fig-l1-l2-collections-approval-flow-1-7.svg](images/l1-l2-collections-approval-flow/fig-l1-l2-collections-approval-flow-1-7.svg)
+
+![resources/ADR-15/fig-l1-l2-collections-approval-flow-1-7.svg](resources/ADR-15/fig-l1-l2-collections-approval-flow-1-7.svg)
 
 #### Submit a collection
 
-* Creators stake X amount of MANA in order to publish a collection Colllection Curator smart contract.
+- Creators stake X amount of MANA in order to publish a collection Colllection Curator smart contract.
 
-* A collection has a grace period of Y days before it can start minting items if no challenge happened.
+- A collection has a grace period of Y days before it can start minting items if no challenge happened.
 
-* Any creator that has created a collection can challenge another collection, at any time (even if the grace period has ended).
+- Any creator that has created a collection can challenge another collection, at any time (even if the grace period has ended).
 
-* When a collection is challenged, the challenger has to stake Z amount of MANA.
+- When a collection is challenged, the challenger has to stake Z amount of MANA.
 
-* Any creator that has created a collection can vote. 
+- Any creator that has created a collection can vote.
 
-* Each creator has one vote per each collection created, and the weight of the vote is the square root of the amount of time (or blocks) the collection has existed.
+- Each creator has one vote per each collection created, and the weight of the vote is the square root of the amount of time (or blocks) the collection has existed.
 
-* After N amounts of days, anyone can resolve the challenge.
+- After N amounts of days, anyone can resolve the challenge.
 
-* If the challenger wins, an amount of Z MANA (from the reserve) is distributed among the creators who voted to remove the collection.
+- If the challenger wins, an amount of Z MANA (from the reserve) is distributed among the creators who voted to remove the collection.
 
-* If the challenger loses, an amount of Z MANA (from the reserve) is distributed among the creators who rejected the challenge. 
+- If the challenger loses, an amount of Z MANA (from the reserve) is distributed among the creators who rejected the challenge.
 
 <!--
 ```sequence
@@ -341,7 +348,8 @@ Note right of L2_Collection_Curator: Challenge resolved: Passed (YES: 2 / No: 1.
 L2_Collection_Curator-&gt;L2_Collection_1: Act based on challenge outcome
 ```
 -->
-![images/l1-l2-collections-approval-flow/fig-l1-l2-collections-approval-flow-1-8.svg](images/l1-l2-collections-approval-flow/fig-l1-l2-collections-approval-flow-1-8.svg)
+
+![resources/ADR-15/fig-l1-l2-collections-approval-flow-1-8.svg](resources/ADR-15/fig-l1-l2-collections-approval-flow-1-8.svg)
 
 There are two kinds of challenge: **PAUSE**, and **CLAIM** a collection.
 
@@ -351,55 +359,55 @@ The **CLAIM** challenge should use 100% of the staked MANA.
 
 **DEPRECATED**
 
-- The **FIX** challenge should use a small %  of the staked MANA.
+- The **FIX** challenge should use a small % of the staked MANA.
 
 - The **REJECT** challenge should use 100% of the staked MANA.
 
 #### Pause example:
 
-* A creator published a collection by staking `X MANA` in the Colllection Curator smart contract.
+- A creator published a collection by staking `X MANA` in the Colllection Curator smart contract.
 
-* Another creator notices one model is broken, so he challenges to pause the collection until fixed by staking `0.1 * X MANA` (10% of original stake).
+- Another creator notices one model is broken, so he challenges to pause the collection until fixed by staking `0.1 * X MANA` (10% of original stake).
 
-* Other creators vote during a 7 day period -> the challenge is successful.
+- Other creators vote during a 7 day period -> the challenge is successful.
 
-* The collection is paused, it cannot mint new tokens anymore.
+- The collection is paused, it cannot mint new tokens anymore.
 
-* `0.1 * X MANA` from the reserve are distributed among the successful challengers.
+- `0.1 * X MANA` from the reserve are distributed among the successful challengers.
 
-* `0.1 * X MANA` is returned to the challenger.
+- `0.1 * X MANA` is returned to the challenger.
 
-* The creators fixes the broken model, and publishes the collection again. He needs to add `0.1 * X MANA` to the stake in order to publish it again.
+- The creators fixes the broken model, and publishes the collection again. He needs to add `0.1 * X MANA` to the stake in order to publish it again.
 
 #### Claim example:
 
-* The collection has been **paused** for N time with no response of the current creator.
+- The collection has been **paused** for N time with no response of the current creator.
 
-* Another creator wants to fix the collection cause the current owner seems to don't care about fixing it. So, he stakes `X MANA` to fix the collection.
+- Another creator wants to fix the collection cause the current owner seems to don't care about fixing it. So, he stakes `X MANA` to fix the collection.
 
-* Other creators vote during a 7 day period -> the challenge is successful.
+- Other creators vote during a 7 day period -> the challenge is successful.
 
-* The collection is transferred to the new creator. Now, the challenger can upload the old correct models again to fix the collection.
+- The collection is transferred to the new creator. Now, the challenger can upload the old correct models again to fix the collection.
 
-* `0.9 * X MANA` (balance of the **paused** collection) from the reserve are distributed among the successful challengers.
+- `0.9 * X MANA` (balance of the **paused** collection) from the reserve are distributed among the successful challengers.
 
-* `X MANA* is staked for the new creator
+- `X MANA\* is staked for the new creator
 
 **DEPRECATED**
 
 #### Reject example
 
-* A creator published a collection by staking `X MANA` in the Colllection Curator smart contract.
+- A creator published a collection by staking `X MANA` in the Colllection Curator smart contract.
 
-* Another creator notices the collection is a copycat of another existing one, so he challeges to remove the collection by staking `X MANA`.
+- Another creator notices the collection is a copycat of another existing one, so he challeges to remove the collection by staking `X MANA`.
 
-* Other creators vote during a 7 day period -> the challenge is successful.
+- Other creators vote during a 7 day period -> the challenge is successful.
 
-* The collection is rejected permanently.
+- The collection is rejected permanently.
 
-* `X MANA` from the reserve are distributed among the successful challengers.
+- `X MANA` from the reserve are distributed among the successful challengers.
 
-* `X MANA` is returned to the challenger.
+- `X MANA` is returned to the challenger.
 
 # Decision Outcome
 
@@ -457,17 +465,17 @@ This decision may be revisited once we define the economics and anti-spam mechan
 
 # Open questions
 
-* Can we pre-approve submissions before the creator start working on the collection? like a pre-approved project
+- Can we pre-approve submissions before the creator start working on the collection? like a pre-approved project
 
-* Should we need to care about the rarity?
+- Should we need to care about the rarity?
 
-    - Define guidelines
+  - Define guidelines
 
-    - Send money to the fundation
+  - Send money to the fundation
 
 ---
 
-* In alternative 2, can any user propose a collection?:
+- In alternative 2, can any user propose a collection?:
 
   Yes, there is no limit. It can be abused.
 
