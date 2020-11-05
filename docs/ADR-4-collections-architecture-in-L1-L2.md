@@ -2,7 +2,7 @@
 
 ## Context and Problem Statement
 
-Collections will be a key in the Decentraland ecosystem. To bring more scalability and reduce costs the L2 will be seen as the main chain, and L1, as the gateway for collectors to use/buy/sell tokens in other platforms.
+Collections will be key in the Decentraland ecosystem. To bring more scalability and reduce costs the L2 will be seen as the main chain, and L1, as the gateway for collectors to use/buy/sell tokens in other platforms.
 
 L1 could be seen as Ethereum mainnet and L2 any other sidechain EVM compatible as Matic or xDai.
 
@@ -303,7 +303,7 @@ L2_Collection_1-&gt;User: Transfer token_1
 
 - Users will need to send a transaction for each collection to authorize the usage of tokens.
 
-- Third party marketplaces (OpenSea) will not know without any effort if the contract is an offical Decentraland collection in L1.
+- Third party marketplaces (OpenSea) will not know without any effort if the contract is an official Decentraland collection in L1.
 
 #### Alternative 2 ✅
 
@@ -329,7 +329,7 @@ L2_Collection_1-&gt;User: Transfer token_1
 
 - **Do the token URI changes in L2?**
 
-  Token uri of L2 is stored in the main collection in L1
+  Token URI of L2 is stored in the main collection in L1
 
 ```yaml
 OpenSea (mainnet): opensea.com/mainnet/tokens/{collection_l1}/{hash(collection_l1_1, token)}
