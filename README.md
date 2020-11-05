@@ -15,6 +15,7 @@
 - [ADR-13 - Custom UI modes for builder in world](docs/ADR-13-custom-ui-modes-for-builder-in-world.md)
 - [ADR-14 - L1 & L2 Governance Smart Contracts Architecture](docs/ADR-14-l1-l2-governance-smart-contracts-architecture.md)
 - [ADR-15 - L1 & L2 Collections Approval Flow](docs/ADR-15-l1-l2-collections-approval-flow.md)
+- [ADR-16 - Unity Data Store Architecture](docs/ADR-16-unity-data-store-architecture.md)
 
 ## How to?
 
