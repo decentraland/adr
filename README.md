@@ -16,6 +16,7 @@
 - [ADR-14 - L1 & L2 Governance Smart Contracts Architecture](docs/ADR-14-l1-l2-governance-smart-contracts-architecture.md)
 - [ADR-15 - L1 & L2 Collections Approval Flow](docs/ADR-15-l1-l2-collections-approval-flow.md)
 - [ADR-16 - Unity Data Store Architecture](docs/ADR-16-unity-data-store-architecture.md)
+- [ADR-17 - Wearable Collection Approval And Economics](docs/ADR-17-wearable-collection-approval-and-economics.md)
 
 ## How to?
 
