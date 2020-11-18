@@ -70,7 +70,7 @@ Kernel->Renderer: send LoadParcelScenes message\nwith baseUrl and content mappin
 Kernel->Renderer: create any sdk component\nwith src payload
 Renderer->Renderer: Use baseUrl and mappings\nto solve full asset url.
 ```
---!>
+!-->
 
 This approach works fine for most of the cases. However, some issues can be observed:
 
