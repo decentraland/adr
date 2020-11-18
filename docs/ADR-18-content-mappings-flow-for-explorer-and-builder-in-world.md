@@ -48,23 +48,21 @@ This data is stored in a `ContentProvider` object [(see code).](https://github.c
 
 Then, further down the line, a component can be sent with a payload that looks like this:
 ```
-
 {
-
     "src":"asset.gltf"
-
 }
 ```
 
 In runtime we can receive this payload for any scene object. In order to download the object, we must resolve the full URL for it, like this:
 ```
-
 baseUrl + resolved hash
 ```
 The resolved hash is obtained querying a dictionary with the local asset path. 
 
 This dictionary is scoped to the scene. Meaning that any scene will have a specific dictionary of content mapping pairs and a determined `baseUrl`. The mapping pairs and the baseUrl are fetched from Kernel using our catalyst scene endpoints and then passed over to explorer's renderer.
 
+![resources/adr-18-content-mappings-flow-for-explorer-and-builder-in-world/fig-mappings-flow.svg](resources/adr-18-content-mappings-flow-for-explorer-and-builder-in-world/fig-mappings-flow.svg)
+<!--
 ```sequence
 Catalyst->Kernel: Kernel picks realm url
 Catalyst->Kernel: Kernel fetches mapping pairs
@@ -72,6 +70,7 @@ Kernel->Renderer: send LoadParcelScenes message\nwith baseUrl and content mappin
 Kernel->Renderer: create any sdk component\nwith src payload
 Renderer->Renderer: Use baseUrl and mappings\nto solve full asset url.
 ```
+--!>
 
 This approach works fine for most of the cases. However, some issues can be observed:
 
@@ -88,11 +87,8 @@ In this document we are going to review the decided approach for dealing with th
 ## Considered Options
 
 * Use `UpdateParcelsScene` message for updating mappings.
-
 * Use alternative components to deal with the builder in-world requirements.
-
 * For the builder in-world, add an additional message that binds a component to a specific mappings provider.
-
 * Migrate all our pipeline to use a more robust asset catalog approach, like the one used by Builder.
 
 ### Use `UpdateParcelsScene` message for updating mappings
@@ -134,7 +130,6 @@ Finally, the `ContentProvider` is going to be used to resolve the local asset pa
 We are going to analyze the flow to address the following use cases:
 
 * A given user puts a new asset in a builder-in world stateful scene 
-
 * The builder-in world stateful scene is loaded, and must deliver the state to Unity using SDK messages.
 
 #### Flow #1: Stateful scene is loaded
@@ -200,9 +195,7 @@ Here it was discussed about having a monolithic asset catalog message. The monol
 #### Overview
 
 * Have an asset catalog Kernel<>Renderer messaging pipeline for adding and removing assets lazily as needed.
-
 * Make all our components receive `assetId` references that are going to be mapped to this catalog to retrieve the proper `ContentProvider` and solve our asset urls.
-
 * Our `LoadParcelScenes` flow will no longer provide the mappings. All the asset ids management responsibilities are  going to come from the asset catalog flow.
 
 This is arguably the best solution in terms of solving (1) (2) and (3). However, the refactor cost is high. We would have to adapt all the components to this new approach and re-design the LoadParcelScenes message.
@@ -212,13 +205,9 @@ We can split this approach in different stages.
 #### Stage 1: MVP for builder in-world
 
 * Keep the scene mappings flow
-
 * Add an optional `assetId` to `GLTFShape` payload.
-
 * Add basic messages of the catalog flow for adding/removing assets.
-
 * If the `assetId` field is not empty, the catalog will be queried for the proper `ContentProvider`
-
 * If the `assetId` field is missing, the scene mappings will be used
 
 Example code:
@@ -250,13 +239,9 @@ This first stage will address (2) and (3) and pave the way for a solution that a
 #### Stage 2: Full approach
 
 * Add `assetId` for all components with a `src` field.
-
 * All components will use this `assetId` to query the catalog
-
 * Mappings are going to be removed from `LoadParcelScenes` message.
-
 * In SDK mode, If any component needs an unknown local asset path, kernel will be queried for it using fast messages (i.e. native). This will be needed for the local paths referenced inside GLTFs. In a normal user made scene, we don't know the GLTF references until we import it.
-
 * In builder in-world mode, the catalog will be populated on advance, so no queries will be needed. This is because the asset catalog already has the proper dependency information.
 
 In the stage two, we build upon the first stage, and unify the asset catalog approach so its used widely in our SDK code path too. This will reduce the complexity of the flow, making it easier to maintain, and solve (1). 
@@ -268,13 +253,10 @@ The outcome is to advance on the Stage 1 of the **robust asset catalog approach*
 We argue that this approach has the best return of investment, because: 
 
 * Stage 1 task size is about the same compared with the other options discussed.
-
 * Stage 1 gives a clear roadmap on improving the system scalability while keeping tabs on simplicity for Stage 2. 
-
 * Reaching Stage 2 will solve all the presented issues. 
 
 ## Participants
 
 - Nico Chamo
-
 - Brian Amadori
