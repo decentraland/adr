@@ -91,6 +91,7 @@ In this document we are going to review the decided approach for dealing with th
 
 ### Use `UpdateParcelsScene` message for updating mappings
 
+#### Overview
 In this approach, we can re-use the existing `UpdateParcelScenes` message with a complete mappings 
 
 payload to update the existing mappings for the scene. 
@@ -103,6 +104,7 @@ A redesign of the approach is _still_ going to be needed to support custom user-
 
 ### Use alternative components to deal with the builder in-world requirements
 
+#### Overview
 Here, a duplicate component of the existing ones will be created solely for the purpose of supporting the needs of the builder in-world feature.
 
 The idea is that we have a catalog data store that's going to contain all the builder in-world assets. Then, the alternate component will resolve its assets using the catalog instead of the scene mappings data. 
