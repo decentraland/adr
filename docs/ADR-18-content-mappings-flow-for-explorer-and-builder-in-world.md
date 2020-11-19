@@ -76,9 +76,9 @@ This approach works fine for most of the cases. However, some issues can be obse
 
 1) For big scenes, a pretty big content mappings payload have to be sent over to Renderer. This can produce performance hiccups.
 
-2) For content coming from dynamic sources (i.e.: builder or builder in world) the chance of hash collisions in the local asset path is high. Any artist can inadvertently name their assets using generic naming, and in this case a collision is going to occur.
+2) For content coming from dynamic and user made sources (i.e.: builder or builder in world) the chance of local asset path collisions is very high.
 
-3) For the builder in-world feature we want to support adding arbitrary user made assets. This means we need to update the mappings in real time, and currently we don't have a nice mechanism of doing that without sending the monolithic mappings message scoped to the scene. Also, see (2).
+3) For the builder in-world feature we need to update the mappings in real time, and currently we don't have a nice mechanism of doing that without sending the monolithic mappings message scoped to the scene. Also, see (2).
 
 In this document we are going to review the decided approach for dealing with those issues in short and long term stages.
 
