@@ -17,6 +17,7 @@
 - [ADR-15 - L1 & L2 Collections Approval Flow](docs/ADR-15-l1-l2-collections-approval-flow.md)
 - [ADR-16 - Unity Data Store Architecture](docs/ADR-16-unity-data-store-architecture.md)
 - [ADR-17 - Wearable Collection Approval And Economics](docs/ADR-17-wearable-collection-approval-and-economics.md)
+- [ADR-18 - Content mappings flow for Explorer and Builder in-world](docs/ADR-18-content-mappings-flow-for-explorer-and-builder-in-world.md)
 
 ## How to?
 
