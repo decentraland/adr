@@ -92,9 +92,7 @@ In this document we are going to review the decided approach for dealing with th
 ### Use `UpdateParcelsScene` message for updating mappings
 
 #### Overview
-In this approach, we can re-use the existing `UpdateParcelScenes` message with a complete mappings 
-
-payload to update the existing mappings for the scene. 
+In this approach, we can re-use the existing `UpdateParcelScenes` message with a complete mappings payload to update the existing mappings for the scene. 
 
 This approach don't solve any of the presented issues (1) (2) (3). However, it can enable the correct resolution of mappings for dynamically added assets. 
 
@@ -204,11 +202,10 @@ We can split this approach in different stages.
 
 #### Stage 1: MVP for builder in-world
 
-* Keep the scene mappings flow
 * Add an optional `assetId` to `GLTFShape` payload.
 * Add basic messages of the catalog flow for adding/removing assets.
 * If the `assetId` field is not empty, the catalog will be queried for the proper `ContentProvider`
-* If the `assetId` field is missing, the scene mappings will be used
+* If the `assetId` field is missing, the scene mappings will be used. This will keep the `LoadParcelScenes` flow compatibility.
 
 Example code:
 ```csharp
@@ -230,7 +227,7 @@ protected virtual void AttachShape(DecentralandEntity entity)
     }
     else
     {
-        provider = scene.contentProvider;
+        provider = scene.contentProvider; // Keep compatibility with the SDK approach
     }
 ```
 
@@ -241,8 +238,8 @@ This first stage will address (2) and (3) and pave the way for a solution that a
 * Add `assetId` for all components with a `src` field.
 * All components will use this `assetId` to query the catalog
 * Mappings are going to be removed from `LoadParcelScenes` message.
-* In SDK mode, If any component needs an unknown local asset path, kernel will be queried for it using fast messages (i.e. native). This will be needed for the local paths referenced inside GLTFs. In a normal user made scene, we don't know the GLTF references until we import it.
-* In builder in-world mode, the catalog will be populated on advance, so no queries will be needed. This is because the asset catalog already has the proper dependency information.
+* For SDK mode: If any component needs an unknown local asset path, kernel will be queried for it using fast messages (i.e. native). This will be needed for the local paths referenced inside GLTFs. In a normal user made scene, we don't know the GLTF references until we import it.
+* For builder in-world mode: The catalog will be populated on advance, so no queries will be needed. This is because the asset catalog already has the proper dependency information.
 
 In the stage two, we build upon the first stage, and unify the asset catalog approach so its used widely in our SDK code path too. This will reduce the complexity of the flow, making it easier to maintain, and solve (1). 
 
