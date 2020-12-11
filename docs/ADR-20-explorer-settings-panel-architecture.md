@@ -160,6 +160,9 @@ And it is all! When you run the application, you will notice that the `SettingsP
 
 **NOTE**: For more advanced controls, you can take a look to all the controllers that we currently have in the folder `SettingsPanelHUD\Scripts\ControlsModule\SpecificControllers`.
 
+## Next Steps
+Now that we have each setting control separated and working with its own controller, which contains all the logic related to its behaviour, a second step to implement in the near future would be to refactorize the classes `GeneralSettingsController` and `QualitySettingsController` (these classes contain all the logic related to the application of ALL the settings and it is very coupled in only 2 classes) in order to move each piece belonging to each specific control to its corresponding controller. In this way we would have all the logic (behaviour and aplication of the setting) contained in each specific control and it would make the system more scalable.
+
 ##  Participants
 Date: 2020-12-11
 - Santi Andrade
