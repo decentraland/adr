@@ -150,6 +150,7 @@ namespace DCL.SettingsPanelHUD.Controls
 - Open Assets -> Create -> Settings -> Configuration -> Controls.
 - Choose one of the available type of controls: Toggle, Slider or Spin-Box.
 - Put a name to the created asset: `{control name}ControlConfiguration`.
+- Configure the asset with all the needed info for the new control (title, view, controller, etc.)
 
 ### 4. Add the new control to the Settings Panel
 - Go to the folder `SettingsPanelHUD\Configuration\Widgets`.
