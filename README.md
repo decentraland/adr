@@ -19,6 +19,7 @@
 - [ADR-17 - Wearable Collection Approval And Economics](docs/ADR-17-wearable-collection-approval-and-economics.md)
 - [ADR-18 - Content mappings flow for Explorer and Builder in-world](docs/ADR-18-content-mappings-flow-for-explorer-and-builder-in-world.md)
 - [ADR-19 - L2 Roadmap: Stage 1 & Stage 2 alternatives](docs/ADR-19-l2-roadmap-stage-1-stage-2-alternatives.md)
+- [ADR-20 - Explorer Settings Panel Architecture](docs/ADR-20-explorer-settings-panel-architecture.md)
 
 ## How to?
 
