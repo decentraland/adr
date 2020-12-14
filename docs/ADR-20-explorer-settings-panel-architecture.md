@@ -106,10 +106,20 @@ The main benefits of this architecture are:
 - Go to the folder `SettingsPanelHUD\Scripts\ControlsModule\SpecificControllers` and create a new controller class called `{control name}ControlController`.
 - Make the class inherit from `SettingsControlController`.
 - Add the header `[CreateAssetMenu(menuName = "Settings/Controllers/Controls/{control name}", fileName = "{control name}ControlController")]`.
-- Override the next methods:
+- Override the next mandatory methods from `SettingsControlController`:
 	- `object GetStoredValue()`: It should return the stored value of the control. The return value should be a bool (for toggle controls), a float (for slider controls) or an int (for spin-box controls).
 	- `void OnControlChanged(object newValue)`: It should contain the specific logic for the settings control that will be triggered when the its state changes. The received `newValue` is the new state and can be a bool (for toggle controls), a float (for slider controls) or an int (for spin-box controls).
-	- `void PostApplySettings()`: The logic put here is optional and will be triggered AFTER `OnControlChanged` and AFTER the settings are been applied in the system.
+- If you neeed it, you can also override these other optional methods from `SettingsControlController`:
+    - `void Initialize(ISettingsControlView settingsControlView)`: This is the place where you will be able to initialize anything you need for the control behaviour.
+    - `void PostApplySettings()`: The logic put here will be triggered AFTER `OnControlChanged` and AFTER the settings are been applied in the system.
+    - `void OnDestroy()`: The logic put here will be triggered when the control is destroyed.
+- Available fields that you can use from `SettingsControlController`:
+    - `currentGeneralSettings`: This field will access to the general settings currently stored in the `Setting` singleton class.
+    - `currentQualitySetting`: This field will access to the quality settings currently stored in the `Setting` singleton class.
+    - `view`: You will be able to access to the view associated to your control through this variable. Depending on the type of your control, you will have to cast the variable in this way:
+        - If your control is a **TOGGLE**: `(ToggleSettingsControlView)view`.
+        - If your control is a **SLIDER**: `(SliderSettingsControlView)view`.
+        - If your control is a **SPIN-BOX**: `(SpinBoxSettingsControlView)view`.
 
 #### Example
 ```csharp
@@ -142,27 +152,34 @@ namespace DCL.SettingsPanelHUD.Controls
 ```
 ### 2. Serialize the new controller
 - Go to the folder `SettingsPanelHUD\Resources\Controls`.
-- Open Assets -> Create -> Settings -> Controllers -> Controls.
-- Choose the new controller created.
+- Open the menu `Assets -> Create -> Settings -> Controllers -> Controls` and choose your new controller created.
+- Put a name to the created asset: `{control name}ControlController`.
+
+![image](resources/ADR-20/SerializedControlController.png)
 
 ### 3. Create the configuration asset of the control
 - Go to the folder `SettingsPanelHUD\Configuration\Controls`.
-- Open Assets -> Create -> Settings -> Configuration -> Controls.
-- Choose one of the available type of controls: Toggle, Slider or Spin-Box.
+- Open the menu `Assets -> Create -> Settings -> Configuration -> Controls` and choose one of the available type of controls: Toggle, Slider or Spin-Box.
 - Put a name to the created asset: `{control name}ControlConfiguration`.
 - Configure the asset with all the needed info for the new control (title, view, controller, etc.)
+
+![image](resources/ADR-20/ControlConfiguration1.png)
+![image](resources/ADR-20/ControlConfiguration2.png)
 
 ### 4. Add the new control to the Settings Panel
 - Go to the folder `SettingsPanelHUD\Configuration\Widgets`.
 - Select the `WIDGET` where you want to put the new control.
 - Add the configuration asset created in the step 3 in the column where you prefeer.
 
+![image](resources/ADR-20/WidgetConfiguration1.png)
+![image](resources/ADR-20/WidgetConfiguration2.png)
+
 And it is all! When you run the application, you will notice that the `SettingsPanelHUD` will have created your new control  in the correct place.
 
-**NOTE**: For more advanced controls, you can take a look to all the controllers that we currently have in the folder `SettingsPanelHUD\Scripts\ControlsModule\SpecificControllers`.
+**NOTE**: For more examples of controls, you can take a look to all the controllers that we currently have in the folder `SettingsPanelHUD\Scripts\ControlsModule\SpecificControllers`.
 
 ## Next Steps
-Now that we have each setting control separated and working with its own controller, which contains all the logic related to its behaviour, a second step to implement in the near future would be to refactorize the classes `GeneralSettingsController` and `QualitySettingsController` (these classes contain all the logic related to the application of ALL the settings and it is very coupled in only 2 classes) in order to move each piece belonging to each specific control to its corresponding controller. In this way we would have all the logic (behaviour and aplication of the setting) contained in each specific control and it would make the system more scalable.
+Now that we have each setting control separated and working with its own controller, which contains all the logic related to its behaviour, a second step to implement in the near future would be to refactorize the classes `GeneralSettingsController` and `QualitySettingsController` (these classes contain all the logic related to the application of ALL the settings and it is very coupled in only 2 classes) in order to move each piece belonging to each specific control to its corresponding controller. In this way we would remove these 2 generic classes and have all the logic (behaviour and aplication of the setting) contained in each specific control. It would make the system more scalable and would comply with the Single Responsibility Principle.
 
 ##  Participants
 Date: 2020-12-11
