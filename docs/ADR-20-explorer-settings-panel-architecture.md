@@ -111,7 +111,6 @@ The main benefits of this architecture are:
 	- `void OnControlChanged(object newValue)`: It should contain the specific logic for the settings control that will be triggered when the its state changes. The received `newValue` is the new state and can be a bool (for toggle controls), a float (for slider controls) or an int (for spin-box controls).
 - If you neeed it, you can also override these other optional methods from `SettingsControlController`:
     - `void Initialize(ISettingsControlView settingsControlView)`: This is the place where you will be able to initialize anything you need for the control behaviour.
-    - `void PostApplySettings()`: The logic put here will be triggered AFTER `OnControlChanged` and AFTER the settings are been applied in the system.
     - `void OnDestroy()`: The logic put here will be triggered when the control is destroyed.
 - Available fields that you can use from `SettingsControlController`:
     - `currentGeneralSettings`: This field will access to the general settings currently stored in the `Setting` singleton class.
@@ -123,8 +122,9 @@ The main benefits of this architecture are:
 
 #### Example
 ```csharp
-using DCL.SettingsPanelHUD.Common;
+using DCL.SettingsController;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 namespace DCL.SettingsPanelHUD.Controls
 {
@@ -139,13 +139,14 @@ namespace DCL.SettingsPanelHUD.Controls
         public override void OnControlChanged(object newValue)
         {
             currentQualitySetting.bloom = (bool)newValue;
-        }
 
-        public override void PostApplySettings()
-        {
-            base.PostApplySettings();
-
-            CommonSettingsEvents.RaiseSetQualityPresetAsCustom();
+            if (QualitySettingsReferences.i.postProcessVolume)
+            {
+                if (QualitySettingsReferences.i.postProcessVolume.profile.TryGet<Bloom>(out Bloom bloom))
+                {
+                    bloom.active = currentQualitySetting.bloom;
+                }
+            }
         }
     }
 }
@@ -177,9 +178,6 @@ namespace DCL.SettingsPanelHUD.Controls
 And it is all! When you run the application, you will notice that the `SettingsPanelHUD` will have created your new control  in the correct place.
 
 **NOTE**: For more examples of controls, you can take a look to all the controllers that we currently have in the folder `SettingsPanelHUD\Scripts\ControlsModule\SpecificControllers`.
-
-## Next Steps
-Now that we have each setting control separated and working with its own controller, which contains all the logic related to its behaviour, a second step to implement in the near future would be to refactorize the classes `GeneralSettingsController` and `QualitySettingsController` (these classes contain all the logic related to the application of ALL the settings and it is very coupled in only 2 classes) in order to move each piece belonging to each specific control to its corresponding controller. In this way we would remove these 2 generic classes and have all the logic (behaviour and aplication of the setting) contained in each specific control. It would make the system more scalable and would comply with the Single Responsibility Principle.
 
 ##  Participants
 Date: 2020-12-11
