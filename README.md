@@ -24,6 +24,7 @@
 - [ADR-22 - Quests progress UI](docs/ADR-22-quests-progress-ui.md)
 - [ADR-23 - Entities meta-data flow for builder in-world](docs/ADR-23-entities-meta-data-flow-for-builder-in-world.md)
 - [ADR-24 - Decouple Kernel and Unity APIs](docs/ADR-24-decouple-kernel-and-unity-apis.md)
+- [ADR-25 - Explorer Repositories Decoupling](docs/ADR-25-explorer-repositories-decoupling-.md)
 
 ## How to?
 
