@@ -49,7 +49,7 @@ An important detail is that the Unity Interface will only be contained in abstra
 
 The CI/CD of this repository will output a npm package to be consumed by the platform specific shells (more on this later).
 
-[IMAGEN 1]
+[resources/ADR-25-explorer-repositories-decoupling/image-1.svg](resources/ADR-25-explorer-repositories-decoupling/image-1.svg)
 
 ### Web Shell Repository (f.k.a. Website)
 
@@ -65,7 +65,7 @@ The CI/CD of this repository is going to output internal and production releases
 
 * An independent Unity project contains the Renderer Package, the web specific entry point (InitialScene + Main + etc) and any web specific components that may be needed.
 
-[IMAGEN 2]
+[resources/ADR-25-explorer-repositories-decoupling/image-2.svg](resources/ADR-25-explorer-repositories-decoupling/image-2.svg)
 
 ### Desktop Shell Repository
 
@@ -79,7 +79,7 @@ The CI/CD of this repository is going to be bound to internal and production rel
 
 * On the Native JS Project, a thin TS layer with the `unity-interface` desktop implementation and all the code that is directly related with the desktop renderer will be included. This implementation will have the specifics of the IPC communication needed.
 
-[IMAGEN 3]
+[resources/ADR-25-explorer-repositories-decoupling/image-3.svg](resources/ADR-25-explorer-repositories-decoupling/image-3.svg)
 
 ## Staged plan
 
