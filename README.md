@@ -25,6 +25,7 @@
 - [ADR-23 - Entities meta-data flow for builder in-world](docs/ADR-23-entities-meta-data-flow-for-builder-in-world.md)
 - [ADR-24 - Decouple Kernel and Unity APIs](docs/ADR-24-decouple-kernel-and-unity-apis.md)
 - [ADR-25 - Explorer Repositories Decoupling](docs/ADR-25-explorer-repositories-decoupling-.md)
+- [ADR-26 - Port signup screen to Unity](docs/ADR-26-port-signup-screen-to-unity-.md)
 
 ## How to?
 
