@@ -44,6 +44,7 @@ When teleporting, the `showLoadingScreen` flag is modified in this order:
 1) dcl.ts		teleportObservable.setLoadingScreenVisible => true
 2) dcl.ts		renderStateObservable.setLoadingScreenVisible => false
 ```
+Notice how most of the time the flag is changed reduntantly. In any case I haven't found any conflict in the way they are modified.
 
 ## Approach
 
@@ -59,7 +60,7 @@ The implementation in _Unity_ is pretty straight-forward. A HUD reacting to the 
 
 ## Benefit
 
-- Cross platform development can reuse this new signup workflow almost entirely.
+- Cross platform development can reuse this new loading screen flow almost entirely.
 
 - A first step into decoupling the experience lifecycle from kernel to end up moving parts of our current `loading/sagas` responsibilities into _Unity_.
 
