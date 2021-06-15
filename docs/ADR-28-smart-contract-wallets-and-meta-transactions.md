@@ -25,7 +25,7 @@ We can disable meta-transactions for smart contract wallets.
 
 ## Decision Outcome
 
-We choose option 1 since we can never be sure that the smart contract wallet has a matching deployment on Polygon, and is not the case for the most popular smart contract wallets (like Argent or Authereum)
+We choose option 2 since we can never be sure that the smart contract wallet has a matching deployment on Polygon, and is not the case for the most popular smart contract wallets (like Argent or Authereum)
 
 ## Participants
 
