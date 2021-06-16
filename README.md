@@ -27,6 +27,7 @@
 - [ADR-25 - Explorer Repositories Decoupling](docs/ADR-25-explorer-repositories-decoupling-.md)
 - [ADR-26 - Port signup screen to Unity](docs/ADR-26-port-signup-screen-to-unity-.md)
 - [ADR-27 - Port loading screen to Unity](docs/ADR-27-port-loading-screen-to-unity-.md)
+- [ADR-28 - Smart contract wallets and meta-transactions](docs/ADR-28-smart-contract-wallets-and-meta-transactions.md)
 
 ## How to?
 
