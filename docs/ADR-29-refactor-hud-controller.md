@@ -31,7 +31,7 @@ So keeping in mind the objectives, we need to create a way to refactor the `HUD 
 
 #### First stage
 
-This stage's idea is to split the responsibility of instantiation in the `HUDController` and make it extendable.
+This stage's idea is to split the instantiation responsibilities of `HUDController` and make it extendable.
 
 So, to accomplish this goal, the `abstract factory design pattern` will be implemented.
 
