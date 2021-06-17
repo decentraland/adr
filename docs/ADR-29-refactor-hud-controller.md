@@ -58,7 +58,7 @@ Example of this system being extendable:
 
 `HUDDesktopKernelBridge`: Extended implementation of `HUDKernelBridge`.
 
-If we want to have different behaviour against the Kernel, it just overwrites/extent the `HUDKernelBridge`.
+If we want to have different behaviour against Kernel, we just overwrite/extend the `HUDKernelBridge` class.
 
 #### Third stage
 
