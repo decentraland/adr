@@ -52,7 +52,7 @@ So we can add more implementations depending on each platform. If we want to cha
 This stage aims to remove the responsibility from the `HUDController` to communicate with the Kernel.
 
 `IHUDBridge`: Abstract implementation of the communication of the HUD's
-`HUDKernelBridge`: It will contains the communication with the Kernel.
+`HUDKernelBridge`: Contains the communication with Kernel.
 
 Example of this system being extendable:
 
