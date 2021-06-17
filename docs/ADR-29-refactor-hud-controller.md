@@ -27,7 +27,7 @@ When we start Decentraland Explorer, the Kernel will send a message to Unity to 
 
 ### Approach
 
-So keeping in mind the objectives, we need to create a way to refactor the `HUD System` progressively. Thus, we will divide it into three stages.
+Keeping the objectives in mind, we need to create a way to refactor the `HUD System` progressively. Thus, we will divide it into three stages.
 
 #### First stage
 
