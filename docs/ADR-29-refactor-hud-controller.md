@@ -69,7 +69,7 @@ We're going to discuss this stage in another ADR.
 ## Benefit
 
 - Make Kernel smaller and simpler
-- Have a way to extent different implementations of the HUD's for each platform
+- Have a way to extend different implementations of the HUD's for each platform
 
 ## Participants
 
