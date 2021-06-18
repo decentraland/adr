@@ -36,12 +36,12 @@ This stage's idea is to split the instantiation responsibilities of `HUDControll
 So, to accomplish this goal, the `abstract factory design pattern` will be implemented.
 
 The classes will look like the following:
-`IHUDFactory`: Abstract Factory pattern, to create `HUDs`.
-`HUDFactory`: Default implementation of the `HUDs` factory.
-`HUDController`: It will keep the life cycle of the `HUDs`. It will have the dependency of `IHUDFactory` injected.
+- `IHUDFactory`: Abstract Factory pattern, to create `HUDs`.
+- `HUDFactory`: Default implementation of the `HUDs` factory.
+- `HUDController`: It will keep the life cycle of the `HUDs`. It will have the dependency of `IHUDFactory` injected.
 
 Example of extension of the factory:
-`HUDDesktopFactory`: Extended implementation of `HUDFactory` who adds variations of it.
+- `HUDDesktopFactory`: Extended implementation of `HUDFactory` who adds variations of it.
 
 So we can add more implementations depending on each platform. If we want to change the HUD's behaviour completely, you can overwrite how the HUD behaves and shows adding a new implementation of `IHUDFactory`.
 
@@ -51,12 +51,12 @@ So we can add more implementations depending on each platform. If we want to cha
 
 This stage aims to remove the responsibility from the `HUDController` to communicate with the Kernel.
 
-`IHUDBridge`: Abstract implementation of the communication of the HUD's
-`HUDKernelBridge`: Contains the communication with Kernel.
+- `IHUDBridge`: Abstract implementation of the communication of the HUD's
+- `HUDKernelBridge`: Contains the communication with Kernel.
 
 Example of this system being extendable:
 
-`HUDDesktopKernelBridge`: Extended implementation of `HUDKernelBridge`.
+- `HUDDesktopKernelBridge`: Extended implementation of `HUDKernelBridge`.
 
 If we want to have different behaviour against Kernel, we just overwrite/extend the `HUDKernelBridge` class.
 
