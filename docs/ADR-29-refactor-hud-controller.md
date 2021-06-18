@@ -45,7 +45,7 @@ Example of extension of the factory:
 
 So we can add more implementations depending on each platform. If we want to change the HUD's behaviour completely, you can overwrite how the HUD behaves and shows adding a new implementation of `IHUDFactory`.
 
-![resources/ADR-29/diagram-1.svg](resources/ADR-29/diagram-2.svg)
+![resources/ADR-29/diagram-2.svg](resources/ADR-29/diagram-2.svg)
 
 #### Second stage
 
