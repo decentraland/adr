@@ -29,6 +29,7 @@
 - [ADR-27 - Port loading screen to Unity](docs/ADR-27-port-loading-screen-to-unity-.md)
 - [ADR-28 - Smart contract wallets and meta-transactions](docs/ADR-28-smart-contract-wallets-and-meta-transactions.md)
 - [ADR-29 - Refactor HUD Controller](docs/ADR-29-refactor-hud-controller.md)
+- [ADR-30 - Front and back end architecture for the Marketplace ](docs/ADR-30-front-and-back-end-architecture-for-the-marketplace.md)
   
 ## How to?
 
