@@ -31,6 +31,7 @@
 - [ADR-29 - Refactor HUD Controller](docs/ADR-29-refactor-hud-controller.md)
 - [ADR-30 - Front and back end architecture for the Marketplace ](docs/ADR-30-front-and-back-end-architecture-for-the-marketplace.md)
 - [ADR-31 - Signin/signup Kernel<>Website](docs/ADR-31-signin-signup-kernel-website.md)
+- [ADR-32 - Wearable Committee Reverts](docs/ADR-32-wearable-committee-reverts.md)
 
 ## How to?
 
