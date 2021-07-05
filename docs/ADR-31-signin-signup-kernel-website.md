@@ -17,10 +17,10 @@ The current implementation is based on events and data in the global store. Take
 An arrow from `kernel` to `websites` doesn't actually means a direct connection between the 2 projects.
 
 The following diagrams represents a high-level view of the system.
-- Sign-in
+# Sign-in
   ![resources/ADR-28-signin-signup-kernel-website/signin.svg](resources/ADR-28-signin-signup-kernel-website/signin.svg)
 
-- Sign-up
+# Sign-up
   ![resources/ADR-28-signin-signup-kernel-website/signup.svg](resources/ADR-28-signin-signup-kernel-website/signup.svg)
 
 ## Implementation Details
