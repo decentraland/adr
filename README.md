@@ -33,7 +33,7 @@
 - [ADR-31 - Signin/signup Kernel<>Website](docs/ADR-31-signin-signup-kernel-website.md)
 - [ADR-32 - Wearable Committee Reverts](docs/ADR-32-wearable-committee-reverts.md)
 - [ADR-33 - Collections Bridge](docs/ADR-33-collections-bridge.md)
-- [ADR-34 - Collections approval flow](ADR-34-collections-approval-flow.md)
+- [ADR-34 - Collections approval flow](docs/ADR-34-collections-approval-flow.md)
 
 ## How to?
 
