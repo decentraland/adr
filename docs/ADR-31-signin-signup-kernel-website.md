@@ -2,7 +2,18 @@
 
 # Communication kernel<>website in the signin/signup flow
 
-## Key Files
+## Context
+An amount of undefined race-conditions were causing crashes when loading the experience while the renderer was not ready. To avoid it we setup a blocking waiting (represented as a spinner) before the signin screen.
+
+## Problem
+Users with slow internet connection were experiencing long waiting times without feedback and that was causing some drop-offs.
+
+## Decided Solution
+To avoid a regression with the fixed race conditions kernel business logic will maintain all the ensuring renderer yields, but the website will allow the user to start the signin process in the meantime.
+
+## Implementation
+
+### Key Files
 - Kernel
   -`session/sagas.ts`
 - Website
@@ -10,24 +21,18 @@
     - `src/components/auth/EthLogin.tsx`
     - `src/components/auth/wallet/WalletSelector.tsx`
 
-## Kernel <> Website
-Disclaimer: The whole document describes the environment after  this [PR](https://github.com/decentraland/explorer/pull/2453)
-
 The current implementation is based on events and data in the global store. Take this into account when reading the diagrams.
 An arrow from `kernel` to `websites` doesn't actually means a direct connection between the 2 projects.
 
 The following diagrams represents a high-level view of the system.
-# Sign-in
+### Sign-in
   ![resources/ADR-28-signin-signup-kernel-website/signin.svg](resources/ADR-28-signin-signup-kernel-website/signin.svg)
 
-# Sign-up
+### Sign-up
   ![resources/ADR-28-signin-signup-kernel-website/signup.svg](resources/ADR-28-signin-signup-kernel-website/signup.svg)
 
 ## Implementation Details
-The trickiest parts about the whole flow are the Race Conditions. To prevent them and their issues we are ensuring Unity initialization before starting other subsystems.
+Our previous implementation enforced the renderer requirement through website by hiding the buttons and not allowing the users to do anything. 
 
-In our previous implementation we enforced this through website by not allowing the users to do anything before engine was ready (`engineReady = state.renderer.initialized && state.renderer.engineStarted`). That was the waiting spinner before showing the `Play` and `Enter as guest` buttons.
+Now `EthLogin.tsx` shows the sign-in buttons by default and listen to changes in the `signin` state to put the spinner. `Kernel` will take care of preventing all the race conditions, if the user sign-in before `renderer` is ready, `Kernel` will yield until it is. The feedback to the user is exactly the same, a spinner, but now we give some buffer time for renderer to start while the user is busy with the signin.
 
-Now we allow users to allow the signin process by selecting their provider (`null` for guest) but ensuring Unity is ready before doing anything with that data.
-
-You can find a good example of this in `session/sagas.ts`: `startSignUp` yields a wait for unity interface to avoid asking the renderer to show the AvatarEditor before it's ready.
