@@ -34,6 +34,7 @@
 - [ADR-32 - Wearable Committee Reverts](docs/ADR-32-wearable-committee-reverts.md)
 - [ADR-33 - Collections Bridge](docs/ADR-33-collections-bridge.md)
 - [ADR-34 - Collections approval flow](docs/ADR-34-collections-approval-flow.md)
+- [ADR-35 - Catalyst communication protocol optimizations](docs/ADR-35-coms-protocol-optimizations.md)
 
 ## How to?
 
