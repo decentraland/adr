@@ -36,6 +36,7 @@
 - [ADR-34 - Collections approval flow](docs/ADR-34-collections-approval-flow.md)
 - [ADR-35 - Catalyst communication protocol optimizations](docs/ADR-35-coms-protocol-optimizations.md)
 - [ADR-36 - Kernel repository separation](docs/ADR-36-kernel-repository-separation.md)
+- [ADR-37 - Explorer desktop launcher technology](docs/ADR-37-explorer-desktop-launcher-technology.md)
 
 ## How to?
 
