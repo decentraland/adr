@@ -39,7 +39,8 @@
 - [ADR-37 - Explorer desktop launcher technology](docs/ADR-37-explorer-desktop-launcher-technology.md)
 - [ADR-38 - Communication between Kernel and Desktop](docs/ADR-38-communication-kernel-desktop.md)
 - [ADR-39 - DApps blockchains support](docs/ADR-39-dapps-blockchains-support.md)
-
+- [ADR-40 - DCL UI dependencies upgrades](docs/ADR-40-ui-dependencies-upgrades.md)
+- 
 ## How to?
 
 Read [the ADR explaining the rationale](docs/ADR-1-documenting-architecture-decisions.md), by Michael Nygard.
