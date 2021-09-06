@@ -50,7 +50,7 @@ M--&gt;MC: Create collection
 ```
 -->
 
-![resources/ADR-40/fig-create-a-decentraland-collection.svg](resources/ADR-40/fig-create-a-decentraland-collection.svg)
+![resources/ADR-41/fig-create-a-decentraland-collection.svg](resources/ADR-41/fig-create-a-decentraland-collection.svg)
 
 ### Create third party Item
 
@@ -68,7 +68,7 @@ B--&gt;TPR: Upload items
 ```
 -->
 
-![resources/ADR-40/fig-create-third-party-item.svg](resources/ADR-40/fig-create-third-party-item.svg)
+![resources/ADR-41/fig-create-third-party-item.svg](resources/ADR-41/fig-create-third-party-item.svg)
 
 ### Create and update items
 
@@ -83,7 +83,7 @@ B-&gt;PT: Save item
 ```
 -->
 
-![resources/ADR-40/fig-create-and-update-items.svg](resources/ADR-40/fig-create-and-update-items.svg)
+![resources/ADR-41/fig-create-and-update-items.svg](resources/ADR-41/fig-create-and-update-items.svg)
 
 ### Propagate deployments to DAO Cataysts
 
@@ -106,7 +106,7 @@ P-&gt;P: Check and accept deployments
 ```
 -->
 
-![resources/ADR-40/fig-propagate-deployments-to-dao-cataysts.svg](resources/ADR-40/fig-propagate-deployments-to-dao-cataysts.svg)
+![resources/ADR-41/fig-propagate-deployments-to-dao-cataysts.svg](resources/ADR-41/fig-propagate-deployments-to-dao-cataysts.svg)
 
 ### Get (non-catalyst) content to test in-world
 
@@ -118,7 +118,7 @@ E-&gt;BS: fetch items
 ```
 -->
 
-![resources/ADR-40/fig-get-non-catalyst-content-to-test-in-world.svg](resources/ADR-40/fig-get-non-catalyst-content-to-test-in-world.svg)
+![resources/ADR-41/fig-get-non-catalyst-content-to-test-in-world.svg](resources/ADR-41/fig-get-non-catalyst-content-to-test-in-world.svg)
 
 ### Change editable parameters from items (Decentraland Collections only)
 
@@ -136,7 +136,7 @@ BS--&gt;M: Consolidate by fetching\nthe collection subgraph
 ```
 -->
 
-![resources/ADR-40/fig-get-non-catalyst-content-to-test-in-world-1.svg](resources/ADR-40/fig-get-non-catalyst-content-to-test-in-world-1.svg)
+![resources/ADR-41/fig-get-non-catalyst-content-to-test-in-world-1.svg](resources/ADR-41/fig-get-non-catalyst-content-to-test-in-world-1.svg)
 
 ### Approve process (committee)
 
@@ -173,7 +173,7 @@ peer-&gt;M: Validate hashes
 ```
 -->
 
-![resources/ADR-40/fig-approve-process-committee.svg](resources/ADR-40/fig-approve-process-committee.svg)
+![resources/ADR-41/fig-approve-process-committee.svg](resources/ADR-41/fig-approve-process-committee.svg)
 
 ## Alternative B
 
