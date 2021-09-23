@@ -20,17 +20,19 @@ The consensus rules of the catalyst will add a validation to the deployment of c
 
 - The collection smart contract won't suffer any changes. The committee members will use the `rescueItem` method to put the content hash of each item. For the time being the rescue method is only used to [revert an item to a previous version](https://github.com/decentraland/adr/blob/main/docs/ADR-32-wearable-committee-reverts.md)
 
-- The committee contract will support calls in batch by the committee members:
+- The committee members will do:
 
-  - The committee members will send a transaction using the methods `setApproved` & `rescuesItem`. These two actions will simulate an `approve(hash)`.
+  1. The committee members will send a transaction using the methods `rescuesItem`. To set the item's content hash.
+  2. The committee members will upload the items to the catalyst. The items must have the some content hash submitted to the blockchain.
+  3. The committee member will send a transaction using the method `setApproved` to approve the collection after the items are uploaded to the catalyst.
 
-- Committee contract can aprove and rescue. Sends hash of what they saw, _`approve(hash)`_
-
-  approves the collection and puts hashes to all items.
+_These two transactions will simulate an `approve(hash)`._
 
 Check [here](https://github.com/decentraland/wearables-contracts/blob/master/Collections_V2_Actors.md) for further reference of smart contracts.
 
-- The catalyst will accept entities where its collection and content hashes are approved. No matter who is submitting the entity. Changes will be needed [here](https://github.com/decentraland/catalyst/blob/3098701a42f0656dc595e653694abf4f7f418bee/content/src/service/access/AccessCheckerForWearables.ts#L119)
+- The catalyst will accept entities where its collection and content hashes are approved. The entity must be submited by a collection authorized address or by a committee member. Changes will be needed [here](https://github.com/decentraland/catalyst/blob/3098701a42f0656dc595e653694abf4f7f418bee/content/src/service/access/AccessCheckerForWearables.ts#L119).
+
+- The catalyst will need to hash all the entries of the entitiy except from the timestamp (`entitiyHashWithoutTimestamp`). This way, when the user deploys the entity to the catalyst, the catalyst will check if the item's content hash in the blockchain is equal to the `entitiyHashWithoutTimestamp` in the same timestamp/block where the deployment occurs.
 
 ### Create a Decentraland collection
 
@@ -85,7 +87,7 @@ B-&gt;PT: Save item
 
 ![resources/ADR-41/fig-create-and-update-items.svg](resources/ADR-41/fig-create-and-update-items.svg)
 
-### Propagate deployments to DAO Cataysts
+### Propagate deployments to Cataysts
 
 <!--
 ```sequence
