@@ -33,7 +33,7 @@ _These two transactions will simulate an `approve(hash)`._
 
 Check [here](https://github.com/decentraland/wearables-contracts/blob/master/Collections_V2_Actors.md) for further reference of smart contracts.
 
-- The catalyst will accept entities (items) if their content hashes are in the blockchain. The entity will be deployed by anyone. Changes will be needed [here](https://github.com/decentraland/catalyst/blob/3098701a42f0656dc595e653694abf4f7f418bee/content/src/service/access/AccessCheckerForWearables.ts#L119). Catalysts will need to hash all the entries of the entitiy except from the timestamp (`entitiyHashWithoutTimestamp`). This way, when the user deploys the entity to the catalyst, the catalyst will check if the item's content hash in the blockchain is equal to the `entitiyHashWithoutTimestamp` in the same timestamp/block where the deployment occurs.
+- The catalyst will accept entities (items) if the content hashes are reflected in the blockchain. The entity will be deployed without signature restrictions, that is, any account can sign the deployment. Changes will be needed [here](https://github.com/decentraland/catalyst/blob/3098701a42f0656dc595e653694abf4f7f418bee/content/src/service/access/AccessCheckerForWearables.ts#L119). Catalysts will need to hash the metadata and the contents of the entitiy as stated in [ADR-32](ADR-32-wearable-committee-reverts.md) (`contentHash`). This way, when the user deploys the entity to the catalyst, the catalyst will check if the item's content hash in the blockchain is equal to the `contentHash` in the same timestamp/block where the deployment occurs.
 
 ### Create a Decentraland collection
 
