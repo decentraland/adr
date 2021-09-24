@@ -2,13 +2,16 @@
 
 ## Statement of the problem
 
-The DAO Catalysts will now only accept deployments of approved collection entities, AND matching content hashes. Other deployments will fail.
+The Catalysts accepts **only**:
+
+- Deployments of rejected in-blockchain collection entities, and from an authorized collection address (Creator or Managers).
+- Deployments by a committtee member if the collection entity content hash is in the blockchain.
+
+The first one is risky because the catalyst does not have a way to validate the content submitted and someone can submit as many contents as they wish flooding the storage. All the content submitted to the catalyst must be validated by content hashing.
 
 ### Consensus changes
 
-The consensus rules of the catalyst will add a validation to the deployment of collection entities, that validation will now verify that:
-
-- The entire collection is approved
+The consensus rules of the catalyst will modify the validations to the deployment of collection entities, that validation will now verify that:
 
 - The hash of the deployed entity matches the approved hash on the blockchain
 
@@ -30,9 +33,7 @@ _These two transactions will simulate an `approve(hash)`._
 
 Check [here](https://github.com/decentraland/wearables-contracts/blob/master/Collections_V2_Actors.md) for further reference of smart contracts.
 
-- The catalyst will accept entities where its collection and content hashes are approved. The entity must be submited by a collection authorized address or by a committee member. Changes will be needed [here](https://github.com/decentraland/catalyst/blob/3098701a42f0656dc595e653694abf4f7f418bee/content/src/service/access/AccessCheckerForWearables.ts#L119).
-
-- The catalyst will need to hash all the entries of the entitiy except from the timestamp (`entitiyHashWithoutTimestamp`). This way, when the user deploys the entity to the catalyst, the catalyst will check if the item's content hash in the blockchain is equal to the `entitiyHashWithoutTimestamp` in the same timestamp/block where the deployment occurs.
+- The catalyst will accept entities (items) if they content hashes are in the blockchain. The entity will be deployed by anyone. Changes will be needed [here](https://github.com/decentraland/catalyst/blob/3098701a42f0656dc595e653694abf4f7f418bee/content/src/service/access/AccessCheckerForWearables.ts#L119). Catalysts will need to hash all the entries of the entitiy except from the timestamp (`entitiyHashWithoutTimestamp`). This way, when the user deploys the entity to the catalyst, the catalyst will check if the item's content hash in the blockchain is equal to the `entitiyHashWithoutTimestamp` in the same timestamp/block where the deployment occurs.
 
 ### Create a Decentraland collection
 
@@ -116,7 +117,7 @@ P-&gt;P: Check and accept deployments
 ```sequence
 participant Builder server as BS
 participant Explorer as E
-E-&gt;BS: fetch items
+E-&gt;BS: fetch items`
 ```
 -->
 
@@ -171,7 +172,7 @@ B-&gt;B: Wait for tx
 M--&gt;B: txMined
 note over B: Upload approved content to catalyst
 B-&gt;peer: Upload hashed entity, using any signer
-peer-&gt;M: Validate hashes
+peer-&gt;M: Validate hashes`
 ```
 -->
 
@@ -182,6 +183,18 @@ peer-&gt;M: Validate hashes
 Using non-DAO catalyst with new flags to provide a decentralized way of storing the items instead of the builder-server.
 
 This alternative is not needed for the time being cause the builder-server is already used when the collection items are not published yet.
+
+## Development proposed
+
+### Milestone 1
+
+- Committee members will start submitting collection item's content hash on chain.
+
+- The catalyst will remove the check where only the committee members can submit entities if they has a content hash on chain.
+
+### Milestone 2
+
+- The catalyst will start accepting **only** deployments for collection entities with content hash on chain.
 
 ## Participants
 
