@@ -41,6 +41,7 @@
 - [ADR-39 - DApps blockchains support](docs/ADR-39-dapps-blockchains-support.md)
 - [ADR-40 - DCL UI dependencies upgrades](docs/ADR-40-ui-dependencies-upgrades.md)
 - [ADR-41 - Collection Items Approval Flow Enhancement](docs/ADR-41-collection-items-approval-flow-enhancement.md)
+- [ADR-42 - Third Party Collections Registry](docs/ADR-42-third-party-collections-registry.md)
 
 ## How to?
 
