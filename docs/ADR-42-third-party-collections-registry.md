@@ -6,7 +6,7 @@ Multiple third parties with their own NFT contracts (ERC721, ERC1155, etc) want 
 
 ## Contract Implementation
 
-The TPR smart contract is going to be deployed on Polygon and support meta-transactions with the EIP-712 to reduce operational costs. Also, the contract can be easily migrate because it doesn't store or mint any token. The main purposes of this registry is to have an on-chain way to check whether an item has been approved by a committee member and therefore can be submitted to the Decentraland catalysts. And, to check whether a third party or item has been approved or rejected.
+The TPR smart contract is going to be deployed on Polygon and support meta-transactions with the EIP-712 to reduce operational costs. The contract can be easily migrated because it doesn't store or mint any tokens. The main purposes of this registry is to have an on-chain way to check whether an item has been approved by a committee member and therefore can be submitted to the Decentraland catalysts. And, to check whether a third party or item has been approved or rejected.
 
 The contract is not a storage-gas-consumption top efficient because it is priorize a way to loop through third parties and items without the need of indexing historical data.
 
