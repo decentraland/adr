@@ -49,7 +49,7 @@ struct ThirdParty {
 
 A third party record can't be removed but approved/rejected by a committee member.
 
-As we mention with the items, the third parties can be looped off-chain without the need of indexing historic events.
+As we mentioned with the items, the third parties can be looped off-chain without the need of indexing historic events.
 
 ### Items
 
