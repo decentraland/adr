@@ -8,20 +8,20 @@ Multiple third parties with their own NFT contracts (ERC721, ERC1155, etc) want 
 
 The TPR smart contract is going to be deployed on Polygon and support meta-transactions with the EIP-712 to reduce operational costs. The contract can be easily migrated because it doesn't store or mint any tokens. The main purposes of this registry is to have an on-chain way to check whether an item has been approved by a committee member and therefore can be submitted to the Decentraland catalysts. And, to check whether a third party or item has been approved or rejected.
 
-The contract is not a storage-gas-consumption top efficient because it is priorize a way to loop through third parties and items without the need of indexing historical data.
+The contract is not a storage-gas-consumption top efficient because it prioritizes looping through third parties and items without the need of indexing historical data.
 
 ### Roles
 
 The TPR smart contract supports different roles:
 
-- Owner: the address that updates core things of the smart contract like the accepted token (MANA), committee smart contract address, the fee collector address, and the initial values for third parties and their items (approved or rejected).
+- Owner: the address that updates core parts of the smart contract like the accepted token (MANA), the committee smart contract address, the fee collector address, and the initial values for third parties and their items (approved or rejected).
 - Third party agregator: an address that can add third party records. For the time being this address will be the Polygon DAO committee multisig.
 - Committee Members: the committee members are going to be validated by querying the committee smart contract directly. Committee members can approve/reject third parties and their items.
-- Third Party Managers: the third party managers are a set of addresses that can add items to the third party record previously added by someone on the committee. Also, they can update the third party and items metadata.
+- Third Party Managers: the third party managers are a set of addresses that can add items to the third party record, previously added by someone on the committee, and update the third party and items metadata.
 
 ### Third Party Records
 
-The third party record is going to be identified by its unique id. For simplicity and in order to support different uses cases, this id is going to be a string. By using an string, we can support ids as URNs, UUIDs, auto incremental, etc. The current identifier used in Decentraland is URN. Therefore, an id urn like `urn:decentraland:matic:ext-thirdparty1` is what we expect.
+The third party record is going to be identified by a unique id. For simplicity and in order to support different uses cases, this id is going to be a string. By using a string, we can support ids as URNs, UUIDs, auto incremental values, etc. The current identifier used in Decentraland is the URN, therefore, an id urn like `urn:decentraland:matic:ext-thirdparty1` is what we expect to be using.
 
 Each third party record can only be added by a committee member and it has the following properties:
 
