@@ -40,7 +40,7 @@ struct ThirdParty {
 
 - _`metadata`_: string with the following shape: `type:version:name:description`. i.e: `tp:1:third party 1:the third party 1 description`.
 - _`resolver`_: string with the third party API resolver. This API will be used for services to get which Decentraland asset should be mapped to which NFT token. _We call Decentraland asset to every asset that is submitted to the Decentraland catalyst_. i.e: `https://api.thirdparty1.com/v1/get-owned-nfts/:owner`
-- _`maxItems`_: represents the maximum number of items that a third party can have. We call them _item slots_. Item slots need to be bought. Everyone can buy them by MANA. So, it is not necessary to be a third party manager to buy item slots. Item slots are going to be bought by tiers (tier1: 100 items, tier2: 1000 items, tier3: 1000, etc.). The tiers' value and price are going to be defined in another smart contract called Tiers that will allow querying the tiers' price and value by its index. Also, items slots can be bought at any moment and multiple times.
+- _`maxItems`_: represents the maximum number of items that a third party can have. We call them _item slots_. Item slots can be bought by everyone at any time, in multiple occasions, by using MANA. So, it is not necessary to be a third party manager to buy item slots. Item slots are going to be bought by tiers (tier1: 100 items, tier2: 1000 items, tier3: 1000, etc.). The tiers' value and price are going to be defined in another smart contract called Tiers that will allow querying the tiers' price and value by its index.
 - _`isApproved`_: whether a third party is approved or not.
 - _`managers`_: third party managers.
 - _`items`_: third party's items. An item has its own properties defined [here](#items).
