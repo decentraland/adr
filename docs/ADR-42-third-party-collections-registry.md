@@ -55,6 +55,8 @@ As we mention with the items, the third parties can be looped off-chain without 
 
 Items are going to be identifying with an id like the third party records. In order to support the concept of erc721 contracts or collections, the item id will looks like: `collection:item`. i.e: `0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1` (NFT smart contract: 0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd, NFT tokenId: 1), `great_collection:type1`, etc.
 
+As you may notice, the concept of a collection is merely "virtual" and will be part of the item id. If there is a use case where a third party has multiple collections, they can be easily filtered by comparing strings off-chain.
+
 Items can only be added to a third party if there are item slots available.
 
 ```solidity
