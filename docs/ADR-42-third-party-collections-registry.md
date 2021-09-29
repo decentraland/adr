@@ -6,14 +6,17 @@ Multiple third parties with their own NFT contracts (ERC721, ERC1155, etc) want 
 
 ## Contract Implementation
 
-The TPR smart contract is going to be deployed on Polygon and support meta-transactions with the EIP-712 to reduce operational costs. Also, the contract can be easily migrate because it doesn't store or mint any token. The main purposes of this registry is to have an on-chain way to check whether an item has been approved by a committee member and therefore can be submitted to the Decentraland catalysts. And, the check whether a third party or item has been approved or rejected.
+The TPR smart contract is going to be deployed on Polygon and support meta-transactions with the EIP-712 to reduce operational costs. Also, the contract can be easily migrate because it doesn't store or mint any token. The main purposes of this registry is to have an on-chain way to check whether an item has been approved by a committee member and therefore can be submitted to the Decentraland catalysts. And, to check whether a third party or item has been approved or rejected.
+
+The contract is not a storage-gas-consumption top efficient because it is priorize a way to loop through third parties and items without the need of indexing historical data.
 
 ### Roles
 
 The TPR smart contract supports different roles:
 
 - Owner: the address that updates core things of the smart contract like the accepted token (MANA), committee smart contract address, the fee collector address, and the initial values for third parties and their items (approved or rejected).
-- Committee Members: the committee members are going to be validated by querying the committee smart contract directly. Committee members can add a third party record, and approve/reject third parties and their items.
+- Third party agregator: an address that can add third party records. For the time being this address will be the Polygon DAO committee multisig.
+- Committee Members: the committee members are going to be validated by querying the committee smart contract directly. Committee members can approve/reject third parties and their items.
 - Third Party Managers: the third party managers are a set of addresses that can add items to the third party record previously added by someone on the committee. Also, they can update the third party and items metadata.
 
 ### Third Party Records
@@ -44,11 +47,15 @@ struct ThirdParty {
 - _`itemIds`_: in order to allow looping through the items added without the need of indexing historic events, we need to keep track of their ids.
 - _`registered`_: simple boolean that helps to check whether a third party has been added or not.
 
-A third party record can't be removed, but rejected by a committee member.
+A third party record can't be removed but approved/rejected by a committee member.
 
 As we mention with the items, the third parties can be looped off-chain without the need of indexing historic events.
 
 ### Items
+
+Items are going to be identifying with an id like the third party records. In order to support the concept of erc721 contracts or collections, the item id will looks like: `collection:item`. i.e: `0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1` (NFT smart contract: 0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd, NFT tokenId: 1), `great_collection:type1`, etc.
+
+Items can only be added to a third party if there are item slots available.
 
 ```solidity
 struct Item {
@@ -58,6 +65,13 @@ struct Item {
     uint256 registered;
 }
 ```
+
+- _`metadata`_: string with the following shape: `type:version:name:description:category:bodyshapes`. i.e: `w:1:third party item 1:the third party item 1 description:hat:BaseMale,BaseFemale`.
+- _`contentHash`_: string with the content hash of the item. We are using content hashing like IPFS.
+- _`isApproved`_: whether an item is approved or not.
+- _`registered`_: simple boolean that helps to check whether an item has been added or not.
+
+Similar to third parties, items can't be removed but approved/rejected by committee members.
 
 ## Participants
 
