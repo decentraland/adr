@@ -75,7 +75,7 @@ struct Item {
 
 Similar to third parties, items can't be removed but approved/rejected by committee members.
 
-# Catalyst acceptance criteria
+## Catalyst acceptance criteria
 
 Each deployment must check if the URN has `ext-thirdparty` in order to know that the [tpr-graph](https://github.com/decentraland/tpr-graph) should be used. The query to that subgraph must check:
 
