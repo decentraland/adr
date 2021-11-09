@@ -18,7 +18,7 @@ List of API changes:
 
 | Endpoint                                                       | Deprecate YES/NO | Change Description                                                                                                                                                                                                                                                                                                                                                                                                                              |
 |----------------------------------------------------------------|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `/content/deployments`                                           | YES              | This endpoint consumes DB resources inefficiently  as it's equivalent to a SELECT ALL. This endpoint also has a complex UX with the application of many filters and a lot of parameters. The proposal is to deprecate this and add 2 new endpoints: one to retrieve the list of all pointers and another to retrieve the history of a given list of pointers. Catalyst synchronization will be done using `/snapshots` and `/pointer-changes`.   |
+| `/content/deployments`                                           | YES              | This endpoint consumes DB resources inefficiently  as it's equivalent to a SELECT ALL. This endpoint also has a complex UX with the application of many filters and a lot of parameters. The proposal is to deprecate (or request an API key to be used for troubleshooting) this and add 2 new endpoints: one to retrieve the list of all pointers and another to retrieve the history of a given list of pointers. Catalyst synchronization will be done using `/snapshots` and `/pointer-changes`.   |
 | `/lambdas/pointers/{entityType}`                                 | New endpoint               | Given an entity type (scene, wearables) this endpoint returns the list of all the pointers paginated                                                                                                                                                                                                                                                                                                                                 |
 | `/lambdas/pointers/{entityType}/history?pointer=0,0&pointer=1,1` | New endpoint               | Given a list of pointers of the specified entity type, returns the history of deployments                                                                                                                                                                                                                                                                                                                               |
 | `/contents/{hashId}/active-entities`                             | NO               | Change resource to `/entities` and include a parameter to retrieve inactive entities too `/entities?includeInactive=true`                                                                                                                                                                                                                                                                                                                               |
@@ -35,9 +35,10 @@ List of API changes:
 
 # Status
 
-In Progress.
+Under Review
 
 # Consequences
 
-`/deployments`: impact TBD 
+`/deployments`: We are not aware if this endpoint is being used for anything else besides the Calatys synchronization and bootstraping processes. 
+
 The rest of the changes should not cause any impact on the Catalyst clients
