@@ -39,6 +39,6 @@ Under Review
 
 # Consequences
 
-`/deployments`: We are not aware if this endpoint is being used for anything else besides the Calatys synchronization and bootstraping processes. 
+`/deployments`: We are not aware if this endpoint is being used for anything else besides the Catalyst synchronization and bootstrapping processes. 
 
 The rest of the changes should not cause any impact on the Catalyst clients
