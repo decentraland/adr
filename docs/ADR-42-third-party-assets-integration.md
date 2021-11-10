@@ -174,11 +174,21 @@ Each deployment must check if the URN has `collections-thirdparty` in order to k
 
 1. If there is a record with the urn:
 
-`urn:decentraland:polygon:collections-thirdparty:0x1234:tokenId1`.
+`urn:decentraland:polygon:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0`.
 
-2. If the content hash of the item with id `0x1234:tokenId1` is the same as the content hash of the item that is being uploaded
+2. If the content hash of the item with id `0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0` is the same as the content hash of the item that is being uploaded
 
 ## Participants
+
+- @Mendez
+
+- @Mati P.
+
+- @Agus A.
+
+- @Guido
+
+- @Jhoni
 
 - @Lautaro
 
