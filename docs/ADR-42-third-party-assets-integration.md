@@ -192,6 +192,8 @@ Each deployment must check if the URN has `collections-thirdparty` in order to k
 
 - @Lautaro
 
+- @Nico
+
 - @Fernando
 
 - @Juanca
