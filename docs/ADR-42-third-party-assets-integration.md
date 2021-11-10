@@ -10,7 +10,7 @@ Multiple third parties with their own NFT contracts (ERC721, ERC1155, etc) want 
 
 #### Examples
 
--`urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0`
+- `urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0`
 
 - `urn:decentraland:matic:collections-thirdparty:cryptohats:summer:hat1`
 
@@ -39,7 +39,7 @@ GET /registry/:registry-id/address/:address/assets {
     address: "0xMendez"
 }
 
-# api.cryptohats.io/registry/cryptohats/address/0xMendez/assets
+# https://api.cryptohats.io/registry/cryptohats/address/0xMendez/assets
 ```
 
 #### Response
@@ -80,7 +80,7 @@ GET /registry/:registry-id/address/:address/assets/:id {
     id: "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
 }
 
-# api.cryptohats.io/registry/cryptohats/address/0xMendez/assets/0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1
+# https://api.cryptohats.io/registry/cryptohats/address/0xMendez/assets/0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1
 ```
 
 #### Response
