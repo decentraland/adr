@@ -1,8 +1,101 @@
-# Third Party Collections Registry
+# Third Party Integration
 
 ## Statement of the problem
 
 Multiple third parties with their own NFT contracts (ERC721, ERC1155, etc) want to be part of Decentraland, but the current Decentraland collections implementations are not always a good fit for their use cases. Therefore, a smart contract is going to be created to have a decentralized way where they can map 3d assets to their already created NFTs.
+
+## Third Party item URN
+
+`urn:decentraland:{protocol}:collections-thirdparty:{third-party-name}:{collection-id}:{item-id}`
+
+#### Examples
+
+-`urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0`
+
+- `urn:decentraland:matic:collections-thirdparty:cryptohats:summer:hat1`
+
+### Considerations
+
+- _{protocol}_: We will use `matic` in production environments because the smart contract registry will be deployed in the Polygon network. For testing purposes, we will use `mumbai`.
+- _collections-thirdparty_: Identifier used to check whether an urn belongs a third party collection or not.
+- _{third-party-name}_: Name of the third party.
+- _{collection-id}_: Collection identifier. It is recommended to use the NFT contract address to easily map it to the already existing NFT implementation.
+- _{item-id}_: Item identifier. It can be anything. It is recommended to use a token Id to easily map it to the already existing NFT implementation.
+
+## Third Party resolver
+
+Each Third Party will require to create and maintain an API with these endpoints:
+
+- @GET /registry/:registry-id/address/:address/assets - get a list of assets asociated with a given address
+- @GET /registry/:registry-id/address/:address/assets/:id
+
+### @GET /registry/:registry-id/address/:address/assets
+
+#### Request
+
+```javascript
+GET /registry/:registry-id/address/:address/assets {
+    registry-id: "cryptohats"
+    address: "0xMendez"
+}
+
+# api.cryptohats.io/registry/cryptohats/address/0xMendez/assets
+```
+
+#### Response
+
+```javascript
+{
+    address: "0xMendez",
+    assets: [
+        {
+            id: "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0",
+            amount: 1,
+            urn: {
+                decentraland: "urn:decentraland:polygon:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0"
+            }
+        },
+        {
+            id: "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1",
+            amount: 1,
+            urn: {
+                decentraland: "urn:decentraland:polygon:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
+            }
+        }
+    ],
+    total: 100,
+    page: 1,
+    next: "https://....&startAt=1234"
+}
+```
+
+### GET /registry/:registry-id/address/:address/assets/:id
+
+#### Request
+
+```javascript
+GET /registry/:registry-id/address/:address/assets/:id {
+    registry-id: "cryptohats"
+    address: "0xMendez"
+    id: "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
+}
+
+# api.cryptohats.io/registry/cryptohats/address/0xMendez/assets/0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1
+```
+
+#### Response
+
+```javascript
+{
+    id: "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1",
+    amount: 1,
+    urn: {
+        decentraland: "urn:decentraland:polygon:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
+    }
+}
+```
+
+## Third Party Collection Smart Contract Registry
 
 ## Contract Implementation
 
@@ -21,7 +114,7 @@ The TPR smart contract supports different roles:
 
 ### Third Party Records
 
-The third party record is going to be identified by a unique id. For simplicity and in order to support different uses cases, this id is going to be a string. By using a string, we can support ids as URNs, UUIDs, auto incremental values, etc. The current identifier used in Decentraland is the URN, therefore, an id urn like `urn:decentraland:matic:ext-thirdparty1` is what we expect to be using.
+The third party record is going to be identified by a unique id. For simplicity and in order to support different uses cases, this id is going to be a string. By using a string, we can support ids as URNs, UUIDs, auto incremental values, etc. The current identifier used in Decentraland is the URN, therefore, an id urn like `urn:decentraland:matic:collections-thirdparty1` is what we expect to be using.
 
 Each third party record can only be added by a committee member and it has the following properties:
 
@@ -77,17 +170,29 @@ Similar to third parties, items can't be removed but approved/rejected by commit
 
 ## Catalyst acceptance criteria
 
-Each deployment must check if the URN has `ext-thirdparty` in order to know that the [tpr-graph](https://github.com/decentraland/tpr-graph) should be used. The query to that subgraph must check:
+Each deployment must check if the URN has `collections-thirdparty` in order to know that the [tpr-graph](https://github.com/decentraland/tpr-graph) should be used. The query to that subgraph must check:
 
-1) If there is a record with the urn: 
+1. If there is a record with the urn:
 
-`urn:decentraland:polygon:ext-thirdparty:0x1234:tokenId1`.
+`urn:decentraland:polygon:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0`.
 
-2) If the content hash of the item with id `0x1234:tokenId1` is the same as the content hash of the item that is being uploaded
+2. If the content hash of the item with id `0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0` is the same as the content hash of the item that is being uploaded
 
 ## Participants
 
+- @Mendez
+
+- @Mati P.
+
+- @Agus A.
+
+- @Guido
+
+- @Jhoni
+
 - @Lautaro
+
+- @Nico
 
 - @Fernando
 
