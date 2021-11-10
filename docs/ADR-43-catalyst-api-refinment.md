@@ -19,6 +19,7 @@ List of API changes:
 Deprecated endpoints won't be part of the Catalyst Protocol definition but we may keep some of them as internal troubleshooting tools, these endpoints will require a key in order to be used. 
 Those endpoints that will be removed from the Protocol but remain available for internal use, have the `TROUBLESHOOTING` tag in the change description. 
 
+Endpoints not mentioned in the following list will not suffer any change. 
 
 | Endpoint                                                         | Deprecate YES/NO | Change Description                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 |------------------------------------------------------------------|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
