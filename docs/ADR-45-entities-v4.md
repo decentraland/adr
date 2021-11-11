@@ -34,4 +34,4 @@ Under Development
 ## Consequences
 
 No v3 entities will be accepted after deadline.
-Land owners will face new size limits on their parcels. If someone actually exceed the max size limit and wants to change something is very possible to be rejected unless new size limit is respected.
+Landowners will face new size limits on their parcels. If someone actually exceeds the max size limit and wants to change something on their scene, then they will have to remove files until they respect the new limit size.
