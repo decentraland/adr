@@ -2,7 +2,7 @@
 
 ## Context and Problem Statement
 
-We need to ensure entities once deployed are always valid and every client know how to read information. For the time being, entities v3 can be deployed with any information as metadata, which can lead several issues when something is missing or contains invalid data.
+We need to ensure entities once deployed are always valid and every client knows how to read information. For the time being, entities v3 can be deployed with any information as metadata, which can lead to several issues when something is missing or contains invalid data.
 
 ## Decisions
 
