@@ -40,7 +40,7 @@ Endpoints not mentioned in the following list will not suffer any change.
 
 # Status
 
-Under Review
+Accepted - To be implemented
 
 # Consequences
 
