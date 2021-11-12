@@ -8,7 +8,7 @@ We need to ensure entities once deployed are always valid and every client knows
 
 We defined a list of changes to support v4 entities:
 
-- We will define required schemas for all entity types and every deployment will be validated against them.
+- We will define [required schemas][1] for all entity types and every deployment will be validated against them.
 
 - As there will be a transition period between v3 and v4 entities in the content server, when getting the deployments through lambdas we will need to transform any v3 entity into v4 format. Most probably that this change will only be needed for wearables names and descriptions.
 
@@ -21,7 +21,7 @@ We defined a list of changes to support v4 entities:
 
 - We will define a deadline for v3 entities to be deployed.
 
-- We will update every repository where entities types are defined to use common-schemas.
+- We will update every repository where entities types are defined to use [common-schemas][1].
 
 - We will migrate all clients to use v4 entities.
 
@@ -35,3 +35,5 @@ Under Development
 
 No v3 entities will be accepted in deployment after the deadline.
 Landowners will face new size limits on their parcels. If someone actually exceeds the max size limit and wants to change something on their scene, then they will have to remove files until they respect the new limit size.
+
+[1]: https://github.com/decentraland/common-schemas
