@@ -46,4 +46,6 @@ Under Review
 
 `/deployments`: We are not aware if this endpoint is being used for anything else besides the Catalyst synchronization and bootstrapping processes. 
 
+The `fetchAllDeployments` method from the [Catalyst Client](https://github.com/decentraland/catalyst-client) will only be available to be used by the Catalyst Servers in order to sync all the Content Service history. 
+
 The rest of the changes should not cause any impact on the Catalyst clients
