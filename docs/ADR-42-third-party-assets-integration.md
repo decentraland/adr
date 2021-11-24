@@ -27,7 +27,7 @@ Multiple third parties with their own NFT contracts (ERC721, ERC1155, etc) want 
 Each Third Party will require to create and maintain an API with these endpoints:
 
 - @GET /registry/:registry-id/address/:address/assets - get a list of assets asociated with a given address
-- @GET /registry/:registry-id/address/:address/assets/:id
+- @GET /registry/:registry-id/address/:address/assets/:id - get if a dcl item is owned by a given address
 
 ### @GET /registry/:registry-id/address/:address/assets
 
