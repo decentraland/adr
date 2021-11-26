@@ -12,9 +12,9 @@ The publication and cut fees go to the fees collector instead of the owner.
 
 A new fee is added: **Royalties fees**. The royalties fees apply only when an order or bid is executed.
 
-- The cut and royalties fees must be lower than 100%. Both happens once an order/bid is executed.
+- The cut and royalties fees must be lower than 100%. Both happen once an order/bid is executed.
 - If the cut and royalties fees are set, both are calculated and sent independently.
-- If the royalties fees is set but the the receiver can't be calculated, the fees go the fees collector.
+- If the royalties fees are set but the receiver can't be calculated, the fees go the fees collector.
 - The owner of the contract can modify the fees.
 
 ### Roles
