@@ -38,7 +38,7 @@ function isLocked(collection: Collection) {
 ```
 
 - **Third Party**: Third party collections work in a similar way but a key difference outlined before, we publish items not collections.
-  After the user signs the transaction that will lock the items, we send a POST to the server (`/items/lock`) adding each item id to lock to the body of the request. This will set the current timestamp (`Date.now()`) on the `lock: timestamp` property of each Third party Item. When the server returns the data it will add an `isLocked: boolean` property to each item checking if the `lock` is smaller than the last item's `updated_at` date on the graph, which is the same as saying "last publication date", and if day has not gone by:
+  After the user signs the transaction that will lock the items, we send a POST to the server (`/items/lock`) with each item id to lock in the body of the request. This will set the current timestamp (`Date.now()`) on the `lock: timestamp` property of each Third party Item. When the server returns the data it will add an `isLocked: boolean` property to each item that is computed by checking if the `lock` is smaller than the last item's `updated_at` date on the graph, which is the same as saying "last publication date", and if day has not gone by:
 
 ```ts
 function isLocked(item: Collection, remoteItem: Item) {
