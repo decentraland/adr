@@ -12,7 +12,7 @@ Publications vary for each type described above:
 
 ## Problem
 
-Publishing is done by sending a meta-transaction. This means that the user will send a transaction and send it to our server where it will ultimately be sent to the corresponding Polygon network to be processed.
+Publishing is done by sending a transaction. This means that the user will craft a transaction and send it to our server where it will ultimately be sent to the corresponding Polygon network to be processed.
 This process is usually pretty quick, but it can still take a while. It's a combination of a remote request to our server, and waiting for a transaction to be confirmed. The problem is therefore, that while we're waiting for the transaction to complete we should **lock** the collection/items that are being published, to avoid having missmatching data between the blockchain and our database.
 
 ### Solution
@@ -21,7 +21,7 @@ We propose a locking mechanism for both types of Collections and Items. We'll lo
 
 To do this we'll have to put two mechanisms in place, for both Decentraland and Third Party data:
 
-- **Decentraland**: Once the user confirms the signature to send the publication, we'll send a POST to the server locking the collection (`/collections/COLLECTION_ID/lock`). This will set the current timestamp (`Date.now()`) on `lock: timestamp` property of the Collection. This will be then checked in the server when returning each Decentraland Collection, adding a `isLocked: boolean` property to each object if the publication is still pending and a day has not gone by:
+- **Decentraland**: Once the user confirms the signature to send the publication, we'll send a POST to the server locking the collection (`/collections/COLLECTION_ID/lock`). This will set the current timestamp (`Date.now()`) on the `lock: timestamp` property of the Collection. This will be then checked in the server when returning each Decentraland Collection, adding a `isLocked: boolean` property to each object if the publication is still pending and a day has not gone by:
 
 ```ts
 function isLocked(collection: Collection) {
@@ -29,6 +29,7 @@ function isLocked(collection: Collection) {
     return false;
   }
 
+  const { lock } = collection;
   const deadline = new Date(lock);
   deadline.setDate(deadline.getDate() + 1);
 
@@ -36,18 +37,20 @@ function isLocked(collection: Collection) {
 }
 ```
 
-- **Third Party**: Third party collections work in a similar way but a key difference outlined before, we publish items not collections. Still the process works the same way. After the user signs the transaction that will lock the items, we send a POST to the server (`/collections/COLLECTION_ID/lock`) locking each the Thrid Party Collection. This will set the current timestamp (`Date.now()`) on `lock: timestamp` property of each the Collection. Up until this point, things are mostly the same, but when the server returns the data it will now check the lock as before and if the lock is smaller than the last item created at date on the graph, which is the same as saying "last publish date":
+- **Third Party**: Third party collections work in a similar way but a key difference outlined before, we publish items not collections.
+  After the user signs the transaction that will lock the items, we send a POST to the server (`/items/lock`) adding each item id to lock to the body of the request. This will set the current timestamp (`Date.now()`) on the `lock: timestamp` property of each Third party Item. When the server returns the data it will add an `isLocked: boolean` property to each item checking if the `lock` is smaller than the last item's `updated_at` date on the graph, which is the same as saying "last publication date", and if day has not gone by:
 
 ```ts
-function isLocked(collection: Collection, lastItem: Item) {
+function isLocked(item: Collection, remoteItem: Item) {
+  const { lock } = item
   const deadline = new Date(lock)
   deadline.setDate(deadline.getDate() + 1)
 
-  return deadline.getTime() > Date.now()  || collection.lock <= lastItem.created_at)
+  return deadline.getTime() > Date.now()  || lock <= remoteItem.updated_at)
 }
 ```
 
-On the front-end, we'll check for this property and disable all components that allow changes that would create a desync, like changing the name of a Decentraland Collection for example.
+Anyone consuming this data can read this property and disable all components that allow changes that would create a desync, like changing the name of a Decentraland Collection for example.
 
 ## Implementation
 
