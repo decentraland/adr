@@ -21,32 +21,24 @@ We propose a locking mechanism for both types of Collections and Items. We'll lo
 
 To do this we'll have to put two mechanisms in place, for both Decentraland and Third Party data:
 
-- **Decentraland**: Once the user confirms the signature to send the publication, we'll send a POST to the server locking the collection (`/collections/COLLECTION_ID/lock`). This will set the current timestamp (`Date.now()`) on the `lock: timestamp` property of the Collection. This will be then checked in the server when returning each Decentraland Collection, adding a `isLocked: boolean` property to each object if the publication is still pending and a day has not gone by:
+- **Decentraland**: Once the user confirms the signature to send the publication, we'll send a POST to the server locking the collection (`/collections/COLLECTION_ID/lock`). This will set the current timestamp (`Date.now()`) on the `lock: timestamp` property of the Collection. This will be then checked in the server when returning each Decentraland Collection, adding a `isLocked: boolean` property to each object if the publication is still pending and a day has not gone by.
+
+- **Third Party**: For Third party collections we publish items not collections.
+  After the user signs the transaction that will lock the items, we send a POST to the server (`/items/lock`) with each item id to lock in the body of the request. This will set the current timestamp (`Date.now()`) on the `lock: timestamp` property of each Third party Item and set the same property for the collection that holds them. When the server returns the data it will add an `isLocked: boolean` property using the same logic we use for Decentraland data, the difference will be on how isPublished is filled for collections. Because Collections do not exist as an Entity on the third party graph, we need to check if any item has the `third_party_id` set as a `searchCollectionId`
+
+An example of how we can implement the method is:
 
 ```ts
-function isLocked(collection: Collection) {
-  if (collection.isPublished) {
+function isLocked(element: Collection | Item) {
+  if (element.isPublished) {
     return false;
   }
 
-  const { lock } = collection;
+  const { lock } = element;
   const deadline = new Date(lock);
   deadline.setDate(deadline.getDate() + 1);
 
   return deadline.getTime() > Date.now();
-}
-```
-
-- **Third Party**: Third party collections work in a similar way but a key difference outlined before, we publish items not collections.
-  After the user signs the transaction that will lock the items, we send a POST to the server (`/items/lock`) with each item id to lock in the body of the request. This will set the current timestamp (`Date.now()`) on the `lock: timestamp` property of each Third party Item. When the server returns the data it will add an `isLocked: boolean` property to each item that is computed by checking if the `lock` is smaller than the last item's `updated_at` date on the graph, which is the same as saying "last publication date", and if day has not gone by:
-
-```ts
-function isLocked(item: Collection, remoteItem: Item) {
-  const { lock } = item
-  const deadline = new Date(lock)
-  deadline.setDate(deadline.getDate() + 1)
-
-  return deadline.getTime() > Date.now()  || lock <= remoteItem.updated_at)
 }
 ```
 
