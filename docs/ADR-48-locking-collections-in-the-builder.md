@@ -61,7 +61,7 @@ As we said before, the locking mechanism is in place so we can avoid desynching 
       - data (the BodyShape and Category)
 
 - **Third Party**: Once the items are published, the URN cannot change anymore. That means that item `token_id`s and virtual collection `urn_suffix`es. For reference, and URN looks like this: `urn:decentraland:{network}:collections-thirdparty:{third-party-name}:{collection-id}:{item-id}` where
-  - network: the network the item is in, `mumbai`, `polygon`, etc
+  - network: the network the item is in, `mumbai`, `matic`, etc
   - third-party-name: the name of the third party record the item belongs to, like `crypto-motors`
   - collection-id: the virtual collection's `urn_suffix`, used as part of the full URN and locked after the first item is published as it will be used for all subsequent items
   - item-id: the item's `token_id`, editable up until publication
