@@ -46,6 +46,7 @@
 - [ADR-45 - Entities V4](docs/ADR-45-entities-v4.md)
 - [ADR-46 - Royalties Manager v1](docs/ADR-46-royalties-manager-v1.md)
 - [ADR-47 - Collections secondary marketplaces v2](docs/ADR-47-collections-secondary-marketplaces-v2.md)
+- [ADR-48 - Locking collections in the builder](docs/ADR-48-locking-collections-in-the-builder.md)
 
 ## How to?
 
