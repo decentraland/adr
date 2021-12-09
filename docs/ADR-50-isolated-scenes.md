@@ -3,9 +3,9 @@
 ## Context and Problem Statement
 
 The project is growing with more features/systems and some of them may be not compatible together 
-like for example builder and avatars moving through coms. Also, some scenes are starting 
-to be perfomance-intesive. If the user want to give all the resources to a scene to speed it up, 
-it should be able to do it. In order to try to trackle this problem, we needn a way to disconnect
+like for example builder and avatars moving through comns. Also, some scenes are starting 
+to be perfomance-intensive. If the user want to give all the resources to a scene to speed it up, 
+it should be able to do it. In order to try to tackle this problem, we need a way to disconnect
 features/systems and scenes
 
 ## Considered options
@@ -15,14 +15,14 @@ features/systems and scenes
 We can implement the isolated modes, when kernel enter in this state, we can pass as a parameter the 
 type of the isolated mode that we want, and kernel will disable all the features/systems or scenes necessary
 
-This way we decouple the knowloedge of the systems from the kernel and renderer and we only need to comunicate
+This way we decouple the knowledge of the systems from the kernel and renderer and we only need to communicate
 the mode that we want and kernel will do it
 
 - option 2: Features/systems/scenes granular control
 
 In this option, we create in kernel a custom way to disable features/systems and scenes.
 
-This way the renderer can specify which systems/scenes should disable and kernel should react accordly.
+This way the renderer can specify which systems/scenes should disable and kernel should act.
 
 This way, we have a granular control in the renderer about what we want to enable/disable
 
@@ -30,7 +30,7 @@ This way, we have a granular control in the renderer about what we want to enabl
 
 We can also ignore the kernel features in the renderer and control everything from the renderer.
 
-This way we don't need to develop anything aditional, however, as the project increase in complexity we should
+This way we don't need to develop anything additional, however, as the project increase in complexity we should
 have it into consideration
 
 ## Decision
@@ -58,7 +58,7 @@ K->R: LoadParcelScenes(sceneId) (only if necessary)
 
 - Once active, the dynamic loading of scenes should be halted, and recovered once we finish the isolated scene mode.
 - Isolated scenes can be started from builder in world, either from deployed scenes and from non-deployed scenes (without sceneId and using a manifest)
-- Isolated scenes can be started from scenes directly, to shut down the neighbouring scene loading. Useful in dungeons, closed buildings, etc.
+- Isolated scenes can be started from scenes directly, to shut down the neighboring scene loading. Useful in dungeons, closed buildings, etc.
 
 ## Status
 
