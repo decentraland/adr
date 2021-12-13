@@ -274,7 +274,7 @@ Each field *MUST* include `name` and `size` directives as prefix of the content 
     SHA256(FieldContent)
 ```
 
-Aditionaly if the some file are files *MUST* also include `filename` and `type` directives
+Additionally if some fields are files they *MUST* also include `filename` and `type` directives
 
 ```ts
   CanonicalFieldX = 'name="description";' +
