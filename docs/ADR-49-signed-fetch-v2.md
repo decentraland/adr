@@ -180,7 +180,7 @@ Host encoded using [RFC 3492](https://datatracker.ietf.org/doc/html/rfc3492) and
 
 #### 4.2 ContentType
 
-> Required if: the request includes some body content it *MUST* be prensent, otherwise it *MUST* be omitted
+> Required if: the request includes some body content it *MUST* be present, otherwise it *MUST* be omitted
 
 Indicate the original [Media Type](https://developer.mozilla.org/en-US/docs/Glossary/MIME_type) of the resource.
 
