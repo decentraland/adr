@@ -53,7 +53,7 @@ In mechanism `Type` is compose of 3 component:
 > Note: Other Hash methods can be added into this list, like `SHA512` and `SHA3-256`
 
 - `SignEncoding`: An optional extra component that defines how Credentials are encoded
-  - `BASE64`: when Cretenilas should be decoded usgin [`Base64`](https://datatracker.ietf.org/doc/html/rfc4648)
+  - `BASE64`: If credentials should be decoded using [`Base64`](https://datatracker.ietf.org/doc/html/rfc4648)
   - **None**: denoting that credentias were sent in plain text
 
 > Example:
