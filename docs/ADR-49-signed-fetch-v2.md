@@ -97,7 +97,7 @@ Meanwhile `Credentials` is the user signature of the request (called `CanonicalR
 
 ### CanonicalRequest
 
-To create a signature that includes information from your request an standardized (canonical) format is required. This ensures that when a Service receives the request, it can calculate the same signature that you calculated.
+To create a signature that includes information from your request a standardized (canonical) format is required. This ensures that when a Service receives the request, it calculates the same signature that you calculated.
 
 ```ts
   CanonicalRequest =
