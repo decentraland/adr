@@ -47,7 +47,7 @@ In mechanism `Type` is compose of 3 component:
 
 > Note: Other methods can be added into this list, like `DCL2` for future versions of `decentraland-crypto` or the algorithm change and `TYPED4` if `signTypedData_v4` is use to generate the signature
 
-- `HashAlgorithm`: Defines the Hash Algorithm used to hash the request, since [some algorithms as not consider secure](https://en.wikipedia.org/wiki/Secure_Hash_Algorithms) any more, `SHA256` is support as minimum
+- `HashAlgorithm`: Defines the algorithm used to hash the request, since [some algorithms as not consider secure](https://en.wikipedia.org/wiki/Secure_Hash_Algorithms) any more, `SHA256` is support as minimum
   - `SHA256`: at the moment consider [secure against collision attack](https://en.wikipedia.org/wiki/Secure_Hash_Algorithms) and with the most extended support
 
 > Note: Other Hash methods can be added into this list, like `SHA512` and `SHA3-256`
