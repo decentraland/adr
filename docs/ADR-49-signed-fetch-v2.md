@@ -170,7 +170,7 @@ The canonical headers consist of a list of all the HTTP headers that you are inc
 
 #### 4.1. Host
 
-> Required: always *MUST* be included
+> Required: *MUST* be always included
 
 Host encoded using [RFC 3492](https://datatracker.ietf.org/doc/html/rfc3492) and port number, if a non standard `http` or `https` port is used, of the server to which the request will be send.
 
