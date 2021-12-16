@@ -118,7 +118,7 @@ The [HTTP method](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) tha
 
 ### 2. CanonicalURI
 
-> Required: always *MUST* be included
+> Required: *MUST* be always included
 
 Normalized URI pathname according with [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986)
 
