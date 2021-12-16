@@ -2,7 +2,7 @@
 
 ## Context and Problem Statement
 
-We want to integrate our dApps with the explorer in order to provide a better experience for our users. To do so we need to send request authenticated as a wallet.
+We want to integrate our dApps with the explorer in order to provide a better experience for our users. To do so we need to send request authenticated by the user's wallet.
 
 ## Considered options
 
