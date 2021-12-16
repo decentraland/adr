@@ -246,7 +246,7 @@ To sign other headers not listed previously Users can include them usign `X-Iden
 
 > Required if: the request includes some body content it *MUST* be prensent, otherwise it *MUST* be omitted
 
-For almost all cases this is the result hasing the content of the body, but for [`multipart/form-data` request](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type#content-type_in_html_forms) a different approach is needed in order to be used on web applications
+For almost every cases this is the result of hashing the content of the body, but for [`multipart/form-data` request](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type#content-type_in_html_forms) a different approach is needed in order to be used on web applications
 
 When `ContentType != 'multipart/form-data'`
 
