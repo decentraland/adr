@@ -41,7 +41,7 @@ In mechanism `Type` is compose of 3 component:
   Type = SignAlgorithm + '+' + HashAlgorithm [ + '+' + SignEncoding ]
 ```
 
-- `SignAlgorithm`: Defines how user generate the signature of the request
+- `SignAlgorithm`: Defines how user generates the signature of the request
   - `DCL`: when the signature was generated using [`decentraland-crypto`](https://github.com/decentraland/decentraland-crypto)
   - `SIGN`: when the signature was generated using a [`eth_sign`](https://eth.wiki/json-rpc/API#eth_sign) call
 
