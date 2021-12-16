@@ -21,7 +21,7 @@ New features include:
 - Support `PersonalSign` as signature generator
 - Self contain expiration
 
-> Although this new mechanism is not backward compatible it doesn't include any incompatibility which means tha a Service could accept request signed with either of the two mechanisms
+> Although this new mechanism is not backward compatible it doesn't include any incompatibility which means that a Service could accept request signed with either of the two mechanisms
 
 ## Sign a Request
 
