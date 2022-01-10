@@ -2,26 +2,26 @@
 
 ## Context and Problem Statement
 
-The Content Servers have to offer the ability to deploy content on them, but also ensure that any content deployed on any other valid and running Catalyst from the DAO is available there too. Resolving this is called “synchronization”. Due to the increase of users that Decentraland has experienced last year, the synchronization was the bottleneck to support more concurrent users, so the way that it was done had to be changed.
+The Content Servers have to offer the ability to deploy content on them, but also ensure that any content deployed on any other valid and running Catalyst from the DAO List is available there too. Resolving this is called “synchronization”. Due to the increase of users that Decentraland has experienced last year, the synchronization was the bottleneck to support more concurrent users, so the way that it was done had to be changed.
 
 This document does not discuss ideas to change the way that the catalyst communicate with each other or their topology, that topic will be discussed in another document.
 
 ## Considered options
 
 ### Requirements
-- Deploying entities on any catalyst in the DAO should be transparent: this means that it doesn’t matter on which catalyst I’ve deployed my content, I should be able to reach it from any of all the Catalyst after a reasonable amount of time (5minutes for example).
-- When a Catalyst receives a deployment from the original Catalyst, then the new one validates it all again. This is a mechanism to avoid deploying invalid entities if a Catalyst has been compromised.
+- Deploying entities on any catalyst in the DAO List should be transparent: this means that it doesn’t matter on which catalyst I’ve deployed my content, I should be able to reach it from any of all the Catalyst after a reasonable amount of time (5 minutes for example).
+- When a Catalyst receives a deployment from the original Catalyst, then the new one validates it all again. The trust model becomes hardened this way, since catalysts just have to check the signature, instead of relying on the source of the deployment.
 
 ### Old Sync
-In the old synchronization, every catalyst asks for all the deployments from the other catalysts. This means that every catalyst exposes `/deployments` endpoint where you can get all the history of deployments. So if a Catalyst needs to sync with the others, it gets all of them and deploy them locally.
+In the old synchronization, every catalyst asks for all the deployments from the other catalysts on the DAO List. This means that every catalyst exposes a `/deployments` endpoint where you can get all the history of deployments. So if a Catalyst needs to sync with the others, it gets all of them and deploy them locally.
 
 ```
 // Synchronization code
-const allServers = await  getAllCatalystFromDao() // gets that info from the contract
+const allServers = await  getCatalystsFromDAOList() // fetch list of catalysts from the DAO contract
 
 while(true) {
   for (server of allServers) {
-    // GET /deployments : first time will be all, then only diff
+    // GET /deployments : first time it'll get all deployments, afterwards only the diff
     allDeployments = await server.getNewDeployments()
     deployLocally(allDeployments)
     server.updateLastSeenTimestamp()
@@ -32,23 +32,22 @@ while(true) {
 This behaviour is correct as no info is missed and it can be ensured that every new entity deployed will be discoverable. A characteristic from this solution is that not only current active entities will be synchronized but also all the history, this can be beneficial if you want to store all the historical data from Decentraland but could be a disadvantage if you don’t care or you need to use less space.
 
 #### Stability issues
-Using that way to synchronize when increasing the amount of users, this implied an increase of the amount of deployments (profiles mostly) and the servers weren’t responding well to that: the servers that need to retrieve the deployments experienced a huge amount of usage of CPU and also the queries to the DB to get all the deployments and as all servers sync with each other that implied a maximum amount of users of 100/140 users per catalyst which was below of what expected and needed.
+Because most deployments are profiles, this isn't scaling linearly: retrieving past deployments leads to a spike of CPU usage and also the queries to the DB to get all the deployments. As all catalyst servers in the DAO List sync with each other (leading to `O(n²)` scalability), for the generally used hardware on catalysts we see a limit of 100/140 users per catalyst, way below what's needed.
 
-#### Time to be up
-When there were few deployments all of this worked fine, but when the amount of deployments reached 2M and 50k deployments daily, the time spended retrieving all the history from the other servers and deploying that locally was always bigger than the new amount of deployments. So if you wanted to create a new Catalyst and sync it from scratch it could take you a month and you will never be synced.
+When the amount of deployments reached 2M and 50k deployments daily, the time spended retrieving and applying all the history from the other servers in the DAO List was always bigger than the new amount of deployments. Syncing a new Catalyst from scratch could take a month or longer before catching up.
 
 ## Decision
-### New Sync
-To build the new sync the focus was on making the Catalyst work, the concept of having and always synchronizating all the historical deployments everywhere was left behind. This doesn’t mean that the data got lost, it is backed up in s3. But to implement the sync, the deployed entities that are active are the ones took into account.
+### New Sync Logic
+The main motivation on this new logic is on making the Catalyst network work on a bigger scale. Historical deployments are demoted to be of lower priority and will not be warranteed to succeed. The focus is on keeping all catalysts in the network up to date and serving the same state.
 
-For the new sync all the catalysts continue communicating between them, but in a more efficient way:
+All the catalysts continue to communicate with each other, but in a more efficient way:
 1. Decreased the amount of requests for bootstrapping from N to 1. Being `N = TOTAL_DEPLOYMENTS / PAGE_SIZE (paginated list) + TOTAL_DEPLOYMENTS * 1 (audit data)`
 2. Deprecate the endpoint /deployments (which was the most expensive in the db).
 3. Add missing information to /snapshot endpoints to include `authChain` to reduce by TOTAL_DEPLOYMENTS the amount of requests.
 
 ```
 // Synchronization code
-const allServers = await  getAllCatalystFromDao() // gets that info from the contract
+const allServers = await  getCatalystsFromDAOList() // fetch list of catalysts from the DAO contract
 
 
 async function sync(remoteServer) {
@@ -57,14 +56,14 @@ async function sync(remoteServer) {
   // GET /snapshots : get all entities that are active
   allDeployments = await remoteServer.getSnapshots() 
   deployLocally(allDeployments)
-  remoteServer.updateLastSeenTimestamp() // the biggest timestamp seen in snapshots
+  remoteServer.updateLastSeenTimestamp() // most recent timestamp seen in snapshots
 
   // Syncing
   while(remoteServer.isOnline()) {
-    // GET /pointer-changes : always only the new deployments
+    // GET /pointer-changes : only the new deployments
     allDeployments = await remoteServer.getNewDeployments() 
     await deployLocally(allDeployments)
-    remoteServer.updateLastSeenTimestamp() // the biggest timestamp seen in pointer-changes
+    remoteServer.updateLastSeenTimestamp() // most recent timestamp seen in pointer-changes
   }
 }
 
@@ -74,15 +73,15 @@ for (server of allServers) {
 }
 ```
 
-In pseudo code both implementations look similar, and they are. But the key here was to stop using `/deployments` endpoint and implement a new performant `/snapshots`.
+In pseudo code both implementations look similar. The key difference is to stop using the `/deployments` endpoint and implement a new performant `/snapshots`.
 
-Why is `/deployments` endpoint so expensive? It’s an endpoint with lots of filters and conditions. Indexes were created and changed in the database, but all of the tests ended up with very expensive queries.
+The `/deployments` endpoint caused a very expensive query to the DB, depending on too many filters and conditions. Indexes were created and changed in the database, but it still caused very expensive queries.
 
-The snapshots are generated once a period of time (currently 15 min but it could be 6hs) with a full scan of the database which only filters that the overwritten_by field is null, this ensures that all active entities are retried. Then that data is stored in a file, so when requesting the `/snapshots` endpoint you receive the hash of the file with the information and no query to the database is done.
+The new snapshots are generated with a certain frequency (currently set to 15 min, but anything up to 6hs sounds reasonable) with a full scan of the database which only filters that the `overwritten_by` field is `null`. This ensures that all active entities are retried. Then that data is stored in a file, so when requesting the `/snapshots` endpoint you receive the hash of the file with the information and no query to the database is done.
 
-Then `/pointer-changes` retrieves all the deployments done in a period of time, this includes not active entities too. So, the only historical data that may be lost is the data transferred when a Catalyst was down. This endpoint is stored in a separate db and the requests are optimized.
+Then `/pointer-changes` retrieves all the deployments done in a period of time, this includes not-active entities too (those who have been overriden by a new deployment). So, the only historical data that may be lost is the data transferred when a Catalyst was down. This endpoint is stored in a separate db and the requests are optimized.
 
-A future addition (and enhancement) to the synchronization contemplates the addition of an endpoint similar to `/pointer-changes` that only includes the freshest pointers, ignoring the history in between. For a lighter use of the table and indexes holding the active entities.
+A future enhancement to the synchronization contemplates the addition of an endpoint similar to `/pointer-changes` that only includes the freshest pointers, ignoring the history in between. For a lighter use of the table and indexes holding the active entities.
 
 
 ## Status
