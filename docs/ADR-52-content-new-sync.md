@@ -13,7 +13,7 @@ This document does not discuss ideas to change the way that the catalyst communi
 - When a Catalyst receives a deployment from the original Catalyst, then the new one validates it all again. The trust model becomes hardened this way, since catalysts just have to check the signature, instead of relying on the source of the deployment.
 
 ### Old Sync
-In the old synchronization, every catalyst asks for all the deployments from the other catalysts on the DAO Lit. This means that every catalyst exposes a `/deployments` endpoint where you can get all the history of deployments. So if a Catalyst needs to sync with the others, it gets all of them and deploy them locally.
+In the old synchronization, every catalyst asks for all the deployments from the other catalysts on the DAO List. This means that every catalyst exposes a `/deployments` endpoint where you can get all the history of deployments. So if a Catalyst needs to sync with the others, it gets all of them and deploy them locally.
 
 ```
 // Synchronization code
