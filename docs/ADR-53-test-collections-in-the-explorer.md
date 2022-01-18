@@ -16,7 +16,7 @@ Support query params in the explorer:
 
 ## Participants
 
-- @Agus M
+- @menduz 
 
 - @Shibu
 
