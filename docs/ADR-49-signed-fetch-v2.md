@@ -290,8 +290,8 @@ Additionally if some fields are files they *MUST* also include `filename` and `t
 #### `GET https://decentraland.org/api/status`
 
 ```txt
-GET /api/status\n
-host:decentraland.org\n
+GET /api/status
+host:decentraland.org
 x-identity-expiration:2020-01-01T00:00:00Z
 ```
 
@@ -299,7 +299,7 @@ x-identity-expiration:2020-01-01T00:00:00Z
 
 ```txt
 GET /api/status
-host:decentraland.org\n
+host:decentraland.org
 x-identity-expiration:2020-01-01T00:00:00Z
 x-identity-metadata:{"service":"market.decentraland.org"}
 ```
@@ -307,8 +307,8 @@ x-identity-metadata:{"service":"market.decentraland.org"}
 #### `POST https://decentraland.org/api/status?filter=asc` with metadata
 
 ```txt
-POST /api/status?filter=asc\n
-host:decentraland.org\n
+POST /api/status?filter=asc
+host:decentraland.org
 x-identity-expiration:2020-01-01T00:00:00Z
 x-identity-metadata:{"service":"market.decentraland.org"}
 ```
@@ -316,33 +316,33 @@ x-identity-metadata:{"service":"market.decentraland.org"}
 #### `POST https://decentraland.org/api/status` with metadata and extra headers
 
 ```txt
-POST /api/status\n
-host:decentraland.org\n
-x-identity-expiration:2020-01-01T00:00:00Z\n
-x-identity-metadata:{"service":"market.decentraland.org"}\n
-x-identity-headers:accept;cookie\n
-accept:*/*\n
-cookie:eu_cn=1;\n
+POST /api/status
+host:decentraland.org
+x-identity-expiration:2020-01-01T00:00:00Z
+x-identity-metadata:{"service":"market.decentraland.org"}
+x-identity-headers:accept;cookie
+accept:*/*
+cookie:eu_cn=1;
 ```
 
 #### `POST https://decentraland.org/api/status` with json data
 
 ```txt
-POST /api/status\n
-host:decentraland.org\n
-content-type:application/json; charset=utf-8\n
-x-identity-expiration:2020-01-01T00:00:00Z\n
+POST /api/status
+host:decentraland.org
+content-type:application/json; charset=utf-8
+x-identity-expiration:2020-01-01T00:00:00Z
 0xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
 ```
 
 #### `POST https://decentraland.org/api/status` with multipart data
 
 ```txt
-POST /api/status\n
-host:decentraland.org\n
-content-type:multipart/form-data\n
-x-identity-expiration:2020-01-01T00:00:00Z\n
-name="avatar";filename="avatar.png";type="application/png";0x585460e3d01c950dd755f4c369bbf2edb9e6025fa88db029c02bfe6a89e5ec7f\n
+POST /api/status
+host:decentraland.org
+content-type:multipart/form-data
+x-identity-expiration:2020-01-01T00:00:00Z
+name="avatar";filename="avatar.png";type="application/png";0x585460e3d01c950dd755f4c369bbf2edb9e6025fa88db029c02bfe6a89e5ec7f
 name="email";size=22;0xfefe75065b68e4fb6ef79e1e5f542b84cfe6b8050b01f4ba05a64060131d534b
 ```
 
