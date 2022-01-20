@@ -49,7 +49,8 @@
 - [ADR-48 - Locking collections in the builder](docs/ADR-48-locking-collections-in-the-builder.md)
 - [ADR-50 - Isolated mode](docs/ADR-50-isolated-scenes.md)
 - [ADR-52 - Content Synchronization from Snapshots and Pointer Changes](docs/ADR-52-content-new-sync.md)
-- 
+- [ADR-53 - Test collections in the explorer](docs/ADR-53-test-collections-in-the-explorer.md)
+
 ## How to?
 
 Read [the ADR explaining the rationale](docs/ADR-1-documenting-architecture-decisions.md), by Michael Nygard.
