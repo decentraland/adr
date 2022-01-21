@@ -50,6 +50,7 @@
 - [ADR-50 - Isolated mode](docs/ADR-50-isolated-scenes.md)
 - [ADR-52 - Content Synchronization from Snapshots and Pointer Changes](docs/ADR-52-content-new-sync.md)
 - [ADR-53 - Test collections in the explorer](docs/ADR-53-test-collections-in-the-explorer.md)
+- [ADR-54 - Use an Oracle for MANA pricing according to USD rate](docs/ADR-54-oracle-for-mana-pricing.md)
 
 ## How to?
 
