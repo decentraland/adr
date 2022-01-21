@@ -2,13 +2,19 @@
 
 ## Statement of the problem
 
-Some features require the user to pay a certain amount of MANA for execution. These features include, publishing a collection, which charges the user a fixed amount of MANA depending on the rarities of the items being published with the collection, and claiming a name, were the user is charged a fixed amount of MANA to claim. There is also the purchasing of third party item slots, also priced in MANA.
+Some features require the user to pay a certain amount of MANA for execution. These features include:
+
+- Publishing a collection, which charges the user a fixed amount of MANA depending on the rarities of the items being published with the collection
+
+- Claiming a name, were the user is charged a fixed amount of MANA to claim.
+
+- Purchasing Third Party item slots, which is charged according to the amount of slots bought.
 
 Given the price fluctuations of the token, more importantly the increase in price over time, these features have become more expensive for the user to consume, thus discouraging content creators from actually adding content to the platform, hurting Decentraland as a whole on the process.
 
-In the casie of publishing a collection, prices are being changed manually each weak so they reflect a certain price in USD, making the price more stable and fair for all creators. However, this being a manual process can become tedius and not completely precise as MANA price might still fluctuate mid week.
+In the case of publishing a collection, prices are being changed manually each week so they reflect a certain price in USD, making the price more stable and fair for all creators. However, this being a manual process can become tedious and not completely precise as MANA price might still fluctuate mid week.
 
-## Solution proposed
+## Proposed solution
 
 Chainlink MANA/USD Data Feed allows our contracts to obtain the rate of MANA in USD. This can be used, given an original price in USD, to calculate how much MANA is required by the user to perform a certain transaction.
 
