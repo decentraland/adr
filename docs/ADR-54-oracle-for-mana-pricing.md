@@ -6,13 +6,13 @@ Some features require the user to pay a certain amount of MANA for execution. Th
 
 - Publishing a collection, which charges the user a fixed amount of MANA depending on the rarities of the items being published with the collection
 
-- Claiming a name, were the user is charged a fixed amount of MANA to claim.
+- Claiming a name, where the user is charged a fixed amount of MANA to claim.
 
-- Purchasing Third Party item slots, which is charged according to the amount of slots bought.
+- Purchasing Third Party item slots, which are charged according to the number of slots bought.
 
-Given the price fluctuations of the token, more importantly the increase in price over time, these features have become more expensive for the user to consume, thus discouraging content creators from actually adding content to the platform, hurting Decentraland as a whole on the process.
+Given the price fluctuations of the token, more importantly, the increase in price over time, these features have become more expensive for the user to consume, thus discouraging content creators from actually adding content to the platform, hurting Decentraland as a whole on the process.
 
-In the case of publishing a collection, prices are being changed manually each week so they reflect a certain price in USD, making the price more stable and fair for all creators. However, this being a manual process can become tedious and not completely precise as MANA price might still fluctuate mid week.
+In the case of publishing a collection, prices are being changed manually each week so they reflect a certain price in USD, making the price more stable and fair for all creators. However, this being a manual process can become tedious and not completely precise as MANA price might still fluctuate mid-week.
 
 ## Proposed solution
 
@@ -22,7 +22,7 @@ For more information about Chainlink go check their [homepage](https://chain.lin
 
 In summary, Chainlink is a solution in which via Oracles, one can obtain off-chain data in a tamper-proof and still decentralized manner to be used on-chain.
 
-In order to implement these price feeds we will create a new contract `ChainlinkOracle` with a `getRate` function. This oracle will the be consumed by other contracts which require the rate of MANA/USD to reflect a price accordingly. This `ChainlinkOracle` will receive both a Data Feed (Represented as an [AggregatorV3Interface](https://github.com/smartcontractkit/chainlink/blob/develop/contracts/src/v0.7/interfaces/AggregatorV3Interface.sol) by the Chainlink [docs](https://docs.chain.link/docs/get-the-latest-price/#solidity)).
+To implement these price feeds we will create a new contract `ChainlinkOracle` with a `getRate` function. This oracle will be consumed by other contracts which require the rate of MANA/USD to reflect a price accordingly. This `ChainlinkOracle` will receive both a Data Feed (Represented as an [AggregatorV3Interface](https://github.com/smartcontractkit/chainlink/blob/develop/contracts/src/v0.7/interfaces/AggregatorV3Interface.sol) by the Chainlink [docs](https://docs.chain.link/docs/get-the-latest-price/#solidity)).
 
 A contract consuming this oracle can then do the following calculation to obtain and use/return and amount of MANA converted from USD.
 
