@@ -12,7 +12,7 @@ Ask the user to sign each request
 
 #### Pros
 
-- Users will known each time an scene will interact in their name
+- Users will known each time a scene will interact in their name
 - No intermediate code is required
 
 #### Cons
