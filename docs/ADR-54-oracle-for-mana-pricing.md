@@ -10,13 +10,11 @@ Some features require the user to pay a certain amount of MANA for execution. Th
 
 - Purchasing Third Party item slots, which are charged according to the number of slots bought.
 
-Given the price fluctuations of the token, more importantly, the increase in price over time, these features have become more expensive for the user to consume, thus discouraging content creators from actually adding content to the platform, hurting Decentraland as a whole on the process.
-
-In the case of publishing a collection, prices are being changed manually each week so they reflect a certain price in USD, making the price more stable and fair for all creators. However, this being a manual process can become tedious and not completely precise as MANA price might still fluctuate mid-week.
+Lately, The community has been using the DAO to define the price in MANA but pegged to the USD dollar. For example, the price per item for publishing a collection has been reduced from 500 MANA to 100 MANA to achieve it.
 
 ## Proposed solution
 
-Chainlink MANA/USD Data Feed allows our contracts to obtain the rate of MANA in USD. This can be used, given an original price in USD, to calculate how much MANA is required by the user to perform a certain transaction.
+Chainlink MANA/USD Data Feed allows our contracts to obtain the rate of MANA in USD on both the Ethereum and Polygon chains. This can be used, given an original price in USD, to calculate how much MANA is required by the user to perform a certain transaction.
 
 For more information about Chainlink go check their [homepage](https://chain.link/) or their [whitepaper](https://chain.link/whitepaper).
 
