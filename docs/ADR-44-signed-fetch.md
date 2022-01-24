@@ -17,7 +17,7 @@ Ask the user to sign each request
 
 #### Cons
 
-- For consuming APIs it will require to many interactions for the users, potentially degrading the experience within the explorer
+- For consuming APIs it will require too many interactions for the users, potentially degrading the experience within the explorer
 
 ### Alt 2
 
