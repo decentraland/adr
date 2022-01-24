@@ -204,7 +204,7 @@ If the `Content-Type` header is `multipart/form-data` the `boundary` *MUST NOT* 
 
 > Required: always *MUST* be included
 
-The moment at which this signature is consider invalid (encoded with [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3339))
+The moment at which this signature is considered invalid (encoded with [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3339))
 
 ```ts
   Expiration = `2020-01-01T00:00:00Z`
