@@ -224,7 +224,7 @@ Extra metadata send to the server (encoded as [JSON](https://datatracker.ietf.or
 
 > Optional
 
-To sign other headers not listed previously Users can include them usign `X-Identity-Headers`, which is a list separated by semicolon. If this header all extra headers listed *MUST* be included in the sign as well in the same order they were listed
+To sign other headers not listed previously Users can include them using `X-Identity-Headers`, which is a list separated by semicolons. If this header is present, all extra headers listed *MUST* be included in the signature as well in the same order they were listed
 
 ```ts
   ExtraHeaders = "x-identity-headers:" +
