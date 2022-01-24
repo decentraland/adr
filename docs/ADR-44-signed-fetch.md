@@ -108,7 +108,7 @@ const auth = await Authenticator.signPayload(identity, data)
 
 ### Sign the request
 
-To sign a request the authlink should be included as a header in the request along with the timestamp and the metadata
+To sign a request the `AuthChain` should be included as a header in the request along with the timestamp and the metadata
 
 ```typescript
 
