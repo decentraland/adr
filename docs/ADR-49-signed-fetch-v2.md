@@ -214,7 +214,7 @@ The moment at which this signature is consider invalid (encoded with [RFC 3986](
 
 > Required if: the request includes `X-Identity-Metadata` header
 
-Extra metadata send to the server (encoded as [JSON](https://datatracker.ietf.org/doc/html/rfc4627))
+Extra metadata sent to the server (encoded as [JSON](https://datatracker.ietf.org/doc/html/rfc4627))
 
 ```ts
   Metadata = `{"catalyst": "peer.decentraland.org"}`
