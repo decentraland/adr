@@ -21,7 +21,7 @@ Ask the user to sign each request
 
 ### Alt 2
 
-Use [`decentraland-crypto`](https://github.com/decentraland/decentraland-crypto) as intermediate to sign each request
+Use [`decentraland-crypto`](https://github.com/decentraland/decentraland-crypto) as intermediary to sign each request
 
 #### Pros
 
