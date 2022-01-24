@@ -65,7 +65,7 @@ const PATH: string = `/ping`
 
 /**
  * request timestamp
- * each service decide how long will consider valid a request using this timestamp,
+ * each service decide how long it will consider valid a request using this timestamp,
  * if timestamp is greater than now the request should fail
  */
 const TIMESTAMP: number = Date.now()
