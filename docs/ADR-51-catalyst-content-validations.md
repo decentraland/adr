@@ -16,7 +16,9 @@ For instance, adding a validation to the Catalyst can be overwhelming for a deve
 
 Validations will be moved to a library that will not depend on any other than definitions like schemas and types.
 
-It will expose an interface that will be implemented and required for validations execution, at the moment it means the Catalyst will provide this implementation but any other could do it.
+The library will require a set of functions, defined in an interface, to perform validations of the entities. Such functions will be needed to interact with the outside world i.e. The Graph.
+
+Needless to say, the content servers and potentially other tools (like the builder or the cli) will provide these functions to run validations anywhere.
 
 We will redefine the deployment contexts and only take into account: 'LOCAL' and 'SYNCED'.
 
@@ -26,7 +28,7 @@ Also, we will get rid of the entity version idea, moving to a timestamp based de
 
 ### Validations
 
-We will execute these validations for all entity types:
+The following (named) validations MUST be executed in every entity:
 
 - SIGNATURE
 
@@ -73,7 +75,6 @@ parameter ADR_45_TIMESTAMP = 1648771200
 ```
 
 - METADATA SCHEMA
-  1
   Validates entity metadata against its corresponding schema
 
 ```
@@ -327,9 +328,9 @@ Accepted.
 
 Will create a starting point to track entities changes.
 
-We will need to create an ADR in order to change any of these statements or add a new entity type, describing which validations will run.
+An ADR will be created to change any of these statements or add a new entity type, describing which validations will run.
 
-Adding validations will be easier for external team developers.
+Adding validations will be easier any developer.
 
 Catalysts will need to provide external calls that may introduce some complexity.
 
