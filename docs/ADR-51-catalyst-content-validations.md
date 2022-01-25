@@ -22,7 +22,7 @@ We will redefine the deployment contexts and only take into account: 'LOCAL' and
 
 All validations will know this context and will decide if must do something different, but no validation list per context will exist, i.e. all validations will run on each deployment.
 
-Also, we will get rid of the entity version idea, moving to a timestamp based decision making on validations, so we can avoid duplicated/deprecation logic.
+Also, we will get rid of the entity version idea, moving to a timestamp based decision making on validations, so we can avoid duplicated/deprecation logic. To do so, we will be using timestamp defined in (ADR-45)[1].
 
 ### Validations
 
@@ -332,3 +332,5 @@ We will need to create an ADR in order to change any of these statements or add 
 Adding validations will be easier for external team developers.
 
 Catalysts will need to provide external calls that may introduce some complexity.
+
+[1]: ./ADR-45-entities-v4.md
