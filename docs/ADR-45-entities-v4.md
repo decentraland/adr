@@ -27,9 +27,14 @@ We defined a list of changes to support v4 entities:
 
 - Explorer will support v4 entities rendering.
 
+## Deadline
+
+V3 entities deadline is: April 1st, 2022
+Timestamp (UTC): 1648771200
+
 ## Status
 
-Under Development
+Accepted
 
 ## Consequences
 
