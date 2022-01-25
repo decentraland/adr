@@ -14,7 +14,7 @@ For instance, adding a validation to the Catalyst can be overwhelming for a deve
 
 ## Decision
 
-We will move all validations to a library that will not depend on any other than definitions like schemas and types.
+Validations will be moved to a library that will not depend on any other than definitions like schemas and types.
 
 It will expose an interface that will be implemented and required for validations execution, at the moment it means the Catalyst will provide this implementation but any other could do it.
 
