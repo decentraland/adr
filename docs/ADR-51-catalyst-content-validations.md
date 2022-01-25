@@ -133,15 +133,16 @@ parameter ADR_45_TIMESTAMP = 1648771200
   Validates that the pointers are valid, and that the Ethereum address has write access to them
 
 ```
-parameter LEGACY_CONTENT_MIGRATION_TIMESTAMP
-parameter DECENTRALAND_ADDRESS
+parameter LEGACY_CONTENT_MIGRATION_TIMESTAMP = 1582167600000
+parameter DECENTRALAND_ADDRESS = 0x1337e0507eb4ab47e08a179573ed4533d9e22a7b
 
 ----
 
 1. If deplyoment.timestamp < LEGACY_CONTENT_MIGRATION_TIMESTAMP and deployment.address != DECENTRALAND_ADDRESS
   return
 
-2. Execute entity access validation
+2. Execute entity access validation by type:
+  PROFILE ACCESS or SCENE ACCESS or STORE ACCESS or WEARABLE ACCESS
 
 ```
 
@@ -150,7 +151,7 @@ PROFILE entities will have following validations:
 - PROFILE ACCESS
 
 ```
-parameter DECENTRALAND_ADDRESS
+parameter DECENTRALAND_ADDRESS = 0x1337e0507eb4ab47e08a179573ed4533d9e22a7b
 
 ----
 
@@ -171,8 +172,8 @@ SCENE entities will have following validations:
 - SCENE ACCESS
 
 ```
-parameter DECENTRALAND_ADDRESS
-parameter SCENE_LOOKBACK_TIME
+parameter DECENTRALAND_ADDRESS = 0x1337e0507eb4ab47e08a179573ed4533d9e22a7b
+parameter SCENE_LOOKBACK_TIME = 300000 (ms)
 function checkParcelAccess:
   1. Let parcel P be the parcel of X, Y
   3. For each target T in P U P.states
@@ -220,7 +221,7 @@ WEARABLE entities will have following validations:
   Checks if the ethereum address has access to the collection.
 
 ```
-parameter DECENTRALAND_ADDRESS
+parameter DECENTRALAND_ADDRESS = 0x1337e0507eb4ab47e08a179573ed4533d9e22a7b
 
 parameter ALLOWED_TYPES = ['off-chain', 'blockchain-collection-v1-asset', 'blockchain-collection-v2-asset']
 
@@ -275,7 +276,7 @@ function checkCollectionAccess:
 
 ```
 parameter ADR_45_TIMESTAMP = 1648771200
-parameter THUMBNAIL_SIZE = 1024
+parameter THUMBNAIL_SIZE_IN_PIXELS = 1024
 
 ----
 
@@ -291,9 +292,9 @@ parameter THUMBNAIL_SIZE = 1024
 
 6. Fail if THUMBNAIL_IMAGE is not a .PNG
 
-7. Fail if THUMBNAIL_IMAGE width != THUMBNAIL_SIZE
+7. Fail if THUMBNAIL_IMAGE width != THUMBNAIL_SIZE_IN_PIXELS
 
-8. Fail if THUMBNAIL_IMAGE height != THUMBNAIL_SIZE
+8. Fail if THUMBNAIL_IMAGE height != THUMBNAIL_SIZE_IN_PIXELS
 ```
 
 - SIZE
@@ -301,7 +302,7 @@ parameter THUMBNAIL_SIZE = 1024
 
 ```
 parameter ADR_45_TIMESTAMP = 1648771200
-parameter MAX_SIZE = 2
+parameter MAX_SIZE_IN_MB = 2
 
 ----
 
@@ -311,11 +312,11 @@ parameter MAX_SIZE = 2
 
 3. Fail if THUMBNAIL_HASH is not present
 
-4. Let CURRENT_SIZE be the size of deployment files (uploaded and stored)
+4. Let CURRENT_SIZE be the size of deployment files (uploaded and stored) in MB
 
-5. Let THUMBNAIL_SIZE be the size of the deployment file corresponding to THUMBNAIL_HASH
+5. Let THUMBNAIL_SIZE be the size of the deployment file corresponding to THUMBNAIL_HASH in MB
 
-6. Fail if MAX_SIZE < CURRENT_SIZE - THUMBNAIL_SIZE
+6. Fail if MAX_SIZE_IN_MB < CURRENT_SIZE - THUMBNAIL_SIZE
 ```
 
 ## Status
