@@ -20,8 +20,6 @@ The library will require a set of functions, defined in an interface, to perform
 
 Needless to say, the content servers and potentially other tools (like the builder or the cli) will provide these functions to run validations anywhere.
 
-We will redefine the deployment contexts and only take into account: 'LOCAL' and 'SYNCED'.
-
 All validations will know this context and will decide if must do something different, but no validation list per context will exist, i.e. all validations will run on each deployment.
 
 Also, we will get rid of the entity version idea, moving to a timestamp based decision making on validations, so we can avoid duplicated/deprecation logic. To do so, we will be using timestamp defined in (ADR-45)[1].
