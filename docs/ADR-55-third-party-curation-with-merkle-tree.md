@@ -2,7 +2,7 @@
 
 ## Statement of the problem
 
-Third parties may want to add one item representation per NFT. Each item may need to be accepted by the Decentraland catalysts. For third parties with an small number of items, the current flow of the Decentraland collection where each items is submitted and curated by using the blockchain works but for projects with > 500 nfts (item representations) it does not scale. Having in mind the gas limit of each transaction, we can submit batches of 40-50 items. The third party manager and the curator will need to submit around 250 transactions each for a collection of 10k items. We need to find a way to optimize the managers and curators time while keeping the process trustless and with a good UX.
+Third parties may want to add one item representation per NFT. Each item may need to be accepted by the Decentraland catalysts. For third parties with a small number of items, the current flow of the Decentraland collection where each item is submitted and curated by using the blockchain works but for projects with > 500 NFTs (item representations), it does not scale. Having in mind the gas limit of each transaction, we can submit batches of 40-50 items. The third-party manager and the curator will need to submit around 250 transactions each for a collection of 10k items. We need to find a way to optimize the managers' and curators' time while keeping the process trustless and with a good UX.
 
 ## Proposed solution
 
@@ -10,31 +10,31 @@ Third parties may want to add one item representation per NFT. Each item may nee
 
 ![resources/ADR-55/fig-approve-items-2.svg](resources/ADR-55/fig-approve-items-2.svg)
 
-Items for third parties are going to be created as usual but they are not going to be uploaded to the blockchain (ThirdPartyRegistry smart contract). Third Party managers will need to sign a message every time they send items for review. This is the only blockchain related action needed for the item creation phase.
+Items for third parties are going to be created as usual but they are not going to be uploaded to the blockchain (ThirdPartyRegistry smart contract). Third-Party managers will need to sign a message every time they send items for review. This is the only blockchain-related action needed for the item creation phase.
 
-The main difference between the Decentraland collections is that the items and its metadata are not going to be submitted to the blockchain. We will rely on the third party API and the Decentraland catalysts.
+The main difference between the Decentraland collections is that the items and their metadata are not going to be submitted to the blockchain. We will rely on the third-party API and the Decentraland catalysts.
 
-Not submitting the items to the blockchain reduce the number of transactions for the third party manager to just a signature everytime an items needs to be reviewed. For Decentraland collection we require one transaction but if we need third parties to submit all of their items ids to the blockchain, it will require a lot of transactions limited by the gas cap of each block in the Polygon chain. E.g: 2k transactions for a collection with 100k items.
+Not submitting the items to the blockchain reduces the number of transactions for the third-party manager to just a signature every time an item needs to be reviewed. For Decentraland collection we require one transaction but if we need third parties to submit all of their items' ids to the blockchain, it will require a lot of transactions limited by the gas cap of each block in the Polygon chain. E.g: 2k transactions for a collection with 100k items.
 
 ### Item curation
 
-The current implementation of curating a Decentraland collection requires the curator to submit the content hash of each item to the blockchain so the [catalysts accept](./ADR-41-collection-items-approval-flow-enhancement.md) them. Like with the item creation, the transaction for submitting the content hash to the blockchain is limited by the gas cap of each block in the Polygon chain and around 2k transactions may be needed for collection with 100k items.
+The current implementation of curating a Decentraland collection requires the curator to submit the content hash of each item to the blockchain so the [catalysts accept](./ADR-41-collection-items-approval-flow-enhancement.md) them. Like with the item creation, the transaction for submitting the content hash to the blockchain is limited by the gas cap of each block in the Polygon chain, and around 2k transactions may be needed for collection with 100k items.
 
 ![resources/ADR-55/fig-approve-items.svg](resources/ADR-55/fig-approve-items.svg)
 
-In order to do not depend on the amount of items and/or the block gas limit, the curation for third party collections will use a [merkle tree](https://www.forex.academy/understanding-merkle-tree-its-importance-in-blockchain/) where only the merkle root will be submitted to the blockchain.
+In order to do not depend on the number of items and/or the block gas limit, the curation for third-party collections will use a [merkle tree](https://www.forex.academy/understanding-merkle-tree-its-importance-in-blockchain/) where only the Merkle root will be submitted to the blockchain. A merkle root is just a 32 bytes lengh char. E.g: `0x38d34cf9e1e3fc7aff7a0a84a61a6c1b1e6b7e26bff7213a5bd3adc55a634397`
 
 ![resources/ADR-55/Merkle-Tree.jpeg](resources/ADR-55/Merkle-Tree.jpeg)
 
 #### Markle tree generation
 
-The merkle tree will be generated by using all the items' urn and content hash. Once the merkle tree is created, the curator will submit the root of the tree to the blockchain. Generating the proof is an off-chain process, submitting the root of the tree needs just 1 transaction. Following the image above, what is going to be added to the blockchain is HABCDEFGH.
+The Merkle tree will be generated by using all the items' urn and content hash. Once the Merkle tree is created, the curator will submit the root of the tree to the blockchain. Generating the proof is an off-chain process, submitting the root of the tree needs just 1 transaction. Following the image above, what is going to be added to the blockchain is HABCDEFGH.
 
 #### Merkle Tree validation
 
-Every item deployment to the catalyst, will contain, along with the normal data, an index and proof. The proof is the path that the validation method needs in order to check whether the item’s urn and content hash is part of the tree or not. E.g: If we see TA as the content hash + urn of the item to be deployed, the index will be `0` and the proof: [HB, HCD, HEFGH]. The catalyst will process the data submitted and will get `HABCDEFGH` as the root. If that root is the same as the one in the blockchain then it can ensure that the deployment is valid.
+Every item deployment to the catalyst will contain, along with the normal data, an index, and proof. The proof is the path that the validation method needs in order to check whether the item’s urn and content hash is part of the tree or not. E.g: If we see TA as the content hash + urn of the item to be deployed, the index will be `0` and the proof: [HB, HCD, HEFGH]. The catalyst will process the data submitted and will get `HABCDEFGH` as the root. If that root is the same as the one in the blockchain then it can ensure that the deployment is valid.
 
-Every time an item changes, the curator must submit the new root to the blockchain. This won’t break the entities synchronization because we will always check the root in the blockchain at a specific block number. Checking the data in a specific block is what we are currently doing and TheGraph supports it out of the box.
+Every time an item changes, the curator must submit the new root to the blockchain. This won’t break the entity's synchronization because we will always check the root in the blockchain at a specific block number. Checking the data in a specific block is what we are currently doing and TheGraph supports it out of the box.
 
 The entity metadata that will be stored in the Content Server will have a shape similar to:
 
@@ -64,11 +64,15 @@ The entity metadata that will be stored in the Content Server will have a shape 
 }
 ```
 
-Items rejection will be handle at the third party level for the time being. It means that if the entire third party will be set as rejected if any item needs a critical fix. Some ideas are being evaluated to make it more granular but they are not covered by this ADR.
+Items rejection will be handled at the third-party level for the time being. It means that the entire third party will be set as rejected if any item needs a critical fix. Some ideas are being evaluated to make it more granular but they are not covered by this ADR.
 
 ### Item upload
 
 The item upload will work the same as for the Decentraland collection.
+
+## Tools
+
+In order to make the development for this easier, a new [lib](https://github.com/decentraland/content-hash-tree) has been created. The lib provides a method to generate a Merkle tree with items' urn and content hashes (Builder), and a method to validate a proof (Catalyst).
 
 ## Participants
 
