@@ -37,7 +37,7 @@ The proposed approach consists of leveraging our
 current [PluginSystem](https://github.com/decentraland/unity-renderer/blob/e79be6fbdfa25d3ef15d8cd004943e10676dde59/unity-renderer/Assets/Scripts/MainScripts/DCL/Controllers/FeatureController/PluginSystem.cs#L13)
 implementation to identify and properly encapsulate all our features.
 
-![Untitled](resources/ADR-55/Untitled.png)
+![Untitled](resources/ADR-56/Untitled.png)
 
 A single plugin roughly should look like this (pseudo-code):
 
@@ -151,7 +151,7 @@ their own `IPlugin` implementations.
 
 The only means of cross-feature communication is by the usage of the `DataStore` and global services.
 
-![Untitled](Resources/ADR-55/Untitled%201.png)
+![Untitled](resources/ADR-56/Untitled%201.png)
 
 **General guidelines:**
 
