@@ -51,7 +51,7 @@
 - [ADR-52 - Content Synchronization from Snapshots and Pointer Changes](docs/ADR-52-content-new-sync.md)
 - [ADR-53 - Test collections in the explorer](docs/ADR-53-test-collections-in-the-explorer.md)
 - [ADR-54 - Use an Oracle for MANA pricing according to USD rate](docs/ADR-54-oracle-for-mana-pricing.md)
-
+- [ADR-56 - Avatar assembling for visualization](docs/ADR-56-avatar-assembling-for-visualization.md)
 ## How to?
 
 Read [the ADR explaining the rationale](docs/ADR-1-documenting-architecture-decisions.md), by Michael Nygard.
