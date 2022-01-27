@@ -83,7 +83,17 @@ struct Item {
 
 Similar to third parties, items can't be removed but approved/rejected by committee members.
 
-## Catalyst acceptance criteria
+### Item submission process
+
+#### UI
+
+### Item curation process
+
+#### UI
+
+#### Catalyst acceptance criteria
+
+#### Curation tracking
 
 Extending the curation section explaning [here](./ADR-55-third-party-curation-with-merkle-tree.md#item-curation)
 
