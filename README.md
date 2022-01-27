@@ -55,7 +55,7 @@
 - [ADR-54 - Use an Oracle for MANA pricing according to USD rate](docs/ADR-54-oracle-for-mana-pricing.md)
 - [ADR-55 - Third Party Curation With Merkle Tree](docs/ADR-55-third-party-curation-with-merkle-tree.md)
 - [ADR-56 - Renderer plugin system](docs/ADR-56-plugin-system.md)
-
+- [ADR-57 - Avatar assembling for visualization](docs/ADR-57-avatar-assembling-for-visualization.md)
 ## How to?
 
 Read [the ADR explaining the rationale](docs/ADR-1-documenting-architecture-decisions.md), by Michael Nygard.
