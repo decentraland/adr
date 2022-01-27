@@ -43,15 +43,19 @@
 - [ADR-41 - Collection Items Approval Flow Enhancement](docs/ADR-41-collection-items-approval-flow-enhancement.md)
 - [ADR-42 - Third Party Collections Registry](docs/ADR-42-third-party-assets-integration.md)
 - [ADR-43 - Catalyst API refinement](docs/ADR-43-catalyst-api-refinment.md)
+- [ADR-44 - Signed Fetch](docs/ADR-44-signed-fetch.md)
 - [ADR-45 - Entities V4](docs/ADR-45-entities-v4.md)
 - [ADR-46 - Royalties Manager v1](docs/ADR-46-royalties-manager-v1.md)
 - [ADR-47 - Collections secondary marketplaces v2](docs/ADR-47-collections-secondary-marketplaces-v2.md)
 - [ADR-48 - Locking collections in the builder](docs/ADR-48-locking-collections-in-the-builder.md)
+- [ADR-49 - Signed Fetch V2](docs/ADR-49-signed-fetch-v2.md)
 - [ADR-50 - Isolated mode](docs/ADR-50-isolated-scenes.md)
 - [ADR-52 - Content Synchronization from Snapshots and Pointer Changes](docs/ADR-52-content-new-sync.md)
 - [ADR-53 - Test collections in the explorer](docs/ADR-53-test-collections-in-the-explorer.md)
 - [ADR-54 - Use an Oracle for MANA pricing according to USD rate](docs/ADR-54-oracle-for-mana-pricing.md)
-- [ADR-56 - Avatar assembling for visualization](docs/ADR-56-avatar-assembling-for-visualization.md)
+- [ADR-55 - Third Party Curation With Merkle Tree](docs/ADR-55-third-party-curation-with-merkle-tree.md)
+- [ADR-56 - Renderer plugin system](docs/ADR-56-plugin-system.md)
+- [ADR-57 - Avatar assembling for visualization](docs/ADR-57-avatar-assembling-for-visualization.md)
 ## How to?
 
 Read [the ADR explaining the rationale](docs/ADR-1-documenting-architecture-decisions.md), by Michael Nygard.
@@ -60,21 +64,22 @@ Read [the ADR explaining the rationale](docs/ADR-1-documenting-architecture-deci
 
 For consistency, please name your files using incremental numbers in the shape `docs/ADR-###-title-using-dashes.md`.
 
-To organize the files, please save the assets in a folder for each document using the same ADR number: `docs/resources/ADR-###/{filename}`.
+To organize the files, please save the assets in a folder for each document using the same ADR
+number: `docs/resources/ADR-###/{filename}`.
 
 More info: [ADR-5 - How to organize ADR files](docs/ADR-5-how-to-organize-adr-files.md).
 
-Feel free to write the documents in the way that is more convenient to you.
-If you want, there is a template you can use to start with:
+Feel free to write the documents in the way that is more convenient to you. If you want, there is a template you can use
+to start with:
 
 ```markdown
 # (title)
 
 ## Context and Problem Statement
 
-This section describes the forces at play, including technological, political, social, and
-project local. These forces are probably in tension, and should be called out as such.
-The language in this section is value-neutral. It is simply describing facts.
+This section describes the forces at play, including technological, political, social, and project local. These forces
+are probably in tension, and should be called out as such. The language in this section is value-neutral. It is simply
+describing facts.
 
 ## Considered options
 
@@ -84,22 +89,20 @@ The language in this section is value-neutral. It is simply describing facts.
 
 ## Decision
 
-This section describes our response to these forces. It is stated in full sentences,
-with active voice. "We will …"
+This section describes our response to these forces. It is stated in full sentences, with active voice. "We will …"
 
 ## Status
 
 Accepted (or "proposed", "deprecated" or "superseded"). A decision may be "proposed"
-if the project stakeholders haven't agreed with it yet, or "accepted" once it is agreed.
-If a later ADR changes or reverses a decision, it may be marked as "deprecated" or
+if the project stakeholders haven't agreed with it yet, or "accepted" once it is agreed. If a later ADR changes or
+reverses a decision, it may be marked as "deprecated" or
 "superseded" with a reference to its replacement.
 
 ## Consequences
 
-This section describes the resulting context, after applying the decision. All consequences
-should be listed here, not just the "positive" ones. A particular decision may have
-positive, negative, and neutral consequences, but all of them affect the team and project
-in the future.
+This section describes the resulting context, after applying the decision. All consequences should be listed here, not
+just the "positive" ones. A particular decision may have positive, negative, and neutral consequences, but all of them
+affect the team and project in the future.
 
 ## Participants
 
