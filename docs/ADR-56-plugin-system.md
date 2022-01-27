@@ -170,16 +170,16 @@ There is a template structure to follow but each plugin can have its own structu
 
 ```jsx
 PluginNameFolder
-Scripts
-Editor
-ScriptableObjects
-Resources
-Tests
-Visuals
-Prefabs
-Textures
-UI
-Animations
+...Scripts
+...Editor
+...ScriptableObjects
+...Resources
+...Tests
+...Visuals
+......Prefabs
+......Textures
+......UI
+......Animations
 ...
 ```
 
