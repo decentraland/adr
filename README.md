@@ -57,6 +57,7 @@
 - [ADR-56 - Renderer plugin system](docs/ADR-56-plugin-system.md)
 - [ADR-57 - Avatar assembling for visualization](docs/ADR-57-avatar-assembling-for-visualization.md)
 - [ADR-59 - User Store catalyst entity](docs/ADR-59-user-store-catalyst-entity.md)
+
 ## How to?
 
 Read [the ADR explaining the rationale](docs/ADR-1-documenting-architecture-decisions.md), by Michael Nygard.
