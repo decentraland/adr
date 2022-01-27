@@ -1,4 +1,4 @@
-# Catalyst Conent validations
+# Catalyst Content validations
 
 ## Context and Problem Statement
 
@@ -39,6 +39,7 @@ The following (named) validations MUST be executed in every entity:
 PROFILE entities will have following validations:
 
 - [PROFILE ACCESS]
+- [PROFILE THUMBNAIL]
 
 SCENE entities will have following validations:
 
@@ -77,6 +78,7 @@ Catalysts will need to provide external calls that may introduce some complexity
 [size]: ./resources/ADR-51/size.md
 [access]: ./resources/ADR-51/access.md
 [profile access]: ./resources/ADR-51/profile-access.md
+[profile thumbnail]: ./resources/ADR-51/profile-thumbnail.md
 [scene access]: ./resources/ADR-51/scene-access.md
 [store access]: ./resources/ADR-51/store-access.md
 [wearable access]: ./resources/ADR-51/wearable-access.md
