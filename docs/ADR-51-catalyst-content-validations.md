@@ -1,4 +1,4 @@
-# Catalyst Conent validations
+# Catalyst Content validations
 
 ## Context and Problem Statement
 
