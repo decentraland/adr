@@ -103,6 +103,10 @@ The payload of the response looks like:
 ]
 ```
 
+## Status
+
+Stores can be currently deployed and consumed on all environments.
+
 ## Participants
 
 - @guidota
