@@ -51,7 +51,7 @@ Store {
 
 `links`: A list of different kind of links, initially, users can have links for `website`, `facebook`, `twitter` and `discord` but made it as a list to support many other links in the future. The `name` property acts as the identifier and the `url` property contains the actual link.
 
-`images`: A list of data containing pointers to the different images stored in the catalysts to be used in the store. Currently users can have the store banner image but it is a list to support other kind of images in the future. The maximum size files can have is `1MB`
+`images`: A list of data containing pointers to the different images stored in the catalysts to be used in the store. Currently users can have the store banner image but it is a list to support other kind of images in the future. The maximum size these images can have is of `1MB`
 
 `version`: The current version of the store entity. In case the schema changes, the version can be used to handle the store differently depending on it.
 
