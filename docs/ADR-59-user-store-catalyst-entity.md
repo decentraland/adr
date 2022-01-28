@@ -59,7 +59,9 @@ Store {
 
 The Store entity can be fetched via:
 
-```GET https://peer-lb.decentraland.org/content/entities/store?pointer=urn:decentraland:off-chain:marketplace-stores:{address}```
+```
+GET https://peer-lb.decentraland.org/content/entities/store?pointer=urn:decentraland:off-chain:marketplace-stores:{address}
+```
 
 Where the address is the address of the owner of the store.
 
