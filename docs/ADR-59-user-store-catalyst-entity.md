@@ -45,7 +45,7 @@ Store {
 
 `id`: The `urn` used as pointer to the entity, with the following structure: `urn:decentraland:off-chain:marketplace-stores:${address}`
 
-`owner`: The address of the user that owns the store.
+`owner`: The address of the user that owns the store. Currently stores can only be uploaded by their owners, meaning that address A will not be able to upload a store for address B.
 
 `description`: A description for the user store.
 
