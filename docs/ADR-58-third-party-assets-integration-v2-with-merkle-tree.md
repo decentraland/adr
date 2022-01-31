@@ -29,10 +29,10 @@ Third party's managers won't need to submit items to the blockchain. It means th
 
 The TPR smart contract supports different roles:
 
-- Owner: the address that updates core parts of the smart contract like the accepted token (MANA), the committee smart contract address, the fee collector address, the price in USD for each item _`itemSlotPrice`_), the oracle address, and the initial values for the third parties and their items (approved or rejected).
-- Third party agregator: along with the third parties addition. They are going to be able to add item slots to third parties. Useful in case the DAO decides to assign more items to a third party out of charge. For the time being this address will be the Polygon DAO committee multisig.
-- Committee Members (curators): the committee members are going to be validated by querying the committee smart contract directly. Committee members can approve/reject third parties and their items. They can also review third parties items with one simple transaction by submitting a merkle tree root and process items consumption signatures from third parties managers.
-- Third Party Managers: the third party managers are a set of addresses that can add items to the third party record, previously added by someone on the committee, and update the third party and items metadata. Also, they sign messages to consume items. The message and the signature must be submitted by a member of the committee after checking if it is genuine.
+- **Owner**: the address that updates core parts of the smart contract like the accepted token (MANA), the committee smart contract address, the fee collector address, the price in USD for each item _`itemSlotPrice`_), the oracle address, and the initial values for the third parties and their items (approved or rejected).
+- **Third party agregator**: along with the third parties addition. They are going to be able to add item slots to third parties. Useful in case the DAO decides to assign more items to a third party out of charge. For the time being this address will be the Polygon DAO committee multisig.
+- **Committee Members (curators)**: the committee members are going to be validated by querying the committee smart contract directly. Committee members can approve/reject third parties and their items. They can also review third parties items with one simple transaction by submitting a merkle tree root and process items consumption signatures from third parties managers.
+- **Third Party Managers**: the third party managers are a set of addresses that can add items to the third party record, previously added by someone on the committee, and update the third party and items metadata. Also, they sign messages to consume items. The message and the signature must be submitted by a member of the committee after checking if it is genuine.
 
 #### Third Party Record
 
@@ -78,11 +78,15 @@ Items are encourage to not be submitted to the blockchain in order to reduce the
 
 ### Item submission process
 
-#### UI
+#### Builder
+
+// @TODO: How we are going to keep things in the UI, How are we going to store things in the server. Locking collection/items urns. How we are going to use the catalysts to check item statuses. List further improvements
 
 ### Item curation process
 
-#### UI
+#### Builder
+
+// @TODO: How are we going to manage curations, limitations (one curation at a time per third party). Usage of the (https://github.com/decentraland/content-hash-tree) to generate the tree. List further improvements
 
 #### Catalyst acceptance criteria
 
