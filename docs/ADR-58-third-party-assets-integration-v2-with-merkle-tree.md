@@ -2,86 +2,79 @@
 
 ## Statement of the problem
 
-The way we thought the [item submission and curation](./ADR-42-third-party-assets-integration.md#third-party-collection-smart-contract-registry) by third party managers and curators respectively do not scale . Managers need to submit all the items with their metadata to the blockchain, and curators need to approve them. Based on Polygon's gas block limit, items can be submitted/curated by batches of ~50. For a collection with 100k items, it is 2k transactions. The process as designed is completely time and money-consuming. In this document we will solve this issue by leveraging the Decentraland catalyst status quo.
+The way we thought the [item submission and curation](./ADR-42-third-party-assets-integration.md#third-party-collection-smart-contract-registry) by third party managers and curators respectively do not scale . Managers need to submit all the items with their metadata to the blockchain, and curators need to approve them. Based on Polygon's gas block limit, items can be submitted/curated by batches of ~50. For a collection with 100k items, they are 2k transactions. The process as designed is completely time and money-consuming. By leveraging on the Decentraland catalyst status quo the number of transactions can be reduced to 1.
 
 ## Proposed solution
 
-## Third Party Collection Smart Contract Registry updates
+In order to make the whole process to scale while keeping decentralization a set of changes to the current solution proposed may be needed.
 
-## Contract Implementation
+### Third Party Collection Smart Contract Registry updates
 
-// Write here about:
-// - items are not going to be submitted to the blockchain
-// - the item slots are going to be consumed by submitting receipts (signatures). Explain what is involved in the signature
-// - The third party items review is going to happen at third party level by just submitting a merkle tree root of the urn + content hashes of the items being reviewed.
-// - Third party agregator can add item slots in case a DAO proposal requires it.
+#### Contract Implementation
 
-### Roles Update
+Third party's managers won't need to submit items to the blockchain. It means that it doesn't matter the size of the collection because no transactions is needed. The only action needed from the third party managers perspective is to sign a message with the third party urn, the amount of items to be consumed, and a random salt of 32 bytes every time they want to consume item slots. From the curation part, items are going to be reviewed by curators by just submitting a [merkle tree root](./ADR-55-third-party-curation-with-merkle-tree.md#item-curation) at the third party level to the blockchain along with the messages signed by the third party managers described before.
 
-// @TODO: review this
+- Updated methods:
+
+  - _`buyItemSlots`_: Items slots are going to be bought by unit using an [USD/MANA oracle](./ADR-54-oracle-for-mana-pricing.md).
+
+- New methods:
+
+  - _`addItemSlots`_: Third party agregators can add item slots by a successfull DAO proposal.
+  - _`consumeSlots`_: Single method to process items consuption.
+  - _`reviewThirdPartyWithRoot`_: Curators review the third party by submitting a merkle tree root generated with the items' urn and content hash to be reviewed. Optional, this method can receives item slots consumption signatures to review + consume items in one transaction for curators.
+  - _`setRules`_: Curators can add rules in order to reject third party collections/items like: `{third-party-urn}:{collection-id}:*` -> reject all the collection's items. **This method is not going to be exposed UI for the time being as third party item rejection granularity has not been defined yet**.
+
+#### Roles
 
 The TPR smart contract supports different roles:
 
-- Owner: the address that updates core parts of the smart contract like the accepted token (MANA), the committee smart contract address, the fee collector address, and the initial values for third parties and their items (approved or rejected).
-- Third party agregator: an address that can add third party records. For the time being this address will be the Polygon DAO committee multisig.
-- Committee Members: the committee members are going to be validated by querying the committee smart contract directly. Committee members can approve/reject third parties and their items.
-- Third Party Managers: the third party managers are a set of addresses that can add items to the third party record, previously added by someone on the committee, and update the third party and items metadata.
+- Owner: the address that updates core parts of the smart contract like the accepted token (MANA), the committee smart contract address, the fee collector address, the price in USD for each item _`itemSlotPrice`_), the oracle address, and the initial values for the third parties and their items (approved or rejected).
+- Third party agregator: along with the third parties addition. They are going to be able to add item slots to third parties. Useful in case the DAO decides to assign more items to a third party out of charge. For the time being this address will be the Polygon DAO committee multisig.
+- Committee Members (curators): the committee members are going to be validated by querying the committee smart contract directly. Committee members can approve/reject third parties and their items. They can also review third parties items with one simple transaction by submitting a merkle tree root and process items consumption signatures from third parties managers.
+- Third Party Managers: the third party managers are a set of addresses that can add items to the third party record, previously added by someone on the committee, and update the third party and items metadata. Also, they sign messages to consume items. The message and the signature must be submitted by a member of the committee after checking if it is genuine.
 
-### Third Party Records
-
-The third party record is going to be identified by a unique id. For simplicity and in order to support different uses cases, this id is going to be a string. By using a string, we can support ids as URNs, UUIDs, auto incremental values, etc. The current identifier used in Decentraland is the URN, therefore, an id urn like `urn:decentraland:matic:collections-thirdparty1` is what we expect to be using.
-
-Each third party record can only be added by a committee member and it has the following properties:
+#### Third Party Record
 
 ```solidity
 struct ThirdParty {
-    string metadata;
-    string resolver;
-    uint256 maxItems;
-    bool isApproved;
-    mapping(address => bool) managers;
-    mapping(string => Item) items;
-    string[] itemIds;
-    uint256 registered;
-}
+        bool isApproved;
+        bytes32 root; // new
+        uint256 maxItems;
+        uint256 consumedSlots; // new
+        uint256 registered;
+        string metadata;
+        string resolver;
+        string[] itemIds;
+        mapping(bytes32 => uint256) receipts; // new
+        mapping(address => bool) managers;
+        mapping(string => Item) items;
+        mapping(string => bool) rules; // new
+    }
 ```
 
-- _`metadata`_: string with the following shape: `type:version:name:description`. i.e: `tp:1:third party 1:the third party 1 description`.
-- _`resolver`_: string with the third party API resolver. This API will be used for services to get which Decentraland asset should be mapped to which NFT token. _We call Decentraland asset to every asset that is submitted to the Decentraland catalyst_. i.e: `https://api.thirdparty1.com/v1/get-owned-nfts/:owner`
-- _`maxItems`_: represents the maximum number of items that a third party can have. We call them _item slots_. Item slots can be bought by everyone at any time, in multiple occasions, by using MANA. So, it is not necessary to be a third party manager to buy item slots. Item slots are going to be bought by tiers (tier1: 100 items, tier2: 1000 items, tier3: 1000, etc.). The tiers' value and price are going to be defined in another smart contract called Tiers that will allow querying the tiers' price and value by its index.
 - _`isApproved`_: whether a third party is approved or not.
-- _`managers`_: third party managers.
-- _`items`_: third party's items. An item has its own properties defined [here](#items).
-- _`itemIds`_: in order to allow looping through the items added without the need of indexing historic events, we need to keep track of their ids.
+- _`root`_: current merkle tree root. This root is going to be used by the Decentraland catalyst to check if an item deployment is valid or not.
+- _`maxItems`_: represents the maximum number of items that a third party can have. We call them _item slots_. Item slots can be bought by everyone at any time, on multiple occasions, by using MANA. So, it is not necessary to be a third party manager to buy item slots. Item slots are going to be bought by unit. The price is set in USD dollar defined in the _`itemSlotPrice`_ variable.
+- _`consumedSlots`_: the number of items consumed by a third party.
 - _`registered`_: simple boolean that helps to check whether a third party has been added or not.
+- _`metadata`_: string with the following shape: `type:version:name:description`. i.e: `tp:1:third party 1:the third party 1 description`. We may include collections metadata by changing the metadata version.
+- _`resolver`_: string with the third party API resolver. This API will be used for services to get which Decentraland asset should be mapped to which NFT token. _We call Decentraland asset to every asset that is submitted to the Decentraland catalyst_. i.e: `https://api.thirdparty1.com/v1/get-owned-nfts/:owner`
+- _`itemIds`_: in order to allow looping through the items added without the need of indexing historic events, we need to keep track of their ids. **IMPORTANT**: Items reviewed by using a merkle tree root, are not going to be submitted to the blockchain.
+- _`receipts`_: mapping of item consumptions messages hash. We will use this in order to prevent double-spending them.
+- _`managers`_: third party managers.
+- _`items`_: third party's items. **IMPORTANT**: Items reviewed by using a merkle tree root, are not going to be submitted to the blockchain.
+- _`rules`_: third party's rules. **IMPORTANT**: Rules are not going to be used for the time being. The rejection of third parties and their items are still a pending topic.
 
 A third party record can't be removed but approved/rejected by a committee member.
 
-As we mentioned with the items, the third parties can be looped off-chain without the need of indexing historic events.
+Third parties can be looped off-chain without the need of indexing historic events.
 
 ### Items
 
-Items are going to be identifying with an id like the third party records. In order to support the concept of erc721 contracts or collections, the item id will looks like: `collection:item`. i.e: `0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1` (NFT smart contract: 0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd, NFT tokenId: 1), `great_collection:type1`, etc.
+Items are encourage to not be submitted to the blockchain in order to reduce the number of transactions. We will keep the old way of submitting them but we may remove it in a near future. The only way available to loop throught the third parties' items is by using the Decentraland catalysts:
 
-As you may notice, the concept of a collection is merely "virtual" and will be part of the item id. If there is a use case where a third party has multiple collections, they can be easily filtered by comparing strings off-chain.
-
-Items can only be added to a third party if there are item slots available.
-
-```solidity
-struct Item {
-    string metadata;
-    string contentHash;
-    bool isApproved;
-    uint256 registered;
-}
-```
-
-- _`metadata`_: string with the following shape: `type:version:name:description:category:bodyshapes`. i.e: `w:1:third party item 1:the third party item 1 description:hat:BaseMale,BaseFemale`.
-- _`contentHash`_: string with the content hash of the item. We are using content hashing like IPFS.
-- _`isApproved`_: whether an item is approved or not.
-- _`registered`_: simple boolean that helps to check whether an item has been added or not.
-
-Similar to third parties, items can't be removed but approved/rejected by committee members.
+// TODO: add endpoint example
 
 ### Item submission process
 
@@ -93,17 +86,71 @@ Similar to third parties, items can't be removed but approved/rejected by commit
 
 #### Catalyst acceptance criteria
 
+The Decentraland catalysts will use the [merkle-tree-content-hash](https://github.com/decentraland/content-hash-tree) lib in order to validate whether an item deployment is valid or not. Each third party wearable entity deployment must have along with the current data, an `index` and a `proof`:
+
+```typescript
+{
+    "index": 61575,
+    "proof": [
+        "0xc8ae2407cffddd38e3bcb6c6f021c9e7ac21fcc60be44e76e4afcb34f637d562",
+        "0x16123d205a70cdeff7643de64cdc69a0517335d9c843479e083fd444ea823172",
+        "0x1fbe73f1e71f11fb4e88de5404f3177673bdfc89e93d9a496849b4ed32c9b04f",
+        "0xed60c527e6774dbf6750f7e28dbf93c25a22660085f709c3a0a772606768fd91",
+        "0x7aff1c982d6a98544c126a0676ac98102533072b6c4506f31b413757e38f4c30",
+        "0x5f5170cdf5fdd7bb25c225d08b48361e41f05477880812f7f5954e75daa6c667",
+        "0x08ae25d236fa4105b2c5136938bc42f55d339f8e4d9feb776799681b8a8a48e7",
+        "0xadfcc425df780be50983856c7de4d405a3ec054b74020628a9d13fdbaff35df7",
+        "0xda4ee1c4148a25eefbef12a92cc6a754c6312c1ff15c059f46e049ca4e5ca43b",
+        "0x98c363c32c7b1d7914332efaa19ad2bee7e110d79d7690650dbe7ce8ba1002a2",
+        "0x0bd810301fbafeb4848f7b60a378c9017a452286836d19a108812682edf8a12a",
+        "0x1533c6b3879f90b92fc97ec9a1db86f201623481b1e0dc0eefa387584c5d93da",
+        "0x31c2c3dbf88646a964edd88edb864b536182619a02905eaac2a00b0c5a6ae207",
+        "0xc2088dbbecba4f7dd06c689b7c1a1e6a822d20d4665b2f9353715fc3a5f0d588",
+        "0x9e191109e34d166ac72033dce274a82c488721a274087ae97b62c9a51944e86f",
+        "0x5ff2905107fe4cce21c93504414d9548f311cd27efe5696c0e03acc059d2e445",
+        "0x6c764a5d8ded16bf0b04028b5754afbd216b111fa0c9b10f2126ac2e9002e2fa"
+    ]
+}
+```
+
+With the item's index, proof, urn, and content hash, the catalyst can check whether the item is part of the merkle tree submitted to the blockchain. To do that, the catalyst will need to fetch the current third party's root and call the `verifyProof` method as follows:
+
+```typescript
+// check whether a deployment is part of the root or not.
+const isPartOfTheTree = verifyProof(index, urn, contentHash, proof, root)
+```
+
+Check that in order to guaranteed syncing with other catalysts and to validate item deployments, the third party's root needs to be fetched in the block where the deployment happened.
+
+```GraphQL
+{
+  thirdParties(block:{number : {blockNumber}}) {
+    root
+  }
+}
+```
+
 #### Curation tracking
 
 Extending the curation section explaning [here](./ADR-55-third-party-curation-with-merkle-tree.md#item-curation)
 
-Each deployment must check if the URN has `collections-thirdparty` in order to know that the [tpr-graph](https://github.com/decentraland/tpr-graph) should be used. The query to that subgraph must check:
+Whenever a third party manager wants to publish new items, they need to sign a message with the items' consumption receipt. Every time a curator reviews new items (not applicable for item updates), the receipts are going to be submitted to the blockchain emitting a _`ItemSlotsConsumed`_ event. We will use that event in the third party subgraph in order to track the number of items reviewed by curators. For algorithm-generated collections, we will still submit the original number of items consumed but as the curator will review just a portion of the items, we will need to use a fixed number of items to compute how much we need to pay for that review to the curator. That number must be defined by the DAO.
 
-1. If there is a record with the urn:
+E.g: If the DAO defines 50 as the number of items to be paid for algorithm-generated collections, the curator will receive a payment of 50 items even if the collection has 100k items' consumptions.
 
-`urn:decentraland:polygon:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0`.
+Example of a query
 
-2. If the content hash of the item with id `0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0` is the same as the content hash of the item that is being uploaded
+```GraphQL
+{
+  curations(where:{curator:{address}}) {
+   	thirdPartyId
+    qty
+    receipts {
+      qty
+    }
+  }
+}
+```
 
 ## Participants
 
