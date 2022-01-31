@@ -16,11 +16,12 @@ Third party's managers won't need to submit items to the blockchain. It means th
 
 - Updated methods:
 
-  - _`buyItemSlots`_: Items slots are going to be bought by unit using an [USD/MANA oracle](./ADR-54-oracle-for-mana-pricing.md).
+  - _`addThirdParties`_: when a third party is added, it can start with item slots.
+  - _`updateThirdParties`_: item slots can be increased if the method is called by a third party aggregator. It must revert if the caller is not allowed.
+  - _`buyItemSlots`_: items slots are going to be bought by unit using an [USD/MANA oracle](./ADR-54-oracle-for-mana-pricing.md).
 
 - New methods:
 
-  - _`addItemSlots`_: Third party agregators can add item slots by a successfull DAO proposal.
   - _`consumeSlots`_: Single method to process items consuption.
   - _`reviewThirdPartyWithRoot`_: Curators review the third party by submitting a merkle tree root generated with the items' urn and content hash to be reviewed. Optional, this method can receives item slots consumption signatures to review + consume items in one transaction for curators.
   - _`setRules`_: Curators can add rules in order to reject third party collections/items like: `{third-party-urn}:{collection-id}:*` -> reject all the collection's items. **This method is not going to be exposed UI for the time being as third party item rejection granularity has not been defined yet**.
@@ -30,7 +31,7 @@ Third party's managers won't need to submit items to the blockchain. It means th
 The TPR smart contract supports different roles:
 
 - **Owner**: the address that updates core parts of the smart contract like the accepted token (MANA), the committee smart contract address, the fee collector address, the price in USD for each item _`itemSlotPrice`_), the oracle address, and the initial values for the third parties and their items (approved or rejected).
-- **Third party agregator**: along with the third parties addition. They are going to be able to add item slots to third parties. Useful in case the DAO decides to assign more items to a third party out of charge. For the time being this address will be the Polygon DAO committee multisig.
+- **Third party aggregator**: along with the third parties addition. They are going to be able to add item slots to third parties. Useful in case the DAO decides to assign more items to a third party out of charge. For the time being this address will be the Polygon DAO committee multisig.
 - **Committee Members (curators)**: the committee members are going to be validated by querying the committee smart contract directly. Committee members can approve/reject third parties and their items. They can also review third parties items with one simple transaction by submitting a merkle tree root and process items consumption signatures from third parties managers.
 - **Third Party Managers**: the third party managers are a set of addresses that can add items to the third party record, previously added by someone on the committee, and update the third party and items metadata. Also, they sign messages to consume items. The message and the signature must be submitted by a member of the committee after checking if it is genuine.
 
@@ -74,7 +75,19 @@ Third parties can be looped off-chain without the need of indexing historic even
 
 Items are encourage to not be submitted to the blockchain in order to reduce the number of transactions. We will keep the old way of submitting them but we may remove it in a near future. The only way available to loop throught the third parties' items is by using the Decentraland catalysts:
 
-// TODO: add endpoint example
+```bash
+@GET https://peer.decentraland.org/content/entities/currently-pointed/{urnPrefix}
+
+# Fetch
+https://peer.decentraland.org/content//entities/currently-pointed/urn:decentraland:polygon:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd
+
+# Response: Item pointers
+[
+   "QmeA8RpAtqU6gCebNaWRXtM9nQs3ugzzbeQm3L7uKrP4Jp",
+   "QmdajbrYt4pdkkW2R2PcZ8iLz55uzgGceo4hJMCirHEpPK",
+   "QmXokfUunNwLY9hw7U9x2Q3NJ7VFXt65rVDRGzFzPzEXvX"
+ ]
+```
 
 ### Item submission process
 
