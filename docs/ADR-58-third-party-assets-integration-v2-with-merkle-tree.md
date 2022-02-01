@@ -65,7 +65,7 @@ struct ThirdParty {
 - _`receipts`_: mapping of item consumptions messages hash. We will use this in order to prevent double-spending them.
 - _`managers`_: third party managers.
 - _`items`_: third party's items. **IMPORTANT**: Items reviewed by using a merkle tree root, are not going to be submitted to the blockchain.
-- _`rules`_: third party's rules. **IMPORTANT**: Rules are not going to be used for the time being. The rejection of third parties and their items are still a pending topic.
+- _`rules`_: third party's rules. **IMPORTANT**: Rules are not going to be used for the time being. The rejection of third parties and their items is still a pending topic.
 
 A third party record can't be removed but approved/rejected by a committee member.
 
