@@ -59,7 +59,7 @@ struct ThirdParty {
 - _`maxItems`_: represents the maximum number of items that a third party can have. We call them _item slots_. Item slots can be bought by everyone at any time, on multiple occasions, by using MANA. So, it is not necessary to be a third party manager to buy item slots. Item slots are going to be bought by unit. The price is set in USD dollar defined in the _`itemSlotPrice`_ variable.
 - _`consumedSlots`_: the number of items consumed by a third party.
 - _`registered`_: simple boolean that helps to check whether a third party has been added or not.
-- _`metadata`_: string with the following shape: `type:version:name:description`. i.e: `tp:1:third party 1:the third party 1 description`. We may include collections metadata by changing the metadata version.
+- _`metadata`_: string with the following shape: `type:version:name:description`. i.e: `tp:1:third party 1:the third party 1 description`. By changing the metadata version, we could modify what it contains, for example, we may include the collections metadata by changing the metadata version to 2.
 - _`resolver`_: string with the third party API resolver. This API will be used for services to get which Decentraland asset should be mapped to which NFT token. _We call Decentraland asset to every asset that is submitted to the Decentraland catalyst_. i.e: `https://api.thirdparty1.com/v1/get-owned-nfts/:owner`
 - _`itemIds`_: in order to allow looping through the items added without the need of indexing historic events, we need to keep track of their ids. **IMPORTANT**: Items reviewed by using a merkle tree root, are not going to be submitted to the blockchain.
 - _`receipts`_: mapping of item consumptions messages hash. We will use this in order to prevent double-spending them.
