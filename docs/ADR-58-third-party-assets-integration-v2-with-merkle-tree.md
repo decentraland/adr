@@ -12,7 +12,7 @@ In order to make the whole process to scale while keeping decentralization a set
 
 #### Contract Implementation
 
-Third party's managers won't need to submit items to the blockchain. It means that it doesn't matter the size of the collection because no transactions is needed. The only action needed from the third party managers perspective is to sign a message with the third party urn, the amount of items to be consumed, and a random salt of 32 bytes every time they want to consume item slots. From the curation part, items are going to be reviewed by curators by just submitting a [merkle tree root](./ADR-55-third-party-curation-with-merkle-tree.md#item-curation) at the third party level to the blockchain along with the messages signed by the third party managers described before.
+Third party's managers won't need to submit items to the blockchain, that means that it doesn't matter the size of the collection because no transactions is needed. The only action needed from the third party managers perspective is to sign a message with the third party urn, the amount of items slots to be consumed and a random salt of 32 bytes every time they want publish new items. From the curation part, items will be reviewed by curators by just submitting a [merkle tree root](./ADR-55-third-party-curation-with-merkle-tree.md#item-curation) at the third party level to the blockchain along with the messages signed by the third party managers mentioned before.
 
 - Updated methods:
 
