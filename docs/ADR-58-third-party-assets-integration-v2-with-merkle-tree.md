@@ -23,7 +23,7 @@ Third party's managers won't need to submit items to the blockchain, that means 
 - New methods:
 
   - _`consumeSlots`_: Single method to process items consuption.
-  - _`reviewThirdPartyWithRoot`_: Curators review the third party by submitting a merkle tree root generated with the items' urn and content hash to be reviewed. Optional, this method can receives item slots consumption signatures to review + consume items in one transaction for curators.
+  - _`reviewThirdPartyWithRoot`_: Curators review the third party by submitting a merkle tree root generated with the items' urn and content hash to be reviewed. Optional, this method can receive item slots consumption signatures to review + consume items in one transaction for curators.
   - _`setRules`_: Curators can add rules in order to reject third party collections/items like: `{third-party-urn}:{collection-id}:*` -> reject all the collection's items. **This method is not going to be exposed UI for the time being as third party item rejection granularity has not been defined yet**.
 
 #### Roles
