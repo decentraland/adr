@@ -56,7 +56,7 @@ struct ThirdParty {
 
 - _`isApproved`_: whether a third party is approved or not.
 - _`root`_: current merkle tree root. This root is going to be used by the Decentraland catalyst to check if an item deployment is valid or not.
-- _`maxItems`_: represents the maximum number of items that a third party can have. We call them _item slots_. Item slots can be bought by everyone at any time, on multiple occasions, by using MANA. So, it is not necessary to be a third party manager to buy item slots. Item slots are going to be bought by unit. The price is set in USD dollar defined in the _`itemSlotPrice`_ variable.
+- _`maxItems`_: represents the maximum number of items that a third party can have. We call them _item slots_. Item slots can be bought by everyone at any time, on multiple occasions, by using MANA. It is not necessary to be a third party manager to buy item slots. Item slots are going to be bought by unit. The price is set in USD dollar defined in the _`itemSlotPrice`_ variable.
 - _`consumedSlots`_: the number of items consumed by a third party.
 - _`registered`_: simple boolean that helps to check whether a third party has been added or not.
 - _`metadata`_: string with the following shape: `type:version:name:description`. i.e: `tp:1:third party 1:the third party 1 description`. By changing the metadata version, we could modify what it contains, for example, we may include the collections metadata by changing the metadata version to 2.
