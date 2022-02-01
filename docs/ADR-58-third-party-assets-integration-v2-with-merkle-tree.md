@@ -145,7 +145,7 @@ With the item's index, proof, urn, and content hash, the catalyst can check whet
 const isPartOfTheTree = verifyProof(index, urn, contentHash, proof, root)
 ```
 
-Check that in order to guaranteed syncing with other catalysts and to validate item deployments, the third party's root needs to be fetched in the block where the deployment happened.
+Check that in order to have guaranteed syncing with other catalysts and to validate item deployments, the third party's root needs to be fetched in the block where the deployment happened.
 
 ```GraphQL
 {
