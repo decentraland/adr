@@ -2,7 +2,7 @@
 
 ## Statement of the problem
 
-The way we thought the [item submission and curation](./ADR-42-third-party-assets-integration.md#third-party-collection-smart-contract-registry) by third party managers and curators respectively do not scale . Managers need to submit all the items with their metadata to the blockchain, and curators need to approve them. Based on Polygon's gas block limit, items can be submitted/curated by batches of ~50. For a collection with 100k items, they are 2k transactions. The process as designed is completely time and money-consuming. By leveraging on the Decentraland catalyst status quo the number of transactions can be reduced to 1.
+The way we thought the [item submission and curation](./ADR-42-third-party-assets-integration.md#third-party-collection-smart-contract-registry) by third party managers and curators respectively does not scale. Managers need to submit all the items with their metadata to the blockchain, and curators need to approve them. Based on Polygon's gas block limit, items can be submitted/curated in batches of ~50. For a collection with 100k items that means that 2k transactions must be done. The process as designed is completely time and money-consuming. By leveraging on the Decentraland catalyst status quo the number of transactions can be reduced to 1.
 
 ## Proposed solution
 
