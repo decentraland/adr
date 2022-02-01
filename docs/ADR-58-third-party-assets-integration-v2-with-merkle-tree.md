@@ -76,18 +76,26 @@ Third parties can be looped off-chain without the need of indexing historic even
 Items are encourage to not be submitted to the blockchain in order to reduce the number of transactions. We will keep the old way of submitting them but we may remove it in a near future. The only way available to loop throught the third parties' items is by using the Decentraland catalysts:
 
 ```bash
-@GET https://peer.decentraland.org/content/entities/currently-pointed/{urnPrefix}
+@GET https://peer-lb.decentraland.org/content/entities/currently-pointed/{urnPrefix}
 
 # Fetch
-https://peer.decentraland.org/content//entities/currently-pointed/urn:decentraland:polygon:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd
+https://peer-lb.decentraland.org/content/entities/currently-pointed/urn:decentraland:polygon:collections-thirdparty:cryptohats
 
 # Response: Item pointers
 [
-   "QmeA8RpAtqU6gCebNaWRXtM9nQs3ugzzbeQm3L7uKrP4Jp",
-   "QmdajbrYt4pdkkW2R2PcZ8iLz55uzgGceo4hJMCirHEpPK",
-   "QmXokfUunNwLY9hw7U9x2Q3NJ7VFXt65rVDRGzFzPzEXvX"
- ]
-```
+  {
+    "pointer": "urn:decentraland:polygon:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd",
+    "entityId": "QmeA8RpAtqU6gCebNaWRXtM9nQs3ugzzbeQm3L7uKrP4Jp"
+  },
+  {
+    "pointer": "urn:decentraland:polygon:collections-thirdparty:cryptohats:0xabcdefghijk",
+    "entityId": "QmdajbrYt4pdkkW2R2PcZ8iLz55uzgGceo4hJMCirHEpPK"
+  },
+  {
+    "pointer": "urn:decentraland:polygon:collections-thirdparty:cryptohats:0xlmnopqrst",
+    "entityId": "QmXokfUunNwLY9hw7U9x2Q3NJ7VFXt65rVDRGzFzPzEXvX"
+  }
+]
 
 ### Item submission process
 
