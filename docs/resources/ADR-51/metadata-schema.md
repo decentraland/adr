@@ -1,6 +1,6 @@
 ## Metadata Schema
 
-Validates entity metadata against its corresponding schema
+Validates entity metadata against its corresponding schema, which can be found in [common-schemas repository](https://github.com/decentraland/common-schemas/tree/main/src/platform)
 
 ```
 parameter ADR_45_TIMESTAMP = 1648771200

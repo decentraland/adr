@@ -4,7 +4,11 @@ Validates that the full request size is within limits
 
 ```
 parameter ADR_45_TIMESTAMP = 1648771200
-
+parameter MAX_SIZES_BY_ENTITY_TYPE:
+  - SCENE: 15MB
+  - WEARABLE: 3MB
+  - PROFILE: 2MB
+  - STORE: 1MB
 ----
 
 1. Let MAX_SIZE be the maximum size in bytes allowed by ENTITY_TYPE
