@@ -6,7 +6,7 @@ The way we thought the [item submission and curation](./ADR-42-third-party-asset
 
 ## Proposed solution
 
-In order to make the whole process to scale while keeping decentralization a set of changes to the current solution proposed may be needed.
+In order to make the whole process scale while keeping decentralization a set of changes to the current proposed solution is needed.
 
 ### Third Party Collection Smart Contract Registry updates
 
