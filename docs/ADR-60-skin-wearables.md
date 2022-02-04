@@ -1,4 +1,4 @@
-# Skin wearables in Builder editor
+# Skin wearables
 
 ## Context and Problem Statement
 
