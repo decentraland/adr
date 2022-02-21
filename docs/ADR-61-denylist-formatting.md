@@ -32,6 +32,8 @@ Each catalyst could have their own private file for denylisted items.
 
 There might also be a common denylist file saved in the blockchain that every catalyst in the DAO could be forced to implement, each denylisted item in this file should need to be added via a DAO Poll. 
 
+There could be a denylist in the client, preventing messages from certain addresses, downloading certain scenes, etc.
+
 ## Participants
 
 @jmoguilevsky
