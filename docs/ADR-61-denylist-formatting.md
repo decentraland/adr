@@ -27,12 +27,7 @@ If catalysts implement the denylist should impact the following way in the catal
 - Deployments by denylisted addresses or containing denylisted content won't be accepted
 - Catalysts should expose a way to know if a item is denylisted
 
-
-Each catalyst could have their own private file for denylisted items.
-
-There might also be a common denylist file saved in the blockchain that every catalyst in the DAO could be forced to implement, each denylisted item in this file should need to be added via a DAO Poll. 
-
-There could be a denylist in the client, preventing messages from certain addresses, downloading certain scenes, etc.
+There might also be a common denylist file saved in the blockchain that every catalyst in the DAO will be forced to implement, each denylisted item in this file should need to be added via a DAO Poll. 
 
 ## Participants
 
