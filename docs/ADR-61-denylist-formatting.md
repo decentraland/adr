@@ -4,7 +4,7 @@
 In the context of making sure that platform services don't serve unwanted content (i.e. copyright, illegal, etc.) a good solution would be to implement a denylist of entities, content and addresses. Moreover, taking into account this [proposal](https://governance.decentraland.org/proposal/?id=f68cd110-3e8c-11ec-be0c-afec86cba5e5) from the DAO, there should be a mechanism for the community to have lists of denylisted items in world.
 
 ## Proposed solution
-The proposed solution for having a denylist is to have a single file type for denylisting where each line is denylisted item. If a line starts with a hashtag consider it a comment.
+The proposed solution for having a denylist is to have a single with the list of denylisted items. The format of that files consists of having one line per denylisted item. If a line starts with a hashtag consider it a comment.
 i.e.
 
 ```
