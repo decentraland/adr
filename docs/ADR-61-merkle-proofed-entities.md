@@ -61,82 +61,82 @@ entity hashing procedure before verifying the entity against the Merkle Tree.
 
 Example of a Wearable entity metadata:
 
-```json
+```typescript
 {
-  "id": "urn:decentraland:off-chain:base-avatars:aviatorstyle",
-  "name": "Aviator Style",
-  "description": "aDescription",
-  "image": "image.png",
-  "thumbnail": "thumbnail.png",
-  "collectionAddress": "0x06012c8cf97bead5deae237070f9587f8e7a266d",
-  "rarity": "unique",
-  "data": {
-    "tags": ["male", "man", "base-wearable"],
-    "category": "eyewear",
-    "replaces": [],
-    "hides": [],
-    "representations": [
+  id: "urn:decentraland:off-chain:base-avatars:aviatorstyle",
+  name: "Aviator Style",
+  description: "aDescription",
+  image: "image.png",
+  thumbnail: "thumbnail.png",
+  collectionAddress: "0x06012c8cf97bead5deae237070f9587f8e7a266d",
+  rarity: "unique",
+  data: {
+    tags: ["male", "man", "base-wearable"],
+    category: "eyewear",
+    replaces: [],
+    hides: [],
+    representations: [
       {
-        "bodyShapes": ["urn:decentraland:off-chain:base-avatars:BaseMale"],
-        "mainFile": "M_Eyewear_AviatorStyle.glb",
-        "overrideReplaces": [],
-        "overrideHides": [],
-        "contents": ["M_Eyewear_AviatorStyle.glb"]
-      }
-    ]
+        bodyShapes: ["urn:decentraland:off-chain:base-avatars:BaseMale"],
+        mainFile: "M_Eyewear_AviatorStyle.glb",
+        overrideReplaces: [],
+        overrideHides: [],
+        contents: ["M_Eyewear_AviatorStyle.glb"],
+      },
+    ],
   },
-  "i18n": [{ "code": "en", "text": "Aviator Style" }],
-  "createdAt": 1646935739,
-  "updatedAt": 1646935739,
-  "metrics": {
-    "triangles": 0,
-    "materials": 0,
-    "meshes": 0,
-    "bodies": 0,
-    "entities": 0,
-    "textures": 0
-  }
+  i18n: [{ code: "en", text: "Aviator Style" }],
+  createdAt: 1646935739,
+  updatedAt: 1646935739,
+  metrics: {
+    triangles: 0,
+    materials: 0,
+    meshes: 0,
+    bodies: 0,
+    entities: 0,
+    textures: 0,
+  },
 }
 ```
 
 Example of a Third Party wearable entity metadata with a merkleProof:
 
-```json
+```typescript
 {
-  "id": "urn:decentraland:off-chain:base-avatars:aviatorstyle",
-  "name": "Aviator Style",
-  "description": "aDescription",
-  "image": "image.png",
-  "thumbnail": "thumbnail.png",
-  "data": {
-    "tags": ["male", "man", "base-wearable"],
-    "category": "eyewear",
-    "replaces": [],
-    "hides": [],
-    "representations": [
+  id: "urn:decentraland:off-chain:base-avatars:aviatorstyle",
+  name: "Aviator Style",
+  description: "aDescription",
+  image: "image.png",
+  thumbnail: "thumbnail.png",
+  data: {
+    tags: ["male", "man", "base-wearable"],
+    category: "eyewear",
+    replaces: [],
+    hides: [],
+    representations: [
       {
-        "bodyShapes": ["urn:decentraland:off-chain:base-avatars:BaseMale"],
-        "mainFile": "M_Eyewear_AviatorStyle.glb",
-        "overrideReplaces": [],
-        "overrideHides": [],
-        "contents": ["M_Eyewear_AviatorStyle.glb"]
-      }
-    ]
+        bodyShapes: ["urn:decentraland:off-chain:base-avatars:BaseMale"],
+        mainFile: "M_Eyewear_AviatorStyle.glb",
+        overrideReplaces: [],
+        overrideHides: [],
+        contents: ["M_Eyewear_AviatorStyle.glb"],
+      },
+    ],
   },
-  "i18n": [{ "code": "en", "text": "Aviator Style" }],
-  "createdAt": 1646935739,
-  "updatedAt": 1646935739,
-  "metrics": {
-    "triangles": 0,
-    "materials": 0,
-    "meshes": 0,
-    "bodies": 0,
-    "entities": 0,
-    "textures": 0
+  i18n: [{ code: "en", text: "Aviator Style" }],
+  createdAt: 1646935739,
+  updatedAt: 1646935739,
+  metrics: {
+    triangles: 0,
+    materials: 0,
+    meshes: 0,
+    bodies: 0,
+    entities: 0,
+    textures: 0,
   },
-  "merkleProof": {
-    "index": 61575,
-    "proof": [
+  merkleProof: {
+    index: 61575,
+    proof: [
       "0xc8ae2407cffddd38e3bcb6c6f021c9e7ac21fcc60be44e76e4afcb34f637d562",
       "0x16123d205a70cdeff7643de64cdc69a0517335d9c843479e083fd444ea823172",
       "0x1fbe73f1e71f11fb4e88de5404f3177673bdfc89e93d9a496849b4ed32c9b04f",
@@ -153,9 +153,9 @@ Example of a Third Party wearable entity metadata with a merkleProof:
       "0xc2088dbbecba4f7dd06c689b7c1a1e6a822d20d4665b2f9353715fc3a5f0d588",
       "0x9e191109e34d166ac72033dce274a82c488721a274087ae97b62c9a51944e86f",
       "0x5ff2905107fe4cce21c93504414d9548f311cd27efe5696c0e03acc059d2e445",
-      "0x6c764a5d8ded16bf0b04028b5754afbd216b111fa0c9b10f2126ac2e9002e2fa"
+      "0x6c764a5d8ded16bf0b04028b5754afbd216b111fa0c9b10f2126ac2e9002e2fa",
     ],
-    "hashingKeys": [
+    hashingKeys: [
       "id",
       "name",
       "description",
@@ -165,12 +165,12 @@ Example of a Third Party wearable entity metadata with a merkleProof:
       "i18n",
       "createdAt",
       "updatedAt",
-      "metrics"
+      "metrics",
     ],
-    "treeHashingMethod": "sha256",
-    "entityHashingMethod": "IPFS",
-    "entityHash": "bafkreifstqrxylmy6dwtw64ieyrgzv2sxrhh7awzb52bwn66utuo7327ae"
-  }
+    treeHashingMethod: "sha256",
+    entityHashingMethod: "IPFS",
+    entityHash: "bafkreifstqrxylmy6dwtw64ieyrgzv2sxrhh7awzb52bwn66utuo7327ae",
+  },
 }
 ```
 
@@ -185,7 +185,7 @@ function ipfsHash(metadata, keys): string {
 
 // Using the entity, the keys to be hashed and the other node hashes, build the merkle proof for the entity and return a new proofed entity.
 function buildEntityMetadataWithMerkleProof(baseEntity, keys, otherNodeHashes) {
-  const entityHash = ipfsHash(entity, keys);
+  const entityHash = ipfsHash(baseEntity, keys);
   const { proof, index } = calculateProof(entityHash, otherNodeHashes);
   return {
     ...baseEntity,
@@ -214,7 +214,7 @@ function verifyHash(metadata, requiredKeys) {
   const generatedCrcHash = ipfsHash(metadata, metadata.merkleRoot.hashingKeys);
   // The hash provided in the merkleProof for the entity MUST match the hash generated by the validator.
   assert(metadata.merkleRoot.entityHash === generatedCrcHash);
-
+  // Based on the metadata.id, the merkle root is obtained from a trusted source i.e: the graph, or a smart contract directly
   const merkleRoot = getMerkleRoot(metadata.id);
   // Verify if the entity belongs to the Merkle Tree.
   asset(
