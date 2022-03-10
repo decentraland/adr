@@ -53,6 +53,7 @@ Where `proof` is the array of hashes of nodes needed for the verification, `inde
 will be used when computing the hash of the entity, and `treeHashingMethod` is the hashing method used to build the Merkle Tree.
 
 The `hashingKeys` property exists with the sole purpose of making this solution more flexible, allowing the entity metadata to change while being strict on the required properties when validating the hash.
+The property works by **whitelisting the keys at root level** that will be included in the object to be hashed.
 
 > :warning: **Keys order**: The hashingKeys will determine the order of the keys on the object to be hashed. Changing the order will result in a different hash.
 
