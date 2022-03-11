@@ -49,7 +49,7 @@ The `merkleProof` property will be an object with the following schema:
 }
 ```
 
-Where `proof` is the array of hashes of nodes needed for the verification, `index` is the index of the entity in the Merkle Tree, `hashingKeys` is the array of keys of the entity metadata that
+Where `proof` is the array of nodes needed for the verification, `index` is the index of the entity in the Merkle Tree, `hashingKeys` is the array of keys of the entity metadata that
 will be used when computing the hash of the entity, and `treeHashingMethod` is the hashing method used to build the Merkle Tree.
 
 The `hashingKeys` property exists with the sole purpose of making this solution more flexible, allowing the entity metadata to change while being strict on the required properties when validating the hash.
