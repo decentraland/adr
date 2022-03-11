@@ -3,7 +3,7 @@
 ## Context and Problem Statement
 
 The Third Party Wearables initiative had the requirement of being able to publish collections containing a big amount of wearables.
-These big amount wearables would require multiple transactions to be sent and approved, incurring in a high cost in gas and in difficult UX experience.
+This big amount of wearables would require multiple transactions to be sent and approved, incurring a high cost in gas and in difficult UX experience.
 
 Taking in consideration this requirement, a new solution came up, described in the ADR-58 in where we will be able to publish collections containing a huge amount wearables with
 a single transaction using a Merkle Tree that will serve as proof for the wearable's metadata and contents to be uploaded into the Catalysts.
