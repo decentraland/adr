@@ -3,7 +3,7 @@
 ## Context and Problem Statement
 
 The Third Party Wearables initiative had the requirement of being able to publish collections containing a big amount of wearables.
-These big amount wearables would require multiple transactions to be sent and approved, incurring in a high cost in gas and in difficult UX experience.
+This big amount of wearables would require multiple transactions to be sent and approved, incurring a high cost in gas and in difficult UX experience.
 
 Taking in consideration this requirement, a new solution came up, described in the ADR-58 in where we will be able to publish collections containing a huge amount wearables with
 a single transaction using a Merkle Tree that will serve as proof for the wearable's metadata and contents to be uploaded into the Catalysts.
@@ -43,8 +43,14 @@ The `merkleProof` property will be an object with the following schema:
 }
 ```
 
+<<<<<<< HEAD:docs/ADR-62-merkle-proofed-entities.md
 Where `proof` is the array of hashes of nodes needed for the verification, `index` is the index of the entity in the Merkle Tree, `hashingKeys` is the array of keys of the entity metadata that
 will be used when computing the hash of the entity.
+=======
+Where `proof` is the array of nodes needed for the verification, `index` is the index of the entity in the Merkle Tree, `hashingKeys` is the array of keys of the entity metadata that
+will be used when computing the hash of the entity, and `treeHashingMethod` is the hashing method used to build the Merkle Tree.
+
+> > > > > > > 9ff46b3bd8a429f2c9c5ffcf5377953eb259cdb8:docs/ADR-61-merkle-proofed-entities.md
 
 The `hashingKeys` property exists with the sole purpose of making this solution more flexible, allowing the entity metadata to change while being strict on the required properties when validating the hash.
 The property works by **whitelisting the keys at root level** that will be included in the object to be hashed.
@@ -176,9 +182,9 @@ function keccak256Hash(metadata, keys): string {
 // Using the entity, the keys to be hashed and the other node hashes, build the merkle proof for the entity and return a new proofed entity.
 function buildEntityMetadataWithMerkleProof(baseEntity, keys, otherNodeHashes) {
   const entityHash = keccak256Hash(baseEntity, keys);
-  const hashes = [...otherNodeHashes, entityHash];
-  const tree = generateTree(hashes);
-  const index = hashes.length - 1;
+  const sortedHashes = [...otherNodeHashes, entityHash].sort();
+  const tree = generateTree(sortedHashes);
+  const index = sortedHashes.indexOf(entityHash);
   const proof = tree.getProof(index, contentHashes[index]);
   return {
     ...baseEntity,
