@@ -36,17 +36,17 @@ Each Third Party will require to create and maintain an API with these endpoints
 ```javascript
 GET /registry/:registry-id/address/:address/assets {
     registry-id: "cryptohats"
-    address: "0xMendez"
+    address: "0x0f5d2fb29fb7d3cfee444a200298f468908cc942"
 }
 
-# https://api.cryptohats.io/registry/cryptohats/address/0xMendez/assets
+# https://api.cryptohats.io/registry/cryptohats/address/0x0f5d2fb29fb7d3cfee444a200298f468908cc942/assets
 ```
 
 #### Response
 
 ```javascript
 {
-    address: "0xMendez",
+    address: "0x0f5d2fb29fb7d3cfee444a200298f468908cc942",
     assets: [
         {
             id: "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0",
@@ -76,11 +76,12 @@ GET /registry/:registry-id/address/:address/assets {
 ```javascript
 GET /registry/:registry-id/address/:address/assets/:id {
     registry-id: "cryptohats"
-    address: "0xMendez"
+    address: "0x0f5d2fb29fb7d3cfee444a200298f468908cc942"
     id: "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
 }
 
-# https://api.cryptohats.io/registry/cryptohats/address/0xMendez/assets/0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1
+# https://api.cryptohats.io/registry/cryptohats/address/0x0f5d2fb29fb7d3cfee444a200298f468908cc942
+/assets/0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1
 ```
 
 #### Response
