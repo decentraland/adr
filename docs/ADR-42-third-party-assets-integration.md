@@ -29,6 +29,8 @@ Each Third Party will require to create and maintain an API with these endpoints
 - @GET /registry/:registry-id/address/:address/assets - get a list of assets asociated with a given address
 - @GET /registry/:registry-id/address/:address/assets/:id - get if a dcl item is owned by a given address
 
+> It is recommended to accept any format for the `:address` parameter: checksummed, lowercased, uppercased, mixed, etc. You can always checksum and validate if it is a valid Ethereum address later.
+
 ### @GET /registry/:registry-id/address/:address/assets
 
 #### Request
