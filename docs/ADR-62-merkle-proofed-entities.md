@@ -12,6 +12,8 @@ These ADR describes a broader solution where all entities deployed to the Cataly
 
 ## Proposed solution
 
+### Merkle proofing
+
 In order to avoid changing the entity structure, the proposed solution will leverage the entities' metadata by including a new property, `merkleProof`, that will contain everything
 needed to verify the entity against a Merkle Tree.
 
@@ -44,7 +46,7 @@ The `merkleProof` property will be an object with the following schema:
 ```
 
 Where `proof` is the array of hashes of nodes needed for the verification, `index` is the index of the entity in the Merkle Tree, `hashingKeys` is the array of keys of the entity metadata that
-will be used when computing the hash of the entity.
+will be used when computing the hash of the entity and `entityHash.
 
 The `hashingKeys` property exists with the sole purpose of making this solution more flexible, allowing the entity metadata to change while being strict on the required properties when validating the hash.
 The property works by **whitelisting the keys at root level** that will be included in the object to be hashed.
@@ -163,6 +165,12 @@ Example of a Third Party wearable entity metadata with a `merkleProof`:
   },
 }
 ```
+
+### Hashing the entity (content hash)
+
+Alongside the introduction of the Merkle tree property, this solution also defines the metadata as the **only information that will be part of the content hash of the entity**. In comparison with the
+ADR32, in which the hash of the entity is built from hashing the JSON string representation of an object containing the entity's metadata and a contents object with the entity's contents (files names and files hashes), this solution
+specifies that the content hash, that is the hash of the entity, will be the **Keccak256 hash of the metadata of the entity**.
 
 ### Proof generation
 
