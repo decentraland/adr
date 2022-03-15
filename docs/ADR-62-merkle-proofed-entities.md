@@ -90,6 +90,10 @@ Example of a Wearable entity metadata:
     entities: 0,
     textures: 0,
   },
+  content: {
+    "some-file.glb": "3999dc565303be392b94568fe252fd09482c2329e3381b66d730f870cb6c2afa",
+    "thumbnail.png": "b9b9563ea35e1f995e272e9c699326ac61b94cfe46dc4f49b5215c94d3209854"
+  }
 }
 ```
 
@@ -176,6 +180,11 @@ Example of a Third Party wearable entity metadata with a `merkleProof`:
 Alongside the introduction of the Merkle tree property, this solution also defines the metadata as the **only information that will be part of the content hash of the entity**. In comparison with the
 ADR32, in which the hash of the entity is built from hashing the JSON string representation of an object containing the entity's metadata and a contents object with the entity's contents (files names and files hashes), this solution
 specifies that the content hash, that is the hash of the entity, will be the **Keccak256 hash of the metadata of the entity**.
+
+The objective of changing the object that is used to compute the content hash is to be as flexible as possible as there could be entities that don't have content hashes. Changing this object brings the question: how can we check that
+the files being deployed are the ones that were meant to be deployed? The answer to that question can vary from implementations, but a simple one is to include the `content` property (a map where the keys are the file names and the
+values are the hashes of the files) in the entity's metadata. By including the contents when building the entity's metadata, at the moment of verifying a deployment a simple check can be done against the files by checking the current
+content (the files in the deployment) and the content described in the content property of the metadata, if both of them match (the set of files or content are equal), then the files deployed are valid.
 
 ### Proof generation
 
