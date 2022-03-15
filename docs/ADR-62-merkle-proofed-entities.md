@@ -128,6 +128,10 @@ Example of a Third Party wearable entity metadata with a `merkleProof`:
     entities: 0,
     textures: 0,
   },
+  content: {
+    "some-file.glb": "3999dc565303be392b94568fe252fd09482c2329e3381b66d730f870cb6c2afa",
+    "thumbnail.png": "b9b9563ea35e1f995e272e9c699326ac61b94cfe46dc4f49b5215c94d3209854"
+  },
   merkleProof: {
     index: 61575,
     proof: [
