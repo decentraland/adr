@@ -43,14 +43,8 @@ The `merkleProof` property will be an object with the following schema:
 }
 ```
 
-<<<<<<< HEAD:docs/ADR-62-merkle-proofed-entities.md
 Where `proof` is the array of hashes of nodes needed for the verification, `index` is the index of the entity in the Merkle Tree, `hashingKeys` is the array of keys of the entity metadata that
 will be used when computing the hash of the entity.
-=======
-Where `proof` is the array of nodes needed for the verification, `index` is the index of the entity in the Merkle Tree, `hashingKeys` is the array of keys of the entity metadata that
-will be used when computing the hash of the entity, and `treeHashingMethod` is the hashing method used to build the Merkle Tree.
-
-> > > > > > > 9ff46b3bd8a429f2c9c5ffcf5377953eb259cdb8:docs/ADR-61-merkle-proofed-entities.md
 
 The `hashingKeys` property exists with the sole purpose of making this solution more flexible, allowing the entity metadata to change while being strict on the required properties when validating the hash.
 The property works by **whitelisting the keys at root level** that will be included in the object to be hashed.
@@ -227,6 +221,8 @@ function verifyHash(metadata, requiredKeys) {
   );
 }
 ```
+
+### Third Party case
 
 ## Participants
 
