@@ -230,8 +230,6 @@ function verifyHash(metadata, requiredKeys) {
 }
 ```
 
-### Third Party case
-
 ## Participants
 
 - @menduz
