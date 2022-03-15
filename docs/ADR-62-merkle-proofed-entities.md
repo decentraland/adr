@@ -207,7 +207,13 @@ function buildEntityMetadataWithMerkleProof(baseEntity, keys, otherNodeHashes) {
 
 ### Verification
 
-The following is an example on how to validate a Merkle proof for a given entity.
+The following is an example on the list of steps that can be used to validate a merkle proofed entity.
+
+These steps include:
+
+1. Verifying that the extensible list of keys that the metadata can have contain the required keys that the type entity requires.
+2. (Optional) Verify that the entity hash provided in the metadata (`merkleProof.entityHash`) is the same as the hash of the metadata. This can be used to provide an early response to a wrongly generated hash.
+3. Verify that the entity belongs to the merkle root.
 
 ```typescript
 function verifyHash(metadata, requiredKeys) {
