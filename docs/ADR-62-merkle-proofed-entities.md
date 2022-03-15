@@ -164,6 +164,7 @@ Example of a Third Party wearable entity metadata with a `merkleProof`:
       "createdAt",
       "updatedAt",
       "metrics",
+      "content"
     ],
     entityHash: "52c312f5e5524739388af971cddb526c3b49ba31ec77abc07ca01f5b113f1eba",
   },
