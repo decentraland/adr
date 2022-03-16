@@ -60,6 +60,8 @@
 - [ADR-59 - User Store catalyst entity](docs/ADR-59-user-store-catalyst-entity.md)
 - [ADR-60 - Skin wearables](docs/ADR-60-skin-wearables.md)
 - [ADR-61 - Blur effect for UI (renderer)](docs/ADR-61-blur-effect-for-ui.md)
+- [ADR-62 - Merkle proofed entities](docs/ADR-62-merkle-proofed-entities.md)
+
 ## How to?
 
 Read [the ADR explaining the rationale](docs/ADR-1-documenting-architecture-decisions.md), by Michael Nygard.
