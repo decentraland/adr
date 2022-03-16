@@ -61,6 +61,7 @@
 - [ADR-60 - Skin wearables](docs/ADR-60-skin-wearables.md)
 - [ADR-61 - Blur effect for UI (renderer)](docs/ADR-61-blur-effect-for-ui.md)
 - [ADR-62 - Merkle proofed entities](docs/ADR-62-merkle-proofed-entities.md)
+- [ADR-63 - Denylist formatting](docs/ADR-63-denylist-formatting.md)
 
 ## How to?
 
