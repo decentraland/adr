@@ -4,7 +4,7 @@ Validates that uploaded and reported hashes are corrects and files corresponds t
 
 ```
 parameter ADR_45_TIMESTAMP = 1648771200
-parameter ADR_X_SNAPSHOT_FILES = {"face.png", "body.png"}
+parameter ADR_X_SNAPSHOT_FILES = {"face256.png", "body.png"}
 
 ----
 
