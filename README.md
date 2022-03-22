@@ -62,6 +62,7 @@
 - [ADR-61 - Blur effect for UI (renderer)](docs/ADR-61-blur-effect-for-ui.md)
 - [ADR-62 - Merkle proofed entities](docs/ADR-62-merkle-proofed-entities.md)
 - [ADR-63 - Denylist formatting](docs/ADR-63-denylist-formatting.md)
+- [ADR-64 - POIs](docs/ADR-64-points-of-interest.md)
 
 ## How to?
 
