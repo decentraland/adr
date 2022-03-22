@@ -11,7 +11,7 @@ This system has been existing with various components divided across multiple te
 Points of interest (aka POIs), are parcels or estates that have been voted by the DAO as such, a POI is visualized inside the explorer to reflect this choice.
 This functionality requires an integration on different levels, from the smart contract to the final visualization in the current unity-renderer.
 
-![Screenshot 2022-03-22 at 09 42 08](https://user-images.githubusercontent.com/4254522/159441251-51b90971-7135-477f-ad9d-55b3238a9b72.png)
+![resources/ADR-64/POIs-flow.png](resources/ADR-64/POIs-flow.png)
 
 ### Smart contract
 A smart contract to hold this informations has been created, its main functionalities are:
