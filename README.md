@@ -63,6 +63,8 @@
 - [ADR-62 - Merkle proofed entities](docs/ADR-62-merkle-proofed-entities.md)
 - [ADR-63 - Denylist formatting](docs/ADR-63-denylist-formatting.md)
 - [ADR-64 - POIs](docs/ADR-64-points-of-interest.md)
+- [ADR-65 - Avatar System for Renderer](docs/ADR-65-avatar-system-for-renderer.md)
+- [ADR-66 - Emotes System for Renderer](docs/ADR-66-emotes-system-for-renderer.md)
 
 ## How to?
 
