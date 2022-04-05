@@ -2,7 +2,7 @@
 
 ## Problem Statement
 
-Avatars are a key part of Decentraland, the system behind the curtains must be resilient, scalable and performant.
+Avatars are a key part of Decentraland, the system behind the curtains in charge of loading and rendering them must be resilient, scalable and performant. This ADR's goal is to give an introduction to the system itself as well as serving as documentation for new contributors.
 
 ## Needs
 For an avatar model (a set of wearable ids with color settings)
