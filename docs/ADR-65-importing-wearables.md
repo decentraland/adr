@@ -2,7 +2,7 @@
 
 ## Context and Problem Statement
 
-As of today, when creating a wearable through the Builder UI, users have the possibility of uploading a ZIP file containing the asset's models and configuration file called `asset.json`. This JSON file is used to define some of the properties that the imported item will have (name, description, etc) or what the item type will be (wearable, smart-wearable, etc).
+As of today, when creating a wearable through the Builder UI, users have the possibility of uploading a ZIP file containing the asset's models and configuration file called `asset.json`. This JSON file is used to define some of the properties that the imported wearable will have (name, description, etc) or what the wearable type will be (standard wearable, smart-wearable, etc).
 
 The current `asset.json` file has the following format:
 
@@ -34,14 +34,14 @@ These properties are used with the purpose described below:
 - The `model` is the path to the model of the wearable. This implies that the wearable can have only one model for all representations.
 - The `bodyShape` is the body shape of the wearable. This can only have one value, either `male`, `female` or `both`, implying
 
-The properties `assetType` and `menuBarIcon` are used by the Smart Wearables feature to work, that is, the feature requires an `asset.json` file to be included in the item's ZIP file to work. The other properties mentioned before are only used in the import process of wearable in the `Builder UI` and will be used to build wearable.
+The properties `assetType` and `menuBarIcon` are used by the Smart Wearables feature to work, that is, the feature requires an `asset.json` file to be included in the wearables's ZIP file to work. The other properties mentioned before are only used in the import process of wearable in the `Builder UI` and will be used to build wearable.
 
 The current format has some downsides that we need to tackle:
 
 1. It doesn't have the possibility to define representations with different 3D models, that is, a female and a male representation, each one with its 3D model shaped to their body shape.
-2. Item tags can't be defined.
+2. Wearable tags can't be defined.
 3. It's not possible to define which categories get to be hidden or replaced by the wearable and, as it doesn't allow each representation to be detailed, it doesn't allow overriding hides and replaces for each of representation.
-4. The collection where the item is created into can't be specified.
+4. The collection where the wearable is created into can't be specified.
 
 These downsides make the current `asset.json` configuration file not suitable for importing wearables.
 
@@ -167,9 +167,9 @@ The new schema solves the issues of the old one by:
 1. Adding the `representations` property, where each representation can be detailed by specifying the `body shape` (`male`, `female` or `both` which will be used to build two representations), the `main file` (the file path of the main 3D asset that is used in the representation) and the `contents` (a list of file paths belonging to the content) of each representation.
 2. Adding the `tags` property to be able to define tags for the wearable.
 3. Defining the `hides`, `replace` properties for the whole wearable and along with the representations' data the `overrideHides` with `overrideReplaces` properties, solving the issue of customizing how the wearable and its representations hide or replace other wearables.
-4. Adding the `collectionId` property to specify in which collection the item should be imported to.
+4. Adding the `collectionId` property to specify in which collection the wearable should be imported to.
 
-With this schema, we can define all of the properties of a wearable:
+The following example shows how a wearable could be described using the new `asset.json` format:
 
 ```json
 {
