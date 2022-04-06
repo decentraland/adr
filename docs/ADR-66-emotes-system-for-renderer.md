@@ -76,8 +76,7 @@ Giving the spotlight to the data itself, instead of the systems, permit easy dec
 `EmotesAnimationPlugin` also includes embedded emotes making the rest of the system completely agnostic to them. Embedded emotes allows on-going discussions such as “how to handle base-wearables in a decentralized way” to be meditated properly without becoming a blocker. 
 
 ## Competition
+Downloading animations, controlling their lifecycle and disposing them is the heavy lifting of this system. There's a handful of valid approaches to this problem and few reasons to pick one over another; even a singleton (forbidden word) would solve it in a fairly clean way.
 
-No alternatives have been consider.
-
-The plugin system is already consolidated in the renderer architecture, there was no need to stray apart from it. You can read about the benefits of using it 
+Since the plugin system is already consolidated in the renderer architecture, there's no need to stray apart from it. You can read about the benefits of using it 
 [here](ADR-56-plugin-system.md).

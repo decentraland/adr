@@ -34,6 +34,7 @@ Although it falls out of the scope of the ADR, it’s interesting to state the p
 - Hard to extend with new features.
 - Highest tech-debt of the whole project.
 - Performance pit-fall.
+- Untestable.
 
 ## Approach
 
@@ -365,6 +366,4 @@ public class EmoteAnimationEquipperShould
 
 ## Competition
 
-No alternatives have been consider.
-
-The new avatar system follows the conventions of the team and uses best practices in the industry (such as DI, mockability and AAA paradigm in tests).
+The system competes directly against its previous implementation. The whole system was a single class in a god object anti-pattern (refer to "Existent Solution" above). The new avatar system, while sticking to best practices in the industry, improves the design flaws from the previous implementation (refer to "Benefits").
