@@ -49,7 +49,7 @@ These downsides make the current `asset.json` configuration file not suitable fo
 
 To solve the downsides of the current format, a new format for the `asset.json`, with the following schema is proposed:
 
-```json
+```typescript
 {
   "type": "object",
   "properties": {
