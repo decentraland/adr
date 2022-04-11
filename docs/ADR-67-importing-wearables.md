@@ -24,7 +24,7 @@ The current `asset.json` file has the following format:
 These properties are used with the purpose described below:
 
 - The `id` property is the ID that the will have or has (if it's being updated) in the builder-server.
-- The `assetType` is used to identify the type of the asset, wether it's a portable experience or a simple wearable for example.
+- The `assetType` is used to identify the type of the asset, wether it's a wearable or a smart item.
 - The `name` is the name of the wearable, as it's seen in the Marketplace.
 - The `description` is the description of the wearable.
 - The `category` is the category of the wearable (eyewear, hat, etc).
@@ -34,66 +34,68 @@ These properties are used with the purpose described below:
 - The `model` is the path to the model of the wearable. This implies that the wearable can have only one model for all representations.
 - The `bodyShape` is the body shape of the wearable. This can only have one value, either `male`, `female` or `both`, implying
 
-The properties `assetType` and `menuBarIcon` are used by the Smart Wearables feature to work, that is, the feature requires an `asset.json` file to be included in the wearables's ZIP file to work. The other properties mentioned before are only used in the import process of wearable in the `Builder UI` and will be used to build wearable.
-
 The current format has some downsides that we need to tackle:
 
 1. It doesn't have the possibility to define representations with different 3D models, that is, a female and a male representation, each one with its 3D model shaped to their body shape.
 2. Wearable tags can't be defined.
 3. It's not possible to define which categories get to be hidden or replaced by the wearable and, as it doesn't allow each representation to be detailed, it doesn't allow overriding hides and replaces for each of representation.
 4. The collection where the wearable is created into can't be specified.
+5. The name of the file `asset.json` is confusing as assets already have a file with the same name on them.
 
 These downsides make the current `asset.json` configuration file not suitable for importing wearables.
 
 ## Proposed solution
 
-To solve the downsides of the current format, a new format for the `asset.json`, with the following schema is proposed:
+To solve the downsides described above, two changes are proposed:
+
+1. The configuration file (former `asset.json`) should be named `wearable.json`.
+2. A new format, with an upgraded schema.
+
+The format proposed is the following:
 
 ```typescript
 {
-  "type": "object",
-  "properties": {
-    "id": { "type": "string", "format": "uuid" },
-    "assetType": { "type": "string", "enum": ["portable-experience"] },
-    "menuBarIcon": { "type": "string" },
-    "collectionId": { "type": "string", "format": "uuid" },
-    "name": { "type": "string" },
-    "description": { "type": "string" },
-    "urn": { "type": "string" },
-    "rarity": { "$ref": "#/$defs/rarity" },
-    "category": { "$ref": "#/$defs/category" },
-    "hides": {
-      "type": "array",
-      "items": { "$ref": "#/$defs/category" }
+  type: "object",
+  properties: {
+    id: { type: "string", format: "uuid" },
+    collectionId: { type: "string", format: "uuid" },
+    name: { type: "string" },
+    description: { type: "string" },
+    urn: { type: "string" },
+    rarity: { $ref: "#/$defs/rarity" },
+    category: { $ref: "#/$defs/category" },
+    hides: {
+      type: "array",
+      items: { $ref: "#/$defs/category" },
     },
-    "replaces": {
-      "type": "array",
-      "items": { "$ref": "#/$defs/category" }
+    replaces: {
+      type: "array",
+      items: { $ref: "#/$defs/category" },
     },
-    "tags": { "type": "array", "items": { "type": "string" } },
-    "representations": {
-      "type": "array",
-      "items": { "$ref": "#/$defs/wearable-representation" }
-    }
+    tags: { type: "array", items: { type: "string" } },
+    representations: {
+      type: "array",
+      items: { $ref: "#/$defs/wearable-representation" },
+    },
   },
-  "required": ["name", "rarity", "category", "representations"],
-  "additionalProperties": false,
-  "$defs": {
-    "rarity": {
-      "type": "string",
-      "enum": [
+  required: ["name", "rarity", "category", "representations"],
+  additionalProperties: false,
+  $defs: {
+    rarity: {
+      type: "string",
+      enum: [
         "unique",
         "mythic",
         "legendary",
         "epic",
         "rare",
         "uncommon",
-        "common"
-      ]
+        "common",
+      ],
     },
-    "category": {
-      "type": "string",
-      "enum": [
+    category: {
+      type: "string",
+      enum: [
         "eyebrows",
         "eyes",
         "facial_hair",
@@ -111,52 +113,52 @@ To solve the downsides of the current format, a new format for the `asset.json`,
         "mask",
         "tiara",
         "top_head",
-        "skin"
-      ]
+        "skin",
+      ],
     },
     "wearable-representation": {
-      "type": "object",
-      "properties": {
-        "bodyShapes": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "enum": ["both", "female", "male"]
+      type: "object",
+      properties: {
+        bodyShapes: {
+          type: "array",
+          items: {
+            type: "string",
+            enum: ["both", "female", "male"],
           },
-          "minItems": 1,
-          "uniqueItems": true
+          minItems: 1,
+          uniqueItems: true,
         },
-        "mainFile": {
-          "type": "string",
-          "minLength": 1
+        mainFile: {
+          type: "string",
+          minLength: 1,
         },
-        "contents": {
-          "type": "array",
-          "items": {
-            "type": "string"
+        contents: {
+          type: "array",
+          items: {
+            type: "string",
           },
-          "minItems": 1,
-          "uniqueItems": true
+          minItems: 1,
+          uniqueItems: true,
         },
-        "overrideHides": {
-          "type": "array",
-          "items": { "$ref": "#/$defs/category" }
+        overrideHides: {
+          type: "array",
+          items: { $ref: "#/$defs/category" },
         },
-        "overrideReplaces": {
-          "type": "array",
-          "items": { "$ref": "#/$defs/category" }
-        }
+        overrideReplaces: {
+          type: "array",
+          items: { $ref: "#/$defs/category" },
+        },
       },
-      "additionalProperties": false,
-      "required": [
+      additionalProperties: false,
+      required: [
         "bodyShapes",
         "mainFile",
         "contents",
         "overrideHides",
-        "overrideReplaces"
-      ]
-    }
-  }
+        "overrideReplaces",
+      ],
+    },
+  },
 }
 ```
 
@@ -169,7 +171,11 @@ The new schema solves the issues of the old one by:
 3. Defining the `hides`, `replace` properties for the whole wearable and along with the representations' data the `overrideHides` with `overrideReplaces` properties, solving the issue of customizing how the wearable and its representations hide or replace other wearables.
 4. Adding the `collectionId` property to specify in which collection the wearable should be imported to.
 
-The following example shows how a wearable could be described using the new `asset.json` format:
+Additionally, the new schema removes the `assetType` and `menuBarIcon` as the `assetType` is not required anymore because
+of the file being named `wearable.json` for the only purpose of configuring a wearable and the `menuBarIcon` is moved
+to another file for its configuration o the SDK side.
+
+The following example shows how a wearable could be described using the new `wearable.json` format:
 
 ```json
 {
