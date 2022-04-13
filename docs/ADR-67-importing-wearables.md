@@ -49,115 +49,88 @@ These downsides make the current `asset.json` configuration file not suitable fo
 To solve the downsides described above, two changes are proposed:
 
 1. The configuration file (former `asset.json`) should be named `wearable.json`.
-2. A new format, with an upgraded schema.
+2. A new format, with an upgraded type.
 
 The format proposed is the following:
 
 ```typescript
-{
-  type: "object",
-  properties: {
-    id: { type: "string", format: "uuid" },
-    collectionId: { type: "string", format: "uuid" },
-    name: { type: "string" },
-    description: { type: "string" },
-    urn: { type: "string" },
-    rarity: { $ref: "#/$defs/rarity" },
-    category: { $ref: "#/$defs/category" },
-    hides: {
-      type: "array",
-      items: { $ref: "#/$defs/category" },
-    },
-    replaces: {
-      type: "array",
-      items: { $ref: "#/$defs/category" },
-    },
-    tags: { type: "array", items: { type: "string" } },
-    representations: {
-      type: "array",
-      items: { $ref: "#/$defs/wearable-representation" },
-    },
-  },
-  required: ["name", "rarity", "category", "representations"],
-  additionalProperties: false,
-  $defs: {
-    rarity: {
-      type: "string",
-      enum: [
-        "unique",
-        "mythic",
-        "legendary",
-        "epic",
-        "rare",
-        "uncommon",
-        "common",
-      ],
-    },
-    category: {
-      type: "string",
-      enum: [
-        "eyebrows",
-        "eyes",
-        "facial_hair",
-        "hair",
-        "head",
-        "body_shape",
-        "mouth",
-        "upper_body",
-        "lower_body",
-        "feet",
-        "earring",
-        "eyewear",
-        "hat",
-        "helmet",
-        "mask",
-        "tiara",
-        "top_head",
-        "skin",
-      ],
-    },
-    "wearable-representation": {
-      type: "object",
-      properties: {
-        bodyShape: {
-          type: "string",
-          enum: ["both", "female", "male"],
-        },
-        mainFile: {
-          type: "string",
-          minLength: 1,
-        },
-        contents: {
-          type: "array",
-          items: {
-            type: "string",
-          },
-          minItems: 1,
-          uniqueItems: true,
-        },
-        overrideHides: {
-          type: "array",
-          items: { $ref: "#/$defs/category" },
-        },
-        overrideReplaces: {
-          type: "array",
-          items: { $ref: "#/$defs/category" },
-        },
-      },
-      additionalProperties: false,
-      required: [
-        "bodyShapes",
-        "mainFile",
-        "contents",
-        "overrideHides",
-        "overrideReplaces",
-      ],
-    },
-  },
+type WearableAsset = {
+  /** UUID of the item in the builder server */
+  id?: string;
+  /** UUID of the collection in the builder server */
+  collectionId?: string;
+  /** Name of the wearable */
+  name: string;
+  /** Description of the wearable */
+  description?: string;
+  /** Complete URN of the wearable */
+  urn?: string;
+  /** Rarity of the wearable */
+  rarity?: Rarity;
+  /** Category of the wearable */
+  category: WearableCategory;
+  /** Wearables to hide when equipping the wearable */
+  hides: WearableCategory[];
+  /** Wearables to replace when equipping the wearable */
+  replaces: WearableCategory[];
+  /** Tags to identify the wearable */
+  tags: string[];
+  /** Representations of the wearable */
+  representations: WearableRepresentation[];
+}
+
+type WearableRepresentation = {
+  /** Body shape of the representation */
+  bodyShape: BodyShape;
+  /** File path to the main file of the representation (GLB, GLTF, etc) */
+  mainFile: string;
+  /** A list of the file paths of the files that belong to the representation */
+  contents: string[];
+  /** Wearables to hide when equipping this representation */
+  overrideHides: WearableCategory[];
+  /** Wearables to replace when equipping this representation */
+  overrideReplaces: WearableCategory[];
+}
+
+enum Rarity = {
+  UNIQUE = 'unique',
+  MYTHIC = 'mythic',
+  LEGENDARY = 'legendary',
+  EPIC = 'epic',
+  RARE = 'rare',
+  UNCOMMON = 'uncommon',
+  COMMON = 'common'
+}
+
+enum WearableCategory = {
+  EYEBROWS = 'eyebrows',
+  EYES = 'eyes',
+  FACIAL_HAIR = 'facial_hair',
+  HAIR = 'hair',
+  HEAD = 'head',
+  BODY_SHAPE = 'body_shape',
+  MOUTH = 'mouth',
+  UPPER_BODY = 'upper_body',
+  LOWER_BODY = 'lower_body',
+  FEET = 'feet',
+  EARRING = 'earring',
+  EYEWEAR = 'eyewear',
+  HAT = 'hat',
+  HELMET = 'helmet',
+  MASK = 'mask',
+  TIARA = 'tiara',
+  TOP_HEAD = 'top_head',
+  SKIN = 'skin'
+}
+
+enum BodyShape = {
+  MALE = 'male';
+  FEMALE = 'female';
+  BOTH = 'both';
 }
 ```
 
-Where, although defined here, category, rarity, wearable-representation and the body shapes are schemas borrowed from the current schemas defined in the `common-schema` [repository](https://github.com/decentraland/common-schemas).
+Where, although defined here, category, rarity, wearable-representation and the body shapes are types borrowed from the current schemas defined in the `common-schema` [repository](https://github.com/decentraland/common-schemas).
 
 The new schema solves the issues of the old one by:
 
