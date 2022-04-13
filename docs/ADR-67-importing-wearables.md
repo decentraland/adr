@@ -119,7 +119,7 @@ The format proposed is the following:
     "wearable-representation": {
       type: "object",
       properties: {
-        bodyShapes: {
+        bodyShape: {
           type: "string",
           enum: ["both", "female", "male"],
         },
