@@ -120,13 +120,8 @@ The format proposed is the following:
       type: "object",
       properties: {
         bodyShapes: {
-          type: "array",
-          items: {
-            type: "string",
-            enum: ["both", "female", "male"],
-          },
-          minItems: 1,
-          uniqueItems: true,
+          type: "string",
+          enum: ["both", "female", "male"],
         },
         mainFile: {
           type: "string",
