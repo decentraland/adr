@@ -65,7 +65,7 @@
 - [ADR-64 - POIs](docs/ADR-64-points-of-interest.md)
 - [ADR-65 - Avatar System for Renderer](docs/ADR-65-avatar-system-for-renderer.md)
 - [ADR-66 - Emotes System for Renderer](docs/ADR-66-emotes-system-for-renderer.md)
-
+- [ADR-67 - Runtime Architecture For Renderer](docs/ADR-67-runtime-architecture-for-renderer.md)
 ## How to?
 
 Read [the ADR explaining the rationale](docs/ADR-1-documenting-architecture-decisions.md), by Michael Nygard.
