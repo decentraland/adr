@@ -76,23 +76,25 @@ Third parties can be looped off-chain without the need of indexing historic even
 Items are encouraged to not be submitted to the blockchain in order to reduce the number of transactions. We will keep the old way of submitting them but we may remove it in a near future. The only way available to loop throught the third parties' items is by using the Decentraland catalysts:
 
 ````bash
-@GET https://peer-lb.decentraland.org/content/entities/currently-pointed/{urnPrefix}
+@GET https://peer.decentraland.org/content/entities/active/collections/{collectionUrn}
+
+
 
 # Fetch
-https://peer-lb.decentraland.org/content/entities/currently-pointed/urn:decentraland:polygon:collections-thirdparty:cryptohats
+https://peer.decentraland.org/content/entities/active/collections/urn:decentraland:mumbai:collections-thirdparty:cryptohats
 
 # Response: Item pointers
 [
   {
-    "pointer": "urn:decentraland:polygon:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd",
+    "pointer": "urn:decentraland:mumbai:collections-thirdparty:cryptohats:0xbac:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd",
     "entityId": "QmeA8RpAtqU6gCebNaWRXtM9nQs3ugzzbeQm3L7uKrP4Jp"
   },
   {
-    "pointer": "urn:decentraland:polygon:collections-thirdparty:cryptohats:0xabcdefghijk",
+    "pointer": "urn:decentraland:mumbai:collections-thirdparty:cryptohats:0xbac:0xabcdefghijk",
     "entityId": "QmdajbrYt4pdkkW2R2PcZ8iLz55uzgGceo4hJMCirHEpPK"
   },
   {
-    "pointer": "urn:decentraland:polygon:collections-thirdparty:cryptohats:0xlmnopqrst",
+    "pointer": "urn:decentraland:mumbai:collections-thirdparty:cryptohats:0xRzy:0xlmnopqrst",
     "entityId": "QmXokfUunNwLY9hw7U9x2Q3NJ7VFXt65rVDRGzFzPzEXvX"
   }
 ]
@@ -175,6 +177,65 @@ Example of a query
     }
   }
 }
+```
+
+## Checking wearables ownership in lambdas
+
+### Discover all third party integrations
+
+This returns all the approved collections for third party wearables
+
+```bash
+@GET https://peer.decentraland.org/lamdbas/third-party-integrations
+
+# Response:
+
+{
+   "data": [
+      {
+        "urn": "urn:decentraland:mumbai:collections-thirdparty:cryptopunks:0xContractAddressaaabbff999123:0",
+        "name": "Jean Pier",
+        "description": "Crypto punks (third party)"
+      },
+      {
+        "urn": "urn:decentraland:mumbai:collections-thirdparty:cryptohalloween:0xContractAddressaaabbff999123:14",
+        "name": "Halloween hat",
+        "description": "Decentraland Halloween 2019"
+      },
+      {
+        "urn": "urn:decentraland:mumbai:collections-thirdparty:cryptohalloween:0xContractAddressaaabbff999123:9",
+        "name": "Halloween tshirt",
+        "description": "Decentraland Halloween 2020"
+      }
+    ]
+}
+```
+
+## List third party wearables for address
+
+Getting the endpoint `/wearables-by-owner` with the query param `collectionId` only returns the items owned of that collection, and only third party wearables collections are supported.
+
+```bash
+@GET https://peer.decentraland.org/lamdbas/wearables-by-owner/{address}?collectionId={collectionUrn}
+
+
+# Fetch
+https://peer.decentraland.org/lambdas/wearables-by-owner/0xAbcd?collectionId=urn:decentraland:mumbai:collections-thirdparty:cryptopunks
+
+# Response
+
+[
+        {
+            "urn": "urn:decentraland:mumbai:collections-thirdparty:cryptopunks:0xContractAddressaaabbff999123:0",
+            "amount": 1
+        },
+        {
+            "urn": "urn:decentraland:mumbai:collections-thirdparty:cryptopunks:0xAnotherContractAddressaaabbff999123:0",
+            "amount": 1
+        }
+    ]
+
+
 ```
 
 ## Participants
