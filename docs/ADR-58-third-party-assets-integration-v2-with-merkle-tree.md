@@ -75,7 +75,7 @@ Third parties can be looped off-chain without the need of indexing historic even
 
 Items are encouraged to not be submitted to the blockchain in order to reduce the number of transactions. We will keep the old way of submitting them but we may remove it in a near future. The only way available to loop throught the third parties' items is by using the Decentraland catalysts:
 
-````bash
+```bash
 @GET https://peer.decentraland.org/content/entities/active/collections/{collectionUrn}
 
 
@@ -98,6 +98,7 @@ https://peer.decentraland.org/content/entities/active/collections/urn:decentrala
     "entityId": "QmXokfUunNwLY9hw7U9x2Q3NJ7VFXt65rVDRGzFzPzEXvX"
   }
 ]
+```
 
 ### Item submission process
 
