@@ -215,6 +215,9 @@ This returns all the approved collections for third party wearables
 ## List third party wearables for address
 
 Getting the endpoint `/wearables-by-owner` with the query param `collectionId` only returns the items owned of that collection, and only third party wearables collections are supported.
+To obtain that, the lambdas API does:
+1. Requests to The Graph to obtain the third party ownership API URL
+2. Requests the given URL to obtain all wearables owned by the given address of the collection.
 
 ```bash
 @GET https://peer.decentraland.org/lamdbas/wearables-by-owner/{address}?collectionId={collectionUrn}
