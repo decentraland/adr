@@ -139,7 +139,7 @@ The Decentraland catalysts will use the [merkle-tree-content-hash](https://githu
         "0x6c764a5d8ded16bf0b04028b5754afbd216b111fa0c9b10f2126ac2e9002e2fa"
     ]
 }
-````
+```
 
 With the item's index, proof, urn, and content hash, the catalyst can check whether the item is part of the merkle tree submitted to the blockchain. To do that, the catalyst will need to fetch the current third party's root and call the `verifyProof` method as follows:
 
@@ -184,7 +184,20 @@ Example of a query
 
 ### Discover all third party integrations
 
-This returns all the approved collections for third party wearables
+This returns all the approved collections for third party wearables using the query:
+```
+{
+  thirdParties(where: {isApproved: true}) {
+    id
+		metadata {
+      thirdParty {
+        name
+        description
+      }
+    }
+  }
+}
+```
 
 ```bash
 @GET https://peer.decentraland.org/lamdbas/third-party-integrations
