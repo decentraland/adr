@@ -1,8 +1,10 @@
-# Importing wearables
+# Configuring wearables
 
 ## Context and Problem Statement
 
 As of today, when creating a wearable through the Builder UI, users have the possibility of uploading a ZIP file containing the asset's models and configuration file called `asset.json`. This JSON file is used to define some of the properties that the imported wearable will have (name, description, etc) or what the wearable type will be (standard wearable, smart-wearable, etc).
+
+The format has a series of downsides that will be discussed below, but there's also one important subject to address: the responsibilities of information in the `asset.json` file are mixed. The file contains information the wearable needs and information that the Builder needs to import the wearable into the platform. These two responsibilities MUST be split in order to eventually be able to define wearables in other resources.
 
 The current `asset.json` file has the following format:
 
@@ -39,32 +41,27 @@ The current format has some downsides that we need to tackle:
 1. It doesn't have the possibility to define representations with different 3D models, that is, a female and a male representation, each one with its 3D model shaped to their body shape.
 2. Wearable tags can't be defined.
 3. It's not possible to define which categories get to be hidden or replaced by the wearable and, as it doesn't allow each representation to be detailed, it doesn't allow overriding hides and replaces for each of representation.
-4. The collection where the wearable is created into can't be specified.
-5. The name of the file `asset.json` is confusing as assets already have a file with the same name on them.
+4. The name of the file `asset.json` is confusing as assets already have a file with the same name on them.
+5. The `id` property is used to identify the item in the builder-server, this doesn't describe the wearable.
 
-These downsides make the current `asset.json` configuration file not suitable for importing wearables.
+These downsides make the current `asset.json` configuration file not suitable for describing wearables.
 
 ## Proposed solution
 
-To solve the downsides described above, two changes are proposed:
+To solve the downsides described above, and to provide a configuration file that only describes wearables two changes are proposed:
 
 1. The configuration file (former `asset.json`) should be named `wearable.json`.
-2. A new format, with an upgraded type.
+2. A new format is defined for the `wearable.json` that describes everything about a wearable.
+3. All the information about the Builder and the platform is defined in another file in the [ADR-68](docs/ADR-68-importing-wearables.md).
 
 The format proposed is the following:
 
 ```typescript
 type WearableAsset = {
-  /** UUID of the item in the builder server */
-  id?: string;
-  /** UUID of the collection in the builder server */
-  collectionId?: string;
   /** Name of the wearable */
   name: string;
   /** Description of the wearable */
   description?: string;
-  /** Complete URN of the wearable */
-  urn?: string;
   /** Rarity of the wearable */
   rarity?: Rarity;
   /** Category of the wearable */
@@ -137,21 +134,18 @@ The new schema solves the issues of the old one by:
 1. Adding the `representations` property, where each representation can be detailed by specifying the `body shape` (`male`, `female` or `both` which will be used to build two representations), the `main file` (the file path of the main 3D asset that is used in the representation) and the `contents` (a list of file paths belonging to the content) of each representation.
 2. Adding the `tags` property to be able to define tags for the wearable.
 3. Defining the `hides`, `replace` properties for the whole wearable and along with the representations' data the `overrideHides` with `overrideReplaces` properties, solving the issue of customizing how the wearable and its representations hide or replace other wearables.
-4. Adding the `collectionId` property to specify in which collection the wearable should be imported to.
+4. Removing the `assetType` and `menuBarIcon` as they don't define the wearable, they're properties that are used in the SDK side and will be moved to another file for its configuration on the SDK side.
+5. Removes the `id` property to decouple the format to describe the wearable from the information that the Builder needs.
 
-Additionally, the new schema removes the `assetType` and `menuBarIcon` as the `assetType` is not required anymore because
-of the file being named `wearable.json` for the only purpose of configuring a wearable and the `menuBarIcon` is moved
-to another file for its configuration o the SDK side.
+Alongside this changes,
 
 The following example shows how a wearable could be described using the new `wearable.json` format:
 
 ```json
 {
-  "id": "f12313b4-a76b-4c9e-a2a3-ab460f59bd67",
   "name": "test",
   "category": "eyebrows",
   "rarity": "common",
-  "collectionId": "272233f5-e539-4202-b95c-aa68b0c8f190",
   "description": "a description",
   "hides": [],
   "replaces": [],
@@ -172,3 +166,4 @@ The following example shows how a wearable could be described using the new `wea
 
 - @lpetaccio
 - @nicosantangelo
+- @menduz
