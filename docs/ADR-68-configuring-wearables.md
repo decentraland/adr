@@ -51,34 +51,50 @@ These downsides make the current `asset.json` configuration file not suitable fo
 To solve the downsides described above, and to provide a configuration file that only describes wearables two changes are proposed:
 
 1. The configuration file (former `asset.json`) should be named `wearable.json`.
-2. A new format is defined for the `wearable.json` that describes everything about a wearable.
-3. All the information about the Builder and the platform is defined in another file in the [ADR-68](docs/ADR-68-importing-wearables.md).
+2. A new format is defined for the `wearable.json` that describes everything about a wearable. This format is taken from the wearable's entity metadata.
+3. All the information about the Builder and the platform is defined in another file in the [ADR-69](docs/ADR-69-importing-wearables.md).
 
-The format proposed is the following:
+Although the format for the `wearable.json` is exactly the same as the wearables entity metadata, this ADR presents it to show how it solves the problem:
 
 ```typescript
-type WearableAsset = {
+type Wearable = {
+  /** The URN of the wearable */
+  id: string
   /** Name of the wearable */
-  name: string;
+  name: string
   /** Description of the wearable */
-  description?: string;
+  description?: string
+  data: {
+    /** Wearables to replace when equipping the wearable */
+    replaces: WearableCategory[]
+    /** Wearables to hide when equipping the wearable */
+    hides: WearableCategory[]
+    /** Tags to identify the wearable */
+    tags: string[]
+    /** Representations of the wearable */
+    representations: WearableRepresentation[]
+    /** Category of the wearable */
+    category: WearableCategory
+  }
+  /** Wearable's translated resources */
+  i18n: I18N[]
+  /** Thumbnail's path */
+  thumbnail: string
+  /** Image's path */
+  image: string
   /** Rarity of the wearable */
-  rarity?: Rarity;
-  /** Category of the wearable */
-  category: WearableCategory;
-  /** Wearables to hide when equipping the wearable */
-  hides: WearableCategory[];
-  /** Wearables to replace when equipping the wearable */
-  replaces: WearableCategory[];
-  /** Tags to identify the wearable */
-  tags: string[];
-  /** Representations of the wearable */
-  representations: WearableRepresentation[];
+  rarity?: Rarity
+  /** Collection address of the standard wearable */
+  collectionAddress?: string
+  /** Contents map (file name -> hash) described in the ADR 62 for the third party items */
+  content?: Record<string, string>
+  /** Merkle proof, described in the ADR 62 for the third party items */
+  merkleProof?: MerkleProof
 }
 
 type WearableRepresentation = {
   /** Body shape of the representation */
-  bodyShape: BodyShape;
+  bodyShapes: BodyShape[];
   /** File path to the main file of the representation (GLB, GLTF, etc) */
   mainFile: string;
   /** A list of the file paths of the files that belong to the representation */
@@ -87,6 +103,16 @@ type WearableRepresentation = {
   overrideHides: WearableCategory[];
   /** Wearables to replace when equipping this representation */
   overrideReplaces: WearableCategory[];
+}
+
+type I18N = {
+  code: Locale
+  text: string
+}
+
+enum Locale {
+    EN = "en",
+    ES = "es"
 }
 
 enum Rarity = {
@@ -120,47 +146,53 @@ enum WearableCategory = {
   SKIN = 'skin'
 }
 
-enum BodyShape = {
-  MALE = 'male';
-  FEMALE = 'female';
-  BOTH = 'both';
+enum WearableBodyShape {
+  MALE = 'urn:decentraland:off-chain:base-avatars:BaseMale',
+  FEMALE = 'urn:decentraland:off-chain:base-avatars:BaseFemale'
 }
 ```
 
-Where, although defined here, category, rarity, wearable-representation and the body shapes are types borrowed from the current schemas defined in the `common-schema` [repository](https://github.com/decentraland/common-schemas).
+Where, although defined here, I18N, Locale, category, rarity, wearable representation and the body shapes are types borrowed from the current schemas defined in the `common-schema` [repository](https://github.com/decentraland/common-schemas).
 
-The new schema solves the issues of the old one by:
+Using the wearable metadata solves the problems of the old schema by:
 
-1. Adding the `representations` property, where each representation can be detailed by specifying the `body shape` (`male`, `female` or `both` which will be used to build two representations), the `main file` (the file path of the main 3D asset that is used in the representation) and the `contents` (a list of file paths belonging to the content) of each representation.
-2. Adding the `tags` property to be able to define tags for the wearable.
+1. Having the `representations` property, where each representation can be detailed by specifying the `body shape` (`urn:decentraland:off-chain:base-avatars:BaseMale` or `urn:decentraland:off-chain:base-avatars:BaseFemale`), the `main file` (the file path of the main 3D asset that is used in the representation) and the `contents` (a list of file paths belonging to the content) of each representation.
+2. Having the `tags` property to be able to define tags for the wearable.
 3. Defining the `hides`, `replace` properties for the whole wearable and along with the representations' data the `overrideHides` with `overrideReplaces` properties, solving the issue of customizing how the wearable and its representations hide or replace other wearables.
 4. Removing the `assetType` and `menuBarIcon` as they don't define the wearable, they're properties that are used in the SDK side and will be moved to another file for its configuration on the SDK side.
-5. Removes the `id` property to decouple the format to describe the wearable from the information that the Builder needs.
+5. Changing the `id` property to decouple the format to describe the wearable from the information that the Builder needs. The `id` is now the URN of the wearable.
 
-Alongside this changes,
-
-The following example shows how a wearable could be described using the new `wearable.json` format:
+The following example shows how a standard wearable could be described using the `wearable.json` format:
 
 ```json
 {
+  "id": "urn:decentraland:matic:collections-v2:0x588dab7702ae280e7c8967de8999eb635e4b5c2e:0",
   "name": "test",
-  "category": "eyebrows",
   "rarity": "common",
   "description": "a description",
-  "hides": [],
-  "replaces": [],
-  "tags": ["special", "new", "eyebrows"],
-  "representations": [
-    {
-      "bodyShape": "male",
-      "mainFile": "aModelFile.glb",
-      "contents": ["aModelFile.glb", "aTextureFile.png", "thumbnail.png"],
-      "overrideHides": [],
-      "overrideReplaces": []
-    }
-  ]
+  "data": {
+    "replaces": [],
+    "hides": [],
+    "tags": ["special", "new", "eyebrows"],
+    "representations": [
+      {
+        "bodyShapes": ["urn:decentraland:off-chain:base-avatars:BaseMale"],
+        "mainFile": "aModelFile.glb",
+        "contents": ["aModelFile.glb", "aTextureFile.png", "thumbnail.png"],
+        "overrideHides": [],
+        "overrideReplaces": []
+      }
+    ],
+    "category": "eyebrows"
+  },
+  "i18n": [{ "code": "en", "text": "test" }],
+  "thumbnail": "thumbnail.png",
+  "image": "image.png",
+  "collectionAddress": "0x588dab7702ae280e7c8967de8999eb635e4b5c2e"
 }
 ```
+
+An example on how a third party or linked wearable is defined using the `wearable.json` format can be found in the [ADR-62](docs/ADR-62-merkle-proofed-entities.md).
 
 ## Participants
 
