@@ -137,7 +137,7 @@ The following is an example on how the `wearable.json` file for a standard weara
   "description": "A description of the wearable",
   "hides": ["hair"],
   "replaces": [],
-  "tags": ["special", "new", "eyebrows"],
+  "tags": ["special", "new", "hat"],
   "representations": [
     {
       "bodyShapes": ["urn:decentraland:off-chain:base-avatars:BaseMale"],
@@ -171,7 +171,7 @@ And this is an example on how a `wearable.json` file looks like for a third part
   "description": "A description of the wearable",
   "hides": ["hair"],
   "replaces": [],
-  "tags": ["special", "new", "eyebrows"],
+  "tags": ["special", "new", "hat"],
   "representations": [
     {
       "bodyShapes": ["urn:decentraland:off-chain:base-avatars:BaseMale"],
@@ -199,7 +199,7 @@ And this is an example on how a `wearable.json` file looks like for a third part
 
 These files are what are used by the platform to render the wearable in word and in any of our services (builder, marketplace, etc).
 
-Each representation, as defined in the `Builder configuration file` section, defines which are the files that will be used for each of the body shapes. The included files must match with the ones that are described in the `contents` property of the `WearableRepresentation` object. These files are GLBs, GLFTs, png, jpg or other supported file that can be loaded by the platform and, alongside them, a custom `thumbnail` image can be provided. This thumbnail image is **optional** and will be used to represent the wearable in the different services the platform has. Thumbnails must be PNGs with a 256px by 256px size and must have a transparent background.
+Each representation, as defined in the `Builder configuration file` section, defines which are the files that will be used for each of the body shapes. The included files must match with the ones that are described in the `contents` property of the `WearableRepresentation` object. These files are GLBs, GLFTs, png, jpg or other supported file that can be loaded by the platform and, alongside them, a custom `thumbnail` image can be provided. This thumbnail image is **optional** and will be used to represent the wearable in the different services the platform has. Thumbnails must be PNGs with a 512 by 512px size and must have a transparent background.
 
 ## Summary
 
@@ -207,7 +207,7 @@ Importing wearables in the Builder platform can be done by uploading a ZIP file 
 
 - An optional `builder.json` file if there's the need to identify an item in the platform to be updated or to create a new one (not required as it is usually auto generated).
 - A `wearable.json` file with the information about the wearable.
-- The GLB, GLTFs or other files that define the wearable's model.
+- The GLB, GLTFs or other files that define the wearable's models.
 
 ## Participants
 
