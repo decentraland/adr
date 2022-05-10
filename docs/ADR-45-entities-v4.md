@@ -19,8 +19,8 @@ We defined a list of changes to support the new validations
 
 ## Deadline
 
-    ADR45_DEADLINE: 2022-05-03T14:00:00Z
-    Unix Timestamp: 1651586400
+    ADR45_DEADLINE: 2022-05-10T14:00:00Z
+    Unix Timestamp: 1652191200000
 
 ## Status
 

@@ -54,14 +54,14 @@ GET /registry/:registry-id/address/:address/assets {
             id: "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0",
             amount: 1,
             urn: {
-                decentraland: "urn:decentraland:polygon:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0"
+                decentraland: "urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0"
             }
         },
         {
             id: "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1",
             amount: 1,
             urn: {
-                decentraland: "urn:decentraland:polygon:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
+                decentraland: "urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
             }
         }
     ],
@@ -93,7 +93,7 @@ GET /registry/:registry-id/address/:address/assets/:id {
     id: "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1",
     amount: 1,
     urn: {
-        decentraland: "urn:decentraland:polygon:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
+        decentraland: "urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
     }
 }
 ```
@@ -177,7 +177,7 @@ Each deployment must check if the URN has `collections-thirdparty` in order to k
 
 1. If there is a record with the urn:
 
-`urn:decentraland:polygon:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0`.
+`urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0`.
 
 2. If the content hash of the item with id `0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0` is the same as the content hash of the item that is being uploaded
 
