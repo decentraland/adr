@@ -70,6 +70,12 @@ style: convert tabs to spaces
 ```yaml
 test: ensure Tayne retains clothing
 ```
+```yaml
+revert: reverts commit 4d3d3d3
+```
+```yaml
+break: property no longer accepts the previous data, closes #289
+```
 
 ### Allowed `<type>` values:
    * `feat` new feature
@@ -79,6 +85,8 @@ test: ensure Tayne retains clothing
    * `refactor` refactoring production code, eg. renaming a variable
    * `test` adding missing tests, refactoring tests; no production code change
    * `chore` updating build tasks etc; no production code change
+   * `revert` a commit is being reverted
+   * `break` any change that could potentially cause failures in the applications that consumes it
 
 ## Merge pull requests
 
