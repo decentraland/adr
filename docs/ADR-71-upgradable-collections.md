@@ -2,7 +2,7 @@
 
 ## Context
 
-![MinimalProxy](./resources/ADR-70/collection-creation-old-flow.png)
+![MinimalProxy](./resources/ADR-71/collection-creation-old-flow.png)
 
 This diagram shows the current flow regarding publishing collections on the blockchain. 
 
@@ -24,7 +24,7 @@ With this current implementation, sadly, there is absolutely nothing we can do. 
 
 ## Solution
 
-![BeaconProxy](./resources/ADR-70/collection-creation-new-flow.png)
+![BeaconProxy](./resources/ADR-71/collection-creation-new-flow.png)
 
 This solution implements the [Beacon](https://docs.openzeppelin.com/contracts/3.x/api/proxy#beacon) pattern.
 
