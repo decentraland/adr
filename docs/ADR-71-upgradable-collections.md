@@ -38,6 +38,15 @@ The owner of the UpgradableBeacon can then update the implementation contract ad
 
 This solution is not retroactive. Collections/Proxies created as MinimalProxies will not obtain upgradable capabilities. Only collections created as BeaconProxies will gain these capabilities.
 
+## Status
+
+Already being used in Polygon Mainnet.
+
+Main contracts for this solution are:
+
+- [CollectionFactoryV3](https://polygonscan.com/address/0x3195e88aE10704b359764CB38e429D24f1c2f781)
+- [UpgradableBeacon](https://polygonscan.com/address/0xDDb3781Fff645325C8896AA1F067bAa381607ecc)
+
 ## Participants
 
 - @fzavalia
