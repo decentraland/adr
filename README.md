@@ -68,7 +68,8 @@
 - [ADR-67 - Runtime Architecture For Renderer](docs/ADR-67-runtime-architecture-for-renderer.md)
 - [ADR-68 - Configuring Wearables](docs/ADR-68-configuring-wearables.md)
 - [ADR-69 - Importing Wearables](docs/ADR-69-importing-wearables.md)
-
+- [ADR-70 - New Catalyst Comms Architecture](docs/ADR-70-new-comms.md.md)
+ 
 ## How to?
 
 Read [the ADR explaining the rationale](docs/ADR-1-documenting-architecture-decisions.md), by Michael Nygard.
