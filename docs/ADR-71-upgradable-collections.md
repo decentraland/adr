@@ -8,7 +8,7 @@ This diagram shows the current flow regarding publishing collections on the bloc
 
 The [CollectionManager](https://polygonscan.com/address/0x9D32AaC179153A991e832550d9F96441Ea27763A) has a `createCollection` external function called by the creator of a collection which receives both the address of the [Forwarder](https://polygonscan.com/address/0xBF6755A83C0dCDBB2933A96EA778E00b717d7004) and the [CollectionFactory](https://polygonscan.com/address/0xB549B2442b2BD0a53795BC5cDcBFE0cAF7ACA9f8)
 
-Inside this function, the Forwarder calls another `createCollection` function the CollectionFactory contract.
+Inside this function, the Forwarder calls another `createCollection` function in the CollectionFactory contract.
 
 This creates a new collection in the blockchain in the form of a [MinimalProxy](https://eips.ethereum.org/EIPS/eip-1167), which delegates all calls made to it to the [CollectionImplementation](https://polygonscan.com/address/0x006080C6061C4aF79b39Da0842a3a22A7b3f185e) contract containing the logic of how collections should behave.
 
