@@ -72,6 +72,8 @@ Main contracts for this solution are:
 - [CollectionFactoryV3](https://polygonscan.com/address/0x3195e88aE10704b359764CB38e429D24f1c2f781)
 - [UpgradableBeacon](https://polygonscan.com/address/0xDDb3781Fff645325C8896AA1F067bAa381607ecc)
 
+The collection created using this patern is [BEYOND COLLABS](https://polygonscan.com/address/0x2b8e09583832281b14116f31b198870747531f44) at block [28233589](https://polygonscan.com/block/28233589)
+
 ## Participants
 
 - @fzavalia
