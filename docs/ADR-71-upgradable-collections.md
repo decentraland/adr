@@ -38,6 +38,31 @@ The owner of the UpgradableBeacon can then update the implementation contract ad
 
 This solution is not retroactive. Collections/Proxies created as MinimalProxies will not obtain upgradable capabilities. Only collections created as BeaconProxies will gain these capabilities.
 
+When updating the implementation contract in the UpgradableBeacon, it is vital that no contract state variables are removed or reordered. Doing so will certainly break things up.
+
+For example, out first implementation has the following variables:
+
+```
+uint256 counter;
+bool initialized;
+bytes fingerprint;
+```
+
+The new implementation must have include these variables in the same order even if any of those variables is not used anymore. Any new variable must be defined at the end.
+
+```
+// old variables
+uint256 counter;
+bool initialized;
+bytes fingerprint;
+
+// new variables
+uint256 newCoolCounter;
+bytes newFingerprint;
+```
+
+More info about this [here](https://docs.openzeppelin.com/upgrades-plugins/1.x/writing-upgradeable#modifying-your-contracts).
+
 ## Status
 
 Already being used in Polygon Mainnet.
