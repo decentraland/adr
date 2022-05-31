@@ -20,7 +20,7 @@ Thanks to how the EVM handles storage, These proxies can delegate calls to a con
 
 Let's say a vulnerability is found in the CollectionImplementation contract, or a new magical feature for collections is voted by the community to be added.
 
-With this current implementation, sadly, there is absolutely nothing we can do. The proxies delegate calls to the implementation contract directly, and that does not allow any kind of modification or upgrade to the collection behavior because they are not upgradable proxies.
+With this current implementation, sadly, there is absolutely nothing we can do. The proxies delegate calls to the implementation contract directly, disallowing any kind of modification or upgrade to the collection behavior because they are not upgradable proxies.
 
 ## Solution
 
