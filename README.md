@@ -68,8 +68,8 @@
 - [ADR-67 - Runtime Architecture For Renderer](docs/ADR-67-runtime-architecture-for-renderer.md)
 - [ADR-68 - Configuring Wearables](docs/ADR-68-configuring-wearables.md)
 - [ADR-69 - Importing Wearables](docs/ADR-69-importing-wearables.md)
-- [ADR-71 - Upgradable Collections](docs/ADR-71-upgradable-collections.md)
 - [ADR-70 - Catalyst: New Communications Architecture](docs/ADR-70-new-comms.md)
+- [ADR-71 - Upgradable Collections](docs/ADR-71-upgradable-collections.md)
  
 ## How to?
 
