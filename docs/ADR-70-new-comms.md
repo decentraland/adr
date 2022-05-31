@@ -16,7 +16,7 @@ Initially three types of transport will be supported:
 - WebSocket: WS, simple to implement and extend, higher latency than webRTC alternatives, needs extra infrastructure to scale.
 - Peer-to-Peer: WebRTC, no extra infrastructure needed to scale, latency increases as more peers are added to an island.
 
-With regards to DCL platform alone (that is, without third-party servers), users mostly need to receive information from peers on the same island, so the transports will be in charge of broadcasting information between peers on a given island. 
+With regards to DCL platform alone, users mostly need to receive information from peers on the same island, so the transports will be in charge of broadcasting information between peers on a given island. 
 
 ### Comms Implementation 
 
