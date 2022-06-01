@@ -153,6 +153,7 @@ This is a summary of the process to render an avatar.
 Each wearable carries its own set of bones (only the needed ones) which makes them completely autonomous and capable of playing animations on their own.
 
 # Shading
+The only requirement about shading is tinting the correct materials with skin/hair colors. Any material matching `(?i)\bskin\b` will be tinted with the skin color and any other matching `(?i)\bhair\b` will be tinted with the hair color.
 
 Three different shaders are used when rendering an avatar.
 

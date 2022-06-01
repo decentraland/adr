@@ -50,6 +50,7 @@
 - [ADR-48 - Locking collections in the builder](docs/ADR-48-locking-collections-in-the-builder.md)
 - [ADR-49 - Signed Fetch V2](docs/ADR-49-signed-fetch-v2.md)
 - [ADR-50 - Isolated mode](docs/ADR-50-isolated-scenes.md)
+- [ADR-51 - Catalyst content validations](docs/ADR-51-catalyst-content-validations.md)
 - [ADR-52 - Content Synchronization from Snapshots and Pointer Changes](docs/ADR-52-content-new-sync.md)
 - [ADR-53 - Test collections in the explorer](docs/ADR-53-test-collections-in-the-explorer.md)
 - [ADR-54 - Use an Oracle for MANA pricing according to USD rate](docs/ADR-54-oracle-for-mana-pricing.md)
@@ -58,6 +59,18 @@
 - [ADR-57 - Avatar assembling for visualization](docs/ADR-57-avatar-assembling-for-visualization.md)
 - [ADR-58 - Third Party Collections Registry V2 (Merkle Tree)](docs/ADR-58-third-party-assets-integration-v2-with-merkle-tree.md)
 - [ADR-59 - User Store catalyst entity](docs/ADR-59-user-store-catalyst-entity.md)
+- [ADR-60 - Skin wearables](docs/ADR-60-skin-wearables.md)
+- [ADR-61 - Blur effect for UI (renderer)](docs/ADR-61-blur-effect-for-ui.md)
+- [ADR-62 - Merkle proofed entities](docs/ADR-62-merkle-proofed-entities.md)
+- [ADR-63 - Denylist formatting](docs/ADR-63-denylist-formatting.md)
+- [ADR-64 - POIs](docs/ADR-64-points-of-interest.md)
+- [ADR-65 - Avatar System for Renderer](docs/ADR-65-avatar-system-for-renderer.md)
+- [ADR-66 - Emotes System for Renderer](docs/ADR-66-emotes-system-for-renderer.md)
+- [ADR-67 - Runtime Architecture For Renderer](docs/ADR-67-runtime-architecture-for-renderer.md)
+- [ADR-68 - Configuring Wearables](docs/ADR-68-configuring-wearables.md)
+- [ADR-69 - Importing Wearables](docs/ADR-69-importing-wearables.md)
+- [ADR-70 - Catalyst: New Communications Architecture](docs/ADR-70-new-comms.md)
+- [ADR-71 - Upgradable Collections](docs/ADR-71-upgradable-collections.md)
 
 ## How to?
 

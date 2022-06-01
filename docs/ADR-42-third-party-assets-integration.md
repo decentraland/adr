@@ -29,6 +29,8 @@ Each Third Party will require to create and maintain an API with these endpoints
 - @GET /registry/:registry-id/address/:address/assets - get a list of assets asociated with a given address
 - @GET /registry/:registry-id/address/:address/assets/:id - get if a dcl item is owned by a given address
 
+> It is recommended to accept any format for the `:address` parameter: checksummed, lowercased, uppercased, mixed, etc. You can always checksum and validate if it is a valid Ethereum address later.
+
 ### @GET /registry/:registry-id/address/:address/assets
 
 #### Request
@@ -36,30 +38,30 @@ Each Third Party will require to create and maintain an API with these endpoints
 ```javascript
 GET /registry/:registry-id/address/:address/assets {
     registry-id: "cryptohats"
-    address: "0xMendez"
+    address: "0x0f5d2fb29fb7d3cfee444a200298f468908cc942"
 }
 
-# https://api.cryptohats.io/registry/cryptohats/address/0xMendez/assets
+# https://api.cryptohats.io/registry/cryptohats/address/0x0f5d2fb29fb7d3cfee444a200298f468908cc942/assets
 ```
 
 #### Response
 
 ```javascript
 {
-    address: "0xMendez",
+    address: "0x0f5d2fb29fb7d3cfee444a200298f468908cc942",
     assets: [
         {
             id: "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0",
             amount: 1,
             urn: {
-                decentraland: "urn:decentraland:polygon:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0"
+                decentraland: "urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0"
             }
         },
         {
             id: "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1",
             amount: 1,
             urn: {
-                decentraland: "urn:decentraland:polygon:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
+                decentraland: "urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
             }
         }
     ],
@@ -76,11 +78,12 @@ GET /registry/:registry-id/address/:address/assets {
 ```javascript
 GET /registry/:registry-id/address/:address/assets/:id {
     registry-id: "cryptohats"
-    address: "0xMendez"
+    address: "0x0f5d2fb29fb7d3cfee444a200298f468908cc942"
     id: "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
 }
 
-# https://api.cryptohats.io/registry/cryptohats/address/0xMendez/assets/0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1
+# https://api.cryptohats.io/registry/cryptohats/address/0x0f5d2fb29fb7d3cfee444a200298f468908cc942
+/assets/0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1
 ```
 
 #### Response
@@ -90,7 +93,7 @@ GET /registry/:registry-id/address/:address/assets/:id {
     id: "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1",
     amount: 1,
     urn: {
-        decentraland: "urn:decentraland:polygon:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
+        decentraland: "urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
     }
 }
 ```
@@ -174,7 +177,7 @@ Each deployment must check if the URN has `collections-thirdparty` in order to k
 
 1. If there is a record with the urn:
 
-`urn:decentraland:polygon:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0`.
+`urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0`.
 
 2. If the content hash of the item with id `0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0` is the same as the content hash of the item that is being uploaded
 
