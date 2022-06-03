@@ -25,7 +25,7 @@ On this standard an A/B is defined as a feature flag that ends with `_variant` w
 
 Just create a new feature that ends `_variant`
 
-![Create new flag](./resources/ADR-70/001-create-new-feature.png)
+![Create new flag](./resources/ADR-72/001-create-new-feature.png)
 
 #### Defining your activation
 
@@ -36,19 +36,19 @@ You can define your activation as your project needs, but in most of the cases y
 
 `applicationHostname` allows you to keep your test active on any testing environment and when its active on production
 
-![Activation by host](./resources/ADR-70/002-activation-by-host.png)
+![Activation by host](./resources/ADR-72/002-activation-by-host.png)
 
 If you also add `gradualRolloutSessionId` you can rollout your test gradually
 
-![Activation rollout](./resources/ADR-70/003-activation-rollout.png)
+![Activation rollout](./resources/ADR-72/003-activation-rollout.png)
 
 #### Defining your variants
 
 In the `VARIANT` tab you can define as many cases as you need and control the percentage of users that will get each variant.
 
-![Add variant](./resources/ADR-70/004-add-variant.png)
+![Add variant](./resources/ADR-72/004-add-variant.png)
 
-![List variants](./resources/ADR-70/005-varian-list.png)
+![List variants](./resources/ADR-72/005-varian-list.png)
 
 > Please note that if you define and activation with rollout and `enabled`/`disabled` variants you will split your users as follow:
 >
@@ -58,6 +58,7 @@ In the `VARIANT` tab you can define as many cases as you need and control the pe
 > - `disabled` variant (50%): `250` users
 >
 > For a total of `1.000` only half of then will count as testing users and half of those will see the `enabled` options, that mean that `750` users will see the old version but only `250` will be consider in the result of the A/B testing.
+> If your objective is to test `500` users with `enabled` and `500` users with `disabled` remove the rollout configuration.
 
 Once your A/B testing is ready you should get something like this:
 
@@ -88,15 +89,15 @@ If instead your A/B testing is inactive you should get something like this:
 
 #### Including extra data
 
-Some times you need to include additional data to know how to handle each variant, this is use full because you can develop the variant implementation and detached from the end value (that can be content that is not ready jet) you will be able to develop and deploy you a/b testing and other team in charge of produce the content will be able to test it without any other interaction with your code.
+Some times you need to include additional data to know how to handle each variant, this is useful because you can develop the variant implementation and detached from the end value (that can be content that is not ready jet) you will be able to develop and deploy you a/b testing and other team in charge of produce the content will be able to test it without any other interaction with your code.
 
-![Extra data](./resources/ADR-70/006-extra-data.png)
+![Extra data](./resources/ADR-72/006-extra-data.png)
 
 ### Segment: measuring your new A/B testing
 
-To measure if any of the variants of an A/B testing is significant we need to know three thing:
+To measure if any of the variants of an A/B testing is significant we need to know three things:
 
-- the total number of user in the A/B testing
+- the total number of users in the A/B testing
 - which variant got each one
 - the success metric
 
@@ -135,7 +136,9 @@ analytics.track(
 )
 ```
 
-Finally you define your success metric and send attach the `featureFlags` prop to it.
+Finally you define your success metric (and time frame), this way the data team (or any other) will be abel to generate a dashboard to measure the success (or not) of your test.
+
+Additionally you can send all features in your others events, this way you can create more dashboards and filter only for events generated during your A/B testings
 
 ```ts
 analytics.track(
@@ -149,5 +152,3 @@ analytics.track(
   }
 )
 ```
-
-Ideally you will send each event to segment with the `featureFlags` prop, that way you can change your success metric later.
