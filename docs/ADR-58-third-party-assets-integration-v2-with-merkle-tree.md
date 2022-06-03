@@ -345,7 +345,7 @@ This returns all the approved collections for third party wearables using the qu
 ```
 
 ```bash
-@GET https://peer.decentraland.org/lamdbas/third-party-integrations
+@GET https://peer.decentraland.org/lambdas/third-party-integrations
 
 # Response:
 
@@ -379,7 +379,7 @@ To obtain that, the lambdas API does:
 2. Requests the given URL to obtain all wearables owned by the given address of the collection.
 
 ```bash
-@GET https://peer.decentraland.org/lamdbas/wearables-by-owner/{address}?collectionId={collectionUrn}
+@GET https://peer.decentraland.org/lambdas/wearables-by-owner/{address}?collectionId={collectionUrn}
 
 
 # Fetch
