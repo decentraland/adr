@@ -24,6 +24,16 @@ We proposed a Cloudflare worker that ack as a load balancer between any provider
 
 ## Load Balancer Algorithm
 
+1. Ethereum RPC Request reach the Worker
+2. Create a new instance of `ProviderHandler`
+3. Validate the Request (if it is invalid returns `400`)
+4. Randomly selected a Provider (if there is no more providers returns `503`)
+5. Check if the Provider supports the network (if not go to step `4`)
+6. Check if the Provider supports the protocol (http or ws, if not go to step `4`)
+7. Forward request to the provider
+8. Check response status code (if greater or equalt to `500` go to step `4`)
+9. Forward response to the user
+
 ```mermaid
 stateDiagram-v2
   [*] --> ProviderHandler: Ethereum RPC Request
@@ -54,16 +64,6 @@ stateDiagram-v2
   check_response --> PopProviderFromList: HTTP Code >= 500
   check_response --> [*]: HTTP Code < 500
 ```
-
-1. Ethereum RPC Request reach the Worker
-2. Create a new instance of `ProviderHandler`
-3. Validate the Request (if it is invalid returns `400`)
-4. Randomly selected a Provider (if there is no more providers returns `503`)
-5. Check if the Provider supports the network (if not go to step `4`)
-6. Check if the Provider supports the protocol (http or ws, if not go to step `4`)
-7. Forward request to the provider
-8. Check response status code (if greater or equalt to `500` go to step `4`)
-9. Forward response to the user
 
 ### Implementation API
 
