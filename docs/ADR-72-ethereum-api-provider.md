@@ -33,8 +33,11 @@ stateDiagram-v2
   state check_protocol <<choice>>
   state check_response <<choice>>
 
-  RandomlyOrderProviders --> ProviderHandler
-  ProviderHandler --> PopProviderFromList
+  ProviderList --> ProviderHandler
+  ProviderHandler --> CheckRequest
+  CheckRequest --> [*]: Invalid Request
+
+  CheckRequest --> PopProviderFromList
   PopProviderFromList --> check_provider
   check_provider --> CheckNetwork: Provider Selected
   check_provider --> [*]: No more providers
@@ -51,6 +54,16 @@ stateDiagram-v2
   check_response --> PopProviderFromList: HTTP Code >= 500
   check_response --> [*]: HTTP Code < 500
 ```
+
+1. Ethereum RPC Request reach the Worker
+2. Create a new instance of `ProviderHandler`
+3. Validate the Request (if it is invalid returns `400`)
+4. Randomly selected a Provider (if there is no more providers returns `503`)
+5. Check if the Provider supports the network (if not go to step `4`)
+6. Check if the Provider supports the protocol (http or ws, if not go to step `4`)
+7. Forward request to the provider
+8. Check response status code (if greater or equalt to `500` go to step `4`)
+9. Forward response to the user
 
 ### Implementation API
 
