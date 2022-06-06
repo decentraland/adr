@@ -137,18 +137,3 @@ analytics.track(
 ```
 
 Finally you define your success metric (and time frame), this way the data team (or any other) will be abel to generate a dashboard to measure the success (or not) of your test.
-
-Additionally you can send all features in your others events, this way you can create more dashboards and filter only for events generated during your A/B testings
-
-```ts
-analytics.track(
-  `user_enter_successfully`,
-  {
-    featureFlags: [
-      "test-flag", // not an A/B testing
-      "test-feature_name_variant",
-      "test-feature_name_variant:enabled",
-    ]
-  }
-)
-```
