@@ -57,6 +57,7 @@
 - [ADR-55 - Third Party Curation With Merkle Tree](docs/ADR-55-third-party-curation-with-merkle-tree.md)
 - [ADR-56 - Renderer plugin system](docs/ADR-56-plugin-system.md)
 - [ADR-57 - Avatar assembling for visualization](docs/ADR-57-avatar-assembling-for-visualization.md)
+- [ADR-58 - Third Party Collections Registry V2 (Merkle Tree)](docs/ADR-58-third-party-assets-integration-v2-with-merkle-tree.md)
 - [ADR-59 - User Store catalyst entity](docs/ADR-59-user-store-catalyst-entity.md)
 - [ADR-60 - Skin wearables](docs/ADR-60-skin-wearables.md)
 - [ADR-61 - Blur effect for UI (renderer)](docs/ADR-61-blur-effect-for-ui.md)
