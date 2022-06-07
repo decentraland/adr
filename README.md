@@ -70,7 +70,8 @@
 - [ADR-69 - Importing Wearables](docs/ADR-69-importing-wearables.md)
 - [ADR-70 - Catalyst: New Communications Architecture](docs/ADR-70-new-comms.md)
 - [ADR-71 - Upgradable Collections](docs/ADR-71-upgradable-collections.md)
- 
+- [ADR-72 - Ethereum API Provider](docs/ADR-72-ethereum-api-provider.md)
+
 ## How to?
 
 Read [the ADR explaining the rationale](docs/ADR-1-documenting-architecture-decisions.md), by Michael Nygard.
