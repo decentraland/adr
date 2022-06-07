@@ -291,7 +291,7 @@ Upon receiving a deployment, the Catalysts will check the graph for the latest M
 
 ```GraphQL
 {
-  thirdParties(block:{number : {blockNumber}}) {
+  thirdParties(where: {isApproved: true}, block:{number : {blockNumber}}) {
     root
   }
 }
