@@ -19,7 +19,7 @@ To setup an A/B testing we use Feature Flags as assignation tool and Segment as 
 
 On this standard an A/B is defined as a feature flag that ends with `_variant` with each of the possible variants defined as variant and the activation defined as your application required.
 
-> Please note that if you need to test a new variant against the current one it is preferable to use a variant with two options (`enabled` and `disabled`) instead of the activation because otherwise you won't be able to differentiate (and measure) when your a/b is active or just should show the current version.
+> Please note that if you need to test a new variant against the current one it is preferable to use a variant with two options (`enabled` and `disabled`) instead of the activation because otherwise, you won't be able to differentiate (and measure) when your a/b is active or just should show the current version.
 
 #### Creating a new flag
 
