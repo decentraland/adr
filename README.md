@@ -71,6 +71,7 @@
 - [ADR-70 - Catalyst: New Communications Architecture](docs/ADR-70-new-comms.md)
 - [ADR-71 - Upgradable Collections](docs/ADR-71-upgradable-collections.md)
 - [ADR-72 - Ethereum API Provider](docs/ADR-72-ethereum-api-provider.md)
+- [ADR-73 - A/B Testing standard](docs/ADR-73-ab-testing.md)
 
 ## How to?
 

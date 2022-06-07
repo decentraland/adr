@@ -25,7 +25,7 @@ On this standard, an A/B is defined as a feature flag that ends with `_variant` 
 
 Just create a new feature that ends `_variant`
 
-![Create new flag](./resources/ADR-72/001-create-new-feature.png)
+![Create new flag](./resources/ADR-73/001-create-new-feature.png)
 
 #### Defining your activation
 
@@ -36,19 +36,19 @@ You can define your activation as your project needs, but in most of the cases y
 
 `applicationHostname` allows you to keep your test active on any testing environment and when its active on production
 
-![Activation by host](./resources/ADR-72/002-activation-by-host.png)
+![Activation by host](./resources/ADR-73/002-activation-by-host.png)
 
 If you also add `gradualRolloutSessionId` you can rollout your test gradually
 
-![Activation rollout](./resources/ADR-72/003-activation-rollout.png)
+![Activation rollout](./resources/ADR-73/003-activation-rollout.png)
 
 #### Defining your variants
 
 In the `VARIANT` tab you can define as many cases as you need and control the percentage of users that will get each variant.
 
-![Add variant](./resources/ADR-72/004-add-variant.png)
+![Add variant](./resources/ADR-73/004-add-variant.png)
 
-![List variants](./resources/ADR-72/005-varian-list.png)
+![List variants](./resources/ADR-73/005-varian-list.png)
 
 > Please note that if you define and activation with rollout and `enabled`/`disabled` variants you will split your users as follow:
 >
@@ -91,7 +91,7 @@ If instead your A/B testing is inactive you should get something like this:
 
 Some times you need to include additional data to know how to handle each variant, this is useful because you can develop the variant implementation and detached from the end value (that can be content that is not ready jet) you will be able to develop and deploy you a/b testing and other teams in charge of produce the content will be able to test it without any other interaction with your code.
 
-![Extra data](./resources/ADR-72/006-extra-data.png)
+![Extra data](./resources/ADR-73/006-extra-data.png)
 
 ### Segment: measuring your new A/B testing
 
