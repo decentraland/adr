@@ -89,7 +89,7 @@ If instead your A/B testing is inactive you should get something like this:
 
 #### Including extra data
 
-Some times you need to include additional data to know how to handle each variant, this is useful because you can develop the variant implementation and detached from the end value (that can be content that is not ready jet) you will be able to develop and deploy you a/b testing and other team in charge of produce the content will be able to test it without any other interaction with your code.
+Some times you need to include additional data to know how to handle each variant, this is useful because you can develop the variant implementation and detached from the end value (that can be content that is not ready jet) you will be able to develop and deploy you a/b testing and other teams in charge of produce the content will be able to test it without any other interaction with your code.
 
 ![Extra data](./resources/ADR-72/006-extra-data.png)
 
