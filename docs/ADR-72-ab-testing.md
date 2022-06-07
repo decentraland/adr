@@ -7,7 +7,7 @@ Given the number of new features we need a way to measure the impact that each o
 ## Main objectives
 
 - sanitize metrics
-- allow data team to develop, monitor and improve dashboards and tools decoupled from the implementation on each app
+- allow data team to develop, monitor, and improve dashboards and tools decoupled from the implementation on each app
 - allow any team to implement a/b testings on their environment without dependencies with other teams
 - leverage over already implemented and tested tools
 
