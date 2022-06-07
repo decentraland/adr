@@ -71,6 +71,7 @@
 - [ADR-70 - Catalyst: New Communications Architecture](docs/ADR-70-new-comms.md)
 - [ADR-71 - Upgradable Collections](docs/ADR-71-upgradable-collections.md)
 - [ADR-72 - Ethereum API Provider](docs/ADR-72-ethereum-api-provider.md)
+- [ADR-74 - Add Emote schema](docs/ADR-74-add-emote-schema.md)
 
 ## How to?
 
