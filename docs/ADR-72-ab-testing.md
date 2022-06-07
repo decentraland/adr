@@ -57,7 +57,7 @@ In the `VARIANT` tab you can define as many cases as you need and control the pe
 > - `enabled` variant (50%): `250` users
 > - `disabled` variant (50%): `250` users
 >
-> For a total of `1.000` only half of then will count as testing users and half of those will see the `enabled` options, that mean that `750` users will see the old version but only `250` will be consider in the result of the A/B testing.
+> For a total of `1.000` only half of them will count as testing users and half of those will see the `enabled` options, that means that `750` users will see the old version but only `250` will be considered in the result of the A/B testing.
 > If your objective is to test `500` users with `enabled` and `500` users with `disabled` remove the rollout configuration.
 
 Once your A/B testing is ready you should get something like this:
