@@ -98,7 +98,7 @@ Some times you need to include additional data to know how to handle each varian
 To measure if any of the variants of an A/B testing is significant we need to know three things:
 
 - the total number of users in the A/B testing
-- which variant got each one
+- which variant each one got
 - the success metric
 
 To know the total number of users we send an event `feature_flags` each time a user gets a new set of feature flags, but to know which variant each user gets we need to format our feature flags as the following array:
