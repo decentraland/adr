@@ -3,7 +3,7 @@
 ## Context and Problem Statement
 
 Currently, `Emotes` are being deployed as `Wearables` in the Catalysts. Even though they are very similar, they are not. For instance, there are emotes deployed with the arbitrary category "hat" just to pass the validations.
-Secondly, we are introducing some kind of versioning within the emotes metadata. This way, we can modify the metadata as we see fit but also keep track of these changes so we can validate the emotes over time. For instance, if we start a new Catalyst from scratch, it will receive entities from differenet timestamps and we have to validate them with the validations that **_where present at that timestamp_**.
+Secondly, we are introducing some kind of versioning within the emotes metadata. This way, we can modify the metadata as we see fit but also keep track of these changes so we can validate the emotes over time. For instance, if we start a new Catalyst from scratch, it will receive entities from different timestamps and we have to validate them with the validations that **_where present at that timestamp_**.
 
 ## Proposed solution
 
