@@ -3,7 +3,7 @@
 ## Context and Problem Statement
 
 Currently, `Emotes` are being deployed as `Wearables` in the Catalysts. Even though they are very similar, they are not. For instance, there are emotes deployed with the arbitrary category "hat" just to pass the validations.
-Secondly, we are introducing some kind of versioning within the emotes metadata. This way, we can modify the metadata as we see fit but also keep track of these changes so we can validate the emotes over time. For instance, if we start a new Catalyst from scratch, it will receive entities from different timestamps and we have to validate them with the validations that **_where present at that timestamp_**.
+Secondly, emotes metadata structure is likely to change so versioning of this changes are needed. This way, its changes can be tracked over time and validations can be done according to its corresponding timestamp. For instance, when starting a new Catalyst from scratch, entities from different timestamps will be received and will need to validate them with the validations that **_where present at that timestamp_**.
 
 ## Proposed solution
 
@@ -102,7 +102,7 @@ import { EmoteCategory } from '.../src/platform/...'
 
 ##### 4. Stop exporting qualitative types.
 
-(Breaking change) Stop exporting the ThirdPartyWearable, StandardWearable and don't export the analogues for Emote. Instead, the exported types will be Wearable, Emote, StandardProps, ThirdPartyProps and the functions isStandard, isThirdParty. This way, we will prevent the explosion of the combination of those types (and future properties added):
+(Breaking change) Stop exporting the ThirdPartyWearable, StandardWearable and don't export the analogues for Emote. Instead, the exported types will be Wearable, Emote, StandardProps, ThirdPartyProps and the functions isStandard, isThirdParty. This way, the explosion of the combination of those types (and future properties added) will be prevented:
 
 ```typescript
 export function isStandard(item: Item): item is Item & StandardProps {. . .}
