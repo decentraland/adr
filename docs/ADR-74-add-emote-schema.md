@@ -96,7 +96,7 @@ export enum EmoteCategory {
  LOOP = 'loop'
 }
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-<src/dapps/…>
+// <src/dapps/…>
 import { EmoteCategory } from '.../src/platform/...'
 ```
 
