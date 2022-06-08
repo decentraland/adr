@@ -13,7 +13,7 @@ Given the number of new features we have, we need a way to measure the impact th
 
 ## Current implementation
 
-To setup an A/B testing we use Feature Flags as assignation tool and Segment as measurement tool.
+To setup an A/B testing we use Feature Flags as an assignation tool and Segment as a measurement tool.
 
 ### Feature Flags: Setting up a new A/B testing
 
