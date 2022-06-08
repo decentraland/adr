@@ -137,6 +137,6 @@ function validate(emote) {
 ```
 
 \*under the assumption that the common properties do not change.
-This would give us the possibility to iterate schema changes quicker and also easily identify the versions over the time along with its reasons explained in the specific ADR.
+This would give the possibility to iterate schema changes quicker and also easily identify the versions over the time along with its reasons explained in the specific ADR.
 
 ### Date: TBD
