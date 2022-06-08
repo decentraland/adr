@@ -136,4 +136,4 @@ analytics.track(
 )
 ```
 
-Finally, you define your success metric (and time frame), this way the data team (or any other) will be able to generate a dashboard to measure the success (or not) of your test.
+Finally, you need to define your success metric (and time frame). This way the data team (or any other team) will be able to generate a dashboard to measure the success (or failure) of your test.
