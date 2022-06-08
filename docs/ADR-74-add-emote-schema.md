@@ -80,7 +80,7 @@ export type Emote = EmoteADR74 | EmoteADR102;
 ##### 3. Create new EmoteCategory and EmoteRepresentation types specific for Emotes.
 
 Although they're pretty similar, they are different to the ones for Wearables and may diverge more in the future. They will also be included in the versioned properties.
-One caveat, _EmoteCategory_ is imported from _src/dapps_ but it's not versioned as there only matters the latest version in that context. For that, we propose to change the dependency to the other way, the latest version is imported in _src/dapps from src/platform/_.
+One caveat, _EmoteCategory_ is imported from _src/dapps_ but it's not versioned as there only matters the latest version in that context. For that, this proposal suggests changing the dependency to the other way, the latest version is imported in _src/dapps from src/platform/_.
 If a new category is added, it will be added to _EmoteCategory_ and a new type called _EmoteCategoryADR74_ will be created to validate emotes before this new change.
 
 ```typescript
