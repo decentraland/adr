@@ -38,7 +38,7 @@ export type Wearable = {
 
 ##### 1. Share common properties
 
-Share some common properties between Wearables/Emotes that we expect not to change in the feature, so there will be no versioning for them (at least in the way we will see later). Move content?: Record<string, string> to ThirdPartyProps as they're only used in that case. Compared to the current schema, all properties are present except the data property (that will go in the versioned part) and content (that is removed):
+Share some common properties between Wearables/Emotes that we expect not to change in the feature, so there will be no versioning for them (at least in the way we will see later). Move `content?: Record<string, string>` to `ThirdPartyProps` as they're only used in that case. Compared to the current schema, all properties are present except the `data` property (that will go in the versioned part) and `content` (that is removed):
 
 ```typescript
 export type BaseItem = DisplayableDeployment & {
