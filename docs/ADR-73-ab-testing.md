@@ -7,10 +7,9 @@ Given the number of new features we have, we need a way to measure the impact th
 ## Main objectives
 
 - sanitize metrics
-- allow data team to develop, monitor, and improve dashboards and tools decoupled from the implementation on each app
-- allow any team to implement a/b testings on their environment without dependencies with other teams
-- leverage over already implemented and tested tools
-
+- allow the data team to develop, monitor, and improve dashboards and tools decoupled from the implementation on each app
+- allow any team to implement A/B testings on their environment without dependencies with other teams
+- leverage already implemented and tested tools
 ## Current implementation
 
 To setup an A/B testing we use Feature Flags as an assignation tool and Segment as a measurement tool.
