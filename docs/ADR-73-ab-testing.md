@@ -2,7 +2,7 @@
 
 ## Context and Problem Statement
 
-Given the number of new features we need a way to measure the impact that each one has on the use of our products and A/B testing is the way we use to decide between two or more versions of a new feature and/or compared with the current one. This ADR describes how we measure A/B testings in our products.
+Given the number of new features we have, we need a way to measure the impact that each one has on the use of our products. A/B testing is what we use to decide between two or more versions of a new feature and/or to compare it with the current one. This ADR describes how we measure A/B testings in our products.
 
 ## Main objectives
 
