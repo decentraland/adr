@@ -121,7 +121,7 @@ For example, the previous feature flags will be format as:
 ]
 ```
 
-And send it in the prop `featureFlags` this way we can easy search feature flags and or variant.
+And send it in the prop `featureFlags` this way we can easily search feature flags and/or variants.
 
 ```ts
 analytics.track(
