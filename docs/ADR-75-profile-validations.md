@@ -31,6 +31,7 @@ Each wearable listed in the avatar has to be:
   * fistpump
   * hammer
   * handsair
+  * headexplode
   * hohoho
   * kiss
   * money
