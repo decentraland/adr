@@ -73,6 +73,7 @@
 - [ADR-71 - Upgradable Collections](docs/ADR-71-upgradable-collections.md)
 - [ADR-72 - Ethereum API Provider](docs/ADR-72-ethereum-api-provider.md)
 - [ADR-74 - Add Emote schema](docs/ADR-74-add-emote-schema.md)
+- [ADR-75 - Ethereum API Provider](docs/ADR-75-profile-validations.md)
 
 ## How to?
 
