@@ -153,8 +153,7 @@ We will keep lambdas profile cleansing code as is.
 
 ## Deadline
 
-    ADR45_DEADLINE: 2022-06-20T00:00:00Z
-    Unix Timestamp: 1655683200000
+    TBD
 
 ## Status
 
