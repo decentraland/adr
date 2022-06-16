@@ -11,7 +11,6 @@ Multiple third parties with their own NFT contracts (ERC721, ERC1155, etc) want 
 #### Examples
 
 - `urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0`
-
 - `urn:decentraland:matic:collections-thirdparty:cryptohats:summer:hat1`
 
 ### Considerations
@@ -26,74 +25,54 @@ Multiple third parties with their own NFT contracts (ERC721, ERC1155, etc) want 
 
 Each Third Party will require to create and maintain an API with these endpoints:
 
-- @GET /registry/:registry-id/address/:address/assets - get a list of assets asociated with a given address
-- @GET /registry/:registry-id/address/:address/assets/:id - get if a dcl item is owned by a given address
+- `GET /registry/:registry-id/address/:address/assets` - get a list of assets asociated with a given address
+- `GET /registry/:registry-id/address/:address/assets/:id` - get if a dcl item is owned by a given address
 
 > It is recommended to accept any format for the `:address` parameter: checksummed, lowercased, uppercased, mixed, etc. You can always checksum and validate if it is a valid Ethereum address later.
 
-### @GET /registry/:registry-id/address/:address/assets
+### `GET /registry/:registry-id/address/:address/assets`
 
-#### Request
+```http
+GET /registry/cryptohats/address/0x0f5d2fb29fb7d3cfee444a200298f468908cc942/assets
+Host: https://api.cryptohats.io
+Content-Type: application/json
 
-```javascript
-GET /registry/:registry-id/address/:address/assets {
-    registry-id: "cryptohats"
-    address: "0x0f5d2fb29fb7d3cfee444a200298f468908cc942"
-}
-
-# https://api.cryptohats.io/registry/cryptohats/address/0x0f5d2fb29fb7d3cfee444a200298f468908cc942/assets
-```
-
-#### Response
-
-```javascript
 {
-    address: "0x0f5d2fb29fb7d3cfee444a200298f468908cc942",
-    assets: [
+    "address": "0x0f5d2fb29fb7d3cfee444a200298f468908cc942",
+    "assets": [
         {
-            id: "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0",
-            amount: 1,
-            urn: {
-                decentraland: "urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0"
+            "id": "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0",
+            "amount": 1,
+            "urn": {
+                "decentraland": "urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0"
             }
         },
         {
-            id: "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1",
-            amount: 1,
-            urn: {
-                decentraland: "urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
+            "id": "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1",
+            "amount": 1,
+            "urn": {
+                "decentraland": "urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
             }
         }
     ],
-    total: 100,
-    page: 1,
-    next: "https://....&startAt=1234"
+    "total": 100,
+    "page": 1,
+    "next": "https://....&startAt=1234"
 }
 ```
 
-### GET /registry/:registry-id/address/:address/assets/:id
+### `GET /registry/:registry-id/address/:address/assets/:id`
 
-#### Request
+```http
+GET /registry/cryptohats/address/0x0f5d2fb29fb7d3cfee444a200298f468908cc942
+Host: https://api.cryptohats.io
+Content-Type: application/json
 
-```javascript
-GET /registry/:registry-id/address/:address/assets/:id {
-    registry-id: "cryptohats"
-    address: "0x0f5d2fb29fb7d3cfee444a200298f468908cc942"
-    id: "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
-}
-
-# https://api.cryptohats.io/registry/cryptohats/address/0x0f5d2fb29fb7d3cfee444a200298f468908cc942
-/assets/0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1
-```
-
-#### Response
-
-```javascript
 {
-    id: "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1",
-    amount: 1,
-    urn: {
-        decentraland: "urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
+    "id": "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1",
+    "amount": 1,
+    "urn": {
+        "decentraland": "urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
     }
 }
 ```
@@ -183,22 +162,13 @@ Each deployment must check if the URN has `collections-thirdparty` in order to k
 
 ## Participants
 
-- @Mendez
-
+- @menduz
 - @Mati P.
-
-- @Agus A.
-
-- @Guido
-
+- @agusaldasoro
+- @guidota
 - @Jhoni
-
 - @Lautaro
-
 - @Nico
-
 - @Fernando
-
-- @Juanca
-
+- @cazala
 - @Nacho
