@@ -5,7 +5,7 @@
 During deployment of a profile content server currently runs a lot of validations on the profile. However, there
 are a few more validations that are important to implement:
 * if the profile contains wearables
-  * all wearables that are represented by a URN should be a **valid** URN.
+  * all wearables should be a valid emote name or a valid urn.
   * all wearables that are nfts should be owned by the address deploying the profile.
 * if the profile contains names that are nfts, they should be owned by the address deploying the profile.
 
@@ -21,7 +21,9 @@ containing stuff they don't own, but as soon as they fetch their profile they ge
 This is precisely the situation we want to avoid with these new validations.
 
 ### Valid URN
-Each wearable listed in the avatar that has URN format (i.e. starts with `urn:`) has to be correctly parsed by `parseUrn` function from [@dcl/urn-resolver](https://github.com/decentraland/urn-resolver). Or be an embedded emote with a name matching the expression `/[a-z]+/i`
+Each wearable listed in the avatar has to be:
+* either an emote name matching the regex `/[a-z]+/i`,
+* or it has to be correctly parsed by `parseUrn` function from [@dcl/urn-resolver](https://github.com/decentraland/urn-resolver).
 
 ### Wearable Ownership
 Each wearable listed in the avatar has to be owned by the address deploying the profile.
