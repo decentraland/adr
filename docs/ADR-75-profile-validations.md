@@ -5,7 +5,7 @@
 During deployment of a profile content server currently runs a lot of validations on the profile. However, there
 are a few more validations that are important to implement:
 * if the profile contains wearables
-  * all wearables should be a valid urn.
+  * all wearables should be a valid emote name or a valid urn.
   * all wearables that are nfts should be owned by the address deploying the profile.
 * if the profile contains names that are nfts, they should be owned by the address deploying the profile.
 
@@ -22,27 +22,8 @@ This is precisely the situation we want to avoid with these new validations.
 
 ### Valid URN
 Each wearable listed in the avatar has to be:
-* either a constant whitelisted in the validator. This is to support emotes coming from initial implementation. The allowed values are:
-  * clap
-  * dab
-  * dance
-  * disco
-  * dontsee
-  * fistpump
-  * hammer
-  * handsair
-  * headexplode
-  * hohoho
-  * kiss
-  * money
-  * raiseHand
-  * robot
-  * shrug
-  * snowfall
-  * tektonik
-  * tikxx
-  * wave
-* or it is correctly parsed by `parseUrn` function from [@dcl/urn-resolver](https://github.com/decentraland/urn-resolver).
+* either an emote name matching the regex `/[a-z]+/i`,
+* or it has to be correctly parsed by `parseUrn` function from [@dcl/urn-resolver](https://github.com/decentraland/urn-resolver).
 
 ### Wearable Ownership
 Each wearable listed in the avatar has to be owned by the address deploying the profile.
@@ -153,7 +134,8 @@ We will keep lambdas profile cleansing code as is.
 
 ## Deadline
 
-    TBD
+    ADR75_DEADLINE: 2022-07-20T00:00:00Z
+    Unix Timestamp: 1658275200000
 
 ## Status
 
@@ -162,7 +144,7 @@ Proposed
 ## Consequences
 
 Deployments after this ADR is effective will no longer be allowed when deploying either
-invalid urns or use nft names or wearables that are not owned by the address deploying the 
+invalid URNs or use nft names or wearables that are not owned by the address deploying the 
 profile.
 
 All deployments prior to this ADR being effective will not be validated as they might
