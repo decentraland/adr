@@ -21,7 +21,7 @@ containing stuff they don't own, but as soon as they fetch their profile they ge
 This is precisely the situation we want to avoid with these new validations.
 
 ### Valid URN
-Each wearable listed in the avatar that has URN format (i.e. starts with `urn:`) has to be correctly parsed by `parseUrn` function from [@dcl/urn-resolver](https://github.com/decentraland/urn-resolver).
+Each wearable listed in the avatar that has URN format (i.e. starts with `urn:`) has to be correctly parsed by `parseUrn` function from [@dcl/urn-resolver](https://github.com/decentraland/urn-resolver). Or be an embedded emote with a name matching the expression `/[a-z]+/i`
 
 ### Wearable Ownership
 Each wearable listed in the avatar has to be owned by the address deploying the profile.
