@@ -46,9 +46,17 @@ GET /registry/:registry-id/owners-bloom-filter {
 
 #### Response
 
+```json
+{
+  "data": "00100000000000000000000000000000080010000800000000000000000000000080000000000000000000000000000000000000000000000000000000000002000000000004000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000800000000040000000000000000000000000000020000000000000280000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040040000000000000000000000000000000010000000000000000000000000000"
+}
+```
+
+If the registry is invalid or non-existent, the data property should return an empty string.
+
 ```javascript
 {
-  data: "00100000000000000000000000000000080010000800000000000000000000000080000000000000000000000000000000000000000000000000000000000002000000000004000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000800000000040000000000000000000000000000020000000000000280000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040040000000000000000000000000000000010000000000000000000000000000";
+  data: "";
 }
 ```
 
@@ -67,28 +75,40 @@ GET /registry/:registry-id/address/:address/assets {
 
 #### Response
 
-```javascript
+```json
 {
-    address: "0x0f5d2fb29fb7d3cfee444a200298f468908cc942",
-    assets: [
-        {
-            id: "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0",
-            amount: 1,
-            urn: {
-                decentraland: "urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0"
-            }
-        },
-        {
-            id: "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1",
-            amount: 1,
-            urn: {
-                decentraland: "urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
-            }
-        }
-    ],
-    total: 100,
-    page: 1,
-    next: "https://....&startAt=1234"
+  "address": "0x0f5d2fb29fb7d3cfee444a200298f468908cc942",
+  "assets": [
+    {
+      "id": "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0",
+      "amount": 1,
+      "urn": {
+        "decentraland": "urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0"
+      }
+    },
+    {
+      "id": "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1",
+      "amount": 1,
+      "urn": {
+        "decentraland": "urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
+      }
+    }
+  ],
+  "total": 100,
+  "page": 1,
+  "next": "https://....&startAt=1234"
+}
+```
+
+If the registry is invalid or the address does not own assets the `assets` prop should be an empty array. The `next` property should be a falsy value, preferebly an empty string for this scenario and when the last page is reached too.
+
+```json
+{
+  "address": "0x0f5d2fb29fb7d3cfee444a200298f468908cc942",
+  "assets": [],
+  "total": 0,
+  "page": 1,
+  "next": ""
 }
 ```
 
@@ -109,13 +129,25 @@ GET /registry/:registry-id/address/:address/assets/:id {
 
 #### Response
 
-```javascript
+```json
 {
-    id: "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1",
-    amount: 1,
-    urn: {
-        decentraland: "urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
-    }
+  "id": "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1",
+  "amount": 1,
+  "urn": {
+    "decentraland": "urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
+  }
+}
+```
+
+If the registry is invalid, the address does not own the asset, or the id non-existent the `urn` prop should set `decentraland` as an empty string.
+
+```json
+{
+  "id": "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1",
+  "amount": 0,
+  "urn": {
+    "decentraland": ""
+  }
 }
 ```
 
