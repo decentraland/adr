@@ -26,10 +26,31 @@ Multiple third parties with their own NFT contracts (ERC721, ERC1155, etc) want 
 
 Each Third Party will require to create and maintain an API with these endpoints:
 
+- @GET /registry/:registry-id/owners-bloom-filter - get a [bloom filter](https://en.wikipedia.org/wiki/Bloom_filter) as an hex value comprising all the owners a registry has
 - @GET /registry/:registry-id/address/:address/assets - get a list of assets asociated with a given address
 - @GET /registry/:registry-id/address/:address/assets/:id - get if a dcl item is owned by a given address
 
 > It is recommended to accept any format for the `:address` parameter: checksummed, lowercased, uppercased, mixed, etc. You can always checksum and validate if it is a valid Ethereum address later.
+
+### @GET /registry/:registry-id/owners-bloom-filter
+
+#### Request
+
+```javascript
+GET /registry/:registry-id/owners-bloom-filter {
+    registry-id: "cryptohats"
+}
+
+# https://api.cryptohats.io/registry/cryptohats/owners-bloom-filter
+```
+
+#### Response
+
+```javascript
+{
+  data: "00100000000000000000000000000000080010000800000000000000000000000080000000000000000000000000000000000000000000000000000000000002000000000004000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000800000000040000000000000000000000000000020000000000000280000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040040000000000000000000000000000000010000000000000000000000000000";
+}
+```
 
 ### @GET /registry/:registry-id/address/:address/assets
 
