@@ -10,6 +10,7 @@ Given the number of new features we have, we need a way to measure the impact th
 - allow the data team to develop, monitor, and improve dashboards and tools decoupled from the implementation on each app
 - allow any team to implement A/B testings on their environment without dependencies with other teams
 - leverage already implemented and tested tools
+
 ## Current implementation
 
 To setup an A/B testing we use Feature Flags as an assignation tool and Segment as a measurement tool.
@@ -35,11 +36,11 @@ You can define your activation as your project needs, but in most of the cases y
 
 `applicationHostname` allows you to keep your test active on any testing environment and when its active on production
 
-![Activation by host](./resources/ADR-73/002-activation-by-host.png)
+![Activation by host](./resources/ADR-73/002-activation-by-host.jpg)
 
 If you also add `gradualRolloutSessionId` you can rollout your test gradually
 
-![Activation rollout](./resources/ADR-73/003-activation-rollout.png)
+![Activation rollout](./resources/ADR-73/003-activation-rollout.jpg)
 
 #### Defining your variants
 
