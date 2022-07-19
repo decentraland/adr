@@ -77,12 +77,14 @@ Retrieves the amount of users on each parcel
 			"parcel": {
 					"x": -100,
 					"y": 127
+      }
 		},
 		{
 			"peersCount": 43,
 			"parcel": {
 					"x": 12,
 					"y": 1
+      }
 		}
 	]
 }
