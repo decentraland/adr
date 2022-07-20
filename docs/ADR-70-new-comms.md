@@ -41,9 +41,6 @@ LiveKit is an open source project that provides scalable, multi-user conferencin
 
 More details on how the communications between services are done are explained [here](https://github.com/decentraland/comms-v3/blob/main/docs/comms.md).
 
-## Status
-
-In Progress
 
 ## Consequences 
 
@@ -122,6 +119,10 @@ Retrieves the amount of users on each parcel
 		}
 }
 ```
+
+## Status
+
+In Progress
 
 ## Participants
 
