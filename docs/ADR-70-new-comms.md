@@ -53,6 +53,75 @@ In Progress
 - Having Servers that can provide low-latency/high-throughput exchange of messages between peers will open the door for new gaming experiences implementations.
 - The transport abstraction enables the extensibility of the architecture, having an easy way to test different SFUs or communication protocols to extend this functionality   
 
+## Impact
+
+As part of the migration some endpoints exposed through /comms will be removed, deprecated or migrated. No logic will be removed, as the same info will be available on different endpoints. The only change is that the users addresses will be no longer exposed, as it is a security risk.
+
+- `/comms/peers` will be removed, same logic will be found in `/stats/parcels`
+- `/comms/islands` and `/comms/islands/{islandId}` will be removed, similar logic (anonymized) will be found in `/stats/parcels`
+- `/comms/status` will be removed, same logic will be found in `/about`
+- `/lambdas/health` will be removed, same logic will be found in `/about`
+- `/comms/config` will be removed, similar logic will be found in `/about`
+
+### New endpoints
+
+#### `/stats/parcels`
+
+Retrieves the amount of users on each parcel
+
+```json
+{ 
+	"parcels": [
+		{
+			"peersCount": 100,
+			"parcel": {
+					"x": -100,
+					"y": 127
+      }
+		},
+		{
+			"peersCount": 43,
+			"parcel": {
+					"x": 12,
+					"y": 1
+      }
+		}
+	]
+}
+```
+
+#### `/about`
+
+```json
+{
+		"healthy": true,
+		"configurations": {
+				"realmName": "zeus"
+		},
+		"content": {
+				"healthy": true,
+				"commitHash": "58bc402b1b8f0a407a9d66a5ea58b33dd141af5f",
+				"version": "4.8.0"
+		},
+		"comms": {
+				"healthy": true,
+				"commsProtocol": "v3",
+				"commitHash": "70bc402b1b8f0a407a9d66a5ea58b33dd141af5f",
+				"version" : "3.0.0"
+		},
+		"lambdas": {
+				"healthy": true,
+				"commitHash": "18bc402b1b8f0a407a9d66a5ea58b33dd141af5f",
+				"version": "4.8.0"
+		},
+		"bff": {
+			"usersCount": 51,
+			"healthy": true,
+			"version": "1.0.0",
+			"commitHash": "80bc402b1b8f0a407a9d66a5ea58b33dd141af5f" 
+		}
+}
+```
 
 ## Participants
 
@@ -60,4 +129,5 @@ In Progress
 @juancito.eth
 @menduz
 @pentreathm
+@agusaldasoro
 
