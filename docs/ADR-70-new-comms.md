@@ -64,59 +64,61 @@ As part of the migration some endpoints exposed through /comms will be removed, 
 
 #### `/stats/parcels`
 
+https://decentraland.github.io/catalyst-api-specs/#operation/getStatsParcels
+
 Retrieves the amount of users on each parcel
 
 ```json
-{ 
-	"parcels": [
-		{
-			"peersCount": 100,
-			"parcel": {
-					"x": -100,
-					"y": 127
+{
+  "parcels": [
+    {
+      "peersCount": 100,
+      "parcel": {
+        "x": -100,
+        "y": 127
       }
-		},
-		{
-			"peersCount": 43,
-			"parcel": {
-					"x": 12,
-					"y": 1
+    },
+    {
+      "peersCount": 43,
+      "parcel": {
+        "x": 12,
+        "y": 1
       }
-		}
-	]
+    }
+  ]
 }
 ```
 
 #### `/about`
 
+https://decentraland.github.io/catalyst-api-specs/#operation/getAboutCatalystInfo
+
 ```json
 {
-		"healthy": true,
-		"configurations": {
-				"realmName": "zeus"
-		},
-		"content": {
-				"healthy": true,
-				"commitHash": "58bc402b1b8f0a407a9d66a5ea58b33dd141af5f",
-				"version": "4.8.0"
-		},
-		"comms": {
-				"healthy": true,
-				"commsProtocol": "v3",
-				"commitHash": "70bc402b1b8f0a407a9d66a5ea58b33dd141af5f",
-				"version" : "3.0.0"
-		},
-		"lambdas": {
-				"healthy": true,
-				"commitHash": "18bc402b1b8f0a407a9d66a5ea58b33dd141af5f",
-				"version": "4.8.0"
-		},
-		"bff": {
-			"usersCount": 51,
-			"healthy": true,
-			"version": "1.0.0",
-			"commitHash": "80bc402b1b8f0a407a9d66a5ea58b33dd141af5f" 
-		}
+  "healthy": true,
+  "configurations": {
+    "realmName": "zeus"
+  },
+  "content": {
+    "healthy": true,
+    "commitHash": "58bc402b1b8f0a407a9d66a5ea58b33dd141af5f",
+    "version": "4.8.0"
+  },
+  "comms": {
+    "healthy": true,
+    "protocol": "v3",
+    "commitHash": "70bc402b1b8f0a407a9d66a5ea58b33dd141af5f"
+  },
+  "lambdas": {
+    "healthy": true,
+    "commitHash": "18bc402b1b8f0a407a9d66a5ea58b33dd141af5f",
+    "version": "4.8.0"
+  },
+  "bff": {
+    "usersCount": 51,
+    "healthy": true,
+    "commitHash": "80bc402b1b8f0a407a9d66a5ea58b33dd141af5f"
+  }
 }
 ```
 
