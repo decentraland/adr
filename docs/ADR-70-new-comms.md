@@ -52,10 +52,8 @@ More details on how the communications between services are done are explained [
 
 ## Impact
 
-As part of the migration some endpoints exposed through /comms will be removed, deprecated or migrated. No logic will be removed, as the same info will be available on different endpoints. The only change is that the users addresses will be no longer exposed, as it is a security risk.
+As part of the migration the content of some endpoints will be migrated. No logic will be removed, as the same information will be available on different endpoints.
 
-- `/comms/peers` will be removed, same logic will be found in `/stats/parcels`
-- `/comms/islands` and `/comms/islands/{islandId}` will be removed, similar logic (anonymized) will be found in `/stats/parcels`
 - `/comms/status` will be removed, same logic will be found in `/about`
 - `/lambdas/health` will be removed, same logic will be found in `/about`
 - `/comms/config` will be removed, similar logic will be found in `/about`
