@@ -75,6 +75,7 @@
 - [ADR-73 - A/B Testing standard](docs/ADR-73-ab-testing.md)
 - [ADR-74 - Add Emote schema](docs/ADR-74-add-emote-schema.md)
 - [ADR-75 - Profile validations](docs/ADR-75-profile-validations.md)
+- [ADR-76 - Ropsten to Goerli Migration](docs/ADR-76-ropsten-to-goerli-migration.md)
 
 ## How to?
 
