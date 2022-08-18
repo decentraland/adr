@@ -54,7 +54,7 @@ The following subgraphs will be deprecated soon in favor of the Goerli pair:
 - [https://thegraph.com/hosted-service/subgraph/decentraland/collections-ethereum-goerli](https://thegraph.com/hosted-service/subgraph/decentraland/collections-ethereum-goerli)
 - [https://thegraph.com/hosted-service/subgraph/decentraland/marketplace-goerli](https://thegraph.com/hosted-service/subgraph/decentraland/marketplace-goerli)
 - [https://thegraph.com/explorer/subgraph/decentraland/mana-ethereum-goerli](https://thegraph.com/hosted-service/subgraph/decentraland/mana-ethereum-goerli)
-- [https://thegraph.com/hosted-service/subgraph/decentraland/decentraland-lists-ethereum-goerli](https://thegraph.com/hosted-service/subgraph/decentraland/decentraland-lists-ethereum-goerli) ([Catalysts](https://www.notion.so/Migrated-Catalysts-List-5aa652f7683c4cf5be8c54b82358ac68)) ([POIs](https://www.notion.so/Migrated-POIs-9cb4e930950c473d9408e9d1df3328c7))
+- [https://thegraph.com/hosted-service/subgraph/decentraland/decentraland-lists-ethereum-goerli](https://thegraph.com/hosted-service/subgraph/decentraland/decentraland-lists-ethereum-goerli) (Catalysts)
 - [https://thegraph.com/hosted-service/subgraph/decentraland/blocks-ethereum-goerli](https://thegraph.com/hosted-service/subgraph/decentraland/blocks-ethereum-goerli)
 - [https://thegraph.com/hosted-service/subgraph/decentraland/land-manager-goerli](https://thegraph.com/hosted-service/subgraph/decentraland/land-manager-goerli)
 
@@ -122,7 +122,7 @@ PRs for adding support for Goerli:
 
 `catalyst-client` https://github.com/decentraland/catalyst-client/pull/258 [MERGED]
 
-[Catalyst network migration](https://www.notion.so/Catalyst-network-migration-75f74a63f064438db6e5ebfece9252f4)
+Catalyst network migration
 
 The following PRs will remove Ropsten support:
 
@@ -147,7 +147,6 @@ The following PRs will remove Ropsten support:
 ## Kernel
 
 - https://github.com/decentraland/kernel/pull/382
--
 
 ## SDK
 
