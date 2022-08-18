@@ -164,11 +164,10 @@ CLI & Linker Dapp
     - Modify network selector and drop ropsten ✅
     - Update subgraphs URLs ✅
     - https://github.com/decentraland/unity-renderer/pull/2451
-  - We have important test-scenes deployed in ropsten (scene coords list TBD)
+  - We have important test-scenes deployed in ropsten
     - We use them for testing several client features manually before every release we publish in production
     - Before finishing the migration let’s make sure we can keep accessing those scenes, from `NETWORK=goerli`
-    - How can we keep ownership of the lands involved in these test scenes?
-    - Coords of every important test scene deployed in ropsten
+    - Coords of every important test scene deployed in ropsten to be migrated
       - 64, -65 ✅
       - 66,-64 ✅
       - 67, -65 ✅
