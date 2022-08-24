@@ -24,7 +24,7 @@ The current solution already covers most of the needs. Biggest changes respectin
 - Rething the way on how we present the UI. Currently, UI is only shown IF the self user enters the area; but if other avatars entered the area, no UI is displayed even though there are avatar near the self user being modified. This could be handled by adding more descriptive messages depending on who has enter the area. 
 - Look for other modifiers that are not set as Avatar Modifier Areas. There are camera controls modifier that could be transformed to Avatar Modifier; putting everything under the same interface.
 
- ## **Techincal implementation**
+ ## **Technical implementation**
 
 - Have a GameObject representing the Avatar Modifier Area. This class should analyze the ins and outs of the avatars, and call the corresponding behaviour when necessary.
 - Have a scalable way to create new AvatarModifierAreas. It should be easy enough to add a new modifier area when needed using an interface. This interface implementation should analyzes if the avatar that just entered/exit should be affected by the modifier. We want to be able to overlap modifier areas,
