@@ -1,0 +1,27 @@
+<head>
+  <meta charset="utf-8">
+  <base href="{{ context.baseUrl }}" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{{ data.title }}</title>
+
+  <meta name="description" content="{{ data.description }}">
+  <meta name="keywords" content="{{ join keywords ', ' }}">
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+
+  <!-- rel prev and next -->
+  <link rel="stylesheet" href="{{ styleUrl context 'main.css' }}" />
+
+  <link rel="icon" href="https://decentraland.org/favicon.png" type="image/png" />
+
+  <!-- Canonical link tag -->
+  <link rel="canonical" href="{{ data.publicUrl }}">
+
+  {{#if context.DRAFT}}
+  <meta name="robots" content="noindex" />
+  {{/if}}
+</head>
