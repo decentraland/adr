@@ -1,10 +1,4 @@
----
-layout: adr
-slug: adr/ADR-78
-adr: 78
-date: 2022-08-18
-title: Ropsten To Goerli Migration
----
+# Ropsten To Goerli Migration
 
 ## Context and Problem Statement
 
