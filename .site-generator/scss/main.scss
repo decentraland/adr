@@ -1,0 +1,24 @@
+@import "respec.scss";
+
+.post-item {
+  .article-title {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    font-weight: 500;
+    color: var(--f_high);
+    margin-bottom: 0.5rem;
+
+    span,
+    time {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-decoration: none;
+    }
+  }
+
+  .date-label {
+    padding: 1em 0;
+  }
+}

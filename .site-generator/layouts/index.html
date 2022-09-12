@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  {{> head}}
+  <body>
+    <main role="main">
+      {{> nav}}
+      <section>
+        <h1>Architecture Decisions Records</h1>
+
+        {{#each (sortAsc context.pages "adr") as |adr| }} {{#if (eq adr.layout "adr") }}
+        <a href="{{ adr.slug }}" class="post-item" title="{{ adr.title }}">
+          <div class="article-title">
+            <span>ADR-{{ adr.adr }} - {{ adr.title }}</span>
+            <time datetime="{{ isoDate adr.date }}">{{ prettyDate adr.date }}</time>
+          </div>
+        </a>
+        {{/if}} {{/each}}
+        <h1>Request for comments</h1>
+
+        {{#each (sortAsc context.pages "rfc") as |rfc| }} {{#if (eq rfc.layout "rfc") }}
+        <a href="{{ rfc.slug }}" class="post-item" title="{{ rfc.title }}">
+          <div class="article-title">
+            <span>RFC-{{ rfc.rfc }} - {{ rfc.title }}</span>
+            <time datetime="{{ isoDate rfc.date }}">{{ prettyDate rfc.date }}</time>
+          </div>
+        </a>
+        {{/if}} {{/each}} {{{ markdown content }}}
+      </section>
+    </main>
+  </body>
+</html>
