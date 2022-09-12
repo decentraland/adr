@@ -4,6 +4,8 @@ slug: adr/ADR-67
 adr: 67
 date: 2020-01-67
 title: Runtime Architecture For Renderer
+authors:
+  - brianamadori
 ---
 
 ## Problem Statement
@@ -15,7 +17,7 @@ The world runtime is a collection of services that should allow the following:
 - Translation of messages into the proper modifications of the ECS model.
 - Any core systems that need to exist to ensure a performant execution of the messages and are considered for common use cases of any component.
 
-On top of that, there are a variable number of components that make use of the core systems to keep the world running. When expanding the SDK, the main activity involved is to add new component implementations on top of the runtime. 
+On top of that, there are a variable number of components that make use of the core systems to keep the world running. When expanding the SDK, the main activity involved is to add new component implementations on top of the runtime.
 
 This is how the dependency relationships of the runtime worked until now:
 
@@ -41,7 +43,7 @@ If a group of closely related components needed a specialized service, this serv
 
 On top of this, these services have to be implemented as Singletons or be created and destroyed as part of the global scope of the application. So, when implementing a new component, the contributor has to modify code related with the entry point of the whole application, instead of having a easier to understand construct, like a plugin.
 
-A clear example of this are the `NFTShape` and `UUIDComponent` related components, each of those need shared instances of specific services between all the component instances. These shared instances need to have a clear lifecycle that’s related with the existence of the component. With no clear construct to allow for this, singletons were used. 
+A clear example of this are the `NFTShape` and `UUIDComponent` related components, each of those need shared instances of specific services between all the component instances. These shared instances need to have a clear lifecycle that’s related with the existence of the component. With no clear construct to allow for this, singletons were used.
 
 ### Problem #2: External features that need components
 
@@ -55,7 +57,7 @@ Note that in this case, the only way the Builder feature has to add new componen
 
 ### Problem #3: Cyclic reference issues
 
-If any component need something from the runtime, its forced to reference only interfaces to avoid cyclical dependencies. This is technically correct and complies to SOLID, however it may also lead to over-engineering and assembly segregation. 
+If any component need something from the runtime, its forced to reference only interfaces to avoid cyclical dependencies. This is technically correct and complies to SOLID, however it may also lead to over-engineering and assembly segregation.
 
 Cyclical dependencies are a problem that may be hard to fix to someone not very familiar with the codebase and its an issue that should be avoided with a good design.
 
@@ -71,7 +73,7 @@ If a component group has a need for a specialized service, this service is put i
 
 ![Approach](resources/ADR-67/ADR-67-4.png)
 
-In this approach, the runtime doesn’t know the components directly and will use the Factory to create them as it should. Services don’t have to be on the application scope. Now, components can reference the runtime if they need something from it. Refering to interfaces is recommended, but they don’t have to be in another assembly, so assemblies can start to be merged to avoid maintenance costs. 
+In this approach, the runtime doesn’t know the components directly and will use the Factory to create them as it should. Services don’t have to be on the application scope. Now, components can reference the runtime if they need something from it. Refering to interfaces is recommended, but they don’t have to be in another assembly, so assemblies can start to be merged to avoid maintenance costs.
 
 Having to reference lots of assemblies can be painful, and a high number of assemblies has negative impact on compilation times and project updating in general due to high I/O costs.
 
@@ -81,12 +83,8 @@ Aside of solving the needs, this approach paves the way of segregating the compo
 
 ![Benefits-UPM](resources/ADR-67/ADR-67-5.png)
 
-This allows easier external contributions, and in fact allow easier segregation of teams according to [Conway’s Law](https://en.wikipedia.org/wiki/Conway%27s_law). This works in tandem with the inminent scaling of the decentraland contribution efforts. 
+This allows easier external contributions, and in fact allow easier segregation of teams according to [Conway’s Law](https://en.wikipedia.org/wiki/Conway%27s_law). This works in tandem with the inminent scaling of the decentraland contribution efforts.
 
 ## Competition
 
 No competitions are considered in this document.
-
-## Participants
-
-- Brian Amadori

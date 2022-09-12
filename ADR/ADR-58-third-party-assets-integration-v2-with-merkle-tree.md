@@ -4,6 +4,14 @@ slug: adr/ADR-58
 adr: 58
 date: 2020-01-58
 title: Third Party Collections Registry V2 (Merkle Tree)
+authors:
+  - pentreathm
+  - agusaldasoro
+  - guidota
+  - LautaroPetaccio
+  - nicosantangelo
+  - fzavalia
+  - nachomazzara
 ---
 
 ## Statement of the problem
@@ -394,25 +402,13 @@ https://peer.decentraland.org/lambdas/wearables-by-owner/0xAbcd?collectionId=urn
 # Response
 
 [
-        {
-            "urn": "urn:decentraland:mumbai:collections-thirdparty:cryptopunks:0xContractAddressaaabbff999123:0",
-            "amount": 1
-        },
-        {
-            "urn": "urn:decentraland:mumbai:collections-thirdparty:cryptopunks:0xAnotherContractAddressaaabbff999123:0",
-            "amount": 1
-        }
-    ]
-
-
+  {
+    "urn": "urn:decentraland:mumbai:collections-thirdparty:cryptopunks:0xContractAddressaaabbff999123:0",
+    "amount": 1
+  },
+  {
+    "urn": "urn:decentraland:mumbai:collections-thirdparty:cryptopunks:0xAnotherContractAddressaaabbff999123:0",
+    "amount": 1
+  }
+]
 ```
-
-## Participants
-
-- @Mati P.
-- @Agus A.
-- @Guido
-- @Lautaro
-- @Nico S.
-- @Fernando
-- @Nacho

@@ -4,75 +4,84 @@ slug: adr/ADR-75
 adr: 75
 date: 2020-01-75
 title: Profile validations
+authors:
+  - marianogoldman
+status: PROPOSED
 ---
 
 ## Context and Problem Statement
 
 During deployment of a profile content server currently runs a lot of validations on the profile. However, there
 are a few more validations that are important to implement:
-* if the profile contains wearables
-  * all wearables should be a valid emote name or a valid urn.
-  * all wearables that are nfts should be owned by the address deploying the profile.
-* if the profile contains names that are nfts, they should be owned by the address deploying the profile.
+
+- if the profile contains wearables
+  - all wearables should be a valid emote name or a valid urn.
+  - all wearables that are nfts should be owned by the address deploying the profile.
+- if the profile contains names that are nfts, they should be owned by the address deploying the profile.
 
 These validations should hold not only for organic deployments but also when synchronizing state from other catalysts.
 
 > Because these validations are introduced at this stage, deployments prior to this ADR will not be validated as they may
-not be compliant. 
+> not be compliant.
 
-Regardless of what happened at the time of deployment, later on, when the profile is retrieved, it is done using lambas 
+Regardless of what happened at the time of deployment, later on, when the profile is retrieved, it is done using lambas
 profiles endpoints. Lambda endpoints take care of removing any names or wearables that might have
 been owned by the profile at the time of deployment but are no longer owned. This currently allows a user to deploy a profile
 containing stuff they don't own, but as soon as they fetch their profile they get a sanitized profile with only what the user owns.
 This is precisely the situation we want to avoid with these new validations.
 
 ### Valid URN
+
 Each wearable listed in the avatar has to be:
-* either an emote name matching the regex `/[a-z]+/i`,
-* or it has to be correctly parsed by `parseUrn` function from [@dcl/urn-resolver](https://github.com/decentraland/urn-resolver).
+
+- either an emote name matching the regex `/[a-z]+/i`,
+- or it has to be correctly parsed by `parseUrn` function from [@dcl/urn-resolver](https://github.com/decentraland/urn-resolver).
 
 ### Wearable Ownership
+
 Each wearable listed in the avatar has to be owned by the address deploying the profile.
 
-For this validation, a check is made using TheGraph against the collection graphs both in 
-[Ethereum (L1)](https://thegraph.com/hosted-service/subgraph/decentraland/collections-ethereum-mainnet) 
-and [Polygon (L2)](https://thegraph.com/hosted-service/subgraph/decentraland/collections-matic-mainnet) 
+For this validation, a check is made using TheGraph against the collection graphs both in
+[Ethereum (L1)](https://thegraph.com/hosted-service/subgraph/decentraland/collections-ethereum-mainnet)
+and [Polygon (L2)](https://thegraph.com/hosted-service/subgraph/decentraland/collections-matic-mainnet)
 network.
-
 
 ### Names Ownership
+
 Each name listed in the avatar has to be owned by the address deploying the profile.
 
-For this validation, a check is made using TheGraph against the marketplace graph in 
-[Ethereum (L1)](https://thegraph.com/hosted-service/subgraph/decentraland/marketplace) 
+For this validation, a check is made using TheGraph against the marketplace graph in
+[Ethereum (L1)](https://thegraph.com/hosted-service/subgraph/decentraland/marketplace)
 network.
-
-
 
 ## Considered options
 
 ### Use the exact same checks lambdas is doing when retrieving the profiles
-This is perfect for organic deployments. But the problem is that it uses the 
+
+This is perfect for organic deployments. But the problem is that it uses the
 "current" state of ownership, not the one at the time of deployment, so this
 would fail the validations for the deployment during synchronization.
 
 ### Use the entity timestamp to validate ownership at the time of the deployment
+
 These validations are a tad more complex as they involve figuring out the height
 of the network at the time of the timestamp of the deployment, and then running
 the ownership validation on the given block.
 
 For determining the network height the following graphs are used:
-* For [Ethereum](https://thegraph.com/hosted-service/subgraph/decentraland/blocks-ethereum-mainnet) (L1). 
-* For [Polygon](https://thegraph.com/hosted-service/subgraph/decentraland/blocks-matic-mainnet) (L2).
 
-Once the block is determined a check is made using either the marketplace (for names) or the collections 
+- For [Ethereum](https://thegraph.com/hosted-service/subgraph/decentraland/blocks-ethereum-mainnet) (L1).
+- For [Polygon](https://thegraph.com/hosted-service/subgraph/decentraland/blocks-matic-mainnet) (L2).
+
+Once the block is determined a check is made using either the marketplace (for names) or the collections
 (for wearables) graphs but specifying the query to be run on that particular block. Actually, the check
 is done twice for given block and for a block 5 minutes in the past. This way if changes in ownership occur
 during that window of time, the validation will succeed anyway.
 
 ### Reuse new validations in lambda
+
 Another option considered was the possibility of re-using the new validation code in the lambdas
-(replacing existing lambdas code) that filters non-owned items, so that there is no code duplication 
+(replacing existing lambdas code) that filters non-owned items, so that there is no code duplication
 with the same logic in two repos.
 
 As mentioned above, the lambdas are running similar checks but always against the latest block
@@ -123,13 +132,13 @@ current implementation in lambdas, and the number of requests that in each case.
 </table>
 
 > Depending on the number of profiles to be retrieved, pagination can potentially generate more requests according
-to the number of pages needed to fetch all the profiles.
+> to the number of pages needed to fetch all the profiles.
 
 As seen in the table, the number of requests/queries grows so much that it doesn't seem like a good
 solution for several reasons:
-* More requests -> more time before lambdas can respond and users are waiting.
-* More requests -> more money (if DCL needs to start paying for them, which seems it will be the case soon).
 
+- More requests -> more time before lambdas can respond and users are waiting.
+- More requests -> more money (if DCL needs to start paying for them, which seems it will be the case soon).
 
 ## Decision
 
@@ -143,19 +152,11 @@ We will keep lambdas profile cleansing code as is.
     ADR75_DEADLINE: 2022-07-20T00:00:00Z
     Unix Timestamp: 1658275200000
 
-## Status
-
-Proposed
-
 ## Consequences
 
 Deployments after this ADR is effective will no longer be allowed when deploying either
-invalid URNs or use nft names or wearables that are not owned by the address deploying the 
+invalid URNs or use nft names or wearables that are not owned by the address deploying the
 profile.
 
 All deployments prior to this ADR being effective will not be validated as they might
 not be compliant.
-
-## Participants
-
-- @marianogoldman

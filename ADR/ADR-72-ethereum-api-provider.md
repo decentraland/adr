@@ -4,6 +4,10 @@ slug: adr/ADR-72
 adr: 72
 date: 2020-01-72
 title: Ethereum API providers
+authors:
+  - 2fd
+  - menduz
+  - nachomazzara
 ---
 
 ## Context and Problem Statement
@@ -77,8 +81,8 @@ stateDiagram-v2
 
 ```ts
 export enum ProtocolUpgrade {
-  https = 'https',
-  websocket = 'websocket',
+  https = "https",
+  websocket = "websocket",
 }
 ```
 
@@ -86,13 +90,13 @@ export enum ProtocolUpgrade {
 
 ```ts
 export enum Network {
-  mainnet = 'mainnet',
-  ropsten = 'ropsten',
-  goerli = 'goerli',
-  rinkeby = 'rinkeby',
-  kovan = 'kovan',
-  polygon = 'polygon',
-  mumbai = 'mumbai',
+  mainnet = "mainnet",
+  ropsten = "ropsten",
+  goerli = "goerli",
+  rinkeby = "rinkeby",
+  kovan = "kovan",
+  polygon = "polygon",
+  mumbai = "mumbai",
 }
 ```
 
@@ -110,7 +114,7 @@ export interface Provider {
    * or the protocol is not supported by the provider
    * should return `null`
    */
-  getTargetUrl(options: ProviderURLOptions): string | null;
+  getTargetUrl(options: ProviderURLOptions): string | null
 }
 ```
 
@@ -118,8 +122,7 @@ export interface Provider {
 
 ```ts
 export default class ProviderHandler {
-
-  constructor(private providers: Provider[] = []) { }
+  constructor(private providers: Provider[] = []) {}
 
   /**
    * Add a new provider
@@ -132,12 +135,12 @@ export default class ProviderHandler {
   /**
    * Check if the a request should be upgraded to websocket
    */
-  getProtocol(request: Request): ProtocolUpgrade | null;
+  getProtocol(request: Request): ProtocolUpgrade | null
 
   /**
    * Check the network at witch the current request is trying to reach
    */
-  getNetwork(request: Request): Network | null;
+  getNetwork(request: Request): Network | null
 
   /**
    * Retuers a response with custom CORS
@@ -147,25 +150,25 @@ export default class ProviderHandler {
       status: 204,
       headers: {
         // ADD CORS HEADERS
-      }
+      },
     })
   }
 
   handle = async (request: Request, event: FetchEvent): Promise<Response> => {
     const method = request.method.toLowerCase()
 
-    if (method === 'options') {
+    if (method === "options") {
       return this.cors(request)
     }
 
     const upgrade = this.getProtocol(request)
-    if (method === 'get' && upgrade !== ProtocolUpgrade.websocket) {
+    if (method === "get" && upgrade !== ProtocolUpgrade.websocket) {
       return new Response(`Upgrade Required`, { status: 426 })
     }
 
     const network = this.getNetwork(request)
     if (!network) {
-      return new Response('Unsupported network', { status: 404 })
+      return new Response("Unsupported network", { status: 404 })
     }
 
     const providers = shuffle(this.providers)
@@ -183,13 +186,7 @@ export default class ProviderHandler {
       }
     }
 
-    return new Response('Providers unavailable', { status: 503 })
+    return new Response("Providers unavailable", { status: 503 })
   }
 }
 ```
-
-## Participants
-
-- @2fd
-- @menduz
-- @nachomazzara

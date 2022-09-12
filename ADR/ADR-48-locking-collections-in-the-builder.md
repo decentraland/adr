@@ -4,6 +4,10 @@ slug: adr/ADR-48
 adr: 48
 date: 2020-01-48
 title: Locking Collections in the builder
+authors:
+  - nicosantangelo
+  - LautaroPetaccio
+  - nachomazzara
 ---
 
 ## Abstract
@@ -37,14 +41,14 @@ An example of how we can implement the method is:
 ```ts
 function isLocked(element: Collection | Item) {
   if (element.isPublished) {
-    return false;
+    return false
   }
 
-  const { lock } = element;
-  const deadline = new Date(lock);
-  deadline.setDate(deadline.getDate() + 1);
+  const { lock } = element
+  const deadline = new Date(lock)
+  deadline.setDate(deadline.getDate() + 1)
 
-  return deadline.getTime() > Date.now();
+  return deadline.getTime() > Date.now()
 }
 ```
 
@@ -76,11 +80,3 @@ As we said before, the locking mechanism is in place so we can avoid desynching 
 
 - [Builder-server](https://github.com/decentraland/builder-server)
 - [Builder](https://github.com/decentraland/builder)
-
-## Participants
-
-- @Nico
-
-- @Lautaro
-
-- @Nacho

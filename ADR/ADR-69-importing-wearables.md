@@ -4,6 +4,9 @@ slug: adr/ADR-69
 adr: 69
 date: 2020-01-69
 title: Importing wearables
+authors:
+  - lpetaccio
+  - menduz
 ---
 
 ## Context and Problem Statement
@@ -29,10 +32,10 @@ In this first version of the file, the following information can be included:
 ```typescript
 type BuilderWearableConfig = {
   /** UUID of the item in the builder server */
-  id?: string;
+  id?: string
   /** UUID of the collection of the wearable in the builder server */
-  collectionId?: string;
-};
+  collectionId?: string
+}
 ```
 
 Where the `id` will be used to identify which item to update or which UUID to use when creating a new item, the `collectionId` will be used to identify the collection where the item will be created.
@@ -155,11 +158,7 @@ The following is an example on how the `wearable.json` file for a standard weara
     {
       "bodyShapes": ["urn:decentraland:off-chain:base-avatars:BaseFemale"],
       "mainFile": "aFemaleModelFile.glb",
-      "contents": [
-        "aFemaleModelFile.glb",
-        "anotherTextureFile.png",
-        "thumbnail.png"
-      ],
+      "contents": ["aFemaleModelFile.glb", "anotherTextureFile.png", "thumbnail.png"],
       "overrideHides": [],
       "overrideReplaces": []
     }
@@ -189,11 +188,7 @@ And this is an example on how a `wearable.json` file looks like for a third part
     {
       "bodyShapes": ["urn:decentraland:off-chain:base-avatars:BaseFemale"],
       "mainFile": "aFemaleModelFile.glb",
-      "contents": [
-        "aFemaleModelFile.glb",
-        "anotherTextureFile.png",
-        "thumbnail.png"
-      ],
+      "contents": ["aFemaleModelFile.glb", "anotherTextureFile.png", "thumbnail.png"],
       "overrideHides": [],
       "overrideReplaces": []
     }
@@ -214,8 +209,3 @@ Importing wearables in the Builder platform can be done by uploading a ZIP file 
 - An optional `builder.json` file if there's the need to identify an item in the platform to be updated or to create a new one (not required as it is usually auto generated).
 - A `wearable.json` file with the information about the wearable.
 - The GLB, GLTFs or other files that define the wearable's models.
-
-## Participants
-
-- @lpetaccio
-- @menduz

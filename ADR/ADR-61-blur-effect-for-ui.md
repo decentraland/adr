@@ -4,6 +4,9 @@ slug: adr/ADR-61
 adr: 61
 date: 2020-01-61
 title: Blur Effect For UI
+authors:
+- brianamadori
+- JuanMartinSalice
 ---
 
 ## Context and Problem Statement
@@ -28,13 +31,8 @@ In a nutshell:
 * Additionally, a custom C# script has to be used to control the blur parameters in runtime.
 
 * The UI element that will have the effect needs to be set on “Screen Space - Overlay”, while the elements that are going to be blurred need to be on a different canvas set on “Screen Space - Camera”, otherwise the effect will not work.
-* This means that multiple instances of the blur cannot be stacked on top of each other. If this happens, the foremost blur will have to be activated and all the other blurred elements that are behind it disabled. 
+* This means that multiple instances of the blur cannot be stacked on top of each other. If this happens, the foremost blur will have to be activated and all the other blurred elements that are behind it disabled.
 
 ## Alternatives
 
 At first, a simpler ad-hoc fragment shader based solution was considered. This fragment shader just uses a single pass gaussian kernel over the screen space opaque texture provided by the forward renderer. The issue with this technique is that as the source is not already blurred or low-res, so it needs a lot of iterations to be visually appealing. This turns out to be inviable and very detrimental to GPU performance. With low iterations, "ghosting" artifacts were observed so the better alternative was chosen instead.
-
-## Participants
-
-@brianamadori
-@JuanMartinSalice

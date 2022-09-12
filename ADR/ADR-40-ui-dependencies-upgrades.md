@@ -2,8 +2,11 @@
 layout: adr
 slug: adr/ADR-40
 adr: 40
-date: 2020-01-40
+date: 2021-08-27
 title: DCL UI dependencies upgrades
+authors:
+  - LautaroPetaccio
+  - nachomazzara
 ---
 
 ## Context and Problem Statement
@@ -160,10 +163,3 @@ const classes = isMobile ? "dcl mobile" : "dcl"
 ...
 </div>
 ```
-
-## Participants
-
-Date: 2021-08-27
-
-- @LautaroPetaccio
-- @nachomazzara

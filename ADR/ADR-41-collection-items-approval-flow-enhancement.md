@@ -4,6 +4,11 @@ slug: adr/ADR-41
 adr: 41
 date: 2020-01-41
 title: Collection Items Approval Flow Enhancement
+authors:
+- menduz
+- pentreathm
+- cazala
+- nachomazzara
 ---
 
 ## Statement of the problem
@@ -201,13 +206,3 @@ This alternative is not needed for the time being cause the builder-server is al
 ### Milestone 2
 
 - The catalyst will start accepting **only** deployments for collection entities with content hash on chain.
-
-## Participants
-
-- @Mendez
-
-- @Mati
-
-- @Juanca
-
-- @Nacho

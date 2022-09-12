@@ -4,6 +4,13 @@ slug: adr/ADR-47
 adr: 47
 date: 2020-01-47
 title: Collections secondary marketplaces v2
+authors:
+  - agusferreira
+  - fzavalia
+  - nicosantangelo
+  - cazala
+  - lautaropetaccio
+  - nachomazzara
 ---
 
 ## Statement of the problem
@@ -43,17 +50,3 @@ This is not part of the main reason, but also the Solidity version is updated to
 ## Links
 
 - [Proposal for royalties fees](https://governance.decentraland.org/proposal/?id=b70c59d0-09c5-11ec-a4d1-8d5d2cba0825)
-
-## Participants
-
-- @Agus F
-
-- @Fer
-
-- @Nico
-
-- @Juanca
-
-- @Lautaro
-
-- @Nacho

@@ -4,6 +4,15 @@ slug: adr/ADR-55
 adr: 55
 date: 2020-01-55
 title: Third Party Curation With Merkle Tree
+authors:
+  - agusaldasoro
+  - menduz
+  - pentreathm
+  - jmoguilevsky
+  - guidota
+  - lpetaccio
+  - nsantangelo
+  - nachomazzara
 ---
 
 ## Statement of the problem
@@ -79,14 +88,3 @@ The item upload will work the same as for the Decentraland collection.
 ## Tools
 
 In order to make the development for this easier, a new [lib](https://github.com/decentraland/content-hash-tree) has been created. The lib provides a method to generate a Merkle tree with items' urn and content hashes (Builder), and a method to validate a proof (Catalyst).
-
-## Participants
-
-- @agusaldasoro
-- @menduz
-- @pentreathm
-- @jmoguilevsky
-- @guidota
-- @lpetaccio
-- @nsantangelo
-- @nachomazzara

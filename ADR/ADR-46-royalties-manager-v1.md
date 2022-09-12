@@ -4,6 +4,13 @@ slug: adr/ADR-46
 adr: 46
 date: 2020-01-46
 title: Royalties Manager v1
+authors:
+  - agusferreira
+  - fzavalia
+  - nicosantangelo
+  - cazala
+  - lautaropetaccio
+  - nachomazzara
 ---
 
 ## Statement of the problem
@@ -48,17 +55,3 @@ interface IRoyaltiesManager {
 ## Implementation
 
 - [RoyaltiesManager.sol](https://github.com/decentraland/marketplace-contracts/pull/56/files#diff-25b66877c494660071f3b1e2ea81d010a1e7207ebcd8700faf17fc8a157d06bb)
-
-## Participants
-
-- @Agus F
-
-- @Fer
-
-- @Nico
-
-- @Juanca
-
-- @Lautaro
-
-- @Nacho

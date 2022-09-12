@@ -2,8 +2,12 @@
 layout: adr
 slug: adr/ADR-50
 adr: 50
-date: 2020-01-50
-title: Isolated mode
+date: 2021-12-03
+title: solated mode for scenes (Builder mode)
+authors:
+- Suduck
+- menduz
+- brianamadori
 ---
 
 ## Context and Problem Statement
@@ -74,11 +78,3 @@ Accepted
 
 In order to implement this ADR we will develop a new message in kernel and the renderer to enable/disable the isolated mode
 and implement it in the kernel starting with the builder isolated mode that will disable all the scenes and system and add a worker
-
-## Participants
-
-Date: 2021-12-03
-
-- Adrian
-- Agus Mendez
-- Brian

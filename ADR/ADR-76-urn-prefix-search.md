@@ -2,8 +2,13 @@
 layout: adr
 slug: adr/ADR-76
 adr: 76
-date: 2020-01-76
+date: 2022-04-04
 title: URN prefix search
+authors:
+- agusaldasoro
+- nachomazzara
+- menduz
+- pedrotambo
 ---
 
 ## Context and Problem Statement
@@ -96,14 +101,3 @@ In [this PR](https://github.com/decentraland/catalyst/pull/969), there is a migr
   'QmfYt8cDcNHqrdLYSNPZCCeQF9sj2n9qPTxQhSY16Srow5',
   'QmSCR66NTA79DrjojcHf1sRHjHqH4RLWPK1jSrnxrYufqa')
 ```
-
-
-
-## Participants
-
-Date: 2022-04-04
-
-- @agusaldasoro
-- @nachomazzara
-- @menduz
-- @pedrotambo

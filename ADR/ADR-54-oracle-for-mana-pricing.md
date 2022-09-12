@@ -4,6 +4,9 @@ slug: adr/ADR-54
 adr: 54
 date: 2020-01-54
 title: Use an Oracle for MANA pricing according to USD rate
+authors:
+  - nachomazzara
+  - fzavalia
 ---
 
 ## Statement of the problem
@@ -45,8 +48,3 @@ uint256 finalPrice = priceInUSD.mul(1 ether).div(rate); // 20000000000000000000 
 ### Polygon
 
 [0xA1CbF3Fe43BC3501e3Fc4b573e822c70e76A7512](https://polygonscan.com/address/0xA1CbF3Fe43BC3501e3Fc4b573e822c70e76A7512)
-
-## Participants
-
-- @nachomazzara
-- @fzavalia

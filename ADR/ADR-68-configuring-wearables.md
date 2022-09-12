@@ -4,6 +4,10 @@ slug: adr/ADR-68
 adr: 68
 date: 2020-01-68
 title: Configuring wearables
+authors:
+  - lpetaccio
+  - nicosantangelo
+  - menduz
 ---
 
 ## Context and Problem Statement
@@ -199,9 +203,3 @@ The following example shows how a standard wearable could be described using the
 ```
 
 An example on how a third party or linked wearable is defined using the `wearable.json` format can be found in the [ADR-62](/adr/ADR-62).
-
-## Participants
-
-- @lpetaccio
-- @nicosantangelo
-- @menduz

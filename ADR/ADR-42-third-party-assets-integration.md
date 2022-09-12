@@ -4,6 +4,17 @@ slug: adr/ADR-42
 adr: 42
 date: 2020-01-42
 title: Third Party Integration
+authors:
+- menduz
+- pentreathm
+- agusaldasoro
+- guidota
+- jmoguilevsky
+- LautaroPetaccio
+- nicosantangelo
+- fzavalia
+- cazala
+- nachomazzara
 ---
 
 ## Statement of the problem
@@ -239,25 +250,3 @@ Each deployment must check if the URN has `collections-thirdparty` in order to k
 `urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0`.
 
 2. If the content hash of the item with id `0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:0` is the same as the content hash of the item that is being uploaded
-
-## Participants
-
-- @Mendez
-
-- @Mati P.
-
-- @Agus A.
-
-- @Guido
-
-- @Jhoni
-
-- @Lautaro
-
-- @Nico
-
-- @Fernando
-
-- @Juanca
-
-- @Nacho

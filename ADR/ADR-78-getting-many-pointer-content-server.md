@@ -4,6 +4,16 @@ slug: adr/ADR-78
 adr: 78
 date: 2022-08-18
 title: Ropsten To Goerli Migration
+status: FINAL
+authors:
+  - aixaCode
+  - AjimenezDCL
+  - gonpombo8
+  - fzavalia
+  - marianogoldman
+  - menduz
+  - nachomazzara
+  - pentreathm
 ---
 
 ## Context and Problem Statement
@@ -207,14 +217,3 @@ Final
 ## Consequences
 
 Scenes deployed to ropsten has been migrated to Goerli and no data/scenes has been lost. The new testnet is Goerli.
-
-## Participants
-
-- @nando
-- @aga
-- @matipentreath
-- @marianogoldman
-- @gon
-- @mendez
-- @ajimenez
-- @nacho

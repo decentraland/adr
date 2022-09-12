@@ -4,6 +4,10 @@ slug: adr/ADR-59
 adr: 59
 date: 2020-01-59
 title: User Store catalyst entity
+authors:
+  - guidota
+  - cazala
+  - fzavalia
 ---
 
 ## Statement of the problem
@@ -11,15 +15,10 @@ title: User Store catalyst entity
 Users will be able to display on their own stores the following customizable elements:
 
 - Banner image
-
 - Description
-
 - Website link
-
 - Facebook link
-
 - Twitter link
-
 - Discord link
 
 This way, users will be able to add a personalized feel to their stores and distinguish themselves from others.
@@ -114,9 +113,3 @@ The payload of the response looks like:
 ## Status
 
 Stores can be currently deployed and consumed on all environments.
-
-## Participants
-
-- @guidota
-- @cazala
-- @fzavalia

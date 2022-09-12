@@ -4,13 +4,16 @@ slug: adr/ADR-71
 adr: 71
 date: 2020-01-71
 title: Upgradable Collections
+authors:
+  - fzavalia
+  - nachomazzara
 ---
 
 ## Context
 
 ![MinimalProxy](./resources/ADR-71/collection-creation-old-flow.png)
 
-This diagram shows the current flow regarding publishing collections on the blockchain. 
+This diagram shows the current flow regarding publishing collections on the blockchain.
 
 The [CollectionManager](https://polygonscan.com/address/0x9D32AaC179153A991e832550d9F96441Ea27763A) has a `createCollection` external function called by the creator of a collection which receives both the address of the [Forwarder](https://polygonscan.com/address/0xBF6755A83C0dCDBB2933A96EA778E00b717d7004) and the [CollectionFactory](https://polygonscan.com/address/0xB549B2442b2BD0a53795BC5cDcBFE0cAF7ACA9f8)
 
@@ -79,8 +82,3 @@ Main contracts for this solution are:
 - [UpgradableBeacon](https://polygonscan.com/address/0xDDb3781Fff645325C8896AA1F067bAa381607ecc)
 
 The first collection created using this pattern in Polygon Mainnet is [BEYOND COLLABS](https://polygonscan.com/address/0x2b8e09583832281b14116f31b198870747531f44) at block [28233589](https://polygonscan.com/block/28233589)
-
-## Participants
-
-- @fzavalia
-- @nachomazzara

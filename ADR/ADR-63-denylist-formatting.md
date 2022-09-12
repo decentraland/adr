@@ -4,6 +4,10 @@ slug: adr/ADR-63
 adr: 63
 date: 2020-01-63
 title: Denylist format
+authors:
+  - agusaldasoro
+  - jmoguilevsky
+  - menduz
 ---
 
 ## Context and Problem Statement
@@ -36,11 +40,4 @@ If catalysts implement the denylist will impact the following way in the catalys
 
 Each catalyst will be able to have their own denylist file locally only accessible by the owner of the server. The current existing endpoints for modifying the denylist will be deleted as they will have no more usage anymore. To add an item to the denylist, the catalyst owner will have to edit the file and add the item as a line in the file.
 
-The file name and location will be configurable by the catalyst owner modifying the environment, the corresponding property will be available in the env template. 
-
-
-## Participants
-
-@jmoguilevsky
-@agusaldasoro
-@menduz
+The file name and location will be configurable by the catalyst owner modifying the environment, the corresponding property will be available in the env template.
