@@ -3,14 +3,16 @@ layout: adr
 slug: adr/ADR-77
 adr: 77
 date: 2020-01-77
-title: Documenting architecture decisions
+title: New endpoints to retrive pointers
+authors:
+- agusaldasoro
 ---
 
 ## Context
 
-The current implementation of content server allows clients to get entitites by entityId or by pointer. When doing that they have to send the filters as query parameters, this results in having a max amount of pointer/entityIds that can be sent in one request limited to the URL length and not by the server itself.  
+The current implementation of content server allows clients to get entitites by entityId or by pointer. When doing that they have to send the filters as query parameters, this results in having a max amount of pointer/entityIds that can be sent in one request limited to the URL length and not by the server itself.
 
-This change is necessary for the ADR 58.
+This change is necessary for the [ADR 58](/adr/ADR-58).
 
 ## Decision
 
