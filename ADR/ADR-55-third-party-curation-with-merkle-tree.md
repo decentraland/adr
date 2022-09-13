@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-55
+layout: doc
 adr: 55
 date: 2020-01-55
 title: Third Party Curation With Merkle Tree
+status: ACCEPTED
 authors:
   - agusaldasoro
   - menduz

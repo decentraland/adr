@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-10
+layout: doc
 adr: 10
 date: 2020-10-26
 title: Deployment debouncing
+status: DEPRECATED
 ---
 
 ## Context and Problem Statement
@@ -40,5 +40,3 @@ We decided to do Client side debouncing (both options 2 and 3). We may measure d
 - Pato Bossio
 - Nico Chamo
 - Pravus
-
-Date: 2020-10-26

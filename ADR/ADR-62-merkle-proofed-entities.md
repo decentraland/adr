@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-62
+layout: doc
 adr: 62
 date: 2020-01-62
 title: Merkle proofed entity deployments
+status: ACCEPTED
 authors:
   - menduz
   - guidota

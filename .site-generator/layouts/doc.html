@@ -1,0 +1,19 @@
+---
+layout: home
+---
+{{> doc-header }}
+
+{{{ markdown content }}}
+
+{{> draft }}
+
+<script>
+  for (const dot of document.querySelectorAll(".language-x-dot")) {
+    const figure = document.createElement("figure")
+    const pre = dot.parentElement
+    figure.appendChild(dot)
+    pre.parentElement.replaceChild(figure, pre)
+  }
+</script>
+
+{{> comments }}

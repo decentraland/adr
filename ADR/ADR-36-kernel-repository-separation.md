@@ -1,11 +1,12 @@
 ---
-layout: adr
-slug: adr/ADR-36
+layout: doc
 adr: 36
 team: sdk
 date: 2021-07-27
-author: "@menduz"
 title: Kernel repository separation
+status: ACCEPTED
+authors:
+  - menduz
 ---
 
 ## Context and Problem Statement
@@ -16,10 +17,10 @@ The context of the problem is around the tactical/execution aspect. Since the ch
 
 ## Considered Options
 
-* **Merge https://github.com/decentraland/explorer/issues/2479 to decentraland/explorer**  
+- **Merge https://github.com/decentraland/explorer/issues/2479 to decentraland/explorer**  
   It would disable the publishing of website, preventing any team to perform releases to `decentraland-ecs` and `play.decentraland.org/zone`.
-  That would remain that way until we have 
-* **Create a decentraland/kernel repository**  
+  That would remain that way until we have
+- **Create a decentraland/kernel repository**  
   To contain only the `kernel` itself and all of its toolchains. ECS, AMD, build-ecs would not be part of this repository. This is anyways part of what would come next for option 1, that makes it not strictly necessary but it is worth mentioning.
   It would also enable publishing of the new `@dcl/kernel` repository, enabling faster testing in libraries depending on that specific package (decentraland-ecs in the new decentraland/js-skd-toolchain).
 
@@ -28,8 +29,3 @@ The context of the problem is around the tactical/execution aspect. Since the ch
 We choose to create a separated repository to not block the releases and development of explorer during this migration stage.
 
 Also having separated repositories, will foster external contributions, ensuring clear scopes and responsibilities for each repository.
-
-## Participants
-
-- Mendez
-- Brian

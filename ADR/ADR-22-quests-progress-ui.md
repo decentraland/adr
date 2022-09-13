@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-22
+layout: doc
 adr: 22
 date: 2021-01-19
 title: Quests Progress UI
+status: PROPOSED
 ---
 
 ## Context and Problem Statement

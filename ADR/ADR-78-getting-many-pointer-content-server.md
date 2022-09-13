@@ -1,10 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-78
+layout: doc
 adr: 78
 date: 2022-08-18
 title: Ropsten To Goerli Migration
-status: FINAL
+status: ACCEPTED
 authors:
   - aixaCode
   - AjimenezDCL

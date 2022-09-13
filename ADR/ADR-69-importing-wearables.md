@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-69
+layout: doc
 adr: 69
 date: 2020-01-69
 title: Importing wearables
+status: ACCEPTED
 authors:
   - lpetaccio
   - menduz

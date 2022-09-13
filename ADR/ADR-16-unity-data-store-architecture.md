@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-16
+layout: doc
 adr: 16
 date: 2020-11-05
 title: Unity data store architecture
+status: ACCEPTED
 ---
 
 ## Context and Problem Statement

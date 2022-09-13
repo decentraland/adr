@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-29
+layout: doc
 adr: 29
 date: 2020-01-29
 title: Refactor HUD control
+status: PROPOSED
 ---
 
 ## Abstract

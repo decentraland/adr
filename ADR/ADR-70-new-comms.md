@@ -1,10 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-70
+layout: doc
 adr: 70
 date: 2020-01-70
 title: "Catalyst: New Communications Architecture"
-status: DRAFT
+status: PROPOSED
 authors:
   - agusaldasoro
   - hugoArregui

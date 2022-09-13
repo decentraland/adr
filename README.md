@@ -1,6 +1,7 @@
 ---
 layout: index
 slug: /
+title: Decentraland RFC & ADR
 ---
 
 ## How to?
@@ -21,8 +22,7 @@ to start with:
 
 ```markdown
 ---
-layout: adr
-slug: adr/ADR-1
+layout: doc
 adr: 1
 date: 2020-01-01
 title: Documenting architecture decisions

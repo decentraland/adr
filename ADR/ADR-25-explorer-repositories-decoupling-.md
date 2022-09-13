@@ -1,9 +1,11 @@
 ---
-layout: adr
-slug: adr/ADR-25
+layout: doc
 adr: 25
 date: 2020-01-25
 title: Explorer repositories decoupling
+status: ACCEPTED
+authors:
+- menduz
 ---
 
 ## Abstract
@@ -110,9 +112,3 @@ Inevitably, some testing helpers would need to be set in place to enable the suc
 All the repositories would manage their own versioning using semantic versioning to control compatibility.
 
 Protocol changes would require now two PR in different repositories (i.e. kernel and renderer). That is a known issue that was not ignored during the planning of this process. Even though changes in the protocol are less and less common over time, it would require an extra work of coordination and verification.
-
-
-## Participants
-
-- World Team
-- Agus Mendez

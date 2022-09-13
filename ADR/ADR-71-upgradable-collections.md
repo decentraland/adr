@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-71
+layout: doc
 adr: 71
 date: 2020-01-71
 title: Upgradable Collections
+status: ACCEPTED
 authors:
   - fzavalia
   - nachomazzara

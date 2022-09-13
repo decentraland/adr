@@ -1,6 +1,5 @@
 ---
-layout: adr
-slug: adr/ADR-41
+layout: doc
 adr: 41
 date: 2020-01-41
 title: Collection Items Approval Flow Enhancement
@@ -9,6 +8,7 @@ authors:
 - pentreathm
 - cazala
 - nachomazzara
+status: ACCEPTED
 ---
 
 ## Statement of the problem

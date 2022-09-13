@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-33
+layout: doc
 adr: 33
 date: 2020-01-33
 title: Collections v2 Bridge
+status: ACCEPTED
 ---
 
 ## Abstract

@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-53
+layout: doc
 adr: 53
 date: 2020-01-53
 title: Test collections in the explorer
+status: ACCEPTED
 authors:
   - menduz
   - ShibuyaMartin

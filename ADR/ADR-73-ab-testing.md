@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-73
+layout: doc
 adr: 73
 date: 2020-01-73
 title: A/B testing
+status: ACCEPTED
 ---
 
 ## Context and Problem Statement

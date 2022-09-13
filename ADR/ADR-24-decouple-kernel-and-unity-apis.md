@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-24
+layout: doc
 adr: 24
 date: 2020-01-24
 title: Decouple kernel and unity APIs
+status: PROPOSED
 ---
 
 ## Context and Problem Statement
@@ -20,13 +20,13 @@ In a normal feature, this flow usually looks like this:
 
 <!--
 ```sequence
-Unity-&gt;Kernel: Request something
-Kernel-&gt;Kernel: Unity interface\ndispatches saga event\n
-Kernel-&gt;Kernel: Saga event is executed\n
-Kernel-&gt;Service: Fetch
-Service-&gt;Kernel: Response
-Kernel-&gt;Kernel: Transform response data
-Kernel-&gt;Unity: Send back\ntransformed data 
+Unity->Kernel: Request something
+Kernel->Kernel: Unity interface\ndispatches saga event\n
+Kernel->Kernel: Saga event is executed\n
+Kernel->Service: Fetch
+Service->Kernel: Response
+Kernel->Kernel: Transform response data
+Kernel->Unity: Send back\ntransformed data 
 ```
 -->
 ![resources/ADR-24-decouple-kernel-and-unity-apis/fig-2021-04-06-decouple-kernel-and-unity-apis-1.svg](resources/ADR-24-decouple-kernel-and-unity-apis/fig-2021-04-06-decouple-kernel-and-unity-apis-1.svg)
@@ -60,15 +60,11 @@ This new direction should give more ownership to the Unity team. Also, it will s
 
 From Unity's side, we should create a new layer of abstraction that sits behind our bridge classes.
 
-<!--
-```dot
-
+```x-dot
 digraph G {
-    "Back-end requester" -&gt; Bridge -&gt; Feature
+    "Back-end requester" -> Bridge -> Feature
 }
 ```
--->
-![resources/ADR-24-decouple-kernel-and-unity-apis//fig-2021-04-06-decouple-kernel-and-unity-apis-1-1.svg](resources/ADR-24-decouple-kernel-and-unity-apis//fig-2021-04-06-decouple-kernel-and-unity-apis-1-1.svg)
 
 We should create one requester per feature type, and the naming and style of those classes should be unified. Keeping the Bridge interfaces should serve as adapter in case we need to change the requester or move some functionality back to kernel in a worst case scenario.
 
@@ -76,13 +72,13 @@ Let's explore how this would work fetching to the quest or builder nodes:
 
 <!--
 ```sequence
-Service-&gt;Service: I exist
-Unity-&gt;Kernel: Ask for auth headers
-Kernel-&gt;Kernel: Compute headers\n
-Kernel-&gt;Unity: Send headers
-Unity-&gt;Service: Fetch
-Service-&gt;Unity: Response
-Unity-&gt;Unity: Transform response data
+Service->Service: I exist
+Unity->Kernel: Ask for auth headers
+Kernel->Kernel: Compute headers\n
+Kernel->Unity: Send headers
+Unity->Service: Fetch
+Service->Unity: Response
+Unity->Unity: Transform response data
 ```
 -->
 ![resources/ADR-24-decouple-kernel-and-unity-apis/fig-2021-04-06-decouple-kernel-and-unity-apis-1-2.svg](resources/ADR-24-decouple-kernel-and-unity-apis/fig-2021-04-06-decouple-kernel-and-unity-apis-1-2.svg)

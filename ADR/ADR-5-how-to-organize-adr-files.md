@@ -1,12 +1,12 @@
 ---
-layout: adr
-slug: adr/ADR-5
+layout: doc
 adr: 5
 date: 2020-10-15
 title: How to organize ADR files
 authors:
   - nachomazzara
   - menduz
+status: ACCEPTED
 ---
 
 ## Context and Problem Statement

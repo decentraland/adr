@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-64
+layout: doc
 adr: 64
 date: 2020-01-64
 title: Points of interest (POIs)
+status: PROPOSED
 authors:
   - davidejensen
 ---

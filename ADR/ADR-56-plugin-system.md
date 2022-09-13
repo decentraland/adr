@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-56
+layout: doc
 adr: 56
 date: 2020-01-56
 title: Plugin pattern for Renderer features
+status: ACCEPTED
 ---
 
 ## Problem Statement

@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-26
+layout: doc
 adr: 26
 date: 2020-01-26
 title: Port signup screen to unity
+status: ACCEPTED
 ---
 
 ## Abstract

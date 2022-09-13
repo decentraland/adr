@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-18
+layout: doc
 adr: 18
 date: 2020-01-18
 title: Content mappings flow for explorer and builder in-world
+status: DEPRECATED
 ---
 
 ## Context and Problem Statement

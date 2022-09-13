@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-50
+layout: doc
 adr: 50
 date: 2021-12-03
 title: solated mode for scenes (Builder mode)
+status: DEPRECATED
 authors:
 - Suduck
 - menduz

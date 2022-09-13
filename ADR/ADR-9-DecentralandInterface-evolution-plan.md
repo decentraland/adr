@@ -1,9 +1,12 @@
 ---
-layout: adr
-slug: adr/ADR-9
+layout: doc
 adr: 9
 date: 2020-10-22
 title: DecentralandInterface evolution plan
+status: ACCEPTED
+authors:
+- nchamo
+- menduz
 ---
 
 ## Context and Problem Statement
@@ -27,10 +30,3 @@ We decided to develop a new and clean interface for the next-gen SDK, then creat
 * We should not be limited by the decisions of the past SDK
 * The new SDK must eventually prove itself by reaching a feature parity with the current interface
 * Avoid sunk cost fallacy with the old SDK
-
-## Participants
-
-- Nicolás Chamo
-- Agustin Mendez
-
-Date: 2020-10-22

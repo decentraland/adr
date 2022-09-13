@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-51
+layout: doc
 adr: 51
 date: 2020-01-51
 title: Catalyst Content validations
+status: ACCEPTED
 ---
 
 ## Context and Problem Statement

@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-68
+layout: doc
 adr: 68
 date: 2020-01-68
 title: Configuring wearables
+status: ACCEPTED
 authors:
   - lpetaccio
   - nicosantangelo

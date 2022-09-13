@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-39
+layout: doc
 adr: 39
 date: 2020-01-39
 title: DApps Blockchains Support
+status: ACCEPTED
 ---
 
 ## Context and Problem Statement

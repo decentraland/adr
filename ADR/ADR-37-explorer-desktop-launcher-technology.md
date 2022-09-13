@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-37
+layout: doc
 adr: 37
 date: 2020-01-37
 title:  Explorer Desktop Launcher Technology
+status: ACCEPTED
 ---
 
 ## Context and Problem Statement

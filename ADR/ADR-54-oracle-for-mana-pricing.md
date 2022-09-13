@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-54
+layout: doc
 adr: 54
 date: 2020-01-54
 title: Use an Oracle for MANA pricing according to USD rate
+status: ACCEPTED
 authors:
   - nachomazzara
   - fzavalia

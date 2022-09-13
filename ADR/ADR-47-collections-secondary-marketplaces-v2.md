@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-47
+layout: doc
 adr: 47
 date: 2020-01-47
 title: Collections secondary marketplaces v2
+status: ACCEPTED
 authors:
   - agusferreira
   - fzavalia

@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-58
+layout: doc
 adr: 58
 date: 2020-01-58
 title: Third Party Collections Registry V2 (Merkle Tree)
+status: ACCEPTED
 authors:
   - pentreathm
   - agusaldasoro

@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-20
+layout: doc
 adr: 20
 date: 2020-01-20
 title: Explorer Settings Panel Architecture
+status: PROPOSED
 ---
 
 ## Motivation

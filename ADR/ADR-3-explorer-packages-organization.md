@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-3
+layout: doc
 adr: 3
 date: 2020-10-08
 title: Explorer packages organization
+status: DEPRECATED
 ---
 
 ## Context and Problem Statement

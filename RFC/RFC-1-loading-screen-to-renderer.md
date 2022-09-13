@@ -1,6 +1,5 @@
 ---
-layout: rfc
-slug: rfc/RFC-1
+layout: doc
 rfc: 1
 date: 2022-08-17
 title: Move loading screen logic from kernel to renderer

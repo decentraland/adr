@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-1
+layout: doc
 adr: 1
 date: 2020-01-01
 title: Documenting architecture decisions
+status: ACCEPTED
 ---
 
 ## Context

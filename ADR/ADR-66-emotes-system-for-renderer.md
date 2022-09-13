@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-66
+layout: doc
 adr: 66
 date: 2020-01-66
 title: ADR 66 Emotes System for Renderer (Unity)
+status: PROPOSED
 ---
 
 ## Problem Statement

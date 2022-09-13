@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-17
+layout: doc
 adr: 17
 date: 2020-01-17
 title: Wearable Collection Approval And Economics
+status: ACCEPTED
 ---
 
 ## Context and Problem Statement

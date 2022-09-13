@@ -1,6 +1,5 @@
 ---
-layout: adr
-slug: adr/ADR-46
+layout: doc
 adr: 46
 date: 2020-01-46
 title: Royalties Manager v1
@@ -11,6 +10,7 @@ authors:
   - cazala
   - lautaropetaccio
   - nachomazzara
+status: ACCEPTED
 ---
 
 ## Statement of the problem

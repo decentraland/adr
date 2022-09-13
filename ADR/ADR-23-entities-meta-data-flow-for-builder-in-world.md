@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-23
+layout: doc
 adr: 23
 date: 2020-01-23
 title: Entities meta-data flow for builder in-world
+status: DEPRECATED
 ---
 
 ## Context and Problem Statement

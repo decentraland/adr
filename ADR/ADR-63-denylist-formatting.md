@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-63
+layout: doc
 adr: 63
 date: 2020-01-63
 title: Denylist format
+status: ACCEPTED
 authors:
   - agusaldasoro
   - jmoguilevsky

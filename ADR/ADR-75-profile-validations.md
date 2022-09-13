@@ -1,6 +1,5 @@
 ---
-layout: adr
-slug: adr/ADR-75
+layout: doc
 adr: 75
 date: 2020-01-75
 title: Profile validations

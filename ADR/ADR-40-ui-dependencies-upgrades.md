@@ -1,12 +1,12 @@
 ---
-layout: adr
-slug: adr/ADR-40
+layout: doc
 adr: 40
 date: 2021-08-27
 title: DCL UI dependencies upgrades
 authors:
   - LautaroPetaccio
   - nachomazzara
+status: ACCEPTED
 ---
 
 ## Context and Problem Statement

@@ -1,6 +1,5 @@
 ---
-layout: adr
-slug: adr/ADR-11
+layout: doc
 adr: 11
 date: 2020-10-26
 title: Add version to content-as-bundle URL
@@ -8,6 +7,7 @@ excerpt_separator: <!--more-->
 authors:
   - menduz
   - eordano
+status: ACCEPTED
 ---
 
 ## Context and Problem Statement

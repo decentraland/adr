@@ -1,6 +1,5 @@
 ---
-layout: adr
-slug: adr/ADR-42
+layout: doc
 adr: 42
 date: 2020-01-42
 title: Third Party Integration
@@ -15,6 +14,7 @@ authors:
 - fzavalia
 - cazala
 - nachomazzara
+status: ACCEPTED
 ---
 
 ## Statement of the problem

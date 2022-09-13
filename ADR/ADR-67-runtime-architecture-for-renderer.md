@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-67
+layout: doc
 adr: 67
 date: 2020-01-67
 title: Runtime Architecture For Renderer
+status: ACCEPTED
 authors:
   - brianamadori
 ---

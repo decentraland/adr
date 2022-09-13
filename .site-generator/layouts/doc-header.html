@@ -1,5 +1,4 @@
 ---
-layout: home
 ---
 
 <div class="head">
@@ -13,7 +12,11 @@ layout: home
       />
     </a>
   </p>
+  {{#if data.rfc }}
   <h1 id="title" class="title">RFC-{{ data.rfc }}: {{ data.title }}</h1>
+  {{else if data.adr}}
+  <h1 id="title" class="title">ADR-{{ data.adr }}: {{ data.title }}</h1>
+  {{/if}}
   <p id="w3c-state">
     <time class="dt-published" datetime="{{ isoDate data.date }}">{{ prettyDate data.date }}</time>
   </p>
@@ -50,16 +53,3 @@ layout: home
 
   <hr title="Separator for header" />
 </div>
-
-{{{ markdown content }}}
-
-{{>draft}}
-
-<script>
-  for (const dot of document.querySelectorAll(".language-x-dot")) {
-    const figure = document.createElement("figure")
-    const pre = dot.parentElement
-    figure.appendChild(dot)
-    pre.parentElement.replaceChild(figure, pre)
-  }
-</script>

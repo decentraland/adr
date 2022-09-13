@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-74
+layout: doc
 adr: 74
 date: 2020-01-74
 title: Add Emote schema and versioning
+status: ACCEPTED
 ---
 
 ## Context and Problem Statement

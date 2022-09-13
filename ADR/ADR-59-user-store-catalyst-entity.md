@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-59
+layout: doc
 adr: 59
 date: 2020-01-59
 title: User Store catalyst entity
+status: ACCEPTED
 authors:
   - guidota
   - cazala

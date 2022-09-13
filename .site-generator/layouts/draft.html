@@ -1,8 +1,24 @@
-{{#if context.DRAFT }}
+{{#if (eq data.status "ACCEPTED")}}
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="500" class="floating-tag">
+  <g style="font: 750 70px Arial, sans-serif; letter-spacing: 3px" fill="#F6f8fa" stroke="#a6f8aa" stroke-width="3">
+    <text x="50%" y="50%" transform="translate(50 200) rotate(-90) translate(-140 -190)" style="text-anchor: middle">
+      {{data.status}}
+    </text>
+  </g>
+</svg>
+{{else}} {{#if context.DRAFT }}
 <svg xmlns="http://www.w3.org/2000/svg" width="80" height="400" class="floating-tag">
   <g style="font: 750 70px Arial, sans-serif; letter-spacing: 3px" fill="#FDEDED" stroke="#FD0D0D" stroke-width="3">
     <text x="50%" y="50%" transform="translate(50 200) rotate(-90) translate(-40 -190)" style="text-anchor: middle">
       DRAFT
+    </text>
+  </g>
+</svg>
+{{/if}}
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="500" class="floating-tag">
+  <g style="font: 750 70px Arial, sans-serif; letter-spacing: 3px" fill="#F6f8fa" stroke="#a6a8aa" stroke-width="3">
+    <text x="50%" y="50%" transform="translate(50 200) rotate(-90) translate(-140 -190)" style="text-anchor: middle">
+      {{data.status}}
     </text>
   </g>
 </svg>

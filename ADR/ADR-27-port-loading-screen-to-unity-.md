@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-27
+layout: doc
 adr: 27
 date: 2020-01-27
 title: Port loading screen to unity
+status: ACCEPTED
 ---
 
 ## Abstract

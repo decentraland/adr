@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-38
+layout: doc
 adr: 38
 date: 2020-01-38
 title: Communication between Desktop unity and Kernel
+status: ACCEPTED
 ---
 
 ## Context and Problem Statement

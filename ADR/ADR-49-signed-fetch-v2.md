@@ -1,11 +1,11 @@
 ---
-layout: adr
-slug: adr/ADR-49
+layout: doc
 adr: 49
 date: 2020-01-49
 title: Signed Fetch V2
 authors:
 - 2fd
+status: PROPOSED
 ---
 
 This document describe an improved mechanism to communicate Users with Decentraland Services over HTTP messages. This mechanism support all previously use case and includes new security features and follow common and well proved standards:

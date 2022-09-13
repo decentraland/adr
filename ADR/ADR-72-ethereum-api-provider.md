@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-72
+layout: doc
 adr: 72
 date: 2020-01-72
 title: Ethereum API providers
+status: ACCEPTED
 authors:
   - 2fd
   - menduz

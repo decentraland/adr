@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-61
+layout: doc
 adr: 61
 date: 2020-01-61
 title: Blur Effect For UI
+status: PROPOSED
 authors:
 - brianamadori
 - JuanMartinSalice

@@ -1,9 +1,13 @@
 ---
-layout: adr
-slug: adr/ADR-35
+layout: doc
 adr: 35
 date: 2020-01-35
 title: Catalyst communication protocol optimizations
+status: ACCEPTED
+authors:
+  - pablitar
+  - menduz
+  - pentreathm
 ---
 
 ## Context and Problem Statement
@@ -19,6 +23,7 @@ We are facing some issues that need to be addressed. We can list a couple of the
 We will start rolling out a series of Protocol optimizations to help Decentraland communications systems to scale in different ways.
 
 Planned optimizations topics are:
+
 - Reduce complexity of layers for users, removing them completely, and by doing so, optimize "finding people in the world"
 - Enable vertical & horizontal scallability
 - Optimizing connections topologies in P2P networks
@@ -29,16 +34,18 @@ Planned optimizations topics are:
 
 Layers are logical "connection groups" inside the realms, as of today, realms are mapped 1to1 with a catalyst instance. Inside the catalyst, it would be sub-optimal to connect users all-to-all.
 
-By default every catalyst have 28 layers, each one with a different color name. We can infer then, that the maximum amount of concurrent users connected to a catalyst is 2800 users (28 * 100).
-
+By default every catalyst have 28 layers, each one with a different color name. We can infer then, that the maximum amount of concurrent users connected to a catalyst is 2800 users (28 \* 100).
 
 Layers are the color after the name of the realm:
+
 ```
 artemis-amber
         ^^^^^ layer
 ^^^^^^^       realm
 ```
+
 Layers served some purposes during their existence:
+
 - To enable horizontal scallability in catalysts, without the need of DAO approval, each catalyst have layers, which are groups of up to 100 users inside a catalyst.
 - By separating users logically, that gives the renderer some room to render fewer avatars and therefore allocate more resources to the rendering of other assets.
 
@@ -51,17 +58,16 @@ Connection islands are groups of connections based on their geographical locatio
 The implementation performs real-time clustering, organizing connections in islands (clusters) of close peers, which will connect to each otheer
 
 That solves many problems:
+
 - Reduces the complexity to find people in the world: Only the realm is required now to find a friend.
 - Optimizes finding people: it was common to join a realm with lots of people, but the connection is assigned to a layer without people in the parcel you are standing. While in other layers you may find people in that layer.
 - Removes the 2800 user limit: there can be virtually infinite islands in a catalyst, as long as the resources of the server allow it.
 
 The implementation of the algorithm can be found at https://github.com/decentraland/archipelago
 
-
 ## Status
 
 Accepted
-
 
 ## Consequences
 
@@ -76,7 +82,7 @@ Scene developers have access to a `EnvironmentAPI`, which they can use to get in
 No changes to types have been made to maintain code compatibility. But when the player enters a realm that doesn't have a layer (new API), it will now come with an empty string as layer.
 
 ```typescript
-import { getCurrentRealm } from '@decentraland/EnvironmentAPI'
+import { getCurrentRealm } from "@decentraland/EnvironmentAPI"
 
 const realm = await getCurrentRealm()
 
@@ -93,19 +99,21 @@ Keep in mind that realms with layers and realms without layers will coexist for 
 
 New catalysts won't have layers at all. This means:
 
-* `GET /comms/status?includeLayers=true` won't include any layer
-* All `GET /comms/layers/:layerId` endpoints have been removed
+- `GET /comms/status?includeLayers=true` won't include any layer
+- All `GET /comms/layers/:layerId` endpoints have been removed
 
 There are a couple of use cases for clients that have been considered, and new APIs have been implemented:
-* `GET /comms/status?includeUsersParcels=true` now includes a field `usersCount` which contains the amount of users connected to this server. Also, it contains a field `usersParcels` which is a list of the parcels of the users, one entry for each user.
-* `GET /comms/islands` will return information about the islands (clusters) calculated by the lighthouse. This may be disabled during high load because it can grow large.
-* `GET /comms/islands/:islandId` will return information about a particular island.
-* `GET /comms/peers` will return information about the peers currently registered by the lighthouse. This may be disabled during high load because it can grow large.
+
+- `GET /comms/status?includeUsersParcels=true` now includes a field `usersCount` which contains the amount of users connected to this server. Also, it contains a field `usersParcels` which is a list of the parcels of the users, one entry for each user.
+- `GET /comms/islands` will return information about the islands (clusters) calculated by the lighthouse. This may be disabled during high load because it can grow large.
+- `GET /comms/islands/:islandId` will return information about a particular island.
+- `GET /comms/peers` will return information about the peers currently registered by the lighthouse. This may be disabled during high load because it can grow large.
 
 Keep in mind that realms with layers and realms without layers will coexist for some time, so you'll need to check the lighthouse version in order to see if it is old or new.
 
 For instance:
-* `GET /comms/status?includeLayers=true&includeUsersParcels=true` if it is a new catalyst will return something like this:
+
+- `GET /comms/status?includeLayers=true&includeUsersParcels=true` if it is a new catalyst will return something like this:
 
 ```json
 {
@@ -119,9 +127,7 @@ For instance:
   },
   "ready": true,
   "usersCount": 0,
-  "usersParcels": [
-
-  ]
+  "usersParcels": []
 }
 ```
 
@@ -145,10 +151,3 @@ If it is an old catalyst, will return something like this:
 ```
 
 You can also assume that if the response of `GET /comms/status?includeLayers=true&includeUsersParcels=true` includes the attribute `layers`, then it is an old catalyst. And if it includes the attribute `usersParcels` then it is a new catalyst.
-
-
-## Participants
-
-- @pablitar
-- @menduz
-- @pentreathm

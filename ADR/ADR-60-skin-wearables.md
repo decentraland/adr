@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-60
+layout: doc
 adr: 60
 date: 2020-01-60
 title: Skin wearables
+status: ACCEPTED
 authors:
   - cazala
   - nachomazzara

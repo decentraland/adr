@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-15
+layout: doc
 adr: 15
 date: 2020-01-15
 title: L1 & L2 Collections Approval Flow
+status: ACCEPTED
 ---
 
 ## Context and Problem Statement

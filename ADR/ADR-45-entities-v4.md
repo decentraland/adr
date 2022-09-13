@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-45
+layout: doc
 adr: 45
 date: 2020-01-45
-title: ~Entities V4~ -> Entities
+title: Evolution of deployed entities
+status: ACCEPTED
 ---
 
 ## Context and Problem Statement
@@ -29,10 +29,6 @@ We defined a list of changes to support the new validations
 
     ADR45_DEADLINE: 2022-05-10T14:00:00Z
     Unix Timestamp: 1652191200000
-
-## Status
-
-Accepted
 
 ## Consequences
 

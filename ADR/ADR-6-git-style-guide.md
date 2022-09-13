@@ -1,12 +1,12 @@
 ---
-layout: adr
-slug: adr/ADR-6
+layout: doc
 adr: 6
 date: 2020-10-16
 title: Decentraland's git style guide
 authors:
 - eordano
 - menduz
+status: ACCEPTED
 ---
 
 ## Context or problem to solve

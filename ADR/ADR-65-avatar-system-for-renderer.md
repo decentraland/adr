@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-65
+layout: doc
 adr: 65
 date: 2020-01-65
 title: Avatar System for Renderer (Unity)
+status: ACCEPTED
 ---
 
 ## Problem Statement

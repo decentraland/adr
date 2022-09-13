@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-4
+layout: doc
 adr: 4
 date: 2020-10-13
 title: Collections architecture in L1 & L2
+status: ACCEPTED
 ---
 
 ## Context and Problem Statement

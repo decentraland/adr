@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-76
+layout: doc
 adr: 76
 date: 2022-04-04
 title: URN prefix search
+status: PROPOSED
 authors:
 - agusaldasoro
 - nachomazzara

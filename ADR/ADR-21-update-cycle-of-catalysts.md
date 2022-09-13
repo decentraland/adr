@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-21
+layout: doc
 adr: 21
 date: 2020-01-21
 title: Update cycle of catalysts
+status: ACCEPTED
 ---
 
 Since catalyst servers are bound to a persistent volumes, a deployment schema where we delete the machine and create another (new) one is not a viable choice without downtime.

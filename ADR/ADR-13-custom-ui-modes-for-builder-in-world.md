@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-13
+layout: doc
 adr: 13
 date: 2020-11-02
 title: Custom UI modes for builder in world
+status: DEPRECATED
 ---
 
 ## Context and Problem Statement

@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-34
+layout: doc
 adr: 34
 date: 2020-01-34
 title: Collections Technical Approval Flow
+status: ACCEPTED
 ---
 
 ## Introduction
@@ -34,5 +34,5 @@ Both transactions should be done by calling the committee smart contract. You ca
 ## Participants
 
 - @shibu
-- @agus
-- @nacho
+- @menduz
+- @nachomazzara

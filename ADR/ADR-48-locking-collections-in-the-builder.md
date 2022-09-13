@@ -1,9 +1,9 @@
 ---
-layout: adr
-slug: adr/ADR-48
+layout: doc
 adr: 48
 date: 2020-01-48
 title: Locking Collections in the builder
+status: ACCEPTED
 authors:
   - nicosantangelo
   - LautaroPetaccio
