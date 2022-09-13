@@ -1,17 +1,17 @@
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <base href="{{ context.baseUrl }}" />
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>{{ data.title }}</title>
 
-  <meta name="description" content="{{ data.description }}">
-  <meta name="keywords" content="{{ join keywords ', ' }}">
+  <meta name="description" content="{{ data.description }}" />
+  <meta name="keywords" content="{{ join keywords ', ' }}" />
 
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
 
   <!-- rel prev and next -->
   <link rel="stylesheet" href="{{ styleUrl context 'main.css' }}" />
@@ -20,9 +20,17 @@
   <link rel="icon" href="https://decentraland.org/favicon.svg" type="image/svg+xml" />
 
   <!-- Canonical link tag -->
-  <link rel="canonical" href="{{ data.publicUrl }}">
+  <link rel="canonical" href="{{ data.publicUrl }}" />
 
   {{#if context.DRAFT}}
   <meta name="robots" content="noindex" />
   {{/if}}
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{ data.publicUrl }}" />
+  <meta property="og:title" content="{{ data.title }}" />
+  <meta property="og:image" content="https://decentraland.org/favicon.svg" />
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="Decentraland ADR & RFC" />
+  <meta property="og:locale" content="en-us" />
 </head>
