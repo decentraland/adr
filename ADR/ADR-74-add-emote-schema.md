@@ -145,4 +145,4 @@ function validate(emote) {
 \*under the assumption that the common properties do not change.
 This would give the possibility to iterate schema changes quicker and also easily identify the versions over the time along with its reasons explained in the specific ADR.
 
-### Date: TBD
+### Date: 2022-09-12T13:00:00Z (timestamp 1669852800000)
