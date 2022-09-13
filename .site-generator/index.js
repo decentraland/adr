@@ -10,23 +10,23 @@ module.exports = function ({ context }) {
   }
 
   context.preProcessPage = function (page) {
-    if (page.adr) {
-      page.slug = `/adr/ADR-${page.adr}`
+    if (page.matterfront.adr) {
+      page.slug = `/adr/ADR-${page.matterfront.adr}`
 
       checkAdrStatus(page)
-    } else if (page.rfc) {
-      page.slug = `/rfc/RFC-${page.rfc}`
+    } else if (page.matterfront.rfc) {
+      page.slug = `/rfc/RFC-${page.matterfront.rfc}`
     }
   }
 }
 
 function checkAdrStatus(page) {
   const validStatuses = new Set(["PROPOSED", "ACCEPTED", "DEPRECATED", "SUPERSEDED"])
-  if (!page.status) throw new Error("ADR-" + page.adr + " has no `status`")
-  if (!validStatuses.has(page.status))
+  if (!page.matterfront.status) throw new Error("ADR-" + page.matterfront.adr + " has no `status`")
+  if (!validStatuses.has(page.matterfront.status))
     throw new Error(
       "ADR-" +
-        page.adr +
+        page.matterfront.adr +
         " has invalid `status: " +
         page.status +
         "`, valid statuses are: " +
