@@ -16,9 +16,33 @@
       text-overflow: ellipsis;
       text-decoration: none;
     }
+
+    .status {
+      font-weight: bold;
+      font-size: 0.8em;
+      text-decoration: none;
+    }
+
+    .status {
+      font-weight: bold;
+    }
+
   }
 
   .date-label {
     padding: 1em 0;
+  }
+
+  .status-ACCEPTED .status {
+    display: none;
+  }
+
+  .status-PROPOSED,.status-DRAFT {
+    color: #d73a49;
+  }
+
+  .status-DEPRECATED {
+    text-decoration: line-through!important;
+    color: #999;
   }
 }

@@ -9,8 +9,8 @@
 
         {{#each (sortAsc context.pages "adr") as |doc| }} {{#if doc.adr }}
         <a href="{{ doc.slug }}" class="post-item" title="{{ doc.title }}">
-          <div class="article-title">
-            <span>ADR-{{ doc.adr }} - {{ doc.title }}</span>
+          <div class="article-title status-{{ doc.status }}">
+            <span>ADR-{{ doc.adr }} - {{ doc.title }} <span class="status">{{doc.status}}</span></span>
             <time datetime="{{ isoDate doc.date }}">{{ prettyDate doc.date }}</time>
           </div>
         </a>
@@ -19,8 +19,8 @@
 
         {{#each (sortAsc context.pages "rfc") as |doc| }} {{#if doc.rfc }}
         <a href="{{ doc.slug }}" class="post-item" title="{{ doc.title }}">
-          <div class="article-title">
-            <span>RFC-{{ doc.rfc }} - {{ doc.title }}</span>
+          <div class="article-title status-{{ doc.status }}">
+            <span>RFC-{{ doc.rfc }} - {{ doc.title }} <span class="status">{{doc.status}}</span></span>
             <time datetime="{{ isoDate doc.date }}">{{ prettyDate doc.date }}</time>
           </div>
         </a>
