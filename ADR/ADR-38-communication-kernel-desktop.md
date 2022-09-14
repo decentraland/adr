@@ -34,15 +34,47 @@ To implement what it's described above the team decided the following flows:
 
 ## Initialization of components
 
-![resources/ADR-38/initialize-flow.svg](resources/ADR-38/initialize-flow.svg)
+```mermaid
+sequenceDiagram
+  participant R as Desktop renderer
+  participant N as NodeJS
+  participant K as Kernel
+
+  L->R: open process
+  R->N: Spawn NodeJS process
+  N->N: Load kernel
+  N->K: Initialize WS Connection
+  R-->K: WS Connection details
+  K->R: WS Connection
+```
 
 ## Guest login flow
 
-![resources/ADR-38/guest-login-flow.svg](resources/ADR-38/guest-login-flow.svg)
+```mermaid
+sequenceDiagram
+  participant K as Kernel
+
+  R->K: StartAuthentication_Native {provider=null,isGuest=true}
+  K->K: Load or create guest session
+  K->R: Authenticated
+```
 
 ## Wallet connect flow (NOT GUEST)
 
-![resources/ADR-38/wallet-connect-login-flow.svg](resources/ADR-38/wallet-connect-login-flow.svg)
+```mermaid
+sequenceDiagram
+  participant K as Kernel
+  participant B as WalletConnectBridge
+
+  R->K: StartAuthentication_Native\n{provider=&quot;wallet_connect&quot;,isGuest=false}
+  K->K: Create WC provider
+  B-->K: Get QR
+  K->R: QR Code
+  K->K: Wait until login is successful
+  R-->B: (login with mobile phone, scan QR)
+  B-->K: Login succesful
+  K->R: Authenticated
+```
 
 Some pseudo code of how `explorer-website` and `explorer-desktop` will start:
 ```typescript

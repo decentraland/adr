@@ -130,22 +130,23 @@ _The fee is decided in base of the amount of items in the collection. It may not
 
 #### Sequence Diagram: Manual approval of a collection
 
-```sequence
-Content Creator -> Content Manager: Submit Collection\n(pays X MANA per item)
-Committee Member -> Content Manager: Approve
-Content Manager -> Marketplace: Enable Collection
+```mermaid
+sequenceDiagram
+  Content Creator ->> Content Manager: Submit Collection\n(pays X MANA per item)
+  Committee Member ->> Content Manager: Approve
+  Content Manager ->> Marketplace: Enable Collection
 ```
 
 #### Sequence diagram: Rejection and eventual approval of a collection
 
-```sequence
-Content Creator -> Content Manager: Submit Collection\n(pay X MANA per item)
-Committee Member -> Content Manager: Reject
-Content Creator -> Content Creator: Modify items
-Content Creator -> Content Manager: Re-submit
-Committee Member -> Content Manager: Approve
-Content Manager -> Marketplace: Enable Collection
-
+```mermaid
+sequenceDiagram
+  Content Creator ->> Content Manager: Submit Collection\n(pay X MANA per item)
+  Committee Member ->> Content Manager: Reject
+  Content Creator ->> Content Creator: Modify items
+  Content Creator ->> Content Manager: Re-submit
+  Committee Member ->> Content Manager: Approve
+  Content Manager ->> Marketplace: Enable Collection
 ```
 
 ## Aspect C: Staking MANA to issue items

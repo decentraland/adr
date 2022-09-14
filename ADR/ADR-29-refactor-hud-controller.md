@@ -25,7 +25,14 @@ We have multiple HUDs synced between Kernel and Renderer.
 
 When we start Decentraland Explorer, the Kernel will send a message to Unity to pre-load and show some HUDs that they live in `InitialScene` with a `HUDController` script. Then, the Kernel can hide or show those HUDs as it needs.
 
-![resources/ADR-29/diagram-1.svg](resources/ADR-29/diagram-1.svg)
+```mermaid
+sequenceDiagram
+  Kernel->Renderer: Load and show MinimapHUD
+  Kernel->Renderer: Load SignupHUD
+  Kernel->Renderer: Load SettingsPanelHUD
+  Kernel->Renderer: ...
+  Kernel->Renderer: Show SettingsPanelHUD
+```
 
 ### HUDController architecture
 

@@ -48,18 +48,19 @@ have it into consideration
 We went for the option 1: Isolated modes because this way kernel and the renderer will be decoupled and we
 still can have control about the systems/scenes that are enabled/disabled
 
-```sequence
-participant Unity as R
-participant Kernel as K
-participant Scene worker as W
+```mermaid
+sequenceDiagram
+  participant R as Unity
+  participant K as Kernel
+  participant W as Scene worker
 
-note over R: Start isolated mode
-R->K: enter isolated mode(mode)
-K-->K: Enable/disable required systems
+  note over R: Start isolated mode
+  R->>K: enter isolated mode(mode)
+  K-->>K: Enable/disable required systems
 
-K->R: Enable/disable required systems
-K-->W: Create new worker (only if necessary)
-K->R: LoadParcelScenes(sceneId) (only if necessary)
+  K->>R: Enable/disable required systems
+  K-->>W: Create new worker (only if necessary)
+  K->>R: LoadParcelScenes(sceneId) (only if necessary)
 ```
 
 ## Use cases of Isolated mode

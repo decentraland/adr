@@ -38,12 +38,13 @@ Based on the context of a previous meeting with Pravus, Alex, Pablo, Marcosnc an
 
 - `controller` is the quests controller in kernel, it transparently handles the interaction with the quests server.
 
-```sequence
-quest_scene->controller: make some progress
-controller->server: update quest state
-server->controller: new state
-controller->unity: quest progress state(new state)
-controller->quest_scene: new state (return)
+```mermaid
+sequenceDiagram
+  quest_scene->>controller: make some progress
+  controller->>server: update quest state
+  server->>controller: new state
+  controller->>unity: quest progress state(new state)
+  controller->>quest_scene: new state (return)
 ```
 
 - In this scenario, special code would have to be put in place to send the messages to unity in behalf of the scene and update the state from the quests server.
@@ -56,18 +57,20 @@ controller->quest_scene: new state (return)
 
 - `controller` is the quests controller in kernel, it transparently handles the interaction with the quests server.
 
-```sequence
-quest_scene->controller: make some progress
-controller->server: update quest state
-server->controller: new state
-controller->quest_scene: new state (return)
-quest_scene->unity: quest progress state(new state)
+```mermaid
+sequenceDiagram
+  quest_scene->>controller: make some progress
+  controller->>server: update quest state
+  server->>controller: new state
+  controller->>quest_scene: new state (return)
+  quest_scene->>unity: quest progress state(new state)
 ```
 
 It enables us to test the UI without interacting with the controller or the scene:
 
-```sequence
-quest_scene->unity: quest progress state(new state)
+```mermaid
+sequenceDiagram
+  quest_scene->>unity: quest progress state(new state)
 ```
 
 - It also allows any scene to show quests progression, enabling developers to perform their own quests in their LAND or wearables.

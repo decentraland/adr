@@ -68,23 +68,24 @@ _**Entity** = DAO_
 - A vote to approve/reject a collection in L2 must be started in the Decentraland's DAO in L1.
 - At vote enactment, a message will be forwarded from L1 to L2 by a bridge ending up with the collection approved/rejected in L2.
 
-```sequence
-participant User_1
-participant User_2
-participant User_3
-participant L1_DAO
-participant L1_Bridge
-participant L2_Bridge
-participant L2_Collection_1
+```mermaid
+sequenceDiagram
+  participant User_1
+  participant User_2
+  participant User_3
+  participant L1_DAO
+  participant L1_Bridge
+  participant L2_Bridge
+  participant L2_Collection_1
 
-User_1->L1_DAO: Create vote to approve/reject Collection_1: Vote_1
-User_2->L1_DAO: Vote "Yes" on Vote_1
-User_3->L1_DAO: Vote "Yes" on Vote_1
-L1_DAO-->L1_DAO: Vote_1 passed
-User_1->L1_DAO: Enact Vote_1 lock
-L1_DAO->L1_Bridge: Approve/Reject Collection_1
-L1_Bridge->L2_Bridge: Approve/Reject Collection_1
-L2_Bridge->L2_Collection_1: Approve/Reject
+  User_1->>L1_DAO: Create vote to approve/reject Collection_1: Vote_1
+  User_2->>L1_DAO: Vote "Yes" on Vote_1
+  User_3->>L1_DAO: Vote "Yes" on Vote_1
+  L1_DAO-->>L1_DAO: Vote_1 passed
+  User_1->>L1_DAO: Enact Vote_1 lock
+  L1_DAO->>L1_Bridge: Approve/Reject Collection_1
+  L1_Bridge->>L2_Bridge: Approve/Reject Collection_1
+  L2_Bridge->>L2_Collection_1: Approve/Reject
 ```
 
 #### With Committee/Board
@@ -96,19 +97,20 @@ _**Entity** = Committee smart contract which will check if the sender of the tra
 - A member of the community creates a vote to add/remove someone from the committe/board on the Decentraland DAO.
 - Once the vote is encated, that person will be add/removed from the committe.
 
-```sequence
-participant User_1
-participant User_2
-participant User_3
-participant L1_DAO
-participant L1_Committee
+```mermaid
+sequenceDiagram
+  participant User_1
+  participant User_2
+  participant User_3
+  participant L1_DAO
+  participant L1_Committee
 
-User_1->L1_DAO: Create vote to add/remove someone from the committee: Vote_1
-User_2->L1_DAO: Vote "Yes" on Vote_1
-User_3->L1_DAO: Vote "Yes" on Vote_1
-L1_DAO-->L1_DAO: Vote_1 passed
-User_1->L1_DAO: Enact Vote_1 lock
-L1_DAO->L1_Committee: Add/Remove someone from the committee
+  User_1->>L1_DAO: Create vote to add/remove someone from the committee: Vote_1
+  User_2->>L1_DAO: Vote "Yes" on Vote_1
+  User_3->>L1_DAO: Vote "Yes" on Vote_1
+  L1_DAO-->>L1_DAO: Vote_1 passed
+  User_1->>L1_DAO: Enact Vote_1 lock
+  L1_DAO->>L1_Committee: Add/Remove someone from the committee
 ```
 
 ##### Manage Collections (1 transaction)
@@ -116,17 +118,18 @@ L1_DAO->L1_Committee: Add/Remove someone from the committee
 - A member of the committee sends a transaction to the Committee smart contract in L1, to approve/reject a collection in L2.
 - The transaction creates a message that will be forwarded from L1 to L2 by a bridge, ending up with the collection approved/rejected in L2.
 
-```sequence
-participant Committee_User
-participant L1_Committee
-participant L1_Bridge
-participant L2_Bridge
-participant L2_Collection_1
+```mermaid
+sequenceDiagram
+  participant Committee_User
+  participant L1_Committee
+  participant L1_Bridge
+  participant L2_Bridge
+  participant L2_Collection_1
 
-Committee_User->L1_Committee: Approve/Reject Collection_1
-L1_Committee->L1_Bridge: Approve/Reject Collection_1
-L1_Bridge->L2_Bridge: Approve/Reject Collection_1
-L2_Bridge->L2_Collection_1: Approve/Reject
+  Committee_User->>L1_Committee: Approve/Reject Collection_1
+  L1_Committee->>L1_Bridge: Approve/Reject Collection_1
+  L1_Bridge->>L2_Bridge: Approve/Reject Collection_1
+  L2_Bridge->>L2_Collection_1: Approve/Reject
 ```
 
 ### Alternative 2. DAO in L1 manage an entity, moderation happens in L2
@@ -184,23 +187,24 @@ _**Entity** = Committee smart contract which will check if the sender of the tra
 
 - At vote enactment, a message will be forwarded from L1 to L2 by a bridge ending up with the member added/removed from the **Entity** in L2.
 
-```sequence
-participant User_1
-participant User_2
-participant User_3
-participant L1_DAO
-participant L1_Bridge
-participant L2_Bridge
-participant L2_Committee
+```mermaid
+sequenceDiagram
+  participant User_1
+  participant User_2
+  participant User_3
+  participant L1_DAO
+  participant L1_Bridge
+  participant L2_Bridge
+  participant L2_Committee
 
-User_1->L1_DAO: Create vote to add/remove someone from the committee: Vote_1
-User_2->L1_DAO: Vote "Yes" on Vote_1
-User_3->L1_DAO: Vote "Yes" on Vote_1
-L1_DAO-->L1_DAO: Vote_1 passed
-User_1->L1_DAO: Enact Vote_1 lock
-L1_DAO->L1_Bridge: Add/Remove someone from the committee
-L1_Bridge->L2_Bridge: Add/Remove someone from the committee
-L2_Bridge->L2_Committee: Add/Remove someone
+  User_1->>L1_DAO: Create vote to add/remove someone from the committee: Vote_1
+  User_2->>L1_DAO: Vote "Yes" on Vote_1
+  User_3->>L1_DAO: Vote "Yes" on Vote_1
+  L1_DAO-->>L1_DAO: Vote_1 passed
+  User_1->>L1_DAO: Enact Vote_1 lock
+  L1_DAO->>L1_Bridge: Add/Remove someone from the committee
+  L1_Bridge->>L2_Bridge: Add/Remove someone from the committee
+  L2_Bridge->>L2_Committee: Add/Remove someone
 ```
 
 ##### Manage Collections (1 transaction)
@@ -209,13 +213,14 @@ L2_Bridge->L2_Committee: Add/Remove someone
 
 - The transaction creates a message that will be forwarded to the collection, ending up with the collection approved/rejected.
 
-```sequence
-participant Committee_User
-participant L2_Committee
-participant L2_Collection_1
+```mermaid
+sequenceDiagram
+  participant Committee_User
+  participant L2_Committee
+  participant L2_Collection_1
 
-Committee_User->L2_Committee: Approve/Reject Collection_1
-L2_Committee->L2_Collection_1: Approve/Reject
+  Committee_User->>L2_Committee: Approve/Reject Collection_1
+  L2_Committee->>L2_Collection_1: Approve/Reject
 ```
 
 ### Alternative 3. Collections curated by staking and challenging
@@ -286,25 +291,26 @@ digraph {
 - If the challenger wins, an amount of Z MANA (from the reserve) is distributed among the creators who voted to remove the collection.
 - If the challenger loses, an amount of Z MANA (from the reserve) is distributed among the creators who rejected the challenge.
 
-```sequence
-participant Creator_1
-participant Creator_2
-participant Creator_3
-participant Creator_4
-participant Creator_5
-participant L2_Collection_Curator
+```mermaid
+sequenceDiagram
+  participant Creator_1
+  participant Creator_2
+  participant Creator_3
+  participant Creator_4
+  participant Creator_5
+  participant L2_Collection_Curator
 
-Creator_5->L2_Collection_Curator: Stake X MANA to publish collection_1
-L2_Collection_Curator -> L2_Collection_1: Create collection
-Creator_1->L2_Collection_Curator: Stake Z MANA to challenge collection_1
-Creator_2->L2_Collection_Curator: Vote "Yes" on the collection_1 challenge: weight 1
-Creator_3->L2_Collection_Curator: Vote "Yes" on the collection_1 challenge: weigh 1
-Creator_4->L2_Collection_Curator: Vote "No" on the collection_1 challenge: weight 1
-Creator_5->L2_Collection_Curator: Vote "No" on the collection_1 challenge: weight 0.1
+  Creator_5->>L2_Collection_Curator: Stake X MANA to publish collection_1
+  L2_Collection_Curator ->> L2_Collection_1: Create collection
+  Creator_1->>L2_Collection_Curator: Stake Z MANA to challenge collection_1
+  Creator_2->>L2_Collection_Curator: Vote "Yes" on the collection_1 challenge: weight 1
+  Creator_3->>L2_Collection_Curator: Vote "Yes" on the collection_1 challenge: weigh 1
+  Creator_4->>L2_Collection_Curator: Vote "No" on the collection_1 challenge: weight 1
+  Creator_5->>L2_Collection_Curator: Vote "No" on the collection_1 challenge: weight 0.1
 
-Creator_1-->L2_Collection_Curator: Resolve challenge
-Note right of L2_Collection_Curator: Challenge resolved: Passed (YES: 2 / No: 1.1)
-L2_Collection_Curator->L2_Collection_1: Act based on challenge outcome
+  Creator_1-->>L2_Collection_Curator: Resolve challenge
+  Note right of L2_Collection_Curator: Challenge resolved: Passed (YES: 2 / No: 1.1)
+  L2_Collection_Curator->>L2_Collection_1: Act based on challenge outcome
 ```
 
 There are two kinds of challenge: **PAUSE**, and **CLAIM** a collection.

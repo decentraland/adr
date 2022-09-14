@@ -26,64 +26,68 @@ In this approach the owner of the "edited" state is the renderer.
 
 #### Initial load
 
-```sequence
-participant user
-participant kernel
-participant worker
-participant renderer
-participant p2p
+```mermaid
+sequenceDiagram
+  participant user
+  participant kernel
+  participant worker
+  participant renderer
+  participant p2p
 
-user->kernel: load scene
-kerneld->worker: create worker
-workerd->worker: load scene
-worker-->renderer: inform state
+  user->>kernel: load scene
+  kernel->>worker: create worker
+  worker->>worker: load scene
+  worker-->>renderer: inform state
 ```
 
 #### Initial scene loading (while others are editing)
 
-```sequence
-participant user
-participant kernel
-participant worker
-participant renderer
-participant p2p
+```mermaid
+sequenceDiagram
+  participant user
+  participant kernel
+  participant worker
+  participant renderer
+  participant p2p
 
 
-p2p-->kernel: edition beacon {scene xy}
-kernel-->renderer: edition mode
-renderer-->worker: kill worker
+  p2p-->>kernel: edition beacon {scene xy}
+  kernel-->>renderer: edition mode
+  renderer-->>worker: kill worker
 
-p2p-->renderer: process update
-userd->renderer: perform changes (if allowed)
-p2p-->renderer: process update
+  p2p-->>renderer: process update
+  user->>renderer: perform changes (if allowed)
+  p2p-->>renderer: process update
 ```
 
 #### Save state
 
 Save the current snapshot of the static scene
 
-```sequence
-user-->renderer: edition mode
-renderer-->worker: kill worker
-userd->renderer: perform changes
-rendererd->renderer: process changes 🔧
-userd->renderer: save
-rendererd->kernel: save {serialized state}
-kerneld->builder_server: generate code and store
+```mermaid
+sequenceDiagram
+  user-->>renderer: edition mode
+  renderer-->>worker: kill worker
+  user->>renderer: perform changes
+  renderer->>renderer: process changes 🔧
+  user->>renderer: save
+  renderer->>kernel: save {serialized state}
+  kernel->>builder_server: generate code and store
 ```
 
 #### Broadcast updates
 
 After a change in state (i.e. builder action)
 
-```sequence
-user-->renderer: edition mode
-renderer-->worker: kill worker
-userd->renderer: perform changes
-userd->renderer:
-userd->renderer:
-rendererd->renderer: process changes 🔧
-renderer-->p2p: update-msg
+```mermaid
+sequenceDiagram
+  user-->>renderer: edition mode
+  renderer-->>worker: kill worker
+  user->>renderer: perform changes
+  user->>renderer:
+  user->>renderer:
+  renderer->>renderer: process changes 🔧
+  renderer-->>p2p: update-msg
 ```
 
 #### Receive updates
@@ -92,11 +96,12 @@ From other connected scenes.
 
 In this case we would receive updates only on edition mode.
 
-```sequence
-user-->renderer: enter edition mode
-renderer-->worker: kill worker
-p2p-->renderer: update-msg
-rendererd->renderer: process changes 🔧
+```mermaid
+sequenceDiagram
+  user-->>renderer: enter edition mode
+  renderer-->>worker: kill worker
+  p2p-->>renderer: update-msg
+  renderer->>renderer: process changes 🔧
 ```
 
 #### Open questions
@@ -111,20 +116,21 @@ In this approach, the scene code is owner of the state at all times.
 
 #### Initial load
 
-```sequence
-participant user
-participant kernel
-participant worker
-participant renderer
-participant p2p
+```mermaid
+sequenceDiagram
+  participant user
+  participant kernel
+  participant worker
+  participant renderer
+  participant p2p
 
-userd->kernel: load scene
-kerneld->worker: create worker
-workerd->worker: load scene (JSON)
-worker-->renderer: inform state
+  user->>kernel: load scene
+  kernel->>worker: create worker
+  worker->>worker: load scene (JSON)
+  worker-->>renderer: inform state
 
-workerd->worker: connect to synchronization bus
-workerd->kernel: init p2p bus
+  worker->>worker: connect to synchronization bus
+  worker->>kernel: init p2p bus
 ```
 
 #### Receive updates
@@ -133,87 +139,92 @@ From other connected scenes.
 
 In this case we would receive updates either we are editing or not.
 
-```sequence
-participant user
-participant kernel
-participant worker
-participant renderer
-participant p2p
+```mermaid
+sequenceDiagram
+  participant user
+  participant kernel
+  participant worker
+  participant renderer
+  participant p2p
 
-p2p-->worker: update-msg
+  p2p-->>worker: update-msg
 
-workerd->worker: process changes 🔧
-worker-->renderer: inform state
+  worker->>worker: process changes 🔧
+  worker-->>renderer: inform state
 ```
 
 #### Broadcast updates (v0)
 
 After a change in state (i.e. builder action)
 
-```sequence
-participant user
-participant renderer
-participant worker
-participant p2p
-participant kernel
+```mermaid
+sequenceDiagram
+  participant user
+  participant renderer
+  participant worker
+  participant p2p
+  participant kernel
 
 
-userd->renderer: perform changes
+  user->>renderer: perform changes
 
 
-renderer-->p2p: broadcast update-msg
-rendererd->worker: update-msg
-workerd->worker: process changes 🔧
+  renderer-->>p2p: broadcast update-msg
+  renderer->>worker: update-msg
+  worker->>worker: process changes 🔧
 ```
 
 #### Broadcast updates (v1)
 
 After a change in state (i.e. builder action)
 
-```sequence
-participant user
-participant renderer
-participant worker
-participant p2p
-participant kernel
+```mermaid
+sequenceDiagram
+  participant user
+  participant renderer
+  participant worker
+  participant p2p
+  participant kernel
 
 
-userd->renderer: perform changes
+  user->>renderer: perform changes
 
-rendererd->worker: update-msg
-workerd->worker: process changes 🔧
-worker-->p2p: broadcast update-msg
+  renderer->>worker: update-msg
+  worker->>worker: process changes 🔧
+  worker-->>p2p: broadcast update-msg
 ```
 
 #### Save state
 
 Save the current snapshot of the static scene
 
-```sequence
-participant user
-participant renderer
-participant worker
-participant p2p
-participant kernel
+```mermaid
+sequenceDiagram
+  participant user
+  participant renderer
+  participant worker
+  participant p2p
+  participant kernel
 
-userd->renderer: save state
-rendererd->worker: save
+  user->>renderer: save state
+  renderer->>worker: save
 
-workerd->worker: serialize scene
-workerd->worker: save JSON (POST?)
+  worker->>worker: serialize scene
+  worker->>worker: save JSON (POST?)
 ```
 
 ### Option 3 - new worker owns the state
 
-```sequence
-userd->worker: kill worker
-userd->new_worker: create for edition (scene xy)
-new_workerd->content_server: get JSON (scene xy)
-content_serverd->new_worker:
-new_workerd->renderer: initial state
-renderer-->new_worker: update-msg
-renderer-->p2p: update-msg (for broadcast)
-p2p-->new_worker: update-msg
+```mermaid
+sequenceDiagram
+  user->>worker: kill worker
+  user->>new_worker: create for edition (scene xy)
+  new_worker->>content_server: get JSON (scene xy)
+  content_server->>new_worker:
+  new_worker->>renderer: initial state
+  renderer-->>new_worker: update-msg
+  renderer-->>p2p: update-msg (for broadcast)
+  p2p-->>new_worker: update-msg
 ```
 
 ## Decision Outcome

@@ -48,117 +48,124 @@ Check [here](https://github.com/decentraland/wearables-contracts/blob/master/Col
 
 ### Create a Decentraland collection
 
-```sequence
-participant Creator as C
-participant Builder as B
-participant Builder Server as PT
-participant Matic Collection Factory as M
-participant Matic Collection as MC
+```mermaid
+sequenceDiagram
+  participant C as Creator
+  participant B as Builder
+  participant PT as Builder Server
+  participant M as Matic Collection Factory
+  participant MC as Matic Collection
 
-C->B: Create collection &amp;\n upload items
-B-->PT: Save collection &amp; items
-C->B: Publish collection
-B-->M: Deploy collection
-M-->MC: Create collection
+  C->>B: Create collection & upload items
+  B-->>PT: Save collection & items
+  C->>B: Publish collection
+  B-->>M: Deploy collection
+  M-->>MC: Create collection
 ```
 
 ### Create third party Item
 
-```sequence
-participant Creator as C
-participant Builder as B
-participant Builder Server as PT
-participant Matic Third Party Registry as TPR
+```mermaid
+sequenceDiagram
+  participant C as Creator
+  participant B as Builder
+  participant PT as Builder Server
+  participant TPR as Matic Third Party Registry
 
-C->B: Create collection &amp;\n upload items
-B-->PT: Save collection &amp; items
-C->B: Publish items
-B-->TPR: Upload items
+  C->>B: Create collection & upload items
+  B-->>PT: Save collection & items
+  C->>B: Publish items
+  B-->>TPR: Upload items
 ```
 
 ### Create and update items
 
-```sequence
-participant User as U
-participant Builder as B
-participant Builder Server as PT
-U->B: Upload new version of item
-B-->B: Edit item metadata
-B->PT: Save item
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant B as Builder
+  participant PT as Builder Server
+  U->>B: Upload new version of item
+  B-->>B: Edit item metadata
+  B->>PT: Save item
 ```
 
 ### Propagate deployments to Cataysts
 
-```sequence
-participant Committee as C
-participant Builder server as PT
-participant Builder as B
-participant Matic Collection as M
-participant DAO Peer as P
-B->PT: Fetch all \nitems from a collection
-C->B: approve(content_hashes[])
-B-->B: Create new deployments for the catalyst using\nspecific assets from content hashes
-B->M: sendTx: approve(content_hashes)
-M-->M: Update item hashes &amp; approve collection
-M-->B: txMined
-B->P: Deploy entitities
-M-->P: approved content_hashes[]
-P->P: Check and accept deployments
+```mermaid
+sequenceDiagram
+  participant C as Committee
+  participant PT as Builder server
+  participant B as Builder
+  participant M as Matic Collection
+  participant P as DAO Peer
+  B->>PT: Fetch all \nitems from a collection
+  C->>B: approve(content_hashes[])
+  B-->>B: Create new deployments for the catalyst using\nspecific assets from content hashes
+  B->>M: sendTx: approve(content_hashes)
+  M-->>M: Update item hashes & approve collection
+  M-->>B: txMined
+  B->>P: Deploy entitities
+  M-->>P: approved content_hashes[]
+  P->>P: Check and accept deployments
 ```
 
 ### Get (non-catalyst) content to test in-world
 
-```sequence
-participant Builder server as BS
-participant Explorer as E
-E->BS: fetch items`
+```mermaid
+sequenceDiagram
+  participant BS as Builder server
+  participant E as Explorer
+  E->>BS: fetch items
 ```
 
 ### Change editable parameters from items (Decentraland Collections only)
 
 _beneficiary, price, name, description, category, body shapes_.
 
-```sequence
-participant Creators as C
-participant Builder as B
-participant Matic Collection as M
-participant Builder Server as BS
-C->B: Update item\n price &amp; beneficiary
-B-->M: Send TX
-BS-->M: Consolidate by fetching\nthe collection subgraph
+```mermaid
+sequenceDiagram
+  participant C as Creators
+  participant B as Builder
+  participant M as Matic Collection
+  participant BS as Builder Server
+  C->>B: Update item\n price & beneficiary
+  B-->>M: Send TX
+  BS-->>M: Consolidate by fetching\nthe collection subgraph
 ```
 
 ### Approve process (committee)
 
-```sequence
-participant Creator as Ct
-participant Builder as B
-participant Builder Server as BS
-participant Committee as C
-participant Matic Collection as M
-participant DAO Catalyst as peer
-note over Ct: Play and upload collection
-Ct->B: Upload new versions
-B-->BS: save item
-Ct->B: Upload new versions
-B-->BS: save item
-Ct->B: Upload new versions
-B-->BS: save item
-Ct->B: Upload new versions
-B-->BS: save item
-Ct->B: Item/collection ready to review
-Ct-->M: Publish if needed(first time)
-B-->C:Collection ready for review
-note over C: Review by committee
-C->C: Approve hash1 + category
-C->C: Approve hash2 + category
-C->B: approve items with hashes
-B-->M: sendTx: approve(content_hashes)
-B->B: Wait for tx
-M-->B: txMined
-note over B: Upload approved content to catalyst
-B->peer: Upload hashed entity, using any signer
-peer->M: Validate hashes`
+```mermaid
+sequenceDiagram
+  participant Ct as Creator
+  participant B as Builder
+  participant BS as Builder Server
+  participant C as Committee
+  participant M as Matic Collection
+  participant peer as DAO Catalyst
+  note over Ct: Play and upload collection
+  Ct->>B: Upload new versions
+  B-->>BS: save item
+  Ct->>B: Upload new versions
+  B-->>BS: save item
+  Ct->>B: Upload new versions
+  B-->>BS: save item
+  Ct->>B: Upload new versions
+  B-->>BS: save item
+  Ct->>B: Item/collection ready to review
+  Ct-->>M: Publish if needed(first time)
+  B-->>C:Collection ready for review
+  note over C: Review by committee
+  C->>C: Approve hash1 + category
+  C->>C: Approve hash2 + category
+  C->>B: approve items with hashes
+  B-->>M: sendTx: approve(content_hashes)
+  B->>B: Wait for tx
+  M-->>B: txMined
+  note over B: Upload approved content to catalyst
+  B->>peer: Upload hashed entity, using any signer
+  peer->>M: Validate hashes
 ```
 
 ## Alternative B

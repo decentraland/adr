@@ -114,44 +114,46 @@ For example, if a user has the token with id `1` for the collection `0x326923D43
 
 #### L2 to L1
 
-```sequence
-participant User
-participant L2_Collection_1
-participant L2_Bridge
-participant L2_Validator
-participant L1_Bridge
-participant L1_Factory
-participant L1_Collection
+```mermaid
+sequenceDiagram
+  participant User
+  participant L2_Collection_1
+  participant L2_Bridge
+  participant L2_Validator
+  participant L1_Bridge
+  participant L1_Factory
+  participant L1_Collection
 
-User->L2_Collection_1: Transfer token_1 to L1
-L2_Collection_1->L2_Bridge: Lock token_1
-L2_Validator-->L2_Bridge: Compute lock
-L2_Validator->L2_Validator: Validate lock
-L2_Validator->L1_Bridge: Process token_1 lock
-L1_Bridge-->L1_Collection_1: Check if exist L1_Collection_1
-L1_Bridge->L1_Factory: Deploy L1_Collection_1 (if not exist)
-L1_Factory->L1_Collection_1: Deploy L1_Collection_1 (if not exist)
-L1_Bridge->L1_Collection_1: Mint token_1
+  User->>L2_Collection_1: Transfer token_1 to L1
+  L2_Collection_1->>L2_Bridge: Lock token_1
+  L2_Validator-->>L2_Bridge: Compute lock
+  L2_Validator->>L2_Validator: Validate lock
+  L2_Validator->>L1_Bridge: Process token_1 lock
+  L1_Bridge-->>L1_Collection_1: Check if exist L1_Collection_1
+  L1_Bridge->>L1_Factory: Deploy L1_Collection_1 (if not exist)
+  L1_Factory->>L1_Collection_1: Deploy L1_Collection_1 (if not exist)
+  L1_Bridge->>L1_Collection_1: Mint token_1
 ```
 
 #### L1 to L2
 
-```sequence
-participant User
-participant L2_Collection_1
-participant L2_Bridge
-participant L2_Validator
-participant L1_Bridge
-participant L1_Factory
-participant L1_Collection_1
+```mermaid
+sequenceDiagram
+  participant User
+  participant L2_Collection_1
+  participant L2_Bridge
+  participant L2_Validator
+  participant L1_Bridge
+  participant L1_Factory
+  participant L1_Collection_1
 
-User->L1_Collection_1: Transfer token_1 to L2
-L1_Collection_1->L1_Bridge: Burn token_1
-L2_Validator-->L1_Bridge: Compute burn
-L2_Validator->L2_Validator: Validate burn
-L2_Validator->L2_Bridge: Unlock token_1
-L2_Bridge-->L2_Collection_1: Transfer token_1
-L2_Collection_1->User: Transfer token_1
+  User->>L1_Collection_1: Transfer token_1 to L2
+  L1_Collection_1->>L1_Bridge: Burn token_1
+  L2_Validator-->>L1_Bridge: Compute burn
+  L2_Validator->>L2_Validator: Validate burn
+  L2_Validator->>L2_Bridge: Unlock token_1
+  L2_Bridge-->>L2_Collection_1: Transfer token_1
+  L2_Collection_1->>User: Transfer token_1
 ```
 
 ### Alternative 2: Minimalist Collection replication
@@ -182,7 +184,7 @@ digraph {
         label="L1 Mainnet";
         factory_l1 [label="Factory L1\n(safeguard)"];
         bridge_l1  [label="Bridge L1",color=green];
-        collection_l1_1 [label="Collection (pointers &amp; ownership)"];
+        collection_l1_1 [label="Collection (pointers & ownership)"];
     }
 
     factory_l2 -> collection_l2_1 -> bridge_l2;
@@ -229,39 +231,41 @@ For example, iif a user has the token with id `1` for the collection `0x326923D4
 
 #### L2 to L1
 
-```sequence
-participant User
-participant L2_Collection_1
-participant L2_Bridge
-participant L2_Validator
-participant L1_Bridge
-participant L1_Collection
+```mermaid
+sequenceDiagram
+  participant User
+  participant L2_Collection_1
+  participant L2_Bridge
+  participant L2_Validator
+  participant L1_Bridge
+  participant L1_Collection
 
-User->L2_Collection_1: Transfer token_1 to L1
-L2_Collection_1->L2_Bridge: Lock token_1
-L2_Validator-->L2_Bridge: Compute lock
-L2_Validator->L2_Validator: Validate lock
-L2_Validator->L1_Bridge: Process token_1 lock
-L1_Bridge->L1_Collection: Mint token_1
+  User->>L2_Collection_1: Transfer token_1 to L1
+  L2_Collection_1->>L2_Bridge: Lock token_1
+  L2_Validator-->>L2_Bridge: Compute lock
+  L2_Validator->>L2_Validator: Validate lock
+  L2_Validator->>L1_Bridge: Process token_1 lock
+  L1_Bridge->>L1_Collection: Mint token_1
 ```
 
 #### L1 to L2
 
-```sequence
-participant User
-participant L2_Collection_1
-participant L2_Bridge
-participant L2_Validator
-participant L1_Bridge
-participant L1_Collection
+```mermaid
+sequenceDiagram
+  participant User
+  participant L2_Collection_1
+  participant L2_Bridge
+  participant L2_Validator
+  participant L1_Bridge
+  participant L1_Collection
 
-User->L1_Collection: Transfer token_1 to L2
-L1_Collection->L1_Bridge: Burn token_1
-L2_Validator-->L1_Bridge: Compute burn
-L2_Validator->L2_Validator: Validate burn
-L2_Validator->L2_Bridge: Unlock token_1
-L2_Bridge-->L2_Collection_1: Transfer token_1
-L2_Collection_1->User: Transfer token_1
+  User->>L1_Collection: Transfer token_1 to L2
+  L1_Collection->>L1_Bridge: Burn token_1
+  L2_Validator-->>L1_Bridge: Compute burn
+  L2_Validator->>L2_Validator: Validate burn
+  L2_Validator->>L2_Bridge: Unlock token_1
+  L2_Bridge-->>L2_Collection_1: Transfer token_1
+  L2_Collection_1->>User: Transfer token_1
 ```
 
 ## Decision Outcome

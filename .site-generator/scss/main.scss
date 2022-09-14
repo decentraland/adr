@@ -26,7 +26,6 @@
     .status {
       font-weight: bold;
     }
-
   }
 
   .date-label {
@@ -37,12 +36,13 @@
     display: none;
   }
 
-  .status-PROPOSED,.status-DRAFT {
+  .status-PROPOSED,
+  .status-DRAFT {
     color: #d73a49;
   }
 
   .status-DEPRECATED {
-    text-decoration: line-through!important;
+    text-decoration: line-through !important;
     color: #999;
   }
 }

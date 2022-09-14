@@ -29,17 +29,14 @@ Every deployment will have a 1 minute crontab to pull messages of its own SQS
 
    3. crontab to consume the SQS in each deployment
 
-```sequence
-participant ci
-participant SNS (global and public) as sns
-participant SQS (one per deployment) as sqs
-participant EC2 (one per deployment) as ec2
-ci->sns: new version published (using aws cli)
-sns->sqs: aws.sns.TopicSubscription
-ec2->ec2: cron (aws sqs receive-message)
-sqs-->ec2: message
-ec2->ec2: ./init.sh
-ec2-->sqs: delete-message (if succeed)
+```mermaid
+sequenceDiagram
+  ci->>sns: new version published (using aws cli)
+  sns->>sqs: aws.sns.TopicSubscription
+  ec2->>ec2: cron (aws sqs receive-message)
+  sqs-->>ec2: message
+  ec2->>ec2: ./init.sh
+  ec2-->>sqs: delete-message (if succeed)
 ```
 
 ## Links

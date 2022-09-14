@@ -66,12 +66,13 @@ The resolved hash is obtained querying a dictionary with the local asset path.
 
 This dictionary is scoped to the scene. Meaning that any scene will have a specific dictionary of content mapping pairs and a determined `baseUrl`. The mapping pairs and the baseUrl are fetched from Kernel using our catalyst scene endpoints and then passed over to explorer's renderer.
 
-```sequence
-Catalyst->Kernel: Kernel picks realm url
-Catalyst->Kernel: Kernel fetches mapping pairs
-Kernel->Renderer: send LoadParcelScenes message\nwith baseUrl and content mappings
-Kernel->Renderer: create any sdk component\nwith src payload
-Renderer->Renderer: Use baseUrl and mappings\nto solve full asset url.
+```mermaid
+sequenceDiagram
+  Catalyst->>Kernel: Kernel picks realm url
+  Catalyst->>Kernel: Kernel fetches mapping pairs
+  Kernel->>Renderer: send LoadParcelScenes message\nwith baseUrl and content mappings
+  Kernel->>Renderer: create any sdk component\nwith src payload
+  Renderer->>Renderer: Use baseUrl and mappings\nto solve full asset url.
 ```
 
 This approach works fine for most of the cases. However, some issues can be observed:
@@ -134,26 +135,28 @@ We are going to analyze the flow to address the following use cases:
 
 #### Flow #1: Stateful scene is loaded
 
-```sequence
-Kernel->Renderer: Send catalog JSON\nwith all the assets
-Renderer->Renderer: Maps json info to &lt;assetId, ContentProvider>
-Kernel->Kernel: Stateful scene load begins
-Kernel->Renderer: Map assetId to component id\nusing special message
-Kernel->Renderer: Update component
-Renderer->Renderer: Component checks if any assetId\nwas mapped to this component id
-Renderer->Renderer: Inject mapped ContentProvider to LoadableShape\nuse scene ContentProvider otherwise
+```mermaid
+sequenceDiagram
+  Kernel->>Renderer: Send catalog JSON with all the assets
+  Renderer->>Renderer: Maps json info to <assetId, ContentProvider>
+  Kernel->>Kernel: Stateful scene load begins
+  Kernel->>Renderer: Map assetId to component id using special message
+  Kernel->>Renderer: Update component
+  Renderer->>Renderer: Component checks if any assetId was mapped to this component id
+  Renderer->>Renderer: Inject mapped ContentProvider to LoadableShapeuse scene ContentProvider otherwise
 ```
 
 #### Flow #2: Any user puts an asset, and the state has to be delivered to the stateful scene
 
-```sequence
-Kernel->Renderer: Send catalog JSON\nwith all the assets
-Renderer->Renderer: User places any asset into the world
-Renderer->Renderer: Map assetId to component id\nin the internal map
-Renderer->Kernel: Sends special message to\nreflect the assetId mapping
-Renderer->Kernel: Update component with\n{ src:string } using stateful\nmessages.
-Renderer->Renderer: Component checks if any assetId\nwas mapped to this component id
-Renderer->Renderer: Inject mapped ContentProvider to LoadableShape\nuse scene ContentProvider otherwise
+```mermaid
+sequenceDiagram
+  Kernel->>Renderer: Send catalog JSON\nwith all the assets
+  Renderer->>Renderer: User places any asset into the world
+  Renderer->>Renderer: Map assetId to component id\nin the internal map
+  Renderer->>Kernel: Sends special message to\nreflect the assetId mapping
+  Renderer->>Kernel: Update component with { src:string } using stateful\nmessages.
+  Renderer->>Renderer: Component checks if any assetId was mapped to this component id
+  Renderer->>Renderer: Inject mapped ContentProvider to LoadableShape use scene ContentProvider otherwise
 ```
 
 Code mock-up of how the integration is going to look like in `LoadableShape` code:

@@ -121,7 +121,7 @@ digraph {
     node [fontname = "arial",fontsize="10", shape="box", style="rounded"]
     edge [fontname = "arial",color="blue", fontcolor="black",fontsize="10"]
 
-    users -> marketplace[color=orange, fontcolor=orange,  label="Perform primary &amp;\n secondary sales"]
+    users -> marketplace[color=orange, fontcolor=orange,  label="Perform primary &\n secondary sales"]
     marketplace -> collections [color=orange, fontcolor=orange]
     creators -> collections[color=orange, fontcolor=orange  label="create"]
     commiteee -> collections[color=orange, fontcolor=orange,  label="approve/reject"]
@@ -143,7 +143,7 @@ digraph {
     node [fontname = "arial",fontsize="10", shape="box", style="rounded"]
     edge [fontname = "arial",color="blue", fontcolor="black",fontsize="10"]
 
-    users -> marketplace[color=orange, fontcolor=orange,  label="Perform primary &amp;\n secondary sales"]
+    users -> marketplace[color=orange, fontcolor=orange,  label="Perform primary &\n secondary sales"]
     users -> marketplace[color=blue, fontcolor=blue,  label="Bid"]
     marketplace -> collections [color=orange, fontcolor=orange]
     creators -> stores [color=blue, fontcolor=blue  label="create"]
