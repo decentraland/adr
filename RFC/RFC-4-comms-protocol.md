@@ -2,7 +2,7 @@
 layout: doc
 rfc: 4
 date: 2022-09-14
-title: Content server synchronization protocol
+title: Comms protocol for explorers
 authors:
 - agusaldasoro
 - hugoarregui
