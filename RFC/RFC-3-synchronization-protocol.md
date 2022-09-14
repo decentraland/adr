@@ -1,16 +1,16 @@
 ---
 layout: doc
-rfc: 2
+rfc: 3
 date: 2022-09-01
 title: Content server synchronization protocol
 authors:
 - agusaldasoro
-status: ACCEPTED
+status: DRAFT
 ---
 
 # Abstract
 
-This document describes the minimum mandatory synchronization protocol between content servers. It does not specify any validations for the entitites, it rather focuses on the endpoints and information flows instead. For validations of entities refer to [ADR-51](/adr/ADR-51). An initial version of this document lives on the [ADR-52](/adr/ADR-52).
+This document describes the minimum mandatory synchronization protocol between content servers. It does not specify any validations for the entitites, it rather focuses on the endpoints and information flows instead. For validations of entities refer to [ADR-51](/adr/ADR-51). An initial version of this document lives on the [ADR-52](/adr/ADR-52). This is a living document.
 
 # Introduction
 
