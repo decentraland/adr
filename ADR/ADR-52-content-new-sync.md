@@ -29,11 +29,11 @@ This document does not discuss ideas to change the way that the catalyst communi
 
 In the old synchronization, every catalyst asks for all the deployments from the other catalysts on the DAO List. This means that every catalyst exposes a `/deployments` endpoint where you can get all the history of deployments. So if a Catalyst needs to sync with the others, it gets all of them and deploy them locally.
 
-```
+```typescript
 // Synchronization code
-const allServers = await  getCatalystsFromDAOList() // fetch list of catalysts from the DAO contract
+const allServers = await getCatalystsFromDAOList() // fetch list of catalysts from the DAO contract
 
-while(true) {
+while (true) {
   for (server of allServers) {
     // GET /deployments : first time it'll get all deployments, afterwards only the diff
     allDeployments = await server.getNewDeployments()
@@ -63,10 +63,9 @@ All the catalysts continue to communicate with each other, but in a more efficie
 2. Deprecate the endpoint /deployments (which was the most expensive in the db).
 3. Add missing information to /snapshot endpoints to include `authChain` to reduce by TOTAL_DEPLOYMENTS the amount of requests.
 
-```
+```typescript
 // Synchronization code
-const allServers = await  getCatalystsFromDAOList() // fetch list of catalysts from the DAO contract
-
+const allServers = await getCatalystsFromDAOList() // fetch list of catalysts from the DAO contract
 
 async function sync(remoteServer) {
   // Bootstrapping
@@ -77,7 +76,7 @@ async function sync(remoteServer) {
   remoteServer.updateLastSeenTimestamp() // most recent timestamp seen in snapshots
 
   // Syncing
-  while(remoteServer.isOnline()) {
+  while (remoteServer.isOnline()) {
     // GET /pointer-changes : only the new deployments
     allDeployments = await remoteServer.getNewDeployments()
     await deployLocally(allDeployments)
@@ -100,10 +99,6 @@ The new snapshots are generated with a certain frequency (currently set to 15 mi
 Then `/pointer-changes` retrieves all the deployments done in a period of time, this includes not-active entities too (those who have been overriden by a new deployment). So, the only historical data that may be lost is the data transferred when a Catalyst was down. This endpoint is stored in a separate db and the requests are optimized.
 
 A future enhancement to the synchronization contemplates the addition of an endpoint similar to `/pointer-changes` that only includes the freshest pointers, ignoring the history in between. For a lighter use of the table and indexes holding the active entities.
-
-## Status
-
-Accepted
 
 ## Consequences
 
