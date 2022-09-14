@@ -1,6 +1,6 @@
 ---
 layout: doc
-rfc: 3
+rfc: 4
 date: 2022-09-14
 title: Content server synchronization protocol
 authors:
