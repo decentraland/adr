@@ -4,6 +4,7 @@ slug: /
 title: Decentraland RFC & ADR
 ---
 
+
 ## How to?
 
 Read [the ADR explaining the rationale](/adr/ADR-1), by Michael Nygard.
