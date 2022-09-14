@@ -1,11 +1,13 @@
 ---
 layout: home
 ---
-{{> doc-header }}
 
-{{{ markdown content }}}
+{{> doc-header }} {{{ markdown content }}} {{> draft }} {{> comments }}
 
-{{> draft }}
+<script src="/scripts/webfont.js"></script>
+<script src="/scripts/snap.svg-min.js"></script>
+<script src="/scripts/underscore-min.js"></script>
+<script src="/scripts/sequence-diagram-min.js"></script>
 
 <script>
   for (const dot of document.querySelectorAll(".language-x-dot")) {
@@ -14,6 +16,16 @@ layout: home
     figure.appendChild(dot)
     pre.parentElement.replaceChild(figure, pre)
   }
+  for (const diagram of document.querySelectorAll(".language-sequence")) {
+    const figure = document.createElement("figure")
+    const pre = diagram.parentElement
+    pre.parentElement.replaceChild(figure, pre)
+    try {
+      var d = Diagram.parse(diagram.textContent)
+      var options = { theme: "simple" }
+      console.log(d.drawSVG(figure, options))
+    } catch (err) {
+      diagram.textContent = err.toString()
+    }
+  }
 </script>
-
-{{> comments }}

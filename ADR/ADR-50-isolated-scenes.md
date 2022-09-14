@@ -48,7 +48,6 @@ have it into consideration
 We went for the option 1: Isolated modes because this way kernel and the renderer will be decoupled and we
 still can have control about the systems/scenes that are enabled/disabled
 
-<!--
 ```sequence
 participant Unity as R
 participant Kernel as K
@@ -61,18 +60,13 @@ K-->K: Enable/disable required systems
 K->R: Enable/disable required systems
 K-->W: Create new worker (only if necessary)
 K->R: LoadParcelScenes(sceneId) (only if necessary)
--->
-![resources/fig-initial-load.svg](resources/fig-initial-load.svg)
+```
 
 ## Use cases of Isolated mode
 
 - Once active, the dynamic loading of scenes should be halted, and recovered once we finish the isolated scene mode.
 - Isolated scenes can be started from builder in world, either from deployed scenes and from non-deployed scenes (without sceneId and using a manifest)
 - Isolated scenes can be started from scenes directly, to shut down the neighboring scene loading. Useful in dungeons, closed buildings, etc.
-
-## Status
-
-Accepted
 
 ## Consequences
 

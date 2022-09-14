@@ -24,28 +24,24 @@ Define the best strategy to have collections v2 in a l2 lowering the risk and ti
 
 - Committee members will be able to approve/reject collections by using the builder
 
-<!--
-```dot
+```x-dot
 digraph {
     rankdir=LR
     graph [fontname = "arial", fontsize="10", color="grey", fontcolor="grey"]
     node [fontname = "arial",fontsize="10", shape="box", style="rounded"]
     edge [fontname = "arial",color="blue", fontcolor="black",fontsize="10"]
 
-    users -&gt; explorer[color=orange, fontcolor=orange,  label="Perform primary sales"]
-    users -&gt; marketplace[color=orange, fontcolor=orange,  label="Perform secondary sales"]
-    explorer -&gt; collections [color=orange, fontcolor=orange]
-    marketplace -&gt; collections [color=orange, fontcolor=orange]
-    creators -&gt; collections[color=orange, fontcolor=orange  label="create"]
-    commiteee -&gt; collections[color=orange, fontcolor=orange,  label="approve/reject"]
+    users -> explorer[color=orange, fontcolor=orange,  label="Perform primary sales"]
+    users -> marketplace[color=orange, fontcolor=orange,  label="Perform secondary sales"]
+    explorer -> collections [color=orange, fontcolor=orange]
+    marketplace -> collections [color=orange, fontcolor=orange]
+    creators -> collections[color=orange, fontcolor=orange  label="create"]
+    commiteee -> collections[color=orange, fontcolor=orange,  label="approve/reject"]
 
     edge[ style = invis ]
-    users -&gt; { explorer marketplace }
+    users -> { explorer marketplace }
 }
 ```
--->
-
-![resources/ADR-19/fig-l2-roadmap-stage-1-stage-2-alternatives-1.svg](resources/ADR-19/fig-l2-roadmap-stage-1-stage-2-alternatives-1.svg)
 
 ### Stage 2 🔷
 
@@ -57,32 +53,28 @@ digraph {
 
 - Users will be able to perform bids of collections v2 items in the marketplace.
 
-<!--
-```dot
+```x-dot
 digraph {
     rankdir=LR
     graph [fontname = "arial", fontsize="10", color="grey", fontcolor="grey"]
     node [fontname = "arial",fontsize="10", shape="box", style="rounded"]
     edge [fontname = "arial",color="blue", fontcolor="black",fontsize="10"]
 
-    users -&gt; explorer[color=orange, fontcolor=orange,  label="Perform primary sales"]
-    users -&gt; marketplace[color=blue, fontcolor=blue,  label="Perform primary sales"]
-    users -&gt; marketplace[color=orange, fontcolor=orange,  label="Perform secondary sales"]
-    users -&gt; marketplace[color=blue, fontcolor=blue,  label="Bid"]
-    explorer -&gt; collections [color=orange, fontcolor=orange]
-    marketplace -&gt; collections [color=orange, fontcolor=orange]
-    creators -&gt; stores [color=blue, fontcolor=blue  label="create"]
-    stores -&gt; collections[color=blue, fontcolor=blue  label="has"]
-    commiteee -&gt; collections[color=orange, fontcolor=orange,  label="approve/reject"]
+    users -> explorer[color=orange, fontcolor=orange,  label="Perform primary sales"]
+    users -> marketplace[color=blue, fontcolor=blue,  label="Perform primary sales"]
+    users -> marketplace[color=orange, fontcolor=orange,  label="Perform secondary sales"]
+    users -> marketplace[color=blue, fontcolor=blue,  label="Bid"]
+    explorer -> collections [color=orange, fontcolor=orange]
+    marketplace -> collections [color=orange, fontcolor=orange]
+    creators -> stores [color=blue, fontcolor=blue  label="create"]
+    stores -> collections[color=blue, fontcolor=blue  label="has"]
+    commiteee -> collections[color=orange, fontcolor=orange,  label="approve/reject"]
 
 
     edge[ style = invis ]
-    users -&gt;  { explorer marketplace }
+    users ->  { explorer marketplace }
 }
 ```
--->
-
-![resources/ADR-19/fig-l2-roadmap-stage-1-stage-2-alternatives-1-1.svg](resources/ADR-19/fig-l2-roadmap-stage-1-stage-2-alternatives-1-1.svg)
 
 ## Alt B: Collections v2 In-world Primary sales & Marketplace Secondary Sales: Joined UI
 
@@ -122,23 +114,19 @@ _Graph is the same as ALT A_
 
 - Committee members will be able to approve/reject collections by using the builder
 
-<!--
-```dot
+```x-dot
 digraph {
     rankdir=LR
     graph [fontname = "arial", fontsize="10", color="grey", fontcolor="grey"]
     node [fontname = "arial",fontsize="10", shape="box", style="rounded"]
     edge [fontname = "arial",color="blue", fontcolor="black",fontsize="10"]
 
-    users -&gt; marketplace[color=orange, fontcolor=orange,  label="Perform primary &amp;\n secondary sales"]
-    marketplace -&gt; collections [color=orange, fontcolor=orange]
-    creators -&gt; collections[color=orange, fontcolor=orange  label="create"]
-    commiteee -&gt; collections[color=orange, fontcolor=orange,  label="approve/reject"]
+    users -> marketplace[color=orange, fontcolor=orange,  label="Perform primary &amp;\n secondary sales"]
+    marketplace -> collections [color=orange, fontcolor=orange]
+    creators -> collections[color=orange, fontcolor=orange  label="create"]
+    commiteee -> collections[color=orange, fontcolor=orange,  label="approve/reject"]
 }
 ```
--->
-
-![resources/ADR-19/fig-l2-roadmap-stage-1-stage-2-alternatives-1-2.svg](resources/ADR-19/fig-l2-roadmap-stage-1-stage-2-alternatives-1-2.svg)
 
 ### Stage 2 🔷
 
@@ -148,25 +136,21 @@ digraph {
 
 - Users will be able to perform bids of collections v2 items in the marketplace.
 
-<!--
-```dot
+```x-dot
 digraph {
     rankdir=LR
     graph [fontname = "arial", fontsize="10", color="grey", fontcolor="grey"]
     node [fontname = "arial",fontsize="10", shape="box", style="rounded"]
     edge [fontname = "arial",color="blue", fontcolor="black",fontsize="10"]
 
-    users -&gt; marketplace[color=orange, fontcolor=orange,  label="Perform primary &amp;\n secondary sales"]
-    users -&gt; marketplace[color=blue, fontcolor=blue,  label="Bid"]
-    marketplace -&gt; collections [color=orange, fontcolor=orange]
-    creators -&gt; stores [color=blue, fontcolor=blue  label="create"]
-    stores -&gt; collections[color=blue, fontcolor=blue  label="has"]
-    commiteee -&gt; collections[color=orange, fontcolor=orange,  label="approve/reject"]
+    users -> marketplace[color=orange, fontcolor=orange,  label="Perform primary &amp;\n secondary sales"]
+    users -> marketplace[color=blue, fontcolor=blue,  label="Bid"]
+    marketplace -> collections [color=orange, fontcolor=orange]
+    creators -> stores [color=blue, fontcolor=blue  label="create"]
+    stores -> collections[color=blue, fontcolor=blue  label="has"]
+    commiteee -> collections[color=orange, fontcolor=orange,  label="approve/reject"]
 }
 ```
--->
-
-![resources/ADR-19/fig-l2-roadmap-stage-1-stage-2-alternatives-1-3.svg](resources/ADR-19/fig-l2-roadmap-stage-1-stage-2-alternatives-1-3.svg)
 
 ## Decision outcome
 

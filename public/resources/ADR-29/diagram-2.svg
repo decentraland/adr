@@ -19,9 +19,9 @@
 <polygon fill="none" stroke="black" points="114.61,-213.6 21.13,-213.6 21.13,-177.6 114.61,-177.6 114.61,-213.6"></polygon>
 <text text-anchor="middle" x="67.87" y="-191.4" font-family="Times,serif" font-size="14.00">IHUDFactory</text>
 </g>
-<!-- HUDFactory&#45;&gt;IHUDFactory -->
+<!-- HUDFactory&#45;>IHUDFactory -->
 <g id="edge1" class="edge">
-<title>HUDFactory-&gt;IHUDFactory</title>
+<title>HUDFactory->IHUDFactory</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M67.87,-124.95C67.87,-137.08 67.87,-153.58 67.87,-167.48"></path>
 <polygon fill="black" stroke="black" points="64.37,-167.49 67.87,-177.49 71.37,-167.49 64.37,-167.49"></polygon>
 <text text-anchor="middle" x="100.53" y="-147" font-family="Times,serif" font-size="14.00">implements</text>
@@ -32,9 +32,9 @@
 <polygon fill="none" stroke="black" points="135.61,-36 0.13,-36 0.13,0 135.61,0 135.61,-36"></polygon>
 <text text-anchor="middle" x="67.87" y="-13.8" font-family="Times,serif" font-size="14.00">HUDDesktopFactory</text>
 </g>
-<!-- HUDDesktopFactory&#45;&gt;HUDFactory -->
+<!-- HUDDesktopFactory&#45;>HUDFactory -->
 <g id="edge2" class="edge">
-<title>HUDDesktopFactory-&gt;HUDFactory</title>
+<title>HUDDesktopFactory->HUDFactory</title>
 <path fill="none" stroke="black" d="M67.87,-36.15C67.87,-48.28 67.87,-64.78 67.87,-78.68"></path>
 <polygon fill="black" stroke="black" points="64.37,-78.69 67.87,-88.69 71.37,-78.69 64.37,-78.69"></polygon>
 <text text-anchor="middle" x="89.25" y="-58.2" font-family="Times,serif" font-size="14.00">extends</text>

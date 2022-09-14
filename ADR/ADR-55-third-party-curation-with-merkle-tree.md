@@ -23,7 +23,17 @@ Third parties may want to add one item representation per NFT. Each item may nee
 
 ### Item creation
 
-![resources/ADR-55/fig-approve-items-2.svg](resources/ADR-55/fig-approve-items-2.svg)
+```sequence
+participant Creator
+participant TP_Contract
+participant Builder_UI
+participant Builder_Server
+
+Creator->Builder_UI: Get all the items
+Builder_UI -> Builder_Server: Fetch items
+Builder_UI -> Builder_UI: Generate merkle tree
+Creator->Builder_Server: Send a signed message to review x items
+```
 
 Items for third parties are going to be created as usual but they are not going to be uploaded to the blockchain (ThirdPartyRegistry smart contract). Third-Party managers will need to sign a message every time they send items for review. This is the only blockchain-related action needed for the item creation phase.
 
@@ -35,11 +45,27 @@ Not submitting the items to the blockchain reduces the number of transactions fo
 
 The current implementation of curating a Decentraland collection requires the curator to submit the content hash of each item to the blockchain so the [catalysts accept](/adr/ADR-41) them. Like with the item creation, the transaction for submitting the content hash to the blockchain is limited by the gas cap of each block in the Polygon chain, and around 2k transactions may be needed for collection with 100k items.
 
-![resources/ADR-55/fig-approve-items.svg](resources/ADR-55/fig-approve-items.svg)
+```sequence
+participant Curator
+participant TP_Contract
+participant Builder_UI
+participant Builder_Server
+participant Catalyst
+
+Curator->Builder_UI: Get all the items to curate
+Builder_UI -> Builder_Server: Fetch items
+Builder_UI -> Builder_UI: Check items to be curated
+Builder_UI -> Builder_UI: Generate merkle tree
+Curator->TP_Contract: Send a transaction to submit\n the merkle tree root
+Note over Curator: Loop x times
+Curator->Catalyst: Deploy an item
+```
 
 In order to do not depend on the number of items and/or the block gas limit, the curation for third-party collections will use a [merkle tree](https://www.forex.academy/understanding-merkle-tree-its-importance-in-blockchain/) where only the Merkle root will be submitted to the blockchain. A merkle root is just a 32 bytes lengh char. E.g: `0x38d34cf9e1e3fc7aff7a0a84a61a6c1b1e6b7e26bff7213a5bd3adc55a634397`
 
-![resources/ADR-55/Merkle-Tree.jpeg](resources/ADR-55/Merkle-Tree.jpeg)
+<figure>
+  <img src="/resources/ADR-55/Merkle-Tree.jpeg" />
+</figure>
 
 #### Markle tree generation
 

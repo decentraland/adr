@@ -48,7 +48,6 @@ Check [here](https://github.com/decentraland/wearables-contracts/blob/master/Col
 
 ### Create a Decentraland collection
 
-<!--
 ```sequence
 participant Creator as C
 participant Builder as B
@@ -56,105 +55,81 @@ participant Builder Server as PT
 participant Matic Collection Factory as M
 participant Matic Collection as MC
 
-C-&gt;B: Create collection &amp;\n upload items
-B--&gt;PT: Save collection &amp; items
-C-&gt;B: Publish collection
-B--&gt;M: Deploy collection
-M--&gt;MC: Create collection
+C->B: Create collection &amp;\n upload items
+B-->PT: Save collection &amp; items
+C->B: Publish collection
+B-->M: Deploy collection
+M-->MC: Create collection
 ```
--->
-
-![resources/ADR-41/fig-create-a-decentraland-collection.svg](resources/ADR-41/fig-create-a-decentraland-collection.svg)
 
 ### Create third party Item
 
-<!--
 ```sequence
 participant Creator as C
 participant Builder as B
 participant Builder Server as PT
 participant Matic Third Party Registry as TPR
 
-C-&gt;B: Create collection &amp;\n upload items
-B--&gt;PT: Save collection &amp; items
-C-&gt;B: Publish items
-B--&gt;TPR: Upload items
+C->B: Create collection &amp;\n upload items
+B-->PT: Save collection &amp; items
+C->B: Publish items
+B-->TPR: Upload items
 ```
--->
-
-![resources/ADR-41/fig-create-third-party-item.svg](resources/ADR-41/fig-create-third-party-item.svg)
 
 ### Create and update items
 
-<!--
 ```sequence
 participant User as U
 participant Builder as B
 participant Builder Server as PT
-U-&gt;B: Upload new version of item
-B--&gt;B: Edit item metadata
-B-&gt;PT: Save item
+U->B: Upload new version of item
+B-->B: Edit item metadata
+B->PT: Save item
 ```
--->
-
-![resources/ADR-41/fig-create-and-update-items.svg](resources/ADR-41/fig-create-and-update-items.svg)
 
 ### Propagate deployments to Cataysts
 
-<!--
 ```sequence
 participant Committee as C
 participant Builder server as PT
 participant Builder as B
 participant Matic Collection as M
 participant DAO Peer as P
-B-&gt;PT: Fetch all \nitems from a collection
-C-&gt;B: approve(content_hashes[])
-B--&gt;B: Create new deployments for the catalyst using\nspecific assets from content hashes
-B-&gt;M: sendTx: approve(content_hashes)
-M--&gt;M: Update item hashes &amp; approve collection
-M--&gt;B: txMined
-B-&gt;P: Deploy entitities
-M--&gt;P: approved content_hashes[]
-P-&gt;P: Check and accept deployments
+B->PT: Fetch all \nitems from a collection
+C->B: approve(content_hashes[])
+B-->B: Create new deployments for the catalyst using\nspecific assets from content hashes
+B->M: sendTx: approve(content_hashes)
+M-->M: Update item hashes &amp; approve collection
+M-->B: txMined
+B->P: Deploy entitities
+M-->P: approved content_hashes[]
+P->P: Check and accept deployments
 ```
--->
-
-![resources/ADR-41/fig-propagate-deployments-to-dao-cataysts.svg](resources/ADR-41/fig-propagate-deployments-to-dao-cataysts.svg)
 
 ### Get (non-catalyst) content to test in-world
 
-<!--
 ```sequence
 participant Builder server as BS
 participant Explorer as E
-E-&gt;BS: fetch items`
+E->BS: fetch items`
 ```
--->
-
-![resources/ADR-41/fig-get-non-catalyst-content-to-test-in-world.svg](resources/ADR-41/fig-get-non-catalyst-content-to-test-in-world.svg)
 
 ### Change editable parameters from items (Decentraland Collections only)
 
 _beneficiary, price, name, description, category, body shapes_.
 
-<!--
 ```sequence
 participant Creators as C
 participant Builder as B
 participant Matic Collection as M
 participant Builder Server as BS
-C-&gt;B: Update item\n price &amp; beneficiary
-B--&gt;M: Send TX
-BS--&gt;M: Consolidate by fetching\nthe collection subgraph
+C->B: Update item\n price &amp; beneficiary
+B-->M: Send TX
+BS-->M: Consolidate by fetching\nthe collection subgraph
 ```
--->
-
-![resources/ADR-41/fig-get-non-catalyst-content-to-test-in-world-1.svg](resources/ADR-41/fig-get-non-catalyst-content-to-test-in-world-1.svg)
 
 ### Approve process (committee)
 
-<!--
 ```sequence
 participant Creator as Ct
 participant Builder as B
@@ -163,31 +138,28 @@ participant Committee as C
 participant Matic Collection as M
 participant DAO Catalyst as peer
 note over Ct: Play and upload collection
-Ct-&gt;B: Upload new versions
-B--&gt;BS: save item
-Ct-&gt;B: Upload new versions
-B--&gt;BS: save item
-Ct-&gt;B: Upload new versions
-B--&gt;BS: save item
-Ct-&gt;B: Upload new versions
-B--&gt;BS: save item
-Ct-&gt;B: Item/collection ready to review
-Ct--&gt;M: Publish if needed(first time)
-B--&gt;C:Collection ready for review
+Ct->B: Upload new versions
+B-->BS: save item
+Ct->B: Upload new versions
+B-->BS: save item
+Ct->B: Upload new versions
+B-->BS: save item
+Ct->B: Upload new versions
+B-->BS: save item
+Ct->B: Item/collection ready to review
+Ct-->M: Publish if needed(first time)
+B-->C:Collection ready for review
 note over C: Review by committee
-C-&gt;C: Approve hash1 + category
-C-&gt;C: Approve hash2 + category
-C-&gt;B: approve items with hashes
-B--&gt;M: sendTx: approve(content_hashes)
-B-&gt;B: Wait for tx
-M--&gt;B: txMined
+C->C: Approve hash1 + category
+C->C: Approve hash2 + category
+C->B: approve items with hashes
+B-->M: sendTx: approve(content_hashes)
+B->B: Wait for tx
+M-->B: txMined
 note over B: Upload approved content to catalyst
-B-&gt;peer: Upload hashed entity, using any signer
-peer-&gt;M: Validate hashes`
+B->peer: Upload hashed entity, using any signer
+peer->M: Validate hashes`
 ```
--->
-
-![resources/ADR-41/fig-approve-process-committee.svg](resources/ADR-41/fig-approve-process-committee.svg)
 
 ## Alternative B
 

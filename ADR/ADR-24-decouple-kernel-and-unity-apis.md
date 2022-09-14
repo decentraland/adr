@@ -18,7 +18,6 @@ Currently, Kernel has the responsibilities of handling all the requests to outsi
 
 In a normal feature, this flow usually looks like this:
 
-<!--
 ```sequence
 Unity->Kernel: Request something
 Kernel->Kernel: Unity interface\ndispatches saga event\n
@@ -28,8 +27,6 @@ Service->Kernel: Response
 Kernel->Kernel: Transform response data
 Kernel->Unity: Send back\ntransformed data 
 ```
--->
-![resources/ADR-24-decouple-kernel-and-unity-apis/fig-2021-04-06-decouple-kernel-and-unity-apis-1.svg](resources/ADR-24-decouple-kernel-and-unity-apis/fig-2021-04-06-decouple-kernel-and-unity-apis-1.svg)
 
 This flow is generally true for most of the sagas. 
 
@@ -70,7 +67,6 @@ We should create one requester per feature type, and the naming and style of tho
 
 Let's explore how this would work fetching to the quest or builder nodes:
 
-<!--
 ```sequence
 Service->Service: I exist
 Unity->Kernel: Ask for auth headers
@@ -80,8 +76,6 @@ Unity->Service: Fetch
 Service->Unity: Response
 Unity->Unity: Transform response data
 ```
--->
-![resources/ADR-24-decouple-kernel-and-unity-apis/fig-2021-04-06-decouple-kernel-and-unity-apis-1-2.svg](resources/ADR-24-decouple-kernel-and-unity-apis/fig-2021-04-06-decouple-kernel-and-unity-apis-1-2.svg)
 
 ## Considered Options
 

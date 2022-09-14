@@ -90,8 +90,6 @@ digraph {
 }
 ```
 
-![resources/ADR-4/fig-alternative-1-exact-collections-replication.svg](resources/ADR-4/fig-alternative-1-exact-collections-replication.svg)
-
 Collections will be created through a Collection factory by users.
 
 Collections in L1 will have the same address and the tokens will have the same id that they have in L2.

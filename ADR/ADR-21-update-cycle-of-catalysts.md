@@ -4,6 +4,9 @@ adr: 21
 date: 2020-01-21
 title: Update cycle of catalysts
 status: ACCEPTED
+authors:
+- menduz
+- HPrivakos
 ---
 
 Since catalyst servers are bound to a persistent volumes, a deployment schema where we delete the machine and create another (new) one is not a viable choice without downtime.
@@ -26,21 +29,18 @@ Every deployment will have a 1 minute crontab to pull messages of its own SQS
 
    3. crontab to consume the SQS in each deployment
 
-<!--
 ```sequence
 participant ci
 participant SNS (global and public) as sns
 participant SQS (one per deployment) as sqs
 participant EC2 (one per deployment) as ec2
-ci-&gt;sns: new version published (using aws cli)
-sns-&gt;sqs: aws.sns.TopicSubscription
-ec2-&gt;ec2: cron (aws sqs receive-message)
-sqs--&gt;ec2: message
-ec2-&gt;ec2: ./init.sh
-ec2--&gt;sqs: delete-message (if succeed)
+ci->sns: new version published (using aws cli)
+sns->sqs: aws.sns.TopicSubscription
+ec2->ec2: cron (aws sqs receive-message)
+sqs-->ec2: message
+ec2->ec2: ./init.sh
+ec2-->sqs: delete-message (if succeed)
 ```
--->
-![resources/ADR-21/fig-update-cycle-of-catalysts-1.svg](resources/ADR-21/fig-update-cycle-of-catalysts-1.svg)
 
 ## Links
 
@@ -50,7 +50,3 @@ ec2--&gt;sqs: delete-message (if succeed)
 
 - Subscribe SQS to SNS with pulumi: https://www.pulumi.com/docs/reference/pkg/aws/sns/topicsubscription/
 
-# Participants
-
-- Mendez
-- Kyllian
