@@ -105,17 +105,23 @@ Position messages MAY be "Unreliable" in the UDP way of unreliable, that is unor
 
 Position messages are suggested to be sent at 10Hz when the player is moving (changing any of the values of the Position message). And 1Hz when the player is still.
 
+To interpolate and correct errors, a command number `index` is sent in every position message. This applies the semantics of Overwatch net code, being the command number a monotonic counter that grows with every sent message.
+
 The position message looks like this:
 
 ```protobuf
 message Position {
-  float position_x = 1;
-  float position_y = 2;
-  float position_z = 3;
-  float rotation_x = 4;
-  float rotation_y = 5;
-  float rotation_z = 6;
-  float rotation_w = 7;
+  // command number
+  uint32 index = 1;
+  // world position
+  float position_x = 3;
+  float position_y = 4;
+  float position_z = 5;
+  // quaternion
+  float rotation_x = 6;
+  float rotation_y = 7;
+  float rotation_z = 8;
+  float rotation_w = 9;
 }
 ```
 
@@ -131,7 +137,7 @@ message Chat {
 
 ## Voice message
 
-The voice message is used to send compressed voice samples to other peers. At the time of writing this implementation the only supported codec is OPUS, which is the codec number 1 in the enum of enabled codecs. The voice message MUST also be hinted as UNRELIABLE to prevent network congestion.
+The voice message is used to send compressed voice samples to other peers. At the time of writing this implementation the only supported codec is OPUS, which is the codec number 0 in the enum of enabled codecs. The voice message MUST also be hinted as UNRELIABLE to prevent network congestion.
 
 The voice message also contains an "index" field which is a monotinic counter of voice messages, used to concatenate and order de incoming messages in the audio encoder.
 
@@ -139,9 +145,9 @@ The voice message also contains an "index" field which is a monotinic counter of
 message Voice {
   bytes encoded_samples = 1;
   uint32 index = 2;
-  Voice_EnabledCodecs codec = 3;
-  enum Voice_EnabledCodecs {
-    OPUS = 1;
+  VoiceCodec codec = 3;
+  enum VoiceCodec {
+    VoiceCodec_OPUS = 0;
   }
 }
 ```
