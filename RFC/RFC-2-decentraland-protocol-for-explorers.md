@@ -125,6 +125,8 @@ Every file referenced in the entity is also identified by its hash.
 
 ### Auth Chain
 
+> Note: this section should be moved to an ADR since it is considered stable
+
 Every entity uploaded to the content server must be signed by the deployer, in order to prove ownership of the pointers that they want to modify.
 
 An auth chain is a chain of signatures, where:
@@ -188,7 +190,9 @@ On the homeserver side the main responsibility, besides implementing the Matrix 
 
 ### Communication Service (comms)
 
-The communications are managed by the Archipielago server in the Catalyst, it's the orchestrator of islands. The islands are the minimal unit of users groups. The universe that a user can see, talk and interact with is delimeted by the island. There will be available [ADR-70: different transports to support this communication: P2P, livekit and websocket](/adr/ADR-70).
+A minimum communications protocol for Explorer is defined in the [RFC-4](/rfc/RFC-4). It describes the minimum to connect explorers together and see other people in the world. It does not describe the transport layers or connection topologies. Indeed, it assumes that all connections are made via a unified echo server that allows broadcasts of messages with all the people around you.
+
+In a more production-like environment, the communications are managed by the Archipielago server in the Catalyst, it's the orchestrator of islands. The islands are the minimal unit of users groups. The universe that a user can see, talk and interact with is delimeted by the island. There will be available [ADR-70: different transports to support this communication: P2P, livekit and websocket](/adr/ADR-70).
 
 When an user is connected through P2P with the others in the same island, and they change their profile, then that change and the new profile entity itself is sent through comms to avoid the explorer to request the Catalysts servers.
 
@@ -214,5 +218,4 @@ Ethereum accounts are globally used in Decentraland to identify the users. Publi
 
 In order to protect the assets of the community, to keep a reasonable level of trust with user actions, and to enhance the UX of the platform e.g. not needing the users to accept a transaction every time they want to open a door. An [ephemeral key](https://en.wikipedia.org/wiki/Ephemeral_key) is created and signed using their Ethereum account. That establishes a certified trust chain. This way, messages can be signed with the in-memory ephemeral key. Both the initial signature of the ephemeral key by the real account, and the message signed with the ephemeral key are used as the [AuthChain](https://github.com/decentraland/decentraland-crypto) to authorize requests across all services required to make Decentraland work.
 
-## AuthChain
-
+> Note: this section should be moved to an ADR since it is considered stable
