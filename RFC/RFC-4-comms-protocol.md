@@ -42,7 +42,6 @@ The transports have the responsibility to also provide the address of the sender
 ```typescript
 type PacketMetadata = {
   sender_address: string
-  time: number
 }
 
 type OnPacketDelegate = (packet: CommsPacket, meta: PacketMetadata) => void
@@ -132,6 +131,7 @@ Chat message is used to send text messages to all the people connected to the sa
 ```protobuf
 message Chat {
   string message = 1;
+  double time = 2;
 }
 ```
 
