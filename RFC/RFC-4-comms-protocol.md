@@ -37,7 +37,7 @@ message CommsPacket {
 }
 ```
 
-The transports have the responsibility to also provide the address of the sender and the coordinated time in which the message was produced/sent. The suggested interface to listen for messages from a transport looks similar to this:
+The transports have the responsibility to also provide the address of the sender. The suggested interface to listen for messages from a transport looks similar to this:
 
 ```typescript
 type PacketMetadata = {
@@ -131,7 +131,7 @@ Chat message is used to send text messages to all the people connected to the sa
 ```protobuf
 message Chat {
   string message = 1;
-  double time = 2;
+  uint32 time = 2;
 }
 ```
 
