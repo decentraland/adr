@@ -140,7 +140,7 @@ digraph G {
     unity->app;
     preview->app;
 
-    app [label="app &amp; preview"];
+    app [label="app & preview"];
     app->"website";
     app->"preview.js";
         

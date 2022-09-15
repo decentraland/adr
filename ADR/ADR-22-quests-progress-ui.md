@@ -4,6 +4,8 @@ adr: 22
 date: 2021-01-19
 title: Quests Progress UI
 status: PROPOSED
+authors:
+- menduz
 ---
 
 ## Context and Problem Statement
@@ -36,17 +38,14 @@ Based on the context of a previous meeting with Pravus, Alex, Pablo, Marcosnc an
 
 - `controller` is the quests controller in kernel, it transparently handles the interaction with the quests server.
 
-<!--
-```sequence
-quest_scene-&gt;controller: make some progress
-controller-&gt;server: update quest state
-server-&gt;controller: new state
-controller-&gt;unity: quest progress state(new state)
-controller-&gt;quest_scene: new state (return)
+```mermaid
+sequenceDiagram
+  quest_scene->>controller: make some progress
+  controller->>server: update quest state
+  server->>controller: new state
+  controller->>unity: quest progress state(new state)
+  controller->>quest_scene: new state (return)
 ```
--->
-
-![resources/ADR-22/quests-progress-ui-1.svg](resources/ADR-22/quests-progress-ui-1.svg)
 
 - In this scenario, special code would have to be put in place to send the messages to unity in behalf of the scene and update the state from the quests server.
 - Quests UI will be always limited by our server, which points the implementation in a centralized direction.
@@ -58,27 +57,21 @@ controller-&gt;quest_scene: new state (return)
 
 - `controller` is the quests controller in kernel, it transparently handles the interaction with the quests server.
 
-<!--
-```sequence
-quest_scene-&gt;controller: make some progress
-controller-&gt;server: update quest state
-server-&gt;controller: new state
-controller-&gt;quest_scene: new state (return)
-quest_scene-&gt;unity: quest progress state(new state)
+```mermaid
+sequenceDiagram
+  quest_scene->>controller: make some progress
+  controller->>server: update quest state
+  server->>controller: new state
+  controller->>quest_scene: new state (return)
+  quest_scene->>unity: quest progress state(new state)
 ```
--->
-
-![resources/ADR-22/quests-progress-ui-1-1.svg](resources/ADR-22/quests-progress-ui-1-1.svg)
 
 It enables us to test the UI without interacting with the controller or the scene:
 
-<!--
-```sequence
-quest_scene-&gt;unity: quest progress state(new state)
+```mermaid
+sequenceDiagram
+  quest_scene->>unity: quest progress state(new state)
 ```
--->
-
-![resources/ADR-22/quests-progress-ui-1-2.svg](resources/ADR-22/quests-progress-ui-1-2.svg)
 
 - It also allows any scene to show quests progression, enabling developers to perform their own quests in their LAND or wearables.
 - In this scenario, the quests state would be sent to unity using an SDK component, leveraging our current messaging structure. It can be attached to the `engine.rootEntity` to not treat it differently than other components.
@@ -98,7 +91,3 @@ UI for quests is different than UI for the rest of the SDK, it has few customiza
 We choose B because it enables us to render the quests UI without coupling the quests controller and therefore, the server. Also positions Decentraland in a more decentralized path by making centralized servers not required to access the features.
 
 Anyone could now implement their own custom Quests servers without asking permission or having the platform as a limitation.
-
-## Participants
-
-- Mendez

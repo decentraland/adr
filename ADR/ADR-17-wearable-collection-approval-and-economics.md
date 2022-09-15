@@ -78,8 +78,7 @@ The first aspect considered in this proposal is the establishment of a committee
 
 Roles, Contracts, Capabilities (without considering L1/L2 bridges):
 
-<!--
-```dot
+```x-dot
 digraph G {
     rankdir=TB
     graph [fontname = "arial", fontsize="10", color="grey", fontcolor="grey"]
@@ -94,19 +93,16 @@ digraph G {
     new_collection [label="Collection Contract"];
     creator [label="Content Creator"];
 
-    group -&gt; com_member [label=" has N" color="green"]
-    dao -&gt; group [label=" Set Members (Add, Remove)"]
-    manager -&gt; dao [label="  owned by" color="green"]
-    com_member -&gt; manager [label=" can approve/reject\n collections"]
-    creator -&gt; factory [label=" can deploy new contracts"]
-    factory -&gt; new_collection [label= "  is deployer of"]
-    new_collection -&gt; manager [label=" owned by", color="green"]
-    manager -&gt; new_collection [label=" can reject       "]
+    group -> com_member [label=" has N" color="green"]
+    dao -> group [label=" Set Members (Add, Remove)"]
+    manager -> dao [label="  owned by" color="green"]
+    com_member -> manager [label=" can approve/reject\n collections"]
+    creator -> factory [label=" can deploy new contracts"]
+    factory -> new_collection [label= "  is deployer of"]
+    new_collection -> manager [label=" owned by", color="green"]
+    manager -> new_collection [label=" can reject       "]
 }
 ```
--->
-
-![resources/ADR-17/fig-2020-11-05-adr-wearable-collection-approval-1.svg](resources/ADR-17/fig-2020-11-05-adr-wearable-collection-approval-1.svg)
 
 _This graph is illustrative and can vary_
 
@@ -134,31 +130,24 @@ _The fee is decided in base of the amount of items in the collection. It may not
 
 #### Sequence Diagram: Manual approval of a collection
 
-<!--
-```sequence
-Content Creator -&gt; Content Manager: Submit Collection\n(pays X MANA per item)
-Committee Member -&gt; Content Manager: Approve
-Content Manager -&gt; Marketplace: Enable Collection
+```mermaid
+sequenceDiagram
+  Content Creator ->> Content Manager: Submit Collection\n(pays X MANA per item)
+  Committee Member ->> Content Manager: Approve
+  Content Manager ->> Marketplace: Enable Collection
 ```
--->
-
-![resources/ADR-17/fig-sequence-diagram-manual-approval-of-a-collection.svg](resources/ADR-17/fig-sequence-diagram-manual-approval-of-a-collection.svg)
 
 #### Sequence diagram: Rejection and eventual approval of a collection
 
-<!--
-```sequence
-Content Creator -&gt; Content Manager: Submit Collection\n(pay X MANA per item)
-Committee Member -&gt; Content Manager: Reject
-Content Creator -&gt; Content Creator: Modify items
-Content Creator -&gt; Content Manager: Re-submit
-Committee Member -&gt; Content Manager: Approve
-Content Manager -&gt; Marketplace: Enable Collection
-
+```mermaid
+sequenceDiagram
+  Content Creator ->> Content Manager: Submit Collection\n(pay X MANA per item)
+  Committee Member ->> Content Manager: Reject
+  Content Creator ->> Content Creator: Modify items
+  Content Creator ->> Content Manager: Re-submit
+  Committee Member ->> Content Manager: Approve
+  Content Manager ->> Marketplace: Enable Collection
 ```
--->
-
-![resources/ADR-17/fig-sequence-diagram-rejection-and-eventual-approval-of-a-collection.svg](resources/ADR-17/fig-sequence-diagram-rejection-and-eventual-approval-of-a-collection.svg)
 
 ## Aspect C: Staking MANA to issue items
 

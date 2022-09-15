@@ -30,19 +30,18 @@ Sometimes, special initialization should be performed after the HUDs are instanc
 
 The references to the instanced HUD components are stored in this class.
 
-<!--
-```dot
+```x-dot
 digraph G {
 
 	subgraph cluster_0 {
 		#style=filled;
 		#color=lightgrey;
 		node [style=filled shape=rect];
-        a0 -&gt; a1 -&gt; a2;
+        a0 -> a1 -> a2;
 		label = "HUDController";
     }
 
-	start -&gt; a0;
+	start -> a0;
 
     a0 [label="Bridge"]
     a1 [label="Factory"]
@@ -50,14 +49,11 @@ digraph G {
     a3 [label="HUD Elements" shape=rect]
 
     edge [dir="back"]
-    a2 -&gt; a3
+    a2 -> a3
 
 	start [label="Kernel" shape=box3d];
 }
 ```
--->
-
-![resources/ADR-13/fig-custom-ui-modes-for-builder-in-world-1.svg](resources/ADR-13/fig-custom-ui-modes-for-builder-in-world-1.svg)
 
 ## Use cases
 
@@ -81,12 +77,9 @@ There are more examples of this kind of responsibility bloat [here](https://gith
 
 This implies a refactor and is the most likely solution that would take care of our use cases niftly, however it would take a bit of design and coding work, because `HUDController` is pretty intertwined with our current kernel <> renderer communication and the HUD system foundation.
 
-<!--
-```dot
+```x-dot
 digraph G {
-
-
-	start -&gt; a0 -&gt; a1 -&gt; a2;
+	start -> a0 -> a1 -> a2;
 
     a0 [label="HUD Bridge" shape=rect]
     a1 [label="HUD Factory" shape=rect]
@@ -95,17 +88,14 @@ digraph G {
 
     edge [dir="back"]
 
-    a2 -&gt; e0
-    a2 -&gt; e1
-    a2 -&gt; e2
+    a2 -> e0
+    a2 -> e1
+    a2 -> e2
     e0 [label="External #1"]
     e1 [label="External #2"]
     e2 [label="External #3"]
 }
 ```
--->
-
-![resources/ADR-13/fig-custom-ui-modes-for-builder-in-world-1-1.svg](resources/ADR-13/fig-custom-ui-modes-for-builder-in-world-1-1.svg)
 
 **Move the HUD status responsibility to individual ScriptableObjects**
 
@@ -113,8 +103,7 @@ This would allow an easy approach to handle the show/hide use case. However, it 
 
 Note that this solution places even more responsibility burden on `HUDController`, however it does so in a way that should easy to handle and move around later when we get to the root improvement.
 
-<!--
-```dot
+```x-dot
 digraph G {
     node [shape=rect]
 
@@ -127,30 +116,23 @@ digraph G {
     ext1 [label="External #2"]
     ext2 [label="External #3"]
 
-	start -&gt; a0;
+	start -> a0;
 
-    a0 -&gt; so1
-    a0 -&gt; so2
+    a0 -> so1
+    a0 -> so2
 
     edge [dir="back"]
-    so1 -&gt; ext0
-    so2 -&gt; ext0
+    so1 -> ext0
+    so2 -> ext0
 
-    so2 -&gt; ext1
-    so2 -&gt; ext2
+    so2 -> ext1
+    so2 -> ext2
 }
 ```
--->
-
-![resources/ADR-13/fig-custom-ui-modes-for-builder-in-world-1-2.svg](resources/ADR-13/fig-custom-ui-modes-for-builder-in-world-1-2.svg)
 
 ## Decision
 
 We agreed upon implementing the ScriptableObjects solution as a first stage, and then perform the responsibility segregation redesign on the `HUDController` class later.
-
-## Status
-
-Accepted.
 
 ## Consequences
 
@@ -158,8 +140,5 @@ HUDs will be able to be toggled from any part of the project quite easily. `HUDC
 
 ## Participants
 
-Date: 2020-11-02
-
 - Brian
-
 - Adrian

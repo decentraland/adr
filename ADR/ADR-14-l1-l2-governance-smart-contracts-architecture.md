@@ -44,9 +44,7 @@ This document presents alternatives on how to manage governance in L2.
 
 - The vote enactment transaction will end up sending the _set fee_ message to the L1 bridge. The L1 bridge will forward the message to the L2 bridge, who will set the fee on the Marketplace in L2.
 
-<!--
-```dot
-// ![resources/ADR-14/fig-l1-l2-exact-replication.svg](resources/ADR-14/fig-l1-l2-exact-replication.svg)
+```x-dot
 digraph {
     rankdir=TB
     graph [fontname = "arial", fontsize="10", color="grey", fontcolor="grey"]
@@ -63,10 +61,10 @@ digraph {
         dao [label="DAO"]
 
         edge [fontname = "arial",color="blue", fontcolor=green, fontsize="10"];
-        bridge_proxy_l1 -&gt; bridge_l1 [style=dashed, color=black]
-        dao -&gt; marketplace_l1  [color=green, label="set fee"]
-        dao -&gt; bid_l1  [color=green, label="set fee"]
-        dao -&gt; bridge_proxy_l1 [color=green, fontColor="green", label="Act on L2"]
+        bridge_proxy_l1 -> bridge_l1 [style=dashed, color=black]
+        dao -> marketplace_l1  [color=green, label="set fee"]
+        dao -> bid_l1  [color=green, label="set fee"]
+        dao -> bridge_proxy_l1 [color=green, fontColor="green", label="Act on L2"]
     }
 
      subgraph clusterL2 {
@@ -80,24 +78,21 @@ digraph {
         store_l2 [label="Collection Store"]
 
         edge [fontname = "arial",color="blue", fontcolor=blue,fontsize="10"];
-        bridge_l2 -&gt; bridge_proxy_l2 [dir=back, style=dashed,color=black]
-        bridge_proxy_l2 -&gt; marketplace_l2 [color=blue, label="set fee"]
-        bridge_proxy_l2 -&gt; bid_l2  [color=blue, label="set fee"]
-        bridge_proxy_l2 -&gt; collection_l2  [color=blue, label="approve/reject"]
-        bridge_proxy_l2 -&gt; store_l2  [color=blue, label="set fee" ]
+        bridge_l2 -> bridge_proxy_l2 [dir=back, style=dashed,color=black]
+        bridge_proxy_l2 -> marketplace_l2 [color=blue, label="set fee"]
+        bridge_proxy_l2 -> bid_l2  [color=blue, label="set fee"]
+        bridge_proxy_l2 -> collection_l2  [color=blue, label="approve/reject"]
+        bridge_proxy_l2 -> store_l2  [color=blue, label="set fee" ]
     }
 
-    bridge_proxy_l1 -&gt; bridge_proxy_l2
-    bridge_proxy_l2 -&gt; bridge_proxy_l1
+    bridge_proxy_l1 -> bridge_proxy_l2
+    bridge_proxy_l2 -> bridge_proxy_l1
 
     edge[ style = invis ]
-    bridge_l1 -&gt; { dao, marketplace_l1 }
-    {dao marketplace_l1 bid_l1 bridge_proxy_l1 bridge_l1 } -&gt; bridge_l2
+    bridge_l1 -> { dao, marketplace_l1 }
+    {dao marketplace_l1 bid_l1 bridge_proxy_l1 bridge_l1 } -> bridge_l2
 }
 ```
--->
-
-![resources/ADR-14/fig-l1-l2-governance-smart-contracts-architecture-1.svg](resources/ADR-14/fig-l1-l2-governance-smart-contracts-architecture-1.svg)
 
 ### Alternative 3: Govern L2 from L1 - Governance Branches
 
@@ -121,9 +116,7 @@ digraph {
 
 - The vote enactment transaction will end up sending the _reject collection_ message to the L1 Collections Management bridge. The L1 Collections Management bridge will forward the message to the L2 Collections Management bridge, who will reject the desired collection.
 
-<!--
-```dot
-// ![resources/ADR-14/fig-l1-l2-exact-replication.svg](resources/ADR-14/fig-l1-l2-exact-replication.svg)
+```x-dot
 digraph {
     rankdir=TB
     graph [fontname = "arial", fontsize="10", color="grey", fontcolor="grey"]
@@ -143,12 +136,12 @@ digraph {
         bridge_collections_management_l1 [label="Bridge\n Collections Management\n Impl"]
 
         edge [fontname = "arial",color="blue", fontcolor=green,fontsize="10"];
-        bridge_marketplaces_management_l1 -&gt; bridge_marketplaces_management_proxy_l1 [dir=back, style=dashed, color=black]
-        bridge_collections_management_l1 -&gt; bridge_collections_management_proxy_l1 [dir=back, style=dashed, color=black]
-        dao -&gt; bridge_marketplaces_management_proxy_l1 [color=green,fontColor="green", label="Act on L2"]
-        dao -&gt; bridge_collections_management_proxy_l1 [color=green,fontColor="green", label="Act on L2"]
-        dao -&gt; marketplace_l1  [color=green, label="set fee"]
-        dao -&gt; bid_l1  [color=green, label="set fee"]
+        bridge_marketplaces_management_l1 -> bridge_marketplaces_management_proxy_l1 [dir=back, style=dashed, color=black]
+        bridge_collections_management_l1 -> bridge_collections_management_proxy_l1 [dir=back, style=dashed, color=black]
+        dao -> bridge_marketplaces_management_proxy_l1 [color=green,fontColor="green", label="Act on L2"]
+        dao -> bridge_collections_management_proxy_l1 [color=green,fontColor="green", label="Act on L2"]
+        dao -> marketplace_l1  [color=green, label="set fee"]
+        dao -> bid_l1  [color=green, label="set fee"]
     }
 
      subgraph clusterL2 {
@@ -165,28 +158,25 @@ digraph {
         store_l2 [label="Collection Store"]
 
         edge [fontname = "arial",color="blue", fontcolor=blue,fontsize="10"];
-        bridge_marketplaces_management_proxy_l2 -&gt; bridge_marketplaces_management_l2 [style=dashed, color=black]
-        bridge_collections_management_proxy_l2 -&gt; bridge_collections_management_l2 [style=dashed, color=black]
-        bridge_marketplaces_management_proxy_l2 -&gt; marketplace_l2 [color=blue, label="set fee"]
-        bridge_marketplaces_management_proxy_l2 -&gt; bid_l2  [color=blue, label="set fee"]
-        bridge_marketplaces_management_proxy_l2 -&gt; store_l2  [color=blue, label="set fee" ]
-        bridge_collections_management_proxy_l2 -&gt; collection_l2  [color=blue, label="approve/reject"]
+        bridge_marketplaces_management_proxy_l2 -> bridge_marketplaces_management_l2 [style=dashed, color=black]
+        bridge_collections_management_proxy_l2 -> bridge_collections_management_l2 [style=dashed, color=black]
+        bridge_marketplaces_management_proxy_l2 -> marketplace_l2 [color=blue, label="set fee"]
+        bridge_marketplaces_management_proxy_l2 -> bid_l2  [color=blue, label="set fee"]
+        bridge_marketplaces_management_proxy_l2 -> store_l2  [color=blue, label="set fee" ]
+        bridge_collections_management_proxy_l2 -> collection_l2  [color=blue, label="approve/reject"]
     }
 
-    bridge_marketplaces_management_proxy_l1 -&gt; bridge_marketplaces_management_proxy_l2
-    bridge_marketplaces_management_proxy_l2 -&gt; bridge_marketplaces_management_proxy_l1
-    bridge_collections_management_proxy_l1 -&gt; bridge_collections_management_proxy_l2
-    bridge_collections_management_proxy_l2 -&gt; bridge_collections_management_proxy_l1
+    bridge_marketplaces_management_proxy_l1 -> bridge_marketplaces_management_proxy_l2
+    bridge_marketplaces_management_proxy_l2 -> bridge_marketplaces_management_proxy_l1
+    bridge_collections_management_proxy_l1 -> bridge_collections_management_proxy_l2
+    bridge_collections_management_proxy_l2 -> bridge_collections_management_proxy_l1
 
     edge[ style = invis ]
-    { bridge_marketplaces_management_l1 bridge_collections_management_l1 } -&gt; { dao, marketplace_l1 }
-    { bridge_marketplaces_management_proxy_l1 bid_l1  } -&gt; { bridge_marketplaces_management_proxy_l2 bridge_collections_management_proxy_l2 }
-    { marketplace_l2 bid_l2 store_l2 collection_l2 } -&gt; { bridge_marketplaces_management_l2 bridge_collections_management_l2  }
+    { bridge_marketplaces_management_l1 bridge_collections_management_l1 } -> { dao, marketplace_l1 }
+    { bridge_marketplaces_management_proxy_l1 bid_l1  } -> { bridge_marketplaces_management_proxy_l2 bridge_collections_management_proxy_l2 }
+    { marketplace_l2 bid_l2 store_l2 collection_l2 } -> { bridge_marketplaces_management_l2 bridge_collections_management_l2  }
 }
 ```
--->
-
-![resources/ADR-14/fig-l1-l2-governance-smart-contracts-architecture-1-1.svg](resources/ADR-14/fig-l1-l2-governance-smart-contracts-architecture-1-1.svg)
 
 ## Decision Outcome
 

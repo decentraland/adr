@@ -37,11 +37,31 @@ The following diagrams represents a high-level view of the system.
 
 ### Sign-in
 
-![resources/ADR-28-signin-signup-kernel-website/signin.svg](resources/ADR-28-signin-signup-kernel-website/signin.svg)
+```mermaid
+sequenceDiagram
+  kernel->website: [stage: loading, signing: false]
+  Note over website: LoadingContainer
+  User->website: *Play*
+  Note over website: WalletSelector
+  User->website: *Selects provider*
+  website->kernel: [type:[AUTHENTICATE], payload: {provider}]
+  kernel->website: [signing: true]
+  Note over website: Spinner in WalletSelector
+  Note over kernel: Start Experience
+```
 
 ### Sign-up
 
-![resources/ADR-28-signin-signup-kernel-website/signup.svg](resources/ADR-28-signin-signup-kernel-website/signup.svg)
+```mermaid
+sequenceDiagram
+  kernel->website: [stage: loading, signing: false]
+  Note over website: LoadingContainer
+  User->website: *press Enter as guest*
+  website->kernel: {type:[AUTHENTICATE], payload: {null}}
+  kernel->website: [signing: true]
+  Note over website: Spinner in LoadingContainer
+  Note over kernel: Start Experience
+```
 
 ## Implementation Details
 

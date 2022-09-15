@@ -66,37 +66,30 @@ However, we are looking at these downsides too:
 
 We have a data storage of `BaseVariables` that inherit from `ScriptableObject` (SO). Adding a new field would involve adding a new asset to the project and wire a new `GetOrLoad` call with the resource path, as we are doing now.
 
-<!--
-```dot
-# Find examples at https://graphviz.org/gallery/
+```x-dot
 digraph G {
-Systems-&gt;Data
-Data-&gt;Assets
+Systems->Data
+Data->Assets
 }
 ```
--->
-![resources/adr-16-unity-data-store-architecture/fig-adr-16-unity-data-store-architecture-1.svg](resources/adr-16-unity-data-store-architecture/fig-adr-16-unity-data-store-architecture-1.svg)
 
 ### Boundary agnostic data storage
 
 We have a data storage of `BaseVariables` that are either an interface or a plain old C# object (POCO). On the side, we have a specific ScriptableObject-based `BaseVariable` implementation. This will give us the versatility of choosing between POCO and the `ScriptableObject` version on a per-use basis. 
 
-<!--
-```dot
+```x-dot
 # Find examples at https://graphviz.org/gallery/
 digraph G {
 
 
-Systems-&gt;Data
-Data-&gt;Assets
-Data-&gt;Data_State
+Systems->Data
+Data->Assets
+Data->Data_State
 
 Data_State [label="POCO BaseVariable"]
 Assets [label="SO BaseVariable"]
 }
 ```
--->
-![resources/adr-16-unity-data-store-architecture/fig-adr-16-unity-data-store-architecture-1-1.svg](resources/adr-16-unity-data-store-architecture/fig-adr-16-unity-data-store-architecture-1-1.svg)
 
 ## Decision Outcome
 
