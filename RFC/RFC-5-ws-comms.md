@@ -22,6 +22,8 @@ Protocol messages are serialized using protocolbuffers, this document also uses 
 All messages are assumed to be broadcasted to all peers at all times. That is, there are no one-to-one messages in any topology. As a side note, optimizations on top of this protocol are possible, an example is Archipelago (ADR) which connects peers all-to-all in a island-based topology to optimize resource allocations based on phyisical (in-world) location.
 
 ```protobuf
+syntax = "proto3";
+
 message WsWelcome {
   uint32 alias = 1;
   map<uint32, string> peer_identities = 2;
