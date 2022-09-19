@@ -1,3 +1,6 @@
+---
+layout: doc
+rfc: 6
 date: 2022-09-19
 title: Kernel services code generation
 authors:
