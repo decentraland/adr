@@ -1,7 +1,7 @@
 ---
 layout: doc
 adr: 17
-date: 2020-01-17
+date: 2020-11-16
 title: Wearable Collection Approval And Economics
 status: ACCEPTED
 ---

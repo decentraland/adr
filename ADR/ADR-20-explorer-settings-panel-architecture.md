@@ -1,7 +1,7 @@
 ---
 layout: doc
 adr: 20
-date: 2020-01-20
+date: 2020-12-11
 title: Explorer Settings Panel Architecture
 status: PROPOSED
 ---
@@ -184,5 +184,5 @@ And it is all! When you run the application, you will notice that the `SettingsP
 **NOTE**: For more examples of controls, you can take a look to all the controllers that we currently have in the folder `Assets\Scripts\MainScripts\DCL\Controllers\Settings\SettingsControllers\SpecificControllers`.
 
 ##  Participants
-Date: 2020-12-11
+
 - Santi Andrade

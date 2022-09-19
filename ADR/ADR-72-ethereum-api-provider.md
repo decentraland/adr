@@ -1,7 +1,7 @@
 ---
 layout: doc
 adr: 72
-date: 2020-01-72
+date: 2022-06-06
 title: Ethereum API providers
 status: ACCEPTED
 authors:

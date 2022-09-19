@@ -1,9 +1,12 @@
 ---
 layout: doc
 adr: 27
-date: 2020-01-27
+date: 2020-06-14
 title: Port loading screen to unity
 status: ACCEPTED
+authors:
+  - AjimenezDCL
+  - kuruk-mm
 ---
 
 ## Abstract
@@ -13,24 +16,29 @@ part of `unity-renderer`.
 
 ## Need
 
-* Centralize our loading screen to simplify cross platform development.
+- Centralize our loading screen to simplify cross platform development.
 
 ## Current implementation
 
-_Website_ enables or disables the _Loading Screen_ through some flags in the global state:  `show = state.showLoadingScreen || state.waitingTutorial`.
+_Website_ enables or disables the _Loading Screen_ through some flags in the global state: `show = state.showLoadingScreen || state.waitingTutorial`.
 
 These flags are set from multiple places within _kernel_. We can differentiate three different flows working with the _Loading Scene_.
 
 #### SignIn
+
 In a normal signin process, the `showLoadingScreen` flag is modified in this order:
+
 ```
 1) renderer\sagas	initializeRenderer.setLoadingScreenVisible => true
 2) dcl.ts		teleportObservable.setLoadingScreenVisible => true
 3) dcl.ts		renderStateObservable.setLoadingScreenVisible => false
 4) loading\sagas	initialSceneLoading.finish => false
 ```
+
 #### SignUp
+
 In the SignUp process, the `showLoadingScreen` flag is modified in this order.
+
 ```
 1) renderer\sagas	initializeRenderer.setLoadingScreenVisible => true
 2) dcl.ts		teleportObservable.setLoadingScreenVisible => true
@@ -42,14 +50,18 @@ In the SignUp process, the `showLoadingScreen` flag is modified in this order.
 8) loading\sagas	initialSceneLoading.finish => false
 9) website.ts		loadWebsiteSystems.userAuthentified.ensureRendererEnabled => false
 ```
-*The `waitingTutorial` is modified in this flow as well. It handles the _edge case_: User finishes the signup process but the world has not been loaded yet. 
+
+\*The `waitingTutorial` is modified in this flow as well. It handles the _edge case_: User finishes the signup process but the world has not been loaded yet.
 
 #### Teleporting
+
 When teleporting, the `showLoadingScreen` flag is modified in this order:
+
 ```
 1) dcl.ts		teleportObservable.setLoadingScreenVisible => true
 2) dcl.ts		renderStateObservable.setLoadingScreenVisible => false
 ```
+
 Notice how most of the time the flag is changed reduntantly. In any case I haven't found any conflict in the way they are modified.
 
 ## Approach

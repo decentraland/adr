@@ -1,7 +1,7 @@
 ---
 layout: doc
 adr: 1
-date: 2020-01-01
+date: 2020-10-05
 title: Documenting architecture decisions
 status: ACCEPTED
 ---

@@ -1,9 +1,13 @@
 ---
 layout: doc
 adr: 44
-date: 2020-01-44
+date: 2022-01-26
 title: Signed Fetch
 status: ACCEPTED
+authors:
+- 2fd
+- nachomazzara
+- cazala
 ---
 
 ## Context and Problem Statement

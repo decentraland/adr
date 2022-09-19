@@ -1,7 +1,7 @@
 ---
 layout: doc
 adr: 23
-date: 2020-01-23
+date: 2021-02-03
 title: Entities meta-data flow for builder in-world
 status: DEPRECATED
 ---

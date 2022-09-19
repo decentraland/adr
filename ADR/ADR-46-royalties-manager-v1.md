@@ -1,7 +1,7 @@
 ---
 layout: doc
 adr: 46
-date: 2020-01-46
+date: 2021-11-17
 title: Royalties Manager v1
 authors:
   - agusferreira

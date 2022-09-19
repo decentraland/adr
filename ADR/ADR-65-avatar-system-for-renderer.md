@@ -1,9 +1,11 @@
 ---
 layout: doc
 adr: 65
-date: 2020-01-65
+date: 2022-04-07
 title: Avatar System for Renderer (Unity)
 status: ACCEPTED
+authors:
+- AjimenezDCL
 ---
 
 ## Problem Statement

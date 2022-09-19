@@ -1,7 +1,7 @@
 ---
 layout: doc
 adr: 69
-date: 2020-01-69
+date: 2022-05-10
 title: Importing wearables
 status: ACCEPTED
 authors:

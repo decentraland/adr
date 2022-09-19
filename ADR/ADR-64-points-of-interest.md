@@ -1,7 +1,7 @@
 ---
 layout: doc
 adr: 64
-date: 2020-01-64
+date: 2022-03-22
 title: Points of interest (POIs)
 status: PROPOSED
 authors:

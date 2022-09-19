@@ -1,14 +1,14 @@
 ---
 layout: doc
 adr: 62
-date: 2020-01-62
+date: 2022-03-16
 title: Merkle proofed entity deployments
 status: ACCEPTED
 authors:
   - menduz
   - guidota
   - nachomazzara
-  - lpetaccio
+  - LautaroPetaccio
 ---
 
 ## Context and Problem Statement

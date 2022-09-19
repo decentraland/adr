@@ -1,7 +1,7 @@
 ---
 layout: doc
 adr: 68
-date: 2020-01-68
+date: 2022-05-10
 title: Configuring wearables
 status: ACCEPTED
 authors:

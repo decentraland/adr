@@ -1,9 +1,11 @@
 ---
 layout: doc
 adr: 38
-date: 2020-01-38
+date: 2021-08-05
 title: Communication between Desktop unity and Kernel
 status: ACCEPTED
+authors:
+  - kuruk-mm
 ---
 
 ## Context and Problem Statement
@@ -77,6 +79,7 @@ sequenceDiagram
 ```
 
 Some pseudo code of how `explorer-website` and `explorer-desktop` will start:
+
 ```typescript
 // shell=explorer-website (browser)
 
@@ -105,7 +108,7 @@ const kernel = new Kernel({
 })
 
 renderer.onAuthenticateMessage(message => {
-   await kernel.authenticate(message.provider, message.isGuest) 
+   await kernel.authenticate(message.provider, message.isGuest)
 })
 
 ```

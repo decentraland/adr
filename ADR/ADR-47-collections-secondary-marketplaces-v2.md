@@ -1,7 +1,7 @@
 ---
 layout: doc
 adr: 47
-date: 2020-01-47
+date: 2021-11-17
 title: Collections secondary marketplaces v2
 status: ACCEPTED
 authors:

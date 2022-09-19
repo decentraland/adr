@@ -1,9 +1,13 @@
 ---
 layout: doc
 adr: 74
-date: 2020-01-74
+date: 2022-06-09
 title: Add Emote schema and versioning
 status: ACCEPTED
+authors:
+- pedrotambo
+- marianogoldman
+- agusaldasoro
 ---
 
 ## Context and Problem Statement

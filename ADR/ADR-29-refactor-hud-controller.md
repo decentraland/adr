@@ -1,9 +1,12 @@
 ---
 layout: doc
 adr: 29
-date: 2020-01-29
+date: 2020-06-18
 title: Refactor HUD control
 status: PROPOSED
+authors:
+  - kuruk-mm
+  - BrianAmadori
 ---
 
 ## Abstract
@@ -14,13 +17,14 @@ To deal with those problems, we're going to split those responsibilities and mod
 
 ## Needs
 
-* Remove unnecessary responsibilities from Kernel.
-* Split `HUDController` responsibilities.
-* Make a `HUD System` extendable to different platform implementations, like desktop or mobile.
+- Remove unnecessary responsibilities from Kernel.
+- Split `HUDController` responsibilities.
+- Make a `HUD System` extendable to different platform implementations, like desktop or mobile.
 
 ## Current implementation
 
 ### Kernel and Renderer communication
+
 We have multiple HUDs synced between Kernel and Renderer.
 
 When we start Decentraland Explorer, the Kernel will send a message to Unity to pre-load and show some HUDs that they live in `InitialScene` with a `HUDController` script. Then, the Kernel can hide or show those HUDs as it needs.
@@ -49,11 +53,13 @@ This stage's idea is to split the instantiation responsibilities of `HUDControll
 So, to accomplish this goal, the `abstract factory design pattern` will be implemented.
 
 The classes will look like the following:
+
 - `IHUDFactory`: Abstract Factory pattern, to create `HUDs`.
 - `HUDFactory`: Default implementation of the `HUDs` factory.
 - `HUDController`: It will keep the life cycle of the `HUDs`. It will have the dependency of `IHUDFactory` injected.
 
 Example of extension of the factory:
+
 - `HUDDesktopFactory`: Extended implementation of `HUDFactory` who adds variations of it.
 
 So we can add more implementations depending on each platform. If we want to change the HUD's behaviour completely, you can overwrite how the HUD behaves and shows adding a new implementation of `IHUDFactory`.

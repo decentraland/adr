@@ -1,7 +1,7 @@
 ---
 layout: doc
 adr: 15
-date: 2020-01-15
+date: 2020-11-05
 title: L1 & L2 Collections Approval Flow
 status: ACCEPTED
 ---

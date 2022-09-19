@@ -1,7 +1,7 @@
 ---
 layout: doc
 adr: 34
-date: 2020-01-34
+date: 2021-07-07
 title: Collections Technical Approval Flow
 status: ACCEPTED
 ---

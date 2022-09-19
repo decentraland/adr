@@ -1,7 +1,7 @@
 ---
 layout: doc
 adr: 53
-date: 2020-01-53
+date: 2022-01-20
 title: Test collections in the explorer
 status: ACCEPTED
 authors:

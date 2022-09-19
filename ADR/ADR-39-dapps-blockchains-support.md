@@ -1,7 +1,7 @@
 ---
 layout: doc
 adr: 39
-date: 2020-01-39
+date: 2021-08-10
 title: DApps Blockchains Support
 status: ACCEPTED
 ---

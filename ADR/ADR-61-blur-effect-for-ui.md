@@ -1,7 +1,7 @@
 ---
 layout: doc
 adr: 61
-date: 2020-01-61
+date: 2022-03-11
 title: Blur Effect For UI
 status: PROPOSED
 authors:

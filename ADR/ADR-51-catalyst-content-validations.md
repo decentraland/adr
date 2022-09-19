@@ -1,9 +1,13 @@
 ---
 layout: doc
 adr: 51
-date: 2020-01-51
+date: 2022-02-02
 title: Catalyst Content validations
 status: ACCEPTED
+authors:
+- agusaldasoro
+- guidota
+- menduz
 ---
 
 ## Context and Problem Statement

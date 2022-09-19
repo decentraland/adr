@@ -1,12 +1,13 @@
 ---
 layout: doc
 adr: 71
-date: 2020-01-71
+date: 2022-05-31
 title: Upgradable Collections
 status: ACCEPTED
 authors:
   - fzavalia
   - nachomazzara
+  - LautaroPetaccio
 ---
 
 ## Context

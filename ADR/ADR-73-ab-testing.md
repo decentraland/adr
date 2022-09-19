@@ -1,9 +1,11 @@
 ---
 layout: doc
 adr: 73
-date: 2020-01-73
+date: 2022-06-14
 title: A/B testing
 status: ACCEPTED
+authors:
+- 2fd
 ---
 
 ## Context and Problem Statement

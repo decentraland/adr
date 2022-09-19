@@ -1,9 +1,12 @@
 ---
 layout: doc
 adr: 43
-date: 2020-01-43
+date: 2021-11-09
 title: Catalyst API and Protocol refinement
 status: DEPRECATED
+authors:
+  - pentreathm
+  - agusaldasoro
 ---
 
 ## Context

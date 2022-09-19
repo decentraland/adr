@@ -1,7 +1,7 @@
 ---
 layout: doc
 adr: 42
-date: 2020-01-42
+date: 2021-10-04
 title: Third Party Integration
 authors:
 - menduz

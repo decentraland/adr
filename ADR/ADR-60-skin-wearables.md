@@ -1,7 +1,7 @@
 ---
 layout: doc
 adr: 60
-date: 2020-01-60
+date: 2022-02-04
 title: Skin wearables
 status: ACCEPTED
 authors:

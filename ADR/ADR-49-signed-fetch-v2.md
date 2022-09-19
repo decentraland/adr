@@ -1,10 +1,12 @@
 ---
 layout: doc
 adr: 49
-date: 2020-01-49
+date: 2022-01-26
 title: Signed Fetch V2
 authors:
 - 2fd
+- cazala
+- nachomazzara
 status: PROPOSED
 ---
 

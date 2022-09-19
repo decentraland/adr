@@ -1,9 +1,11 @@
 ---
 layout: doc
 adr: 31
-date: 2020-01-31
+date: 2021-07-05
 title: Signin/signup Kernel<>Website
 status: DEPRECATED
+authors:
+- AjimenezDCL
 ---
 
 # Communication kernel<>website in the signin/signup flow
