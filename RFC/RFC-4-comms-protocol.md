@@ -13,17 +13,19 @@ status: DRAFT
 
 # Abstract
 
-This document describes the minimum protocol for comms to connect explorers with eachother and see other people in the world. It does not describe the transport layers or connection topologies.
+This document describes the minimum protocol for comms to connect explorers with each other and see other people in the world. It does not describe the transport layers or connection topologies.
 
 ## Wire protocol
 
 Protocol messages are serialized using protocolbuffers, this document also uses the protobuf language to specify the schemas.
 
-All messages are assumed to be broadcasted to all peers at all times. That is, there are no one-to-one messages in any topology. As a side note, optimizations on top of this protocol are possible, an example is Archipelago (ADR) which connects peers all-to-all in a island-based topology to optimize resource allocations based on phyisical (in-world) location.
+All messages are assumed to be broadcast to all peers at all times. That is, there are no one-to-one messages in any topology. As a side note, optimizations on top of this protocol are possible; an example is Archipelago (ADR) which connects peers all-to-all in a island-based topology to optimize resource allocations based on physical (in-world) location.
 
-All of those messages are part of an envelop message called `CommsPacket` which is used to differentiate all kinds of user-sent packages using the `oneof` feature of protobuf.
+All of those messages are part of an envelope message called `CommsPacket` which is used to differentiate all kinds of user-sent packages using the `oneof` feature of protobuf.
 
 ```protobuf
+syntax = "proto3";
+
 message CommsPacket {
   oneof message {
     Position position = 2;
@@ -37,7 +39,7 @@ message CommsPacket {
 }
 ```
 
-The transports have the responsibility to also provide the address of the sender. The suggested interface to listen for messages from a transport looks similar to this:
+The transports have the responsibility to also provide the address of the sender. The suggested interface to listen for messages from a transport could look like this:
 
 ```typescript
 type PacketMetadata = {
@@ -49,9 +51,9 @@ type OnPacketDelegate = (packet: CommsPacket, meta: PacketMetadata) => void
 
 ## Seeing other people
 
-To see other people around you, it is necessary to know both their `Position` and their `Profile` (wearables, name, emotes, colors, etc...). To that extent, when you log-in, your avatar's position needs to be broadcasted using the `Position` message. The Profile instead is sent through comms on a need-to-know basis to optimize network and CPU resources.
+To see other people around you, it is necessary to know both their `Position` and their `Profile` (wearables, name, emotes, colors, etc...). To that extent, when you log-in, your avatar's position needs to be broadcast using the `Position` message. The Profile instead is sent through comms on a need-to-know basis to optimize network and CPU resources.
 
-> Note: For simplicity the following diagram has two actors but indeed all messages are broadcasted all-to-all
+> Note: For simplicity the following diagram has two actors but indeed all messages are broadcast all-to-all
 
 ### Resolving profile information when a third party (Alice) is connected
 
@@ -137,7 +139,7 @@ message Chat {
 
 ## Voice message
 
-The voice message is used to send compressed voice samples to other peers. At the time of writing this implementation the only supported codec is OPUS, which is the codec number 0 in the enum of enabled codecs. The voice message MUST also be hinted as UNRELIABLE to prevent network congestion.
+The voice message is used to send compressed voice samples to other peers. At the time of writing this specification the only supported codec is OPUS, which is the codec number 0 in the enum of enabled codecs. The voice message MUST also be hinted as UNRELIABLE to prevent network congestion.
 
 The voice message also contains an "index" field which is a monotinic counter of voice messages, used to concatenate and order de incoming messages in the audio encoder.
 
@@ -154,7 +156,7 @@ message Voice {
 
 ## Scene message
 
-Scene messages are like chat messages that are sent between instances of the same scene running in peers machines. The message contains the id of the scene that is sending and receiving the message (URN) and a binary payload. Like voice messages, SceneMessages SHOULD have low priority and need to be considered UNRELIABLE when the transport supports it to prevent network congestions caused by scenes' code.
+Scene messages are like chat messages that are sent between instances of the same scene running in peer's machines. The message contains the id of the scene that is sending and receiving the message (URN) and a binary payload. Like voice messages, SceneMessages SHOULD have low priority and need to be considered UNRELIABLE when the transport supports it to prevent network congestions caused by the code of the scene.
 
 ```protobuf
 message SceneMessage {
