@@ -29,7 +29,11 @@ message WsWelcome {
 
 message WsPeerJoin {
   uint32 alias = 1;
-  string identity = 2;
+  string address = 2;
+}
+
+message WsPeerLeave {
+  uint32 alias = 1;
 }
 
 message WsPeerUpdate {
@@ -46,6 +50,12 @@ message WsSignedChallenge {
   string auth_chain_json = 1;
 }
 
+message WsIdentification {
+  string address = 1;
+}
+
+message WsKicked {}
+
 message WsPacket {
   oneof message {
     // direction: server->client
@@ -58,6 +68,12 @@ message WsPacket {
     WsChallengeRequired challenge_message = 4;
     // direction: client->server
     WsSignedChallenge signed_challenge_for_server = 5;
+    // direction: server->client
+    WsPeerLeave peer_leave_message = 6;
+    // direction: client->server
+    WsIdentification peer_identification = 7;
+    // direction: server->client
+    WsKicked peer_kicked = 8;
   }
 }
 ```
