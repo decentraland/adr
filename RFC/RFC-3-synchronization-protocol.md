@@ -16,7 +16,7 @@ This document describes the minimum mandatory synchronization protocol between c
 
 ## Content Server Synchronization
 
-Each Content server in a Catalyst bundle stores the assets of the deployed entities. Those entities are replicated in all DAO Content Servers.
+Each Content server in a Catalyst bundle stores the assets of the deployed entities. Those entities are replicated in all DAO Content Servers. The schemas of the entities is defined in [ADR-80](/adr/ADR-80)
 
 ## What to expect from this document?
 
@@ -35,7 +35,7 @@ So the workflow looks like this.
 
 It is important to re-iterate that before updating its own vision of the Metaverse, each node will validate the entity again (the auth chain, the hashes, everything). If the validation fails, then that change will be ignored. Besides cryptographic signatures and smart contracts, there are no trusted parties involved in the process.
 
-The full mechanism of Content Sync is defined in [ADR-52](https://github.com/decentraland/adr/blob/main/docs/ADR-52-content-new-sync.md)
+The full mechanism of Content Sync is defined in [ADR-52](/adr/ADR-52)
 
 ## Which endpoints are used?
 
@@ -49,8 +49,8 @@ The format of the snapshots is a list of JSONs also known as [ndjson](http://ndj
 
 ### `GET /content/contents/{ipfsCid}`
 
-Endpoint to retrieve all files: snapshots files, entity.json files and content files.
+Endpoint to retrieve all files: snapshots files, entity.json files and content files. The semantics of this endpoint are also explained in [ADR-79](/adr/ADR-79)
 
 ### `GET /content/pointer-changes`
 
-Enpoint that returns all the deployed entities in a period of time.
+Endpoint that returns all the deployed entities in a period of time.
