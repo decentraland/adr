@@ -12,11 +12,9 @@ authors:
 
 This document describes the method to access and download all the files of an entity from a content server. It MUST be consistent with all entity types and content servers.
 
-The algorithm to download an entity starts with an entity or pointer in the content server.
+The algorithm to download an entity starts with an entity or pointer in the content server or using an entity ID directly. This document describes both mechanisms.
 
 ## Resolving pointers
-
-### Request
 
 To resolve entity of a specific pointer, the endpoint defined at [ADR-77](/adr/ADR-77) may be used.
 
@@ -29,8 +27,6 @@ Content-Type: application/json
   "pointers": ["-49,-100"]
 }
 ```
-
-### Response
 
 The response to the previous request is the list of active entities corresponding to the deployed pointers provided by the POST body.
 
@@ -58,9 +54,9 @@ The type of the response is the standard entity type for content servers and dep
 ]
 ```
 
-## Resolving content based on an entity ID
+## Downloading content using the entity ID
 
-Now that the entity ID has been found (`bafkreif5c6rjswu6cbj5astv5uuc7yrxbm73tycegrnjqhhp3q6qeop3ym`) the next thing to do is to download the entity from the content server. The entity is a deployed file and thus, the `/content/contents` endpoint can be used both for the entity itself and for all the content files of the response. This mechanism is used to download and synchronize all the assets for Decentraland.
+Now that the entity ID has been found (`bafkreif5c6rjswu6cbj5astv5uuc7yrxbm73tycegrnjqhhp3q6qeop3ym`) the next thing to do is to download the entity from the content server. The entity is a deployed file and thus, the `/content/contents/:cid` endpoint can be used both for the entity itself and for all the content files of the response. This mechanism is used to download and synchronize all the assets for Decentraland.
 
 ### Downloading the entity file and resolving all files
 
