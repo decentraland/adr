@@ -12,7 +12,7 @@ authors:
 
 Given the growth of the community, the roadmap, and the new members of the product-engineering teams, the amount of entropy introduced into the system increased exponentially causing an inconvenient effect that affects the reliability of the system. Even though for teams that hold a really high technical bar based on automated and mature processes and mechanisms, the number of incidents tends to increase at a logarithmic scale with the organization size, providing visibility on those incidents to the rest of the organization and the systems’ users is key.
 
-Nowadays, the #crash slack channel is where the incidents are communicated, updated, resolved, using the channel`s subject as a status display. It can get messy or difficult to read, specially if there are more than one incident ocurring simultaneously. For this reason, a more sophisticated (and automated) incident management process must be implemented.
+Nowadays, the #crash slack channel is where the incidents are communicated, updated, resolved, using the channel`s subject as a status display. This is only visible to people with access to decentraland's slack workspace (decentraland employees), there is a lack of transparency there, anyone should be able to know the status of our incidents, community members need to. Also, it can get messy or difficult to read, specially if there are more than one incident ocurring simultaneously. For this reasons, a more sophisticated (and automated) incident management process must be implemented.
 
 ## Goals
 
