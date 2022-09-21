@@ -12,7 +12,7 @@ authors:
 
 Given the growth of the community, the roadmap, and the new members of the product-engineering teams, the amount of entropy introduced into the system increased exponentially causing an inconvenient effect that affects the reliability of the system. Even though for teams that hold a really high technical bar based on automated and mature processes and mechanisms, the number of incidents tends to increase at a logarithmic scale with the organization size, providing visibility on those incidents to the rest of the organization and the systems’ users is key.
 
-Nowadays, the #crash slack channel is where the incidents are communicated, updated, resolved, using the channel`s subject as a status display. This is only visible to people with access to decentraland's slack workspace (decentraland employees), there is a lack of transparency there, anyone should be able to know the status of our incidents, community members need to. Also, it can get messy or difficult to read, specially if there are more than one incident ocurring simultaneously. For this reasons, a more sophisticated (and automated) incident management process must be implemented.
+Nowadays, the #crash slack channel is where the incidents are communicated, updated, resolved, using the channel`s subject as a status display. This is only visible to people with access to decentraland's slack workspace, there is a lack of transparency there, anyone should be able to know the status of our incidents, community members need to. Also, it can get messy or difficult to read, specially if there are more than one incident ocurring simultaneously. For this reasons, a more sophisticated (and automated) incident management process must be implemented.
 
 ## Goals
 
@@ -52,3 +52,39 @@ stateDiagram-v2
 2. Slack app calls the corresponding server's endpoint
 3. Server updates the database
 4. Status page hits server's endpoint `/list` and receives a json to populate
+
+### Endpoints
+
+- `POST /create` Creates a new incident
+  ```
+  body
+  { 
+    severity: string,
+    report_date: string,
+    description: string,
+    point: string,
+    contact: string
+  }
+  ```
+
+- `PUT /update/:incident_id` Updates an existing incident
+  ```
+  body
+  { 
+    severity: string, (optional)
+    report_date: string, (optional)
+    description: string, (optional)
+    point: string, (optional)
+    contact: string, (optional)
+    resolution_eta: string, (optional)
+    rca_link: string (optional)
+  }
+  ```
+- `PUT /close/:incident_id` Closes an existing incident
+  ```
+  body
+  { 
+    resolution_eta: string,
+    rca_link: string (optional)
+  }
+  ```
