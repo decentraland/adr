@@ -88,3 +88,30 @@ stateDiagram-v2
     rca_link: string (optional)
   }
   ```
+
+- `GET /list` Returns a 
+  ```
+  response
+  {
+    open: [
+      {
+        severity: string,
+        report_date: string,
+        description: string,
+        point: string,
+        contact: string
+      }
+    ],
+    closed: [
+      {
+        severity: string,
+        report_date: string,
+        description: string,
+        point: string,
+        contact: string,
+        resolution_eta: string,
+        rca_link: string
+      }
+    ]
+  }
+  ```
