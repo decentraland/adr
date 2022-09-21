@@ -38,14 +38,14 @@ The crashbot scope will include the following:
 ### Design
 ```mermaid
 stateDiagram-v2
-    Users --> Slack App
+    Users --> SlackApp
     
-    Slack App --> Server
+    SlackApp --> Server
     
     Server --> Database
     Database --> Server
 
-    Server --> Status Page
+    Server --> StatusPage
 ```
 
 1. Users communicate to the service via commands in a slack app like `/create`, `/update` and `/close`.
