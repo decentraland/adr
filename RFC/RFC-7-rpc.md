@@ -7,6 +7,7 @@ authors:
 - kuruk-mm
 - menduz
 status: DRAFT
+discussion: https://github.com/decentraland/adr/discussions/88
 ---
 
 # Abstract
