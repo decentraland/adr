@@ -41,7 +41,7 @@ Its main responsibilities are to download and convert the assets. The recommende
 Example:
 Taking the file `Floor_Grass01.png` mapped to `bafkreid2fuffvxm6w2uimphn4tyxyox3eewt3r67zbrewbdonkjb7bqzx4` from the final URL:
 
-    OriginalUrl (PNG):  https://peer.decentraland.org/content/contents/bafkreid2fuffvxm6w2uimphn4tyxyox3eewt3r67zbrewbdonkjb7bqzx4
+    OriginalUrl (PNG): https://peer.decentraland.org/content/contents/bafkreid2fuffvxm6w2uimphn4tyxyox3eewt3r67zbrewbdonkjb7bqzx4
     ConvertedUrl (Asset bundle): https://converted-asset-bundles.com/bafkreid2fuffvxm6w2uimphn4tyxyox3eewt3r67zbrewbdonkjb7bqzx4
 
 To download the assets of an entity only the entity ID (IPFSv2 CID) and a content server URL are needed. Both provided in the SQS message. The algorithm and endpoints used to download everything are specified in [ADR-79](/adr/ADR-79).
@@ -49,3 +49,16 @@ To download the assets of an entity only the entity ID (IPFSv2 CID) and a conten
 ### Using the converted assets from the Explorers
 
 The explorers COULD be configured with a set of optimized asset URLs. The asset resolvers MAY resolve optimized assets and download those versions for performance. If the downloaded assets are not present in the optimized server, the explorers MUST fall back to the original asset in the catalysts' content servers.
+
+It is recommended that the servers can also include a manifesto of all the optimized assets per scene to signal the explorer about eligibility and converted files. This is so to prevent many 404 requests in cases where the scene is not yet converted or not all assets are eligible.
+
+The recommended way to handle this scenario is through a special file including the entity ID of the scene like this: `https://converted-asset-bundles.com/{entityId}.manifest`.
+
+It is also possible and recommended to version the converted assets. That could be given by the configuration URL of the server prepending a `v1` or `v2` to the whole address ([ADR-11](/adr/ADR-11)). Or via not caching the manifest and using it to resolve the final cache friendly URL of the assets.
+
+### Examples of possible optimization scenarios
+
+- Compressing textures to GPU-compressed formats
+- Converting models to Unity Asset Bundles
+- Automate different level of detail compressions in-server
+- Create mip-maps for textures
