@@ -36,7 +36,7 @@ The [decentraland/deployments-to-sqs](https://github.com/decentraland/deployment
 
 ### Conversion job & download of the assets
 
-Its main responsibilities are to download and convert the assets. The recommended result of the conversion is a 1-to-1 map of the source files to the new format. The converted assets should be available through a public CDN in the same content CID as the original ones:
+The main responsibilities of the conversion jobs are to download and convert the assets. The recommended result of the conversion is a 1-to-1 map of the source files to the new format files keeping the filenames. The converted assets should be available through a public CDN in the same content CID as the original ones:
 
 Example:
 Taking the file `Floor_Grass01.png` mapped to `bafkreid2fuffvxm6w2uimphn4tyxyox3eewt3r67zbrewbdonkjb7bqzx4` from the final URL:
