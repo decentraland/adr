@@ -16,7 +16,7 @@ Today users that don't own a land or are not ready to push their content to prod
 
 The solution for the scenes preview will be done in stages
 
-### Stage 1: Preivew Server BETA 
+### Stage 1: Preview Server BETA 
 
 Create a BETA program where the technical feasibility of the project can be evaluated and test the experience from the content creators perspective.  
 
