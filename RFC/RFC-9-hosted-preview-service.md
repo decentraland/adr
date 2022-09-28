@@ -54,7 +54,7 @@ As a result:
 - The learning experience to upload and preview a scene will be minimal 
 - Scenes content can be tested multi-player and isolated from the Genesis City   
 - Content Creators can test the preview UX of their scenes   
-- As the access will be limited, all the focus is going to be on the experience and scalability will come on the following stage
+- On this stage, all the focus is going to be on content creator user experience
 - Fosters the decentralization by having an alternative solution to the Heroku application container 
 
 
