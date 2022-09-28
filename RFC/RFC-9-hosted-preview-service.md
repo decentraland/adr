@@ -66,7 +66,7 @@ Based on the BETA testing:
 - Define Hardware requirements for the Preview Content Server (Disk space/CPU)
 - Define the max number of concurrent users allowed in a Preview
 - Implement a Garbage Collection 
-- Determine the cost of running the Server for all content creators
+- Define a strategy to open this to all content creators 
 
 
 ### Stage 3: Run your own Preview Servers 
