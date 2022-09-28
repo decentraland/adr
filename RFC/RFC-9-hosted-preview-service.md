@@ -53,7 +53,7 @@ When the Client loads a scene from the Preview server, the Mini map should not b
 As a result: 
 - The learning experience to upload and preview a scene will be minimal 
 - Scenes content can be tested multi-player and isolated from the Genesis City   
-- The preview UX can be tested with a subset of content creators   
+- Content Creators can test the preview UX of their scenes   
 - As the access will be limited, all the focus is going to be on the experience and scalability will come on the following stage
 - Fosters the decentralization by having an alternative solution to the Heroku application container 
 
