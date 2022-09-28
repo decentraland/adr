@@ -24,7 +24,7 @@ Scope of the BETA:
 - Open to users owning a Decentraland name 
 - Only one scene per Decentraland name would be allowed on the preview 
 - Scenes deployment to the preview server will have the same disk space limitations that the Content Servers hosted on the Catalyst network 
-- Besides space and owning a name, no other validations will be made as this is just a preview
+- Besides scene size and owning a name, no other validations will be made as this is just a preview
 - 10 concurrent users allowed to join a scene preview
 
 #### The Solution 
