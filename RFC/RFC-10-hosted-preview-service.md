@@ -1,6 +1,6 @@
 ---
 layout: doc
-rfc: 9
+rfc: 10
 date: 2022-09-28
 title: Scene Preview Server
 authors:
