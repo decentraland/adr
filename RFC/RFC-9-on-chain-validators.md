@@ -14,7 +14,7 @@ Remove the content server's Thegraph dependency and enhance access checkers vali
 
 # Introduction
 
-Remove the usage of subgraphs on behalf of smart contracts in order to perform validations when deploying entities (access-checkers). This removes the dependency with subgraphs and creates an immutable and decentralized way of validating entity deployments that need to query blockchain information. The content server will still need to use an RPC provider but this RPC is also used nowadays to validate smart contract wallets' deployments.
+Remove the usage of subgraphs on behalf of smart contracts to perform validations when deploying entities (access-checkers). This removes the dependency with subgraphs and creates an immutable and decentralized way of validating entity deployments that need to query blockchain information. The content server will still need to use an RPC provider but this RPC is also used nowadays to validate smart contract wallets' deployments.
 
 The final goal is to have a set of different upgradable smart contracts managed by the DAO needed that emulates the subgraphs.
 
