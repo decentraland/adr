@@ -32,6 +32,7 @@ Scope of the BETA:
 - Explorer mini map won't be displayed
 - Explorer skybox light can be set up for the scene
 - Display a Jump to Genesis Ctity button to leave the scene preview 
+- Validated by hosting a scene with the new onboarding experience
 
 
 #### The Solution 
