@@ -1,0 +1,257 @@
+---
+layout: doc
+rfc: 9
+date: 2022-09-28
+title: On-chain validators
+authors:
+  - imazzara
+status: DRAFT
+---
+
+# Abstract
+
+Remove the content server's Thegraph dependency and enhance access checkers validators to a more decentralized and immutable approach as part of the Decentraland Protocol.
+
+# Introduction
+
+Change the usage of subgraphs for smart contracts in order to perform validations when deploying entities (access-checkers). This removes the dependency with subgraphs and creates an immutable and decentralized way of validate entity deployments that needs to query blockchain information. The content server will still need to use an RPC provider but this RPC is also used nowadays to validate smart contract wallets's deployments.
+
+The final goal is to have a set of different upgradable smart contracts manage by the DAO needed that emulutes the subgraphs.
+
+This document also describes a migration approach needed to make profiles validation possible.
+
+## Subgraphs usage
+
+Subgraphs are being used by the content server to get:
+
+- Scenes
+- Collections items
+- ThirdParty Wearables
+- Ethereum & Polygon block numbers
+- Profiles
+
+### Ethereum & Polygon block numbers
+
+Each entity deployment has a timestamp. We get the block number for that timestamp by using [subgraphs](https://github.com/decentraland/ethereum-blocks) per each chain. It is not possible to get a block number by timestamp directly with only one RPC request because timestamps are just a block metadata. In order to remove this dependency, we need extra work:
+
+- A) Use a [binary search](https://github.com/nachomazzara/eth-block-timestamp) or any other new way to get the closest block for a given timestamp.
+- B) Start adding block numbers to the deployments. For old deployments we can create an immutable file with all the blocks per each timestamp used for previous deployments. This file will have a fixed size because new deployments will have the block number directly inside the deployment.
+
+### Profiles
+
+- **Entity**: Profile
+- **Pointer**: Ethereum Address. E.g: `0x5e5d9d1dfd87e9b8b069b8e5d708db92be5ade99`
+- **Contracts**: Decentraland Collections (Ethereum & Polygon). Decentraland Name.
+- **Check**: Every profile deployment checks if the address owns the wearables, emotes and Decentaland name.
+
+#### Decentraland Name
+
+The [DCLRegistrar](https://etherscan.io/address/0x2a187453064356c898cae034eaed119e1663acb8) contract has a method to get who is the owner of a specific domain: _`getOwnerOf(subdomain: string)`_.
+
+#### Wearables & Emotes
+
+Each entity has a `wearables` and `emotes` in the property `entity->metadata->avatars`. Wearables are being stored with an array format like `[wearable_urn_1, wearable_item_urn_2, ..., wearable_urn_N]` and Emotes as an array as well but with objects `[{slot: 1, urn: wave}, {slot: 2, urn: emote_item_urn_1}]`.
+They are stored with the item's urn instead of the NFT itself urn. E.g: `urn:decentraland:matic:collections-v2:0x875146d1d26e91c80f25f5966a84b098d3db1fc8:1` (item); `urn:decentraland:matic:collections-v2:0x875146d1d26e91c80f25f5966a84b098d3db1fc8:1:1` (token id/NFT). Checking if a user has a specific item doesn't scale. The ERC721 standard has a method `ownerOf(tokenId: uint256)` to check who is the owner of the NFT. All the profiles are using only item ids instead of the specific NFT. _Remember that NFTs are items kind for Decentraland Collections_. To perform on-chain checks we should perform some changes to how we save profiles and how to validate old profile deployments.
+
+- Old Profile Deployments: Use the Decentraland Address to signal profile deployments in order to consider them as valid without the need to perform further validations.
+
+- New Profile Deployments: Create a new ADR + set a date to make it effective to start receiving profiles with extended urn with the token id at the end. This implies changes in the Explorer, Kernel, Catalysts and URN Resolver. New urn resolvers
+
+  - `decentraland:{protocol}:collections-v1:{contract(0x[a-fA-F0-9]+)}:{itemName}`
+  - `decentraland:{protocol}:collections-v1:{collection-name}:{itemName}`
+  - `decentraland:{protocol}:collections-v2:{contract(0x[a-fA-F0-9]+)}:{itemId}`
+  - `decentraland:{protocol}:collections-v1:{contract(0x[a-fA-F0-9]+)}:{itemId}:{tokenId}` -> new
+  - `decentraland:{protocol}:collections-v1:{collection-name}:{itemName}:{tokenId}` -> new
+  - `decentraland:{protocol}:collections-v2:{contract(0x[a-fA-F0-9]+)}:{itemId}:{tokenId}` -> new
+
+  The **Explorer** should show the items grouped by item kinds but allow the user to select the specific NFT to add to their profile. Once the users save their profile for the first time once the ADR is running effectevely, a process in the client should select the first nft for each item kind saved in the profile. E.g: if the user has this item `urn:decentraland:ethereum:collections-v1:wonderzone_steampunk:steampunk_jacket` selected in their profile but he has 10 of them with the token ids from `1` to `10`, the explorer should select the first (`urn:decentraland:ethereum:collections-v1:wonderzone_steampunk:steampunk_jacket:1`) one and replace it. For off-chain wearables, we should not do any kind of validation.
+
+  The **Kernel** and the **Catalysts** should accept and return all the NFTs.
+
+<details>
+<summary>Entity Example</summary>
+
+```JSON
+{
+  "entityVersion": "v3",
+  "entityType": "profile",
+  "entityId": "bafkreihf6pm7ethywxzjta364wixtrqcrc4th6miumczizldc32rythzua",
+  "entityTimestamp": 1663327122490,
+  "deployedBy": "0x87956abc4078a0cc3b89b419928b857b8af826ed",
+  "pointers": [
+    "0x87956abc4078a0cc3b89b419928b857b8af826ed"
+  ],
+  "content": [
+    {
+      "key": "body.png",
+      "hash": "bafkreibalpcvevsbke5r4vzkbkltjwwgfxm6mkl74asxtxlgrvgbqxafma"
+    },
+    {
+      "key": "face256.png",
+      "hash": "bafkreietgcdkbx6mtuxcfjxwifxyicpe5s2mtumycbvlfxvsdn3htnxlse"
+    }
+  ],
+  "metadata": {
+    "avatars": [
+      {
+        "hasClaimedName": true,
+        "name": "Nacho",
+        "description": "This is fine",
+        "tutorialStep": 355,
+        "userId": "0x87956abc4078a0cc3b89b419928b857b8af826ed",
+        "email": "",
+        "ethAddress": "0x87956abc4078a0cc3b89b419928b857b8af826ed",
+        "version": 62,
+        "avatar": {
+          "bodyShape": "urn:decentraland:off-chain:base-avatars:BaseMale",
+          "wearables": [
+            "urn:decentraland:off-chain:base-avatars:tall_front_01",
+            "urn:decentraland:off-chain:base-avatars:eyes_08",
+            "urn:decentraland:off-chain:base-avatars:eyebrows_00",
+            "urn:decentraland:off-chain:base-avatars:mouth_05",
+            "urn:decentraland:off-chain:base-avatars:classic_shoes",
+            "urn:decentraland:off-chain:base-avatars:trash_jean",
+            "urn:decentraland:ethereum:collections-v1:wonderzone_steampunk:steampunk_jacket",
+            "urn:decentraland:matic:collections-v2:0xf6f601efee04e74cecac02c8c5bdc8cc0fc1c721:0"
+          ],
+          "emotes": [
+            {
+              "slot": 1,
+              "urn": "wave"
+            },
+            {
+              "slot": 2,
+              "urn": "urn:decentraland:matic:collections-v2:0x875146d1d26e91c80f25f5966a84b098d3db1fc8:1"
+            },
+            {
+              "slot": 3,
+              "urn": "urn:decentraland:matic:collections-v2:0xef832a5183bf2e4099efed4c6ec981b7b41aa545:0"
+            },
+            {
+              "slot": 4,
+              "urn": "raiseHand"
+            },
+            {
+              "slot": 5,
+              "urn": "headexplode"
+            },
+            {
+              "slot": 6,
+              "urn": "money"
+            },
+            {
+              "slot": 7,
+              "urn": "kiss"
+            },
+            {
+              "slot": 8,
+              "urn": "fistpump"
+            },
+            {
+              "slot": 9,
+              "urn": "handsair"
+            }
+          ],
+          "snapshots": {
+            "body": "bafkreibalpcvevsbke5r4vzkbkltjwwgfxm6mkl74asxtxlgrvgbqxafma",
+            "face256": "bafkreietgcdkbx6mtuxcfjxwifxyicpe5s2mtumycbvlfxvsdn3htnxlse"
+          },
+          "eyes": {
+            "color": {
+              "r": 0.23046875,
+              "g": 0.625,
+              "b": 0.3125,
+              "a": 1
+            }
+          },
+          "hair": {
+            "color": {
+              "r": 0.35546875,
+              "g": 0.19140625,
+              "b": 0.05859375,
+              "a": 1
+            }
+          },
+          "skin": {
+            "color": {
+              "r": 0.94921875,
+              "g": 0.76171875,
+              "b": 0.6484375,
+              "a": 1
+            }
+          }
+        },
+        "interests": [],
+        "hasConnectedWeb3": true
+      }
+    ]
+  },
+  "localTimestamp": 1663327126487
+}
+```
+
+</details>
+
+### Scenes
+
+- **Entity**: Scenes
+- **Pointer**: x,y
+- **Contracts**: LAND & Estate
+- **Check**: The LANDRegistry and Estate smart contracts should be used to check the validity of a scene's deployment. The check should be perfomed through all the possible LAND and Estate's roles.
+
+#### LANDRegistry
+
+Checks by using the coordinates and the entity deployer (signer):
+
+- If the deployer is the `owner` of the LAND.
+- If the deployer has `operator` rights for the LAND.
+- If the deployer has `approvalForAll` rights for the LAND.
+- If the deployer has `updateOperator` rights for the LAND.
+- If the deployer has `updateManager` rights for the LAND.
+
+#### Estate
+
+If the LAND is owned by the Estate Contract. The estate id should be retreived. Checks by using the estate id and the entity deployer (signer):
+
+- If the deployer is the `owner` of the Estate.
+- If the deployer has `operator` rights for the Estate.
+- If the deployer has `approvalForAll` rights for the Estate.
+- If the deployer has `updateOperator` rights for the Estate.
+- If the deployer has `updateManager` rights for the Estate.
+
+If **any** of the above checks is valid, the deployment is valid.
+
+### Ethereum Items
+
+- **Entity**: Wearable
+- **Pointer**: `decentraland:{protocol}:collections-v1:{contract(0x[a-fA-F0-9]+)}:{itemName}` (Item URN)
+- **Contracts**: Ethereum Decentraland Collections
+- **Check**: Off-chain check. The only signer allowed to deploy Ethereum wearables is the Decentraland Address. Decentraland is not creating more collections in Ethereum.The ones created are considered **legacy** and the addresses are known beforehand. A list of those addresses can be used to check if the collection address is valid.
+
+### Polygon Items: Wearables & Emotes
+
+- **Entity**: Wearable & Emote
+- **Pointer**: `decentraland:{protocol}:collections-v2:{contract(0x[a-fA-F0-9]+)}:{itemId}` (Item URN)
+- **Contracts**: Polygon Decentraland Collections
+- **Check**: Each collection in Polygon is created by a collection factory. The addresses of the factories are known in advance. For the time of this RFC, Decentraland has only two collection factories. The information needed to perfom the validity of the deployment is the contract address and the item id which should be extracted from the urn, and the content hash and the signer of the deployment:
+
+- If the collection was created by any official Decentraland factory.
+- If the collection is completed.
+- If the collection is approved.
+- If the signer is the `creator`, `manager` and/or `itemManager` of the collection.
+- If the `contentHash` of the item in the contract matches to the content hash of the deployment
+
+If **every** of the above checks are true, the deployment is valid.
+
+### Third Party Wearables
+
+- **Entity**: ThirdParty Wearable
+- **Pointer**: `decentraland:{protocol}:collections-thirdparty:{thirdPartyName}:{collectionId}:{itemId}` (Item URN)
+- **Contracts**: Decentraland ThirdPartyRegistry
+- **Check**: The information needed to perfom the validity of the deployment is the thirdparty id extracted from the urn, the markle tree root and the signer extracted form the deployment:
+
+- If third party is approved
+- If the signer is a `manager` of the third party.
+- If the third party `root` in the contract matches to the root in the deploment payload.
+
+If **every** of the above checks are true, the deployment may be valid. The catalyst also checks if the content hash of the deployment is part of the markle tree in order to consider the deploymeny valid.
