@@ -31,6 +31,7 @@ Scope of the BETA:
 - Besides scene size and owning a name, no other validations will be made as this is just a preview
 - Explorer mini map won't be displayed
 - Explorer skybox light can be set up for the scene
+- Display a Jump to Genesis Ctity button to leave the scene preview 
 
 
 #### The Solution 
@@ -62,6 +63,16 @@ flowchart TD
 #### Explorer Client
 
 When the Client loads a scene from the Preview server, the experience should be slightly different as the **mini map** should not be loaded. The scene is going to be isolated from the Genesis City. Besides this, there should be a way to control the skybox settings so that creators can test their scenes with day light and night light.
+To accomplish this, a new `worldConfiguration` field should be added to the `scene.json`. 
+
+**scene.json**
+```json 
+"worldConfiguration" : {
+     "skybox" : "time"
+     "miniMapVisible" : "false"
+}
+```
+
 
 ![mini-map](img/rfc-9/minimap.png)
 
