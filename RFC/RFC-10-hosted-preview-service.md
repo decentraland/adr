@@ -75,7 +75,7 @@ To accomplish this, a new `worldConfiguration` field should be added to the `sce
 ```
 
 
-![mini-map](img/rfc-9/minimap.png)
+![mini-map](img/rfc-10/minimap.png)
 
 
 #### Benefit
