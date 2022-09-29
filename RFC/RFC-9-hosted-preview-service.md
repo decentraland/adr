@@ -10,22 +10,28 @@ status: DRAFT
 
 # Abstract
 
+This document describes how a Scene Preview Service can be created using minimal versions of the Content Server and Comms.
+
+# Introduction
+
 Today users that don't own a land or are not ready to push their content to production need to use a Heroku application container to be able to preview and share a scene with different stakeholders. This solution requires some extra configuration steps and, on the other hand, it will stop being free according to the [latest Heroku news](https://blog.heroku.com/next-chapter). To ease the life of the content creators, a new scene preview server will be created, leveraging the same steps than when uploading content to the Catalyst network and enabling an easy way to validate and experience the content before it is finally uploaded to the Genesis City.  
  
 ## Approach
 
 The solution for the scenes preview will be done in stages
 
-### Stage 1: Preview Server BETA 
+### Stage 1: Preview Server  
 
 Create a BETA program where the technical feasibility of the project can be evaluated and test the experience from the content creators perspective.  
 
 Scope of the BETA: 
 - Open to users owning a Decentraland name 
-- Only one scene per Decentraland name would be allowed on the preview 
-- Scenes deployment to the preview server will have the same disk space limitations that the Content Servers hosted on the Catalyst network 
+- Only one scene per Decentraland name would be allowed 
+- Scenes deployment to the preview server will have the same disk space limitations than the Content Servers hosted on the Catalyst network 
 - Besides scene size and owning a name, no other validations will be made as this is just a preview
-- 10 concurrent users allowed to join a scene preview
+- Explorer mini map won't be displayed
+- Explorer skybox light can be set up for the scene
+
 
 #### The Solution 
 
