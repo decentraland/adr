@@ -20,7 +20,7 @@ The final goal is to have a set of different upgradable smart contracts managed 
 
 This document also describes a migration approach needed to make profile validations possible.
 
-## Subgraphs usage
+## Proposed solution
 
 Subgraphs are being used by the content server to get:
 
@@ -29,6 +29,8 @@ Subgraphs are being used by the content server to get:
 - ThirdParty Wearables
 - Ethereum & Polygon block numbers
 - Profiles
+
+The following sections will describe how to use only RPC calls and smart contracts to validate deployments by entity type.
 
 ### Ethereum & Polygon block numbers
 
@@ -67,6 +69,8 @@ Profiles are stored with the item's urn instead of the NFT itself urn. E.g: `urn
   The **Explorer** should show the items grouped by item kinds but allow the user to select the specific NFT to add to their profile. Once the users save their profile for the first time once the ADR is running effectively, a process in the client should select the first nft for each item kind saved in the profile. E.g: if the user has this item `urn:decentraland:ethereum:collections-v1:wonderzone_steampunk:steampunk_jacket` selected in their profile but he has 10 of them with the token ids from `1` to `10`, the explorer should select the first (`urn:decentraland:ethereum:collections-v1:wonderzone_steampunk:steampunk_jacket:1`) one and replace it. For off-chain wearables, we should not do any kind of validation.
 
   The **Kernel** and the **Catalysts** should accept and return all the NFTs.
+
+  The catalyst should extract the contract address and token id from each asset in the profile to check if the profile owner owns the NFT by using `IERC721(contract_address).ownerOf(tokenId)`. Also, the contract address must be a valid one: a Decentraland or ThirdParty collection.
 
 <details>
 <summary>Entity Example</summary>
@@ -197,7 +201,7 @@ Profiles are stored with the item's urn instead of the NFT itself urn. E.g: `urn
 - **Entity**: Scenes
 - **Pointer**: x,y
 - **Contracts**: LAND & Estate
-- **Check**: The LANDRegistry and Estate smart contracts should be used to check the validity of a scene's deployment. The check should be performed through all the possible LAND and Estate's roles.
+- **Check**: The LANDRegistry and Estate smart contracts should be used to check the validity of a scene's deployment. The check should be performed through all the possible LAND and Estate's roles. Every role can be fetched directly on-chain from each smart contract.
 
 #### LANDRegistry
 
@@ -233,7 +237,7 @@ If **any** of the above checks is valid, the deployment is valid.
 - **Entity**: Wearable & Emote
 - **Pointer**: `decentraland:{protocol}:collections-v2:{contract(0x[a-fA-F0-9]+)}:{itemId}` (Item URN)
 - **Contracts**: Polygon Decentraland Collections
-- **Check**: Each collection in Polygon is created by a collection factory. The addresses of the factories are known in advance. For the time of this RFC, Decentraland has only two collection factories. The information needed to perfom the validity of the deployment is the contract address and the item id which should be extracted from the urn, and the content hash and the signer of the deployment:
+- **Check**: Each collection in Polygon is created by a collection factory. The addresses of the factories are known in advance. For the time of this RFC, Decentraland has only two collection factories. The information needed to perfom the validity of the deployment is the contract address and the item id which should be extracted from the urn, and the content hash and the signer of the deployment. The on-chain validations needed are:
 
 - If the collection was created by any official Decentraland factory.
 - If the collection is completed.
@@ -248,7 +252,7 @@ If **every** of the above checks are true, the deployment is valid.
 - **Entity**: ThirdParty Wearable
 - **Pointer**: `decentraland:{protocol}:collections-thirdparty:{thirdPartyName}:{collectionId}:{itemId}` (Item URN)
 - **Contracts**: Decentraland ThirdPartyRegistry
-- **Check**: The information needed to perform the validity of the deployment is the thirdparty id extracted from the urn, the Merkle Tree root, and the signer extracted from the deployment:
+- **Check**: The information needed to perform the validity of the deployment is the thirdparty id extracted from the urn, the Merkle Tree root, and the signer extracted from the deployment. The on-chain validations needed are:
 
 - If the third party is approved
 - If the signer is a `manager` of the third party.
