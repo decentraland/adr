@@ -55,7 +55,7 @@ flowchart TD
 
 #### Explorer Client
 
-When the Client loads a scene from the Preview server, the experience should be slightly different as the **mini map** should not be loaded. The scene is going to be isolated from the Genesis City.
+When the Client loads a scene from the Preview server, the experience should be slightly different as the **mini map** should not be loaded. The scene is going to be isolated from the Genesis City. Besides this, there should be a way to control the skybox settings so that creators can test their scenes with day light and night light.
 
 ![mini-map](img/rfc-9/minimap.png)
 
