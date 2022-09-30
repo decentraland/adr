@@ -4,7 +4,7 @@ rfc: 9
 date: 2022-09-28
 title: On-chain validators
 authors:
-  - imazzara
+  - nachomazzara
 status: DRAFT
 ---
 
@@ -30,7 +30,7 @@ Subgraphs are being used by the content server to check the access to:
 - Ethereum & Polygon block numbers
 - Decentraland Names
 
-There are two type of deploymenys:
+There are two type of deployments:
 
 - Organic deployments: the timestamp of the entity is now().
 - Sync deployments: the timestamp of the entity is in the past. Mostly using when a catalyst boostrap or needs to catch the latest state.
@@ -61,11 +61,11 @@ Each Profile entity stores the wearables and emotes equipped by the user. Wearab
 
 This document will propose two ideas on how the old profiles can be migrated but an new RFC or ADR should be needed describing the final approach.
 
-- ##### Alternative 1
+- **Alternative 1**
 
   Use the Decentraland Address to signal profile deployments in order to consider them valid without the need to perform further validations. It can be a new field to the profiles schema to avoid re-deploying the profiles by the Decentraland address which can duplicate the storage. If duplicating the profiles is the only alternative, then old ones can be removed.
 
-- ##### Alternative 2
+- **Alternative 2**
 
   Build a [Merkle tree with every profile hash](https://github.com/decentraland/content-hash-tree) and submit the root to a smart contract. A static file must be added to the repository with all the proofs needed to check if a deployment is part of the tree. The file with the proofs may weight [~100MB for 1M of profiles](https://github.com/decentraland/content-hash-tree#generate-a-tree-with-content-hashes).
 
