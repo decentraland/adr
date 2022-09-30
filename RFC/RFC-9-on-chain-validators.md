@@ -10,25 +10,30 @@ status: DRAFT
 
 # Abstract
 
-Remove the content server's Thegraph dependency and enhance access checkers validators to a more decentralized and immutable approach as part of the Decentraland Protocol.
+Evaluates an alternative to validate deployments in the content server to remove the dependency on TheGraph. Using an RPC provider and a set of upgradable smart contracts are enough to validate access to the entities being deployed.
 
 # Introduction
 
 Remove the usage of subgraphs on behalf of smart contracts to perform validations when deploying entities (access-checkers). This removes the dependency with subgraphs and creates an immutable and decentralized way of validating entity deployments that need to query blockchain information. The content server will still need to use an RPC provider but this RPC is also used nowadays to validate smart contract wallets' deployments.
 
-The final goal is to have a set of different upgradable smart contracts managed by the DAO needed that emulates the subgraphs.
+The final goal is to have a set of different upgradable smart contracts managed by the DAO needed that emulates the subgraphs. The DAO will be in charge of upgrade them in case of any issue or new logic needed.
 
-This document also describes a migration approach needed to make profile validations possible.
+**Disclaimer: This document also describes migration ideas needed to make profile validations possible. The effort needed for the migration won't be covered. It will require a new RFC or ADR describing the migration proposal.**
 
-## Proposed solution
+## Analysis
 
-Subgraphs are being used by the content server to get:
+Subgraphs are being used by the content server to check the access to:
 
-- Scenes
+- LANDs
 - Collections items
 - ThirdParty Wearables
 - Ethereum & Polygon block numbers
-- Profiles
+- Decentraland Names
+
+There are two type of deploymenys:
+
+- Organic deployments: the timestamp of the entity is now().
+- Sync deployments: the timestamp of the entity is in the past. Mostly using when a catalyst boostrap or needs to catch the latest state.
 
 The following sections will describe how to use only RPC calls and smart contracts to validate deployments by entity type.
 
@@ -37,7 +42,7 @@ The following sections will describe how to use only RPC calls and smart contrac
 Each entity deployment has a timestamp. We get the block number for that timestamp by using [subgraphs](https://github.com/decentraland/ethereum-blocks) per each chain. It is not possible to get a block number by timestamp directly with only one RPC request because timestamps are just part of the block metadata. In order to remove this dependency, we need extra work:
 
 - A) Use a [binary search](https://github.com/nachomazzara/eth-block-timestamp) or any other new way to get the closest block for a given timestamp.
-- B) Start adding block numbers to the deployments. For old deployments, we can create an immutable file with all the blocks per each timestamp used for previous deployments. This file will have a fixed size because new deployments will have the block number directly inside the deployment.
+- B) Start adding block numbers to the deployments. For old deployments, we can create an immutable file with all the blocks per each timestamp used for previous deployments. This file will have a fixed size because new deployments will have the block number directly inside the deployment. The client can get the latest block number. The content server will keep using the 5 minutes window for validate deployments.
 
 ### Profiles
 
@@ -52,25 +57,32 @@ The [DCLRegistrar](https://etherscan.io/address/0x2a187453064356c898cae034eaed11
 
 #### Wearables & Emotes
 
-Each entity has a `wearables` and `emotes` in the property `entity->metadata->avatars`. Wearables are being stored with an array format like `[wearable_urn_1, wearable_item_urn_2, ..., wearable_urn_N]` and Emotes as an array as well but with objects `[{slot: 1, urn: wave}, {slot: 2, urn: emote_item_urn_1}]`.
-Profiles are stored with the item's urn instead of the NFT itself urn. E.g: `urn:decentraland:matic:collections-v2:0x875146d1d26e91c80f25f5966a84b098d3db1fc8:1` (item); `urn:decentraland:matic:collections-v2:0x875146d1d26e91c80f25f5966a84b098d3db1fc8:1:1` (token id/NFT). Checking if a user has a specific item doesn't scale. The ERC721 standard has a method `ownerOf(tokenId: uint256)` to check who is the owner of the NFT. All the profiles are using only item ids instead of the specific NFT. _Remember that NFTs are items kind for Decentraland Collections_. To perform on-chain checks we should perform some changes to how we save profiles and how to validate old profile deployments.
+Each Profile entity stores the wearables and emotes equipped by the user. Wearables are stored under `entity.metadata.avatar.wearables` as an array of items' URNs, and Emotes are stored under `entity.metadata.avatar.emotes` as an array of { slot: string, urn: string }. In both cases, the URNs used are the item's urn, not the token's urn. Checking if a user owns a specific item does not scale, since it would require looping within a contract method. Users that own too many NFTs or collections that are too big could cause this to lag or timeout. Another alternative could be making several RPC calls between the catalyst and the Ethereum nodes, which also would not scale well. We should start storing the token's urn within the profiles to make the access checks possible in a single RPC call. The ERC721 standard has a method `ownerOf(tokenId: uint256)` which serves to get the owner of the NFT.
 
-- Old Profile Deployments: Use the Decentraland Address to signal profile deployments in order to consider them valid without the need to perform further validations.
+This document will propose two ideas on how the old profiles can be migrated but an new RFC or ADR should be needed describing the final approach.
 
-- New Profile Deployments: Create a new ADR + set a date to make it effective to start receiving profiles with an extended urn with the token id at the end. This implies changes in the Explorer, Kernel, Catalysts and URN Resolver. New urn resolvers
+- ##### Alternative 1
 
-  - `decentraland:{protocol}:collections-v1:{contract(0x[a-fA-F0-9]+)}:{itemName}`
-  - `decentraland:{protocol}:collections-v1:{collection-name}:{itemName}`
-  - `decentraland:{protocol}:collections-v2:{contract(0x[a-fA-F0-9]+)}:{itemId}`
-  - `decentraland:{protocol}:collections-v1:{contract(0x[a-fA-F0-9]+)}:{itemId}:{tokenId}` -> new
-  - `decentraland:{protocol}:collections-v1:{collection-name}:{itemName}:{tokenId}` -> new
-  - `decentraland:{protocol}:collections-v2:{contract(0x[a-fA-F0-9]+)}:{itemId}:{tokenId}` -> new
+  Use the Decentraland Address to signal profile deployments in order to consider them valid without the need to perform further validations. It can be a new field to the profiles schema to avoid re-deploying the profiles by the Decentraland address which can duplicate the storage. If duplicating the profiles is the only alternative, then old ones can be removed.
 
-  The **Explorer** should show the items grouped by item kinds but allow the user to select the specific NFT to add to their profile. Once the users save their profile for the first time once the ADR is running effectively, a process in the client should select the first nft for each item kind saved in the profile. E.g: if the user has this item `urn:decentraland:ethereum:collections-v1:wonderzone_steampunk:steampunk_jacket` selected in their profile but he has 10 of them with the token ids from `1` to `10`, the explorer should select the first (`urn:decentraland:ethereum:collections-v1:wonderzone_steampunk:steampunk_jacket:1`) one and replace it. For off-chain wearables, we should not do any kind of validation.
+- ##### Alternative 2
 
-  The **Kernel** and the **Catalysts** should accept and return all the NFTs.
+  Build a [Merkle tree with every profile hash](https://github.com/decentraland/content-hash-tree) and submit the root to a smart contract. A static file must be added to the repository with all the proofs needed to check if a deployment is part of the tree. The file with the proofs may weight [~100MB for 1M of profiles](https://github.com/decentraland/content-hash-tree#generate-a-tree-with-content-hashes).
 
-  The catalyst should extract the contract address and token id from each asset in the profile to check if the profile owner owns the NFT by using `IERC721(contract_address).ownerOf(tokenId)`. Also, the contract address must be a valid one: a Decentraland or ThirdParty collection.
+For new profiles, a new ADR with a date to make it effective to start receiving profiles with an extended urn with the token id at the end. This implies changes in the Explorer, Kernel, Catalysts, and URN Resolver. New urn resolvers
+
+- `decentraland:{protocol}:collections-v1:{contract(0x[a-fA-F0-9]+)}:{itemName}`
+- `decentraland:{protocol}:collections-v1:{collection-name}:{itemName}`
+- `decentraland:{protocol}:collections-v2:{contract(0x[a-fA-F0-9]+)}:{itemId}`
+- `decentraland:{protocol}:collections-v1:{contract(0x[a-fA-F0-9]+)}:{itemId}:{tokenId}` -> new
+- `decentraland:{protocol}:collections-v1:{collection-name}:{itemName}:{tokenId}` -> new
+- `decentraland:{protocol}:collections-v2:{contract(0x[a-fA-F0-9]+)}:{itemId}:{tokenId}` -> new
+
+The **Explorer** should show the items grouped by item kinds but allow the user to select the specific NFT to add to their profile. Once the users save their profile for the first time once the ADR is running effectively, a process in the client should select the first NFT for each item kind saved in the profile. E.g: if the user has this item `urn:decentraland:ethereum:collections-v1:wonderzone_steampunk:steampunk_jacket` selected in their profile but he has 10 of them with the token ids from `1` to `10`, the explorer should select the first (`urn:decentraland:ethereum:collections-v1:wonderzone_steampunk:steampunk_jacket:1`) one and replace it. For off-chain wearables, we should not do any kind of validation.
+
+The **Kernel** and the **Catalysts** should accept and return all the NFTs. The lambdas e.g: `/collections/wearables-by-owner/{address}` and `/collections/emotes-by-owner/` will return the NFTs' urns and not the items' urns.
+
+The catalyst should extract the contract address and token id from each asset in the profile to check if the profile owner owns the NFT by using `IERC721(contract_address).ownerOf(tokenId)`. Also, the contract address must be a valid one: a Decentraland or ThirdParty collection.
 
 <details>
 <summary>Entity Example</summary>
