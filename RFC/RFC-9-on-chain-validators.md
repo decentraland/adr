@@ -18,7 +18,7 @@ Remove the usage of subgraphs on behalf of smart contracts to perform validation
 
 The final goal is to have a set of different upgradable smart contracts managed by the DAO needed that emulates the subgraphs. The DAO will be in charge of upgrade them in case of any issue or new logic needed.
 
-**Disclaimer: This document also describes migration ideas needed to make profile validations possible. The effort needed for the migration won't be covered. It will require a new RFC or ADR describing the migration proposal.**
+**Disclaimer: This document also describes migration ideas needed to make profile validations possible. The effort needed for the migration won't be covered. It will require a new RFC or ADR describing the migration proposal. Lambdas are out of the scope for this iteration as they are not part of the Decentraland Protocol.**
 
 ## Analysis
 
@@ -80,7 +80,7 @@ For new profiles, a new ADR with a date to make it effective to start receiving 
 
 The **Explorer** should show the items grouped by item kinds but allow the user to select the specific NFT to add to their profile. Once the users save their profile for the first time once the ADR is running effectively, a process in the client should select the first NFT for each item kind saved in the profile. E.g: if the user has this item `urn:decentraland:ethereum:collections-v1:wonderzone_steampunk:steampunk_jacket` selected in their profile but he has 10 of them with the token ids from `1` to `10`, the explorer should select the first (`urn:decentraland:ethereum:collections-v1:wonderzone_steampunk:steampunk_jacket:1`) one and replace it. For off-chain wearables, we should not do any kind of validation.
 
-The **Kernel** and the **Catalysts** should accept and return all the NFTs. The lambdas e.g: `/collections/wearables-by-owner/{address}` and `/collections/emotes-by-owner/` will return the NFTs' urns and not the items' urns.
+The **Kernel** and the **Catalysts** should accept and return all the NFTs. The lambdas e.g: `/collections/wearables-by-owner/{address}` and `/collections/emotes-by-owner/` will return the NFTs' urns and not the items' urns. There is a change needed in the collections subgraphs as well to use the NFT urn instead of the item urn for the NFT entity ([1](https://github.com/decentraland/collections-graph/blob/7cd1754b9114dbe79daa49df0a759fd57b80e48d/src/handlers/nft.ts#L49); [2](https://github.com/decentraland/collections-graph/blob/7cd1754b9114dbe79daa49df0a759fd57b80e48d/src/handlers/nft.ts#L251)).
 
 The catalyst should extract the contract address and token id from each asset in the profile to check if the profile owner owns the NFT by using `IERC721(contract_address).ownerOf(tokenId)`. Also, the contract address must be a valid one: a Decentraland or ThirdParty collection.
 
