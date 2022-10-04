@@ -61,6 +61,53 @@ flowchart TD
     E("Catalyst/Realm") -- avatars -->B
 ```
 
+#### BFF
+
+In order to run, the Client needs to connect to a BFF. In this case, the Preview Content Server will act as BFF implementing the endpoint `/about` documented in RFC-10.
+
+The payload of that endpoint will be:
+
+```
+{
+  healthy: boolean,
+  configurations: {
+    realmName?: string,
+    networkId: number,
+    scenesUrl?: string    
+  },
+  content: {
+    healthy: boolean,
+    version?: string,
+    commitHash?: string,
+    publicUrl: string
+  },
+  comms: {
+    healthy: boolean,
+    protocol: string,
+    fixedAdapter?: string,
+    usersCount?: number
+  },
+  lambdas: {
+    healthy: boolean,
+    version?: string,
+    commitHash?: string,
+    publicUrl: string
+  },
+  bff: {
+    healthy: boolean,
+    userCount: number,
+    commitHash?: string,
+    publicUrl: string
+  }
+}
+```
+
+This way the Client will load:
+- The scenes from `configurations.scenesUrl`
+- The wearables from `content.publicUrl`
+- The profiles from `lambdas.publicUrl`
+- The Comms Server through BFF from `bff.publicUrl`
+
 #### Explorer Client
 
 When the Client loads a scene from the Preview server, the experience should be slightly different as the **mini map** should not be loaded. The scene is going to be isolated from the Genesis City. Besides this, there should be a way to control the skybox settings so that creators can test their scenes with day light and night light.
@@ -77,6 +124,18 @@ To accomplish this, a new `worldConfiguration` field should be added to the `sce
 
 ![mini-map](img/rfc-10/minimap.png)
 
+
+###### Chat commands
+
+The Explorer Client needs to support the commands `/goto` and `/changerealm`.
+
+- For the `/goto <parcel>` command, then the scene will reload to the corresponding parcel of a DAO Realm.
+- For the `/changerealm <realm>` command, then the scene will reload to the 0,0 parcel of the corresponding Realm.
+
+
+###### Navbar
+
+To load the navbar with the `Explore`, `Backpack`, `Map` and `Settings` one Realm will be chosen. So, when loading the map the users connected shown there will correspond to that Realm. So if the user want to jump in to a hot-scene, then the Explorer Client will reload that corresponding scene of the chosen Realm.
 
 #### Benefit
 
