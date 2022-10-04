@@ -16,11 +16,11 @@ This document defines the protocol to describe a realm.
 
 ## Realm
 
-We call realm to a given set of services needed for the client to work: current we have comms, content and lambdas. We point to a realm by using an URL, it's a valid realm if it provides a `/about` endpoint in the proper format describing the realm and its status.
+A `realm` is a set of services needed for the client to work: current there is comms, content and lambdas. A valid realm is pointed by a url defining `/about` endpoint in the proper format, which describes the realm and its status.
 
 ## /about
 
-This endpoint should return a json like this:
+This endpoint should return a json like [this](https://github.com/decentraland/protocol/blob/main/bff/http-endpoints.proto):
 
 ```typescript
 type About = {
@@ -95,7 +95,7 @@ Example:
 
 If the realm is in healthy state, the endpoint must return a http status 200, otherwise it should return 503. This way just by checking the response http status, a client looking for a realm to connect may decide to connect or not to the realm.
 
-The `healthy` field in the root of the structure) will be true only if `comms.healthy && lambdas.healthy && bff.healthy` is true.
+The `healthy` field in the root of the structure) will be true only if all the referenced services are `healthy`.
 
 ## Comms description
 
