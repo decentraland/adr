@@ -125,4 +125,4 @@ There are several possible comms configs:
 
     This means the client will connect to the provided adapter, there is no clustering process involved.
 
-  - Clustering. If no `fixedAdapter` is provided, this means the client will negotiate through the BFF to join a cluster. For details about this check [../ADR/ADR-70-new-comms.md](ADR-70)
+  - Clustering. If no `fixedAdapter` is provided, this means the client will negotiate through the BFF to join a cluster. For details about this check [ADR-70](../ADR/ADR-70-new-comms.md)
