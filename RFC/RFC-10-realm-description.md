@@ -1,0 +1,127 @@
+---
+layout: doc
+rfc: 10
+date: 2022-10-04
+title: Realm description
+authors:
+- agusaldasoro
+- hugoarregui
+- menduz
+status: DRAFT
+---
+
+# Abstract
+
+This document defines the protocol to describe a realm.
+
+## Realm
+
+We call realm to a given set of services needed for the client to work: current we have comms, content and lambdas. We point to a realm by an URL, and it's a valid realm if it provides a `/about` endpoint in the proper format describing the realm and its status.
+
+## /about
+
+This endpoint should return a json like this:
+
+```typescript
+type About = {
+  healthy: boolean,
+  configurations: {
+    realmName?: string,
+    networkId: number
+  },
+  content: {
+    healthy: boolean,
+    version?: string,
+    commitHash?: string,
+    publicUrl: string
+  },
+  comms: {
+    healthy: boolean,
+    protocol?: string,
+    fixedAdapter?: string
+  },
+  lambdas: {
+    healthy: boolean,
+    version?: string,
+    commitHash?: string,
+    publicUrl: string
+  },
+  bff: {
+    healthy: boolean,
+    userCount: number,
+    commitHash?: string,
+    publicUrl: string
+  }
+}
+```
+
+Example:
+
+```json
+{
+  "healthy": true,
+  "content": {
+    "healthy": true,
+    "version": "5.1.2",
+    "commitHash": "dce61c002c89db4966c0cdd008d3d654f297050b",
+    "publicUrl": "https://peer.decentraland.org/content"
+  },
+  "configurations": {
+    "realmName": "catalyst-4"
+  },
+  "comms": {
+    "healthy": true,
+    "protocol": "v3",
+    "fixedAdapter": "ws-room:mini-comms.decentraland.org/rooms/test-room"
+  },
+  "lambdas": {
+    "healthy": true,
+    "version": "5.1.2",
+    "commitHash": "dce61c002c89db4966c0cdd008d3d654f297050b",
+    "publicUrl": "https://peer.decentraland.org/lambdas"
+  },
+  "bff": {
+    "healthy": true,
+    "commitHash": "369c5dafeda62a1b16f5232cd477565cc3f3d513",
+    "userCount": 0,
+    "publicUrl": "/"
+  }
+}
+```
+
+## Health
+
+If the realm is in healthy state, the endpoint must return a http status 200, otherwise it should return 503. This way just by checking the response http status, a client looking for a realm to connect may be able to connect or not to the realm.
+
+The `healthy` field in the root of the structure) will be true only if `comms.healthy && lambdas.healthy && bff.healthy` is true.
+
+## Comms description
+
+There are several possible comms configs:
+
+- `protocol` is `v2` will be describe with an structure like:
+
+```json
+  "comms": {
+    "healthy": true,
+    "protocol": "v2",
+    "version": "1.0.0",
+    "commitHash": "43d2173cf5e2078b32bddab5adb90e4778170c44",
+    "usersCount": 152
+  }
+```
+
+- When `protocol` is `v3` there are two alternatives. 
+
+  - Fixed adapter 
+    ```json
+      "comms": {
+        "healthy": true,
+        "protocol": "v3",
+        "fixedAdapter": "ws-room:mini-comms.decentraland.org/rooms/test-room"
+      }
+    ```
+
+    This means the client will connect to the provided adapter, there is no clustering process involved.
+
+  - Clustering. If no `fixedAdapter` is provided, this means the client will negotiate through the BFF to join a cluster. For details about this check [ADR/ADR-70-new-comms.md](ADR-70)
