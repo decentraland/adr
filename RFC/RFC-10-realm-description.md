@@ -68,7 +68,8 @@ Example:
     "publicUrl": "https://peer.decentraland.org/content"
   },
   "configurations": {
-    "realmName": "catalyst-4"
+    "realmName": "catalyst-4",
+    "networkId": 1
   },
   "comms": {
     "healthy": true,
@@ -125,4 +126,4 @@ There are several possible comms configs:
 
     This means the client will connect to the provided adapter, there is no clustering process involved.
 
-  - Clustering. If no `fixedAdapter` is provided, this means the client will negotiate through the BFF to join a cluster. For details about this check [ADR-70](../ADR/ADR-70-new-comms.md)
+  - Clustering. If no `fixedAdapter` is provided, this means the client will negotiate through the BFF to join a cluster. For details about this check [ADR-70](ADR/ADR-70-new-comms.md)
