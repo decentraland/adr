@@ -73,7 +73,7 @@ The payload of that endpoint will be:
   configurations: {
     realmName?: string,
     networkId: number,
-    scenesUrl?: string    
+    sceneUrl?: string    
   },
   content: {
     healthy: boolean,
@@ -103,7 +103,7 @@ The payload of that endpoint will be:
 ```
 
 This way the Client will load:
-- The scenes from `configurations.scenesUrl`
+- The scene from `configurations.sceneUrl`
 - The wearables from `content.publicUrl`
 - The profiles from `lambdas.publicUrl`
 - The Comms Server through BFF from `bff.publicUrl`
