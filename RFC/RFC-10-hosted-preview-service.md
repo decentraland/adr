@@ -63,7 +63,7 @@ flowchart TD
 
 #### BFF
 
-In order to run, the Client needs to connect to a BFF. In this case, the Preview Content Server will act as BFF implementing the endpoint `/about` documented in RFC-10.
+In order to run, the Client needs to connect to a BFF. In this case, the Preview Content Server will act as BFF implementing the endpoint `/about` documented in [RFC-10](https://github.com/decentraland/adr/blob/main/RFC/RFC-10-realm-description.md).
 
 The payload of that endpoint will be:
 
