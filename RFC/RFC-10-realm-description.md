@@ -16,7 +16,7 @@ This document defines the protocol to describe a realm.
 
 ## Realm
 
-A `realm` is a set of services needed for the client to work: current there is comms, content and lambdas. A valid realm is pointed by a url defining `/about` endpoint in the proper format, which describes the realm and its status.
+A `realm` is a set of services needed for the client to work: current there is comms, content and lambdas. A valid realm is pointed by a URL defining `/about` endpoint in the proper format, which describes the realm and its status.
 
 ## /about
 
