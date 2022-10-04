@@ -26,8 +26,11 @@ This endpoint should return a json like [this](https://github.com/decentraland/p
 type About = {
   healthy: boolean,
   configurations: {
+    networkId: number,
     realmName?: string,
-    networkId: number
+    scenesUrl?: string,
+    scenesURNs?: string[],
+    globalPortableExperiences?: string[]
   },
   content: {
     healthy: boolean,
