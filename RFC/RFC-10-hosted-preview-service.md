@@ -65,45 +65,9 @@ flowchart TD
 
 In order to run, the Client needs to connect to a BFF. In this case, the Preview Content Server will act as BFF implementing the endpoint `/about` documented in [RFC-10](https://github.com/decentraland/adr/blob/main/RFC/RFC-10-realm-description.md).
 
-The payload of that endpoint will be:
-
-```
-{
-  healthy: boolean,
-  configurations: {
-    realmName?: string,
-    networkId: number,
-    sceneUrl?: string    
-  },
-  content: {
-    healthy: boolean,
-    version?: string,
-    commitHash?: string,
-    publicUrl: string
-  },
-  comms: {
-    healthy: boolean,
-    protocol: string,
-    fixedAdapter?: string,
-    usersCount?: number
-  },
-  lambdas: {
-    healthy: boolean,
-    version?: string,
-    commitHash?: string,
-    publicUrl: string
-  },
-  bff: {
-    healthy: boolean,
-    userCount: number,
-    commitHash?: string,
-    publicUrl: string
-  }
-}
-```
 
 This way the Client will load:
-- The scene from `configurations.sceneUrl`
+- The scene from `configurations.scenesUrl` downloading the URNs from `configurations.scenesURNs`
 - The wearables from `content.publicUrl`
 - The profiles from `lambdas.publicUrl`
 - The Comms Server through BFF from `bff.publicUrl`
