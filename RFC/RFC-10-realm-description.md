@@ -16,7 +16,7 @@ This document defines the protocol to describe a realm.
 
 ## Realm
 
-We call realm to a given set of services needed for the client to work: current we have comms, content and lambdas. We point to a realm by an URL, and it's a valid realm if it provides a `/about` endpoint in the proper format describing the realm and its status.
+We call realm to a given set of services needed for the client to work: current we have comms, content and lambdas. We point to a realm by using an URL, it's a valid realm if it provides a `/about` endpoint in the proper format describing the realm and its status.
 
 ## /about
 
@@ -37,8 +37,9 @@ type About = {
   },
   comms: {
     healthy: boolean,
-    protocol?: string,
-    fixedAdapter?: string
+    protocol: string,
+    fixedAdapter?: string,
+    usersCount?: number
   },
   lambdas: {
     healthy: boolean,
@@ -91,7 +92,7 @@ Example:
 
 ## Health
 
-If the realm is in healthy state, the endpoint must return a http status 200, otherwise it should return 503. This way just by checking the response http status, a client looking for a realm to connect may be able to connect or not to the realm.
+If the realm is in healthy state, the endpoint must return a http status 200, otherwise it should return 503. This way just by checking the response http status, a client looking for a realm to connect may decide to connect or not to the realm.
 
 The `healthy` field in the root of the structure) will be true only if `comms.healthy && lambdas.healthy && bff.healthy` is true.
 
@@ -99,7 +100,7 @@ The `healthy` field in the root of the structure) will be true only if `comms.he
 
 There are several possible comms configs:
 
-- `protocol` is `v2` will be describe with an structure like:
+- If `protocol` is `v2` it will present an structure like:
 
 ```json
   "comms": {
@@ -124,4 +125,4 @@ There are several possible comms configs:
 
     This means the client will connect to the provided adapter, there is no clustering process involved.
 
-  - Clustering. If no `fixedAdapter` is provided, this means the client will negotiate through the BFF to join a cluster. For details about this check [ADR/ADR-70-new-comms.md](ADR-70)
+  - Clustering. If no `fixedAdapter` is provided, this means the client will negotiate through the BFF to join a cluster. For details about this check [../ADR/ADR-70-new-comms.md](ADR-70)
