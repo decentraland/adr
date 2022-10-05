@@ -63,7 +63,7 @@ flowchart TD
 
 #### Realm
 
-In order to run, the Client needs to connect to a BFF. In this case, the Preview Content Server will act as BFF implementing the endpoint `/about` documented in [RFC-10](https://github.com/decentraland/adr/blob/main/RFC/RFC-10-realm-description.md).
+In order to run, the Client needs to connect to a Realm. In this case, the Preview Content Server will act as Realm implementing the endpoint `/about` documented in [RFC-10](/rfc/RFC-10).
 
 
 This way the Client will load:
