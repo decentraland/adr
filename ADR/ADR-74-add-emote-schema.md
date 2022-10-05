@@ -134,6 +134,11 @@ export type MagicalStandardWearable
 // and so on ...
 ```
 
+##### 5. Extend Collection contract metadata to store the `loop` value
+Since the ADR74 Emotes will have proper categories now, we need to start saving the `loop` value in another field, as it used to be stored as the category in the contract metadata. It will be stored at the end of the current metadata string as `0` (`false`) or `1` (`true`). It's added at the end to avoid introducing breaking changes.
+In summary, for emotes, the metadata stored in the contract will now be:
+`${version}:${type}:${name}:${description}:${category}:${bodyShapeTypes}:${loop}`
+
 ## Benefit
 
 The bigger benefit is that the validation of schemas over the time becomes somehow trivial\*:
