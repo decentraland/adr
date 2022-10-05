@@ -1,6 +1,6 @@
 ---
 layout: doc
-rfc: 10
+rfc: 11
 date: 2022-09-28
 title: Scene Preview Server
 authors:
@@ -86,7 +86,7 @@ To accomplish this, a new `worldConfiguration` field should be added to the `sce
 ```
 
 
-![mini-map](img/rfc-10/minimap.png)
+![mini-map](img/rfc-11/minimap.png)
 
 
 ###### Chat commands
