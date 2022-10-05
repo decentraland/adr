@@ -70,7 +70,18 @@ This way the Client will load:
 - The scene from `configurations.scenesUrl` downloading the URNs from `configurations.scenesURNs`
 - The wearables from `content.publicUrl`
 - The profiles from `lambdas.publicUrl`
-- The Comms Server through BFF from `bff.publicUrl`
+- The Communications Server through BFF from `bff.publicUrl`
+- The minimap configuration (via scene.json) from `configurations.minimap`
+
+##### `configurations.minimap` schema
+
+```typescript
+type MiniMapConfiguration = {
+  enabled: boolean
+  dataImage?: string   // defaults to https://api.decentraland.org/v1/minimap.png
+  estateImage?: string // defaults to https://api.decentraland.org/v1/estateimap.png
+}
+```
 
 #### Explorer Client
 
