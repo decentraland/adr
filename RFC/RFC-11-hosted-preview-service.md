@@ -67,7 +67,7 @@ In order to run, the Client needs to connect to a Realm. In this case, the Previ
 
 
 This way the Client will load:
-- The URNs from `configurations.scenesURNs`
+- The URNs from `configurations.scenesUrn`
 - The wearables from `content.publicUrl`
 - The profiles from `lambdas.publicUrl`
 - The minimap configuration from `configurations.minimap` (loaded from the scene.json) 
