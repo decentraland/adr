@@ -28,9 +28,8 @@ type About = {
   configurations: {
     networkId: number,
     realmName?: string,
-    scenesUrl?: string,
-    scenesURNs?: string[],
-    globalPortableExperiences?: string[]
+    scenesUrn: string[],
+    globalScenesUrn: string[],
   },
   content: {
     healthy: boolean,
@@ -50,7 +49,7 @@ type About = {
     commitHash?: string,
     publicUrl: string
   },
-  bff: {
+  bff?: {
     healthy: boolean,
     userCount: number,
     commitHash?: string,
