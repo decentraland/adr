@@ -67,11 +67,33 @@ In order to run, the Client needs to connect to a Realm. In this case, the Previ
 
 
 This way the Client will load:
-- The scene from `configurations.scenesUrl` downloading the URNs from `configurations.scenesURNs`
+- The URNs from `configurations.scenesUrn`
 - The wearables from `content.publicUrl`
 - The profiles from `lambdas.publicUrl`
-- The Communications Server through BFF from `bff.publicUrl`
-- The minimap configuration (via scene.json) from `configurations.minimap`
+- The minimap configuration from `configurations.minimap` (loaded from the scene.json) 
+
+Example:
+
+```json
+{
+ "healthy": true,
+ "configurations": {
+  "networkId": 1,
+  "globalScenesUrn": [],
+  "scenesUrn": [
+  "urn:decentraland:entity:bafkreifdgd7qccas3r2tywzgzo74mpr4i3vcq?baseUrl=https://worlds-content-server.decentraland.org/ipfs/"
+  ]
+ },
+ "content": {
+  "healthy": true,
+  "publicUrl": "https://peer.decentraland.org/content"
+ },
+ "lambdas": {
+  "healthy": true,
+  "publicUrl": "https://peer.decentraland.org/lambdas"
+ }
+}
+```
 
 ##### `configurations.minimap` schema
 
