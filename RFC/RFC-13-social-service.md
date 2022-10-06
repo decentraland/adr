@@ -1,8 +1,21 @@
+---
+layout: doc
+rfc: 13
+date: 2022-10-06
+title: Social service
+authors:
+- jmoguilevsky
+status: In progress
+---
+
 # TITLE
 
 Author Name(s): @jmoguilevsky
+
 Author Date: 2022-10-06
+
 Due Date: 
+
 Status: `In progress`
 
 ## Abstract
