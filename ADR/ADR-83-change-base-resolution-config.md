@@ -1,7 +1,7 @@
 ---
 layout: doc
-adr: 82
-date: 2022-10-06
+adr: 83
+date: 2022-10-07
 title: Changing "Base resolution" configuration for web
 status: PROPOSED
 authors:
