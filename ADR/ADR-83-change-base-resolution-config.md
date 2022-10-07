@@ -5,7 +5,7 @@ date: 2022-10-07
 title: Changing "Base resolution" configuration for web
 status: PROPOSED
 authors:
-  - axiaCode
+  - aixaCode
   - menduz
   - ShibuyaMartin
 ---
