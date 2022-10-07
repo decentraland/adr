@@ -4,6 +4,10 @@ adr: 34
 date: 2021-07-07
 title: Collections Technical Approval Flow
 status: ACCEPTED
+authors:
+  - nachomazzara
+  - menduz
+  - ShibuyaMartin
 ---
 
 ## Introduction
@@ -30,9 +34,3 @@ Each item has a property called `contentHash` used to rescue/revert an item. To 
 - 2. Set the content hash by calling `rescueItems` method.
 
 Both transactions should be done by calling the committee smart contract. You can see the interactions between contracts [here](https://github.com/decentraland/wearables-contracts/blob/15b072ea52f4578d0e6867eb6e4f599c35fd6e83/Collections_V2_Actors.md)
-
-## Participants
-
-- @shibu
-- @menduz
-- @nachomazzara
