@@ -35,7 +35,7 @@ The following graph shows the average of all FPS for the same conditions
 
 ### Alternative 1 ✅
 
-The proposal is to replace the **Base resolution** by **Resolution** and the options **Low DPI** (1) and **Match display DPI** (x>=1)
+The proposal is to replace the **Base resolution** by **Resolution** and the options **Normal** and **Match display** (for high DPI when applicable)
 
 ### Alterlative 2
 
@@ -43,4 +43,4 @@ Force low DPI (1) for Web, enabling only high DPI rendering on the native app. K
 
 ## Final decision
 
-replace the **Base resolution** by **Resolution** and the options **Low DPI** (1) and **Match display DPI** (x>=1)
+The proposal is to replace the **Base resolution** by **Resolution** and the options **Normal** and **Match display** (for high DPI when applicable)
