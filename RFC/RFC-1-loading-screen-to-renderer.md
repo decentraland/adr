@@ -135,8 +135,9 @@ The proposed approach is:
 1. Add a feature flag to change the control of the loading screen from kernel to renderer `explorer-renderer-loading-screen`
 2. Add a new method to the new RPC to inform the renderer about the status of some subsystems. It will include information about the amount of pending scenes, total scenes and account status.
 3. Implement in renderer & kernel the handling of that message
-4. Implement business logic for login screen tied to that feature flag and remove as well the code from kernel
-5. Upon releases, remove feature flag and set default logic to the new data flow
+4. Deprecate the complex "ActivateRendering" logic from kernel and use loading screen status instead. This feature was used to disable the cameras while the world was loading (to boost loading times).
+5. Implement business logic for login screen tied to that feature flag and remove as well the code from kernel
+6. Upon releases, remove feature flag and set default logic to the new data flow
 
 ## Benefit
 
