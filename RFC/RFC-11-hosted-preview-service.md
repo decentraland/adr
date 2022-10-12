@@ -95,16 +95,6 @@ Example:
 }
 ```
 
-##### `configurations.minimap` schema
-
-```typescript
-type MiniMapConfiguration = {
-  enabled: boolean
-  dataImage?: string   // defaults to https://api.decentraland.org/v1/minimap.png
-  estateImage?: string // defaults to https://api.decentraland.org/v1/estateimap.png
-}
-```
-
 #### Explorer Client
 
 When the Client loads a scene from the Preview server, the experience should be slightly different as the **mini map** should not be loaded. The scene is going to be isolated from the Genesis City. Besides this, there should be a way to control the skybox settings so that creators can test their scenes with day light and night light.
@@ -113,11 +103,17 @@ To accomplish this, a new `worldConfiguration` field should be added to the `sce
 **scene.json**
 ```json 
 "worldConfiguration" : {
-     "skybox" : "time"
-     "miniMapVisible" : false
+     "skybox" : 36000
+     "minimapVisible" : false
 }
 ```
 
+`skybox`: This property indicates how many seconds have passed (in Decentraland time) since the start of the day, assuming the full cycle lasts 24 hours. Divide the seconds value by 60 to obtain minutes, and by 60 again to obtain the hours since the start of the day. For example, if the seconds value is 36000, it corresponds to 10 AM.
+
+`miniMapVisible`: this boolean property will determine weather or not to show the Genesis City mini map when loading the scene. 
+
+These properties will only be processed by the Hosted Scene preview service and be ignored if they are present in any scene deployed to the Genesis City.
+ 
 
 ![mini-map](img/rfc-11/minimap.png)
 
