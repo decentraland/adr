@@ -3,7 +3,7 @@ layout: doc
 adr: 83
 date: 2022-10-07
 title: Changing "Base resolution" configuration for web
-status: PROPOSED
+status: ACCEPTED
 authors:
   - aixaCode
   - menduz
