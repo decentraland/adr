@@ -110,7 +110,7 @@ To accomplish this, a new `worldConfiguration` field should be added to the `sce
 
 `skybox`: This property indicates how many seconds have passed (in Decentraland time) since the start of the day, assuming the full cycle lasts 24 hours. Divide the seconds value by 60 to obtain minutes, and by 60 again to obtain the hours since the start of the day. For example, if the seconds value is 36000, it corresponds to 10 AM.
 
-`minimapVisible`: this boolean property will determine weather or not to show the Genesis City mini map when loading the scene. 
+`minimapVisible`: this boolean property will determine whether or not to show the Genesis City mini map when loading the scene. 
 
 These properties will only be processed by the Hosted Scene preview service and be ignored if they are present in any scene deployed to the Genesis City.
  
