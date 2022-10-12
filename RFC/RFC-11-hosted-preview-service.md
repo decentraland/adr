@@ -114,7 +114,7 @@ To accomplish this, a new `worldConfiguration` field should be added to the `sce
 ```json 
 "worldConfiguration" : {
      "skybox" : "time"
-     "miniMapVisible" : "false"
+     "miniMapVisible" : false
 }
 ```
 
