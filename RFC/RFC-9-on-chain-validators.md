@@ -80,7 +80,7 @@ For new profiles, a new ADR with a date to make it effective to start receiving 
 
 The **Explorer** should show the items grouped by item kinds but allow the user to select the specific NFT to add to their profile. Once the users save their profile for the first time once the ADR is running effectively, a process in the client should select the first NFT for each item kind saved in the profile. E.g: if the user has this item `urn:decentraland:ethereum:collections-v1:wonderzone_steampunk:steampunk_jacket` selected in their profile but he has 10 of them with the token ids from `1` to `10`, the explorer should select the first (`urn:decentraland:ethereum:collections-v1:wonderzone_steampunk:steampunk_jacket:1`) one and replace it. For off-chain wearables, we should not do any kind of validation.
 
-The **Kernel** and the **Catalysts** should accept and return all the NFTs. The lambdas e.g: `/collections/wearables-by-owner/{address}` and `/collections/emotes-by-owner/` will return the NFTs' urns and not the items' urns. There is a change needed in the collections subgraphs as well to use the NFT urn instead of the item urn for the NFT entity ([1](https://github.com/decentraland/collections-graph/blob/7cd1754b9114dbe79daa49df0a759fd57b80e48d/src/handlers/nft.ts#L49); [2](https://github.com/decentraland/collections-graph/blob/7cd1754b9114dbe79daa49df0a759fd57b80e48d/src/handlers/nft.ts#L251)).
+The **Kernel** and the **Catalysts** should accept and return all the NFTs. The lambdas e.g: `/collections/wearables-by-owner/{address}` and `/collections/emotes-by-owner/{address}` will return the NFTs' urns and not the items' urns. There is a change needed in the collections subgraphs as well to use the NFT urn instead of the item urn for the NFT entity ([1](https://github.com/decentraland/collections-graph/blob/7cd1754b9114dbe79daa49df0a759fd57b80e48d/src/handlers/nft.ts#L49); [2](https://github.com/decentraland/collections-graph/blob/7cd1754b9114dbe79daa49df0a759fd57b80e48d/src/handlers/nft.ts#L251)).
 
 The catalyst should extract the contract address and token id from each asset in the profile to check if the profile owner owns the NFT by using `IERC721(contract_address).ownerOf(tokenId)`. Also, the contract address must be a valid one: a Decentraland or ThirdParty collection.
 
@@ -213,7 +213,7 @@ The catalyst should extract the contract address and token id from each asset in
 - **Entity**: Scenes
 - **Pointer**: x,y
 - **Contracts**: LAND & Estate
-- **Check**: The LANDRegistry and Estate smart contracts should be used to check the validity of a scene's deployment. The check should be performed through all the possible LAND and Estate's roles. Every role can be fetched directly on-chain from each smart contract.
+- **Check**: The LANDRegistry and Estate smart contracts should be used to check the validity of a scene deployment. The check should be performed through all the possible LAND and Estate roles. Every role can be fetched directly on-chain from each smart contract.
 
 #### LANDRegistry
 
@@ -227,7 +227,7 @@ Checks by using the coordinates and the entity deployer (signer):
 
 #### Estate
 
-If the LAND is owned by the Estate Contract. The estate id should be retrived. Checks by using the estate id and the entity deployer (signer):
+If the LAND is owned by the Estate Contract. The estate id should be retrieved. Checks by using the estate id and the entity deployer (signer):
 
 - If the deployer is the `owner` of the Estate.
 - If the deployer has `operator` rights for the Estate.
@@ -249,7 +249,7 @@ If **any** of the above checks is valid, the deployment is valid.
 - **Entity**: Wearable & Emote
 - **Pointer**: `decentraland:{protocol}:collections-v2:{contract(0x[a-fA-F0-9]+)}:{itemId}` (Item URN)
 - **Contracts**: Polygon Decentraland Collections
-- **Check**: Each collection in Polygon is created by a collection factory. The addresses of the factories are known in advance. For the time of this RFC, Decentraland has only two collection factories. The information needed to perfom the validity of the deployment is the contract address and the item id which should be extracted from the urn, and the content hash and the signer of the deployment. The on-chain validations needed are:
+- **Check**: Each collection in Polygon is created by a collection factory. The addresses of the factories are known in advance. At the time of this RFC, Decentraland has only two collection factories. The information needed to check the validity of the deployment is the contract address and the item id which should be extracted from the urn, and the content hash and the signer of the deployment. The on-chain validations needed are:
 
 - If the collection was created by any official Decentraland factory.
 - If the collection is completed.
