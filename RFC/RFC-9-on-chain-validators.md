@@ -16,9 +16,9 @@ Evaluates an alternative to validate deployments in the content server to remove
 
 Remove the usage of subgraphs on behalf of smart contracts to perform validations when deploying entities (access-checkers). This removes the dependency with subgraphs and creates an immutable and decentralized way of validating entity deployments that need to query blockchain information. The content server will still need to use an RPC provider but this RPC is also used nowadays to validate smart contract wallets' deployments.
 
-The final goal is to have a set of different upgradable smart contracts managed by the DAO needed that emulates the subgraphs. The DAO will be in charge of upgrade them in case of any issue or new logic needed.
+The final goal is to have a set of different upgradable smart contracts managed by the DAO that emulate the subgraphs. The DAO will be in charge of upgrading them in case of any issues or new logic needed.
 
-**Disclaimer: This document also describes migration ideas needed to make profile validations possible. The effort needed for the migration won't be covered. It will require a new RFC or ADR describing the migration proposal. Lambdas are out of the scope for this iteration as they are not part of the Decentraland Protocol.**
+**Disclaimer: This document also describes some migration ideas needed to make profile validations possible. The effort needed for the migration won't be covered. It will require a new RFC or ADR describing the migration proposal. Lambdas are out of the scope for this iteration as they are not part of the Decentraland Protocol.**
 
 ## Analysis
 
@@ -30,10 +30,10 @@ Subgraphs are being used by the content server to check the access to:
 - Ethereum & Polygon block numbers
 - Decentraland Names
 
-There are two type of deployments:
+There are two types of deployments:
 
 - Organic deployments: the timestamp of the entity is now().
-- Sync deployments: the timestamp of the entity is in the past. Mostly using when a catalyst boostrap or needs to catch the latest state.
+- Sync deployments: the timestamp of the entity is in the past. Used when a catalyst bootstraps or needs to catch up with the latest state.
 
 The following sections will describe how to use only RPC calls and smart contracts to validate deployments by entity type.
 
