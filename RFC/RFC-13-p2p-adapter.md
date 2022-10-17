@@ -63,8 +63,8 @@ type Route = string[] | 'no-p2p'
 // A map between peer id and a route
 type PeerRoutingTable = Map<string, Route>
 
-// NewRoutingTableEvent
-type NewRoutingTableEvent = {
+// NewPeerRoutingTableEvent
+type NewPeerRoutingTableEvent = {
   // the new peer routing table
   routingTable: PeerRoutingTable
 }
@@ -124,7 +124,7 @@ sequenceDiagram
 
 It's interesting to notice this proposal has some interesting properties:
 
-- Since we provide an specific routing table for each message, there is no need to expire message or count hops. If a route is cut, the message will not be delivered. 
+- Since we provide an specific routing table for each message, there is no need to expires message or count hops. If a route is cut, the message will not be delivered. 
 - The messaging service fallback provide a safety guarantee against network clusters.
-- A given implementation can be optimized by suggesting peers to connect to certain others in order to avoid clustering an minimize messaging service usage. This is out of the scope for this document.
+- A given implementation can be optimized by suggesting peers to connect to certain others in order to avoid clustering and minimize messaging service usage. This is out of the scope for this document.
 - Since the routing service will know the status of the mesh at all times, it's easy to graph and debug network problems. 
