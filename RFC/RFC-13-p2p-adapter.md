@@ -1,0 +1,130 @@
+---
+layout: doc
+rfc: 13
+date: 2022-10-17
+title: P2P adapter with routing service
+status: DRAFT
+authors:
+  - HugoArregui
+---
+
+## Abstract
+
+This document describes a possible implementation for a p2p adapter using a routing service. For more information about what and adapter is, check [ADR-81](/ADR/ADR-81-minimum-comms-transport.md)
+
+Although this implementation requires a server, it tries to maxize the usage of p2p connections, while also keeping in mind that peers may run in a constraint enviroment (like a browser) in which not always is possible to have a lot of open connections.
+
+As defined in [ADR-81](/ADR/ADR-81-minimum-comms-transport.md), each peer  will known the ids of the peers around him thought the information provided by the CommunicationsDirector.
+
+This implementation requires two extra services (the implementator may choose to combine them in one, or even implement them as part of the [BFF](link)):
+
+- Messaging service: in charge of sending messages between specific peers.
+- Routing service: in charge of keeping track of the connections between peer and given them back routing information.
+
+The basic idea of this implementation is for peers to connect randomly to each other forming a mesh, and reporting this connections to the routing service. The routing service will build routing tables for each peer to connect to every other, and when no relay is possible between the p2p mesh, it will use the messaging service as a fallback mechanism.
+
+## Messaging service
+
+```typescript
+interface MessagingService {
+  /**
+   * The .send method is used to send the message `message` to the peer ids provided in the `to` field.
+   */
+    send(message: Uint8Array, to: string[]): void
+}
+```
+
+To establish a p2p webrtc connection, peers will exchange signals with each other using the messaging service. This service will act as a fallback when no p2p route is available to deliver a message.
+
+## Routing service
+
+```typescript
+type PeerStatus = {
+    connectedTo: string[]
+}
+
+interface RoutingService {
+  /**
+   * The .updatePeerStatus method is used to update the peer status in the service.
+   */
+    updatePeerStatus(status: PeerStatus): void
+
+  /**
+   * Event emitter (mitt) with all the events produced by the service.
+   */
+  events: Emmiter<{
+    newPeerRoutingTable: NewPeerRoutingTableEvent
+  }>
+}
+
+// A route could be a list of peer ids, or just a constant indicating the is no p2p route available
+type Route = string[] | 'no-p2p'
+
+// A map between peer id and a route
+type PeerRoutingTable = Map<string, Route>
+
+// NewRoutingTableEvent
+type NewRoutingTableEvent = {
+  // the new peer routing table
+  routingTable: PeerRoutingTable
+}
+```
+
+```mermaid
+sequenceDiagram
+    participant Peer1
+    participant Peer2
+    participant Peer3
+    participant Peer4
+    participant Peer5
+    participant MS as Messaging Service
+    participant RS as Routing Service
+
+    opt Connections are established randomly
+      Peer1->>Peer2: Initiate p2p webrtc connection
+      Peer2->>Peer1: Establish p2p webrtc connection
+
+      Peer1->>Peer3: Initiate p2p webrtc connection
+      Peer3->>Peer1: Establish p2p webrtc connection
+
+      Peer2->>Peer3: Initiate p2p webrtc connection
+      Peer3->>Peer2: Establish p2p webrtc connection
+
+      Peer3->>Peer5: Initiate p2p webrtc connection
+      Peer5->>Peer3: Establish p2p webrtc connection
+
+      Peer4->>Peer1: Initiate p2p webrtc connection
+      Peer1->>Peer4: Establish p2p webrtc connection
+    end
+
+    opt Each peer report its connections to the routing service
+      Peer1->>RS: connected to [peer2, peer3, peer4]
+      Peer2->>RS: connected to [peer1, peer3]
+      Peer3->>RS: connected to [peer1, peer2]
+      Peer4->>RS: connected to [peer1]
+      Peer5->>RS: connected to []
+    end
+    
+    opt The routing service create a routing table for each peer
+      RS->>Peer1: { peer2: [], peer3: [], peer4: [], peer5: 'no-p2p' }
+      RS->>Peer2: { peer1: [], peer3: [], peer4: [ peer1 ], peer5: 'no-p2p' }
+      RS->>Peer3: { peer1: [], peer2: [], peer4: [ peer1 ], peer5: 'no-p2p' }
+      RS->>Peer4: { peer1: [], peer2: [ peer1 ], peer3: [ peer1 ], peer5: 'no-p2p' }
+      RS->>Peer5: { peer1: 'no-p2p', peer2: 'no-p2p', peer3: 'no-p2p', peer4: 'no-p2p' }
+    end
+    
+    opt Each peer uses the routing table to send messages
+      Peer1->>Peer2: peer1 sends message directly to peer2
+      Peer2->>Peer1: peer2 sends message to peer4 thought peer1
+      Peer1->>Peer4: peer2 sends message to peer4 thought peer1
+      Peer1->>MS: peer1 sends message though messaging service to peer5
+      MS->>Peer5: peer1 sends message though messaging service to peer5
+    end
+```
+
+It's interesting to notice this proposal has some interesting properties:
+
+- Since we provide an specific routing table for each message, there is no need to expire message or count hops. If a route is cut, the message will not be delivered. 
+- The messaging service fallback provide a safety guarantee against network clusters.
+- A given implementation can be optimized by suggesting peers to connect to certain others in order to avoid clustering an minimize messaging service usage. This is out of the scope for this document.
+- Since the routing service will know the status of the mesh at all times, it's easy to graph and debug network problems. 
