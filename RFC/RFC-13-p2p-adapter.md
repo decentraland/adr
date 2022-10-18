@@ -14,7 +14,7 @@ This document describes a possible implementation for a p2p adapter using a rout
 
 Although this implementation requires a server, it tries to maxize the usage of p2p connections, while also keeping in mind that peers may run in a constraint enviroment (like a browser) in which not always is possible to have a lot of open connections.
 
-As defined in [ADR-81](/ADR/ADR-81-minimum-comms-transport.md), each peer  will known the ids of the peers around him thought the information provided by the CommunicationsDirector.
+As defined in [ADR-81](/ADR/ADR-81-minimum-comms-transport.md), each peer will known the ids of the peers around him through the information provided by the CommunicationsDirector.
 
 This implementation requires two extra services (the implementator may choose to combine them in one, or even implement them as part of the [BFF](link)):
 
@@ -115,14 +115,43 @@ sequenceDiagram
     
     opt Each peer uses the routing table to send messages
       Peer1->>Peer2: peer1 sends message directly to peer2
-      Peer2->>Peer1: peer2 sends message to peer4 thought peer1
-      Peer1->>Peer4: peer2 sends message to peer4 thought peer1
+      Peer2->>Peer1: peer2 sends message to peer4 through peer1
+      Peer1->>Peer4: peer2 sends message to peer4 through peer1
       Peer1->>MS: peer1 sends message though messaging service to peer5
       MS->>Peer5: peer1 sends message though messaging service to peer5
     end
 ```
 
-It's interesting to notice this proposal has some interesting properties:
+## Packet
+
+```typescript
+
+type Packet = {
+  source: string
+  to: Record<string, Route>
+}
+```
+
+A packet contains a source (peer id), and a map specifying to whom the packet is for and the route to follow.
+
+## Peer
+
+The peer will send a message to every known peer using the routing table, sending it once to each peer. Let's say peer1 is connected to peer2 and peer2 to peer3, when broadcasting to the network peer1 will send:
+
+```typescript
+{ 
+  source: 'peer1', 
+  to: { 'peer2': [], 'peer3': ['peer2'] }
+}
+```
+
+This means each peer will check the `to` field, if they are one of the recipent of the messages the message will be processed, otherwise it will be relayed in the way the route value indicates.
+
+Notice the peer relaying the message is not expected to remove itself either as a recipent or as a hop in the route, since this will require encoding the package again. 
+
+# Notes
+
+This proposal has some interesting properties:
 
 - Since we provide an specific routing table for each message, there is no need to expires message or count hops. If a route is cut, the message will not be delivered. 
 - The messaging service fallback provide a safety guarantee against network clusters.
