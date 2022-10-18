@@ -1,7 +1,7 @@
 ---
 layout: doc
 adr: 80
-date: 2022-08-18
+date: 2022-09-18
 title: Content entity schema
 status: ACCEPTED
 authors:

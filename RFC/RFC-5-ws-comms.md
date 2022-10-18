@@ -19,7 +19,7 @@ This document describes the minimum protocol for WebSocket/TCP based protocols.
 
 Protocol messages are serialized using protocolbuffers, this document also uses the protobuf language to specify the schemas.
 
-All messages are assumed to be broadcasted to all peers at all times. That is, there are no one-to-one messages in any topology. As a side note, optimizations on top of this protocol are possible, an example is Archipelago (ADR) which connects peers all-to-all in a island-based topology to optimize resource allocations based on phyisical (in-world) location.
+All messages are assumed to be broadcasted to all peers at all times. That is, there are no one-to-one messages in any topology. As a side note, optimizations on top of this protocol are possible, an example is Archipelago (ADR-35) which connects peers all-to-all in a island-based topology to optimize resource allocations based on phyisical (in-world) location.
 
 ```protobuf
 syntax = "proto3";
