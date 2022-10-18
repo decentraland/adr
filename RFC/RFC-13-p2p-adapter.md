@@ -23,14 +23,21 @@ This implementation requires two extra services (the implementator may choose to
 
 The basic idea of this implementation is for peers to connect randomly to each other forming a mesh, and reporting this connections to the routing service. The routing service will build routing tables for each peer to connect to every other, and when no relay is possible between the p2p mesh, it will use the messaging service as a fallback mechanism.
 
+## Definitions
+
+```typescript
+
+type Address = string
+```
+
 ## Messaging service
 
 ```typescript
 interface MessagingService {
   /**
-   * The .send method is used to send the message `message` to the peer ids provided in the `to` field.
+   * The .send method is used to send the message `message` to the peers provided in the `to` field.
    */
-    send(message: Uint8Array, to: string[]): void
+    send(message: Uint8Array, to: Address[]): void
 }
 ```
 
@@ -40,7 +47,8 @@ To establish a p2p webrtc connection, peers will exchange signals with each othe
 
 ```typescript
 type PeerStatus = {
-    connectedTo: string[]
+    room: string,
+    connectedTo: Address[]
 }
 
 interface RoutingService {
@@ -57,11 +65,13 @@ interface RoutingService {
   }>
 }
 
-// A route could be a list of peer ids, or just a constant indicating the is no p2p route available
-type Route = string[] | 'no-p2p'
+// A route is a list of peer ids. It doesn't contain the source or destination, so for example if a->b->c
+// the route between a and c is [ b ]
+// and the route between b and c is []
+type Route = Address[]
 
-// A map between peer id and a route
-type PeerRoutingTable = Map<string, Route>
+// A map between peer and a route. If a peer is missing, it means there is no direct or indirect p2p connection to the peer, so the messaging server should be used
+type PeerRoutingTable = Map<Address, Route>
 
 // NewPeerRoutingTableEvent
 type NewPeerRoutingTableEvent = {
@@ -106,11 +116,11 @@ sequenceDiagram
     end
     
     opt The routing service create a routing table for each peer
-      RS->>Peer1: { peer2: [], peer3: [], peer4: [], peer5: 'no-p2p' }
-      RS->>Peer2: { peer1: [], peer3: [], peer4: [ peer1 ], peer5: 'no-p2p' }
-      RS->>Peer3: { peer1: [], peer2: [], peer4: [ peer1 ], peer5: 'no-p2p' }
-      RS->>Peer4: { peer1: [], peer2: [ peer1 ], peer3: [ peer1 ], peer5: 'no-p2p' }
-      RS->>Peer5: { peer1: 'no-p2p', peer2: 'no-p2p', peer3: 'no-p2p', peer4: 'no-p2p' }
+      RS->>Peer1: { peer2: [], peer3: [], peer4: [] }
+      RS->>Peer2: { peer1: [], peer3: [], peer4: [ peer1 ] }
+      RS->>Peer3: { peer1: [], peer2: [], peer4: [ peer1 ] }
+      RS->>Peer4: { peer1: [], peer2: [ peer1 ], peer3: [ peer1 ] }
+      RS->>Peer5: { }
     end
     
     opt Each peer uses the routing table to send messages
@@ -127,12 +137,12 @@ sequenceDiagram
 ```typescript
 
 type Packet = {
-  source: string
-  to: Record<string, Route>
+  source: Address
+  to: Record<Address, Route>
 }
 ```
 
-A packet contains a source (peer id), and a map specifying to whom the packet is for and the route to follow.
+A packet contains a source (peer id) and map specifying to whom the packet is for and the route to follow to reach it.
 
 ## Peer
 
