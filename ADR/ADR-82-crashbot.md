@@ -1,6 +1,6 @@
 ---
 layout: doc
-adr: 81
+adr: 82
 date: 2022-09-21
 title: Crashbot
 status: ACCEPTED
@@ -55,61 +55,40 @@ stateDiagram-v2
 
 ### Endpoints
 
-- `POST /create` Creates a new incident
+- `GET /list` Returns
   ```
-  body
-  { 
-    severity: string,
-    report_date: string,
-    description: string,
-    point: string,
-    contact: string
-  }
-  ```
-
-- `PUT /update/:incident_id` Updates an existing incident
-  ```
-  body
-  { 
-    severity: string, (optional)
-    report_date: string, (optional)
-    description: string, (optional)
-    point: string, (optional)
-    contact: string, (optional)
-    resolution_eta: string, (optional)
-    rca_link: string (optional)
-  }
-  ```
-- `PUT /close/:incident_id` Closes an existing incident
-  ```
-  body
-  { 
-    resolution_eta: string,
-    rca_link: string (optional)
-  }
-  ```
-
-- `GET /list` Returns a 
-  ```
-  response
   {
     open: [
       {
+        id: number,
+        update_number: number,
+        modified_at: string,
+        modified_by: string
+        reported_at: string,
+        closed_at: string,
+        status: string,
         severity: string,
-        report_date: string,
+        title: string,
         description: string,
         point: string,
-        contact: string
+        contact: string,
+        rca_link: string
       }
     ],
     closed: [
       {
+        id: number,
+        update_number: number,
+        modified_at: string,
+        modified_by: string
+        reported_at: string,
+        closed_at: string,
+        status: string,
         severity: string,
-        report_date: string,
+        title: string,
         description: string,
         point: string,
         contact: string,
-        resolution_eta: string,
         rca_link: string
       }
     ]
