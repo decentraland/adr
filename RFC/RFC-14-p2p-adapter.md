@@ -1,6 +1,6 @@
 ---
 layout: doc
-rfc: 13
+rfc: 14
 date: 2022-10-17
 title: P2P adapter with routing service
 status: DRAFT
