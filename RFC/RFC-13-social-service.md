@@ -59,15 +59,47 @@ sequenceDiagram
 
 <b>Fig 1.1 Flow of sending a message, social service as proxy with business logic</b>
 
-![friendship-flow](img/rfc-13/fig1.2.svg)
+```mermaid
+sequenceDiagram
+    participant Social client
+    participant Social client 2
+    participant Social service
+    participant Matrix
+
+    Social client ->> Social service: Add friend (new friend request)
+    Social service ->> Social client 2 : New request from user 1
+    Social client 2 ->> Social service: Accept friendship
+    Social service -->> Social client: User 2 accepted friendship
+    Social service ->> Matrix: create room
+```
 
 <b>Fig 1.2 Simplified flow of a friendship</b>
 
-![create-channel](img/rfc-13/fig1.3.svg)
+```mermaid
+sequenceDiagram
+    participant Social client
+    participant Social service
+    participant Matrix
+
+    Social client ->> Social service: Create channel
+    Note over Social service: Verify max channels allowed
+    Social service ->> Matrix: create room
+    Matrix -->> Social service: roomId
+    Social service -->> Social client: roomId
+```
 
 <b>Fig 1.3 Simplified flow of a creating a channel (success case)</b>
 
-![create-channel-failure](img/rfc-13/fig1.4.svg)
+```mermaid
+sequenceDiagram
+    participant Social client
+    participant Social service
+    participant Matrix
+
+    Social client ->> Social service: Create channel
+    Note over Social service: Max channels was reached
+    Social service -->> Social client: 400 Max reached
+```
 
 <b>Fig 1.4 Simplified flow of a creating a channel (failure case)</b>
 
@@ -77,7 +109,15 @@ The communication between the social client and the new Social service will be i
 
 The friendships and friendship requests will be stored in a database managed by us.
 
-![architecture](img/rfc-13/architecture.svg)
+```mermaid
+graph LR
+    A[Kernel] -.-  B(Proxy)
+    B --> D[Social Service]
+    B --> C[Matrix instance]
+    D[Social Service] --> C[Matrix instance]
+    D[Social Service] --> E[Relational Friendships DB]
+    D[Social Service] --> F[KV Requests DB]
+```
 
 When a request doesn’t have any business logic on our side, it should reach Matrix directly, otherwise it will first go to the new service.
 
