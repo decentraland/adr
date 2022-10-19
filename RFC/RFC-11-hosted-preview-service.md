@@ -14,7 +14,7 @@ This document describes how a Scene Preview Service can be created using minimal
 
 # Introduction
 
-Today users that don't own a land or are not ready to push their content to production need to use a Heroku application container to be able to preview and share a scene with different stakeholders. This solution requires some extra configuration steps and, on the other hand, it will stop being free according to the [latest Heroku news](https://blog.heroku.com/next-chapter). To ease the life of the content creators, a new scene preview server will be created, leveraging the same steps than when uploading content to the Catalyst network and enabling an easy way to validate and experience the content before it is finally uploaded to the Genesis City.  
+Today users that don't own a LAND or are not ready to push their content to production need to use a Heroku application container to be able to preview and share a scene with different stakeholders. This solution requires some extra configuration steps and, on the other hand, it will stop being free according to the [latest Heroku news](https://blog.heroku.com/next-chapter). To ease the life of the content creators, a new scene preview server will be created, leveraging the same steps than when uploading content to the Catalyst network and enabling an easy way to validate and experience the content before it is finally uploaded to the Genesis City.  
  
 ## Approach
 
@@ -25,10 +25,10 @@ The solution for the scenes preview will be done in stages
 Create a BETA program where the technical feasibility of the project can be evaluated and test the experience from the content creators perspective.  
 
 Scope of the BETA: 
-- Open to users owning a Decentraland name 
-- Only one scene per Decentraland name would be allowed 
+- Open to users owning a Decentraland NAME 
+- Only one scene per Decentraland NAME would be allowed 
 - Scenes deployment to the preview server will have the same disk space limitations than the Content Servers hosted on the Catalyst network 
-- Besides scene size and owning a name, no other validations will be made as this is just a preview
+- Besides scene size and owning a NAME, no other validations will be made as this is just a preview
 - Explorer mini map won't be displayed
 - Explorer skybox light can be set up for the scene
 - Display a Jump to Genesis Ctity button to leave the scene preview 
@@ -67,19 +67,31 @@ In order to run, the Client needs to connect to a Realm. In this case, the Previ
 
 
 This way the Client will load:
-- The scene from `configurations.scenesUrl` downloading the URNs from `configurations.scenesURNs`
+- The URNs from `configurations.scenesUrn`
 - The wearables from `content.publicUrl`
 - The profiles from `lambdas.publicUrl`
-- The Communications Server through BFF from `bff.publicUrl`
-- The minimap configuration (via scene.json) from `configurations.minimap`
+- The minimap configuration from `configurations.minimap` (loaded from the scene.json) 
 
-##### `configurations.minimap` schema
+Example:
 
-```typescript
-type MiniMapConfiguration = {
-  enabled: boolean
-  dataImage?: string   // defaults to https://api.decentraland.org/v1/minimap.png
-  estateImage?: string // defaults to https://api.decentraland.org/v1/estateimap.png
+```json
+{
+ "healthy": true,
+ "configurations": {
+  "networkId": 1,
+  "globalScenesUrn": [],
+  "scenesUrn": [
+  "urn:decentraland:entity:bafkreifdgd7qccas3r2tywzgzo74mpr4i3vcq?baseUrl=https://worlds-content-server.decentraland.org/ipfs/"
+  ]
+ },
+ "content": {
+  "healthy": true,
+  "publicUrl": "https://peer.decentraland.org/content"
+ },
+ "lambdas": {
+  "healthy": true,
+  "publicUrl": "https://peer.decentraland.org/lambdas"
+ }
 }
 ```
 
@@ -91,11 +103,17 @@ To accomplish this, a new `worldConfiguration` field should be added to the `sce
 **scene.json**
 ```json 
 "worldConfiguration" : {
-     "skybox" : "time"
-     "miniMapVisible" : "false"
+     "skybox" : 36000
+     "minimapVisible" : false
 }
 ```
 
+`skybox`: This property indicates how many seconds have passed (in Decentraland time) since the start of the day, assuming the full cycle lasts 24 hours. Divide the seconds value by 60 to obtain minutes, and by 60 again to obtain the hours since the start of the day. For example, if the seconds value is 36000, it corresponds to 10 AM.
+
+`minimapVisible`: this boolean property will determine whether or not to show the Genesis City mini map when loading the scene. 
+
+These properties will only be processed by the Hosted Scene preview service and be ignored if they are present in any scene deployed to the Genesis City.
+ 
 
 ![mini-map](img/rfc-11/minimap.png)
 
