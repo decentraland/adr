@@ -149,6 +149,39 @@ the client / user? How does the unique approach yield unique customer benefits?
 
 It would reduce the coupling between components and enable better loading UX in the renderers.
 
+## Proposal
+
+The following requirements are necessary to complete the RFC:
+
+1. Feature-Flag
+- A feature flag will be created to have both systems coexisting during some time. Depending on the state of the flag, a plugin will be instantiated and the messages from LoadingBridge will be ignored.
+- Since all loading is controlled from LoadingBridge, ignoring the messages should be enough to stop using that path. It’s not necessary to destroy current components for the plugin to work.
+- In kernel side, new messages will be added, and this won’t be incompatible with the current flow.
+
+2. TELEPORTING - RENDERER
+- Replace Loading Bridge, LoadingHUDController and LoadingFeedbackController. Combine them all intro a LoadingScreen plugin.
+- The LoadingPlugin is going to instantiate the LoadingView.
+- The LoadingScreen plugin will show the loading screen before initiating a teleport with the kernel. Once it started, it’s going to listen to the state of sceneController to update its own messages, load percentage, and visibility.
+- Delete unnecessary data stores. For CommonScriptableObjects, isLoadingHUDOpen. For DataStore.HUDs.loadingHUD: fadeIn, fadeout, visible.
+- Move tips control to renderer. Tips will only be shown on first load.
+- Move message setter to renderer. 
+- Add /goto chat message analysis in Renderer. We need to know that a teleport is going to be triggered before we trigger it, as we need to show the loading screen first.
+- Suscribe the CameraController state to listen to the LoadingScreen plugin state. This will make the ActivateRendering message obsolete. 
+- If teleport destination is already loaded, trigger the teleport without showing the loading screen.
+
+3. TELEPORTING – KERNEL
+- All teleport logic will be removed from Kernel. We would not rely anymore on the isLoadingScreenVisible() method in kernel to update the state of the LoadingScreen.
+
+
+3.  SIGN UP FLOW – KERNEL
+- Add a message that determines if the Avatar Creation is necessary. Show the avatar creation flow or move directly to Teleport Home according to the necessity.
+- The method isRendererVisible() will become obsolote by implementing this message
+
+4. SIGN IN FLOW – RENDERER
+- The loading screen should start on by default, and act accordingly to the first kernel message.
+- The loading screen should listen to the state of AvatarCreation and T&C change. Once complete, it should call for a teleport to home position, which would follow the same flow as teleportation.
+
+
 ## Competition
 
 <!--
