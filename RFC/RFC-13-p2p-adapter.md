@@ -43,6 +43,8 @@ interface MessagingService {
 
 To establish a p2p webrtc connection, peers will exchange signals with each other using the messaging service. This service will act as a fallback when no p2p route is available to deliver a message.
 
+This service has same level of trust than any peer in the network, this means it has no specific authentication requirements, and any trust feature has to be built in the message itself. That been said implementators may choose to add some extra validation when doing high level clustering (like [real-time clustering of users in Islands (ADR-35)](/adr/ADR-35)), for clusters to remain isolated.
+
 ## Routing service
 
 ```typescript
@@ -52,10 +54,11 @@ type PeerStatus = {
 }
 
 interface RoutingService {
+
   /**
    * The .updatePeerStatus method is used to update the peer status in the service.
    */
-    updatePeerStatus(status: PeerStatus): void
+   updatePeerStatus(status: PeerStatus): void
 
   /**
    * Event emitter (mitt) with all the events produced by the service.
@@ -80,6 +83,70 @@ type NewPeerRoutingTableEvent = {
 }
 ```
 
+### Peers establish random connections with their known peers.
+
+```mermaid
+sequenceDiagram
+    participant Peer1
+    participant Peer2
+    participant Peer3
+    participant Peer4
+    participant Peer5
+
+    Peer1->>Peer2: Initiate p2p webrtc connection
+    Peer2->>Peer1: Establish p2p webrtc connection
+
+    Peer1->>Peer3: Initiate p2p webrtc connection
+    Peer3->>Peer1: Establish p2p webrtc connection
+
+    Peer2->>Peer3: Initiate p2p webrtc connection
+    Peer3->>Peer2: Establish p2p webrtc connection
+
+    Peer3->>Peer5: Initiate p2p webrtc connection
+    Peer5->>Peer3: Establish p2p webrtc connection
+
+    Peer4->>Peer1: Initiate p2p webrtc connection
+    Peer1->>Peer4: Establish p2p webrtc connection
+```
+
+### Each peer report its connections to the routing service
+
+```mermaid
+sequenceDiagram
+    participant Peer1
+    participant Peer2
+    participant Peer3
+    participant Peer4
+    participant Peer5
+    participant RS as Routing Service
+
+    Peer1->>RS: connected to [peer2, peer3, peer4]
+    Peer2->>RS: connected to [peer1, peer3]
+    Peer3->>RS: connected to [peer1, peer2]
+    Peer4->>RS: connected to [peer1]
+    Peer5->>RS: connected to []
+```
+
+### The routing service create a routing table for each peer
+
+```mermaid
+sequenceDiagram
+    participant Peer1
+    participant Peer2
+    participant Peer3
+    participant Peer4
+    participant Peer5
+    participant RS as Routing Service
+
+    RS->>Peer1: { peer2: [], peer3: [], peer4: [] }
+    RS->>Peer2: { peer1: [], peer3: [], peer4: [ peer1 ] }
+    RS->>Peer3: { peer1: [], peer2: [], peer4: [ peer1 ] }
+    RS->>Peer4: { peer1: [], peer2: [ peer1 ], peer3: [ peer1 ] }
+    RS->>Peer5: { }
+```
+
+### Each peer uses the routing table to send messages
+
 ```mermaid
 sequenceDiagram
     participant Peer1
@@ -88,48 +155,15 @@ sequenceDiagram
     participant Peer4
     participant Peer5
     participant MS as Messaging Service
-    participant RS as Routing Service
 
-    opt Connections are established randomly
-      Peer1->>Peer2: Initiate p2p webrtc connection
-      Peer2->>Peer1: Establish p2p webrtc connection
-
-      Peer1->>Peer3: Initiate p2p webrtc connection
-      Peer3->>Peer1: Establish p2p webrtc connection
-
-      Peer2->>Peer3: Initiate p2p webrtc connection
-      Peer3->>Peer2: Establish p2p webrtc connection
-
-      Peer3->>Peer5: Initiate p2p webrtc connection
-      Peer5->>Peer3: Establish p2p webrtc connection
-
-      Peer4->>Peer1: Initiate p2p webrtc connection
-      Peer1->>Peer4: Establish p2p webrtc connection
-    end
-
-    opt Each peer report its connections to the routing service
-      Peer1->>RS: connected to [peer2, peer3, peer4]
-      Peer2->>RS: connected to [peer1, peer3]
-      Peer3->>RS: connected to [peer1, peer2]
-      Peer4->>RS: connected to [peer1]
-      Peer5->>RS: connected to []
-    end
-    
-    opt The routing service create a routing table for each peer
-      RS->>Peer1: { peer2: [], peer3: [], peer4: [] }
-      RS->>Peer2: { peer1: [], peer3: [], peer4: [ peer1 ] }
-      RS->>Peer3: { peer1: [], peer2: [], peer4: [ peer1 ] }
-      RS->>Peer4: { peer1: [], peer2: [ peer1 ], peer3: [ peer1 ] }
-      RS->>Peer5: { }
-    end
-    
-    opt Each peer uses the routing table to send messages
       Peer1->>Peer2: peer1 sends message directly to peer2
       Peer2->>Peer1: peer2 sends message to peer4 through peer1
       Peer1->>Peer4: peer2 sends message to peer4 through peer1
-      Peer1->>MS: peer1 sends message though messaging service to peer5
-      MS->>Peer5: peer1 sends message though messaging service to peer5
-    end
+
+      opt peer1 sends message though messaging service to peer5
+        Peer1->>MS: peer1 sends message though messaging service to peer5
+        MS->>Peer5: peer1 sends message though messaging service to peer5
+      end
 ```
 
 ## Packet
@@ -159,11 +193,20 @@ This means each peer will check the `to` field, if they are one of the recipent 
 
 Notice the peer relaying the message is not expected to remove itself either as a recipent or as a hop in the route, since this will require encoding the package again. 
 
+# Example scenarios
+
+TODO 
+
 # Notes
 
 This proposal has some interesting properties:
 
-- Since we provide an specific routing table for each message, there is no need to expires message or count hops. If a route is cut, the message will not be delivered. 
+- Since we provide an specific routing table for each message, there is no need to expires message or count hops. If a route is cut, the message will not be delivered by the mesh, this means the message should be discarded or use the messaging service fallback instead.
 - The messaging service fallback provide a safety guarantee against network clusters.
 - A given implementation can be optimized by suggesting peers to connect to certain others in order to avoid clustering and minimize messaging service usage. This is out of the scope for this document.
 - Since the routing service will know the status of the mesh at all times, it's easy to graph and debug network problems. 
+
+
+# Challenges
+
+TODO
