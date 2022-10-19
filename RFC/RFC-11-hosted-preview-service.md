@@ -83,7 +83,7 @@ Example:
   "scenesUrn": [
   "urn:decentraland:entity:bafkreifdgd7qccas3r2tywzgzo74mpr4i3vcq?baseUrl=https://worlds-content-server.decentraland.org/ipfs/"
   ],  
-  "city_loader_content_server": "https://worlds-content-server.decentraland.org"
+  "city_loader_content_server": ""
  },
  "content": {
   "healthy": true,
