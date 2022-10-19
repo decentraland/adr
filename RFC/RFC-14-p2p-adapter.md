@@ -225,9 +225,7 @@ Reference implementation:
 type Route = string[] | 'server'
 type PeerRoutingTable = Map<string, Route>
 
-const mesh = new Map<string, Set<string>>()
-
-function calculateRoutingTables() {
+function calculateRoutingTables(mesh: Map<string, Set<string>>) {
   const routingTables = new Map<string, PeerRoutingTable>()
 
   const getOrCreateRoutingTable = (peerId: string) => {
@@ -276,6 +274,15 @@ function calculateRoutingTables() {
     // NOTE: routes are bidirectional
     getOrCreateRoutingTable(toPeer).set(fromPeer, route === 'server' ? route : Array.from(route).reverse())
     return route
+  }
+
+  const peers = new Set<string>()
+
+  for (const [peer, connections] of mesh) {
+    peers.add(peer)
+    for (const connection of connections) {
+      peers.add(connection)
+    }
   }
 
   for (const peerFrom of peers) {
