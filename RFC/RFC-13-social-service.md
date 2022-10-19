@@ -49,7 +49,13 @@ Further detail can be addressed to satisfy comments and increase clarity.
 -->
 
 We propose to have a new service that will maintain every current feature of the chat but will also have support for the social features, for chat features it will work as a proxy but will first apply any business logic designed by us.
-![social-service-as-proxy](img/rfc-13/fig1.1.svg)
+
+```mermaid
+sequenceDiagram
+    Social client ->> Social service: send message to user 2
+    Note over Social service: Verify user 2 hasn't blocked owner
+    Social service ->> Matrix: send message
+```
 
 <b>Fig 1.1 Flow of sending a message, social service as proxy with business logic</b>
 
@@ -113,7 +119,7 @@ Due to the service being critical for communication between the users, it will n
 
 We will need to refactor the dcl-social-client since we won’t be using the full scope of the matrix or some methods might change. On the kernel side there shouldn’t be too many changes since the API is abstracted via the client.
 
-An important thing to note about this service
+An important thing to note about this service is that it won't be decentralized to protect user data, we will enable the community to run their own instance of the social service and chat so that they are able to own and choose from the explorer whose server they want their data to be stored in.
 
 ## Benefit
 
