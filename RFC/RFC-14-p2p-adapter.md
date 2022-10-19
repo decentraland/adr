@@ -99,14 +99,11 @@ sequenceDiagram
     Peer1->>Peer3: Initiate p2p webrtc connection
     Peer3->>Peer1: Establish p2p webrtc connection
 
+    Peer1->>Peer4: Initiate p2p webrtc connection
+    Peer4->>Peer1: Establish p2p webrtc connection
+
     Peer2->>Peer3: Initiate p2p webrtc connection
     Peer3->>Peer2: Establish p2p webrtc connection
-
-    Peer3->>Peer5: Initiate p2p webrtc connection
-    Peer5->>Peer3: Establish p2p webrtc connection
-
-    Peer4->>Peer1: Initiate p2p webrtc connection
-    Peer1->>Peer4: Establish p2p webrtc connection
 ```
 
 ### Each peer report its connections to the routing service
@@ -142,7 +139,7 @@ sequenceDiagram
     RS->>Peer2: { peer1: [], peer3: [], peer4: [ peer1 ] }
     RS->>Peer3: { peer1: [], peer2: [], peer4: [ peer1 ] }
     RS->>Peer4: { peer1: [], peer2: [ peer1 ], peer3: [ peer1 ] }
-    RS->>Peer5: { }
+    RS->>Peer5: {}
 ```
 
 ### Each peer uses the routing table to send messages
@@ -156,14 +153,17 @@ sequenceDiagram
     participant Peer5
     participant MS as Messaging Service
 
-      Peer1->>Peer2: peer1 sends message directly to peer2
+    Peer1->>Peer2: peer1 sends message directly to peer2
+
+    opt peer2 sends message to peer4 through peer1
       Peer2->>Peer1: peer2 sends message to peer4 through peer1
       Peer1->>Peer4: peer2 sends message to peer4 through peer1
+    end
 
-      opt peer1 sends message though messaging service to peer5
-        Peer1->>MS: peer1 sends message though messaging service to peer5
-        MS->>Peer5: peer1 sends message though messaging service to peer5
-      end
+    opt peer1 sends message though messaging service to peer5
+      Peer1->>MS: peer1 sends message though messaging service to peer5
+      MS->>Peer5: peer1 sends message though messaging service to peer5
+    end
 ```
 
 ## Packet
