@@ -195,7 +195,27 @@ Notice the peer relaying the message is not expected to remove itself either as 
 
 # Example scenarios
 
-TODO 
+## A connection is lost while relaying a package
+
+Let's assume the mesh is connected as: `peer1 <-> peer2 <-> peer3<->p4`, and peer1 needs to send a message to peer4
+
+```mermaid
+sequenceDiagram
+    participant Peer1
+    participant Peer2
+    participant Peer3
+    participant Peer4
+    participant MS as Messaging Service
+    participant RS as Routing Service
+
+    Peer1->>Peer2: send message to relay to peer3
+
+    Note over Peer3: peer3 is disconnected
+
+    Peer2->>RS: update status: lost connection to peer3
+    Peer2->>MS: relay this message to peer4
+
+```
 
 # Notes
 
