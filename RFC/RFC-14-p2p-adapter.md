@@ -11,7 +11,7 @@ authors:
 
 ## Abstract
 
-This document describes a possible implementation for a P2P adapter using a fallback messaging service. For more information about what and adapter is, check [ADR-81](/ADR/ADR-81-minimum-comms-transport.md).
+This document describes a possible implementation for a P2P adapter using a fallback messaging service. For more information about what an adapter is, check [ADR-81](/ADR/ADR-81-minimum-comms-transport.md).
 
 ## Need
 
