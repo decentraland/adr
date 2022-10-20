@@ -26,7 +26,7 @@ This implementation requires two extra services:
 - Messaging service: in charge of sending messages between specific peers.
 - Routing service: in charge of keeping track of the connections between peers and providing them routing information.
 
-As defined in [ADR-81](/ADR/ADR-81-minimum-comms-transport.md), each peer will known the ids of the peers around them using the information provided by the CommunicationsDirector.
+As defined in [ADR-81](/ADR/ADR-81-minimum-comms-transport.md), each peer will know the ids of the peers around them using the information provided by the `CommunicationsDirector`.
 
 The basic idea of this implementation is for peers to connect randomly to each other forming a mesh, and reporting their connections to the routing service. The routing service will build routing tables for each peer to connect to every other. Each peer will receive from the routing service the path to all other conected peers. When a peer delivers a message, it will use the path provided by the routing table, and if there is no one, it will fallback to the messaging service.
 
