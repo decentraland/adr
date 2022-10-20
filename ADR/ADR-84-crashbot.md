@@ -48,7 +48,7 @@ stateDiagram-v2
     Server --> StatusPage
 ```
 
-1. SupportTeam communicate to the service via commands in a slack app like `/create`, `/update` and `/close`.
+1. SupportTeam communicate to the service via commands in a slack app like `/create-incident` and `/update-incident`.
 2. Slack app calls the corresponding server's endpoint
 3. Server updates the database
 4. Status page hits server's endpoint `/list` and receives a json to populate
