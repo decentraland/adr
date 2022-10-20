@@ -339,7 +339,7 @@ Notice the peer relaying the message is not expected to remove itself either as 
 
 # Non-goals
 
-- The route representation is not as efficient as it could be, since uses Address (string) as a peer identification. This should be possible to improve, by assiging numeric alias for every peer. However, detailing how to do that is out of the scope of this document, and doesn't change the overall proposed solution.
+- The route representation is not as efficient as it could be, since it uses `Address` (string) as a peer identification. This should be possible to improve, by assigning a numeric alias to every peer. However, detailing how to do that is out of the scope of this document, and doesn't change the overall proposed solution.
 
 # Key dependencies and Open questions
 
