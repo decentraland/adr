@@ -343,6 +343,6 @@ Notice the peer relaying the message is not expected to remove itself either as 
 
 # Key dependencies and Open questions
 
-- Why not let each peer calculate the best routing table, by broadcasting each peer status to the network?.
+- Why not let each peer calculate the best routing table, by broadcasting each peer status to the network?
   - This solution will consume a lot of resources from each client, since the table needs to be updated (or verified) every time there is a change.
   - This solution is somehow more difficult to debug, since routing tables have no source of truth, and different peers may build them differently. 
