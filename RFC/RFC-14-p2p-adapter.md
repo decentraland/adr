@@ -329,7 +329,7 @@ Notice the peer relaying the message is not expected to remove itself either as 
 # Benefits
 
 - Since there is a specific routing table for each message, there is no need to expire message or count hops. If a route is cut, the message will not be delivered by the mesh, this means the message should be relayed using the messaging service (if reliable) or discarded (if unreliable).
-- The messaging service fallback provide a safety guarantee against network clusters.
+- The messaging service fallback provide a safety guarantee against network cluster partitions.
 - A given implementation can be optimized by suggesting peers to connect to certain others in order to avoid clustering and minimize messaging service usage. This is out of the scope for this document.
 - Since the routing service will know the status of the mesh at all times, it's easy to graph and debug network problems. 
 
