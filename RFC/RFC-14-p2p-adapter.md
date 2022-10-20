@@ -24,7 +24,7 @@ This approach is simple, it should be easy to debug and it could be refined in t
 This implementation requires two extra services:
 
 - Messaging service: in charge of sending messages between specific peers.
-- Routing service: in charge of keeping track of the connections between peer and given them back routing information.
+- Routing service: in charge of keeping track of the connections between peers and providing them routing information.
 
 As defined in [ADR-81](/ADR/ADR-81-minimum-comms-transport.md), each peer will known the ids of the peers around them using the information provided by the CommunicationsDirector.
 
