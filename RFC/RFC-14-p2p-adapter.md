@@ -28,7 +28,7 @@ This implementation requires two extra services:
 
 As defined in [ADR-81](/ADR/ADR-81-minimum-comms-transport.md), each peer will know the ids of the peers around them using the information provided by the `CommunicationsDirector`.
 
-The basic idea of this implementation is for peers to connect randomly to each other forming a mesh, and reporting their connections to the routing service. The routing service will build routing tables for each peer to connect to every other. Each peer will receive from the routing service the path to all other conected peers. When a peer delivers a message, it will use the path provided by the routing table, and if there is no one, it will fallback to the messaging service.
+The basic idea of this implementation is for peers to connect randomly to a subset of the others forming a mesh, and reporting their connections to the routing service. The routing service will build routing tables for each peer to connect to every other. Each peer will receive from the routing service the path to all other connected peers. When a peer needs to deliver a message, it will use the path provided by the routing table, and if there is not any, it will fallback to the messaging service.
 
 Although this implementation requires a server, it tries to maximize the usage of P2P connections, while also keeping in mind that peers may run in a constraint enviroment (like a browser) in which not always is possible to have a lot of open connections.
 
