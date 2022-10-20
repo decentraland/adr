@@ -1,6 +1,6 @@
 ---
 layout: doc
-adr: 82
+adr: 84
 date: 2022-09-21
 title: Crashbot
 status: ACCEPTED
@@ -63,7 +63,6 @@ stateDiagram-v2
         id: number,
         update_number: number,
         modified_at: string,
-        modified_by: string
         reported_at: string,
         closed_at: string,
         status: string,
@@ -80,7 +79,6 @@ stateDiagram-v2
         id: number,
         update_number: number,
         modified_at: string,
-        modified_by: string
         reported_at: string,
         closed_at: string,
         status: string,
