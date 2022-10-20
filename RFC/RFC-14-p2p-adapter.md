@@ -30,7 +30,7 @@ As defined in [ADR-81](/ADR/ADR-81-minimum-comms-transport.md), each peer will k
 
 The basic idea of this implementation is for peers to connect randomly to a subset of the others forming a mesh, and reporting their connections to the routing service. The routing service will build routing tables for each peer to connect to every other. Each peer will receive from the routing service the path to all other connected peers. When a peer needs to deliver a message, it will use the path provided by the routing table, and if there is not any, it will fallback to the messaging service.
 
-Although this implementation requires a server, it tries to maximize the usage of P2P connections, while also keeping in mind that peers may run in a constraint enviroment (like a browser) in which not always is possible to have a lot of open connections.
+Although this implementation requires a server, it tries to maximize the usage of P2P connections, while also keeping in mind that peers may run in a constrained environment (like a browser) in which it is not always possible to have a lot of open connections.
 
 ## Flow example
 
