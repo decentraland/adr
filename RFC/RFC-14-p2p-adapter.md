@@ -335,7 +335,7 @@ Notice the peer relaying the message is not expected to remove itself either as 
 
 # Competition (alternatives)
 
-- One simple solution using a P2P mesh, in which peers broadcast to others, and upon receiving a message, they relay to their connections. The problem with this solution is there is the possibility of messages going thought the network after the same message is deliver, which implies the need to build a mechanism to discard old messages (using time or hops). Another problem is the possibility of clusters in the mesh, which may cause certain group of peers, to not see the ones in another group.
+- One simple solution using a P2P mesh, in which peers broadcast to others, and upon receiving a message, they relay to their connections. The problem with this solution is there is the possibility of messages going thought the network after the same message is delivered, which implies the need to build a mechanism to discard old messages (using time or hops). Another problem is the possibility of clusters in the mesh, which may cause certain group of peers to not see the ones in another group (partitioned).
 
 # Non-goals
 
