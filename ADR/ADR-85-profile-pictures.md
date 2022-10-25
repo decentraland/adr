@@ -24,7 +24,9 @@ Retrieving a profile image from the Catalysts implies knowing which is the file 
 The first option implies a huge impact on performance and user experience because it has to wait for all users to resolve their profiles in order to display the information.
 The second option implies the possibility of inconsistencies. It introduces a complex logic in the Kernel that is hard to maintain and doesn't guarantee the existence of the image.
 
-The decision is to implement an HTTP endpoint that given a user address it returns the corresponding image from the Catalysts. It can also be re-used by other systems.
+The decision is to implement an HTTP endpoint that given a user address it returns the corresponding image from the Catalysts. It can also be re-used by other systems:
+
+`GET https://synapse.decentraland.org/profile-pictures/{address}`
 
 ## Status
 
