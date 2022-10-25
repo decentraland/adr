@@ -55,7 +55,7 @@ Collections are generic smart contracts that are designed to fulfill a wide vari
 
 ### DAO
 
-Historically, there was many implementations of governance apps for Decentraland. Starting with [Agora](https://agora.decentraland.org "Agora, the first governance app") (off-chain signatures), then Aragon and lastly a [snapshot-based](https://snapshot.org/#/snapshot.dcl.eth). Nowadays, the governance process happens entirely in the [Governance App](https://governance.decentraland.org/ "Decentraland DAO") and on-chain proposals are enacted using Aragon by the [DAO Committee](https://governance.decentraland.org/transparency). Their principal responsibility is to enact binding proposals on-chain like listing Point of Interests, sending Grants, and any other operations involving the DAO's smart contracts.
+Historically, there were many implementations of governance apps for Decentraland. Starting with [Agora](https://agora.decentraland.org "Agora, the first governance app") (off-chain signatures), then Aragon and lastly a [snapshot-based](https://snapshot.org/#/snapshot.dcl.eth). Nowadays, the governance process happens entirely in the [Governance App](https://governance.decentraland.org/ "Decentraland DAO") and on-chain proposals are enacted using Aragon by the [DAO Committee](https://governance.decentraland.org/transparency). Their principal responsibility is to enact binding proposals on-chain like listing Point of Interests, sending Grants, and any other operations involving the DAO's smart contracts.
 
 ## Content layer
 
@@ -89,7 +89,7 @@ Entities are immutable. That means that if any of these properties were to chang
 
 ### Pointers
 
-The identifier of the entity is named `pointer`, a unique string. A pointer is a human readable "shortcut" to the entity, i.e. the [`0,0`](https://peer.decentraland.org/content/entities/scenes?pointer=0,0) is the pointer representation of a LAND associated to an scene.
+The identifier of the entity is named `pointer`, a unique string. A pointer is a human readable "shortcut" to the entity, i.e. the [`0,0`](https://peer.decentraland.org/content/entities/scenes?pointer=0,0) is the pointer representation of a LAND associated to a scene.
 
 Every time an entity is deployed and accepted by the network, the pointers for that entity will now point to the newest entity for that set of pointers. That is the mechanism used to change the content of the land, wearables and emotes, the entity with the biggest timestamp is the one considered as active.
 
