@@ -8,7 +8,7 @@ authors:
 - hugoarregui
 - marianogoldman
 - menduz
-status: DRAFT
+status: ACCEPTED
 ---
 
 # Abstract

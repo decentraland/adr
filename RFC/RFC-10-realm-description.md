@@ -7,7 +7,7 @@ authors:
 - agusaldasoro
 - hugoarregui
 - menduz
-status: DRAFT
+status: ACCEPTED
 ---
 
 # Abstract

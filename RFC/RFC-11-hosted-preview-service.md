@@ -5,7 +5,7 @@ date: 2022-09-28
 title: Scene Preview Server
 authors:
 - pentreathm
-status: DRAFT
+status: ACCEPTED
 ---
 
 # Abstract
