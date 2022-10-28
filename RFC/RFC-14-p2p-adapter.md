@@ -60,6 +60,15 @@ sequenceDiagram
     Peer3->>Peer2: Establish P2P webrtc connection
 ```
 
+```mermaid
+  graph TD;
+      Peer1---Peer2;
+      Peer1---Peer3;
+      Peer1---Peer4;
+      Peer2---Peer3;
+```
+
+
 ### 2. Each peer report its connections to the routing service
 
 ```mermaid
@@ -80,7 +89,7 @@ sequenceDiagram
 
 ### 3. The routing service create a routing table for each peer
 
-It is a list of all the needed paths so all the network can be notified by the message. As every message is a broadcast, each peer needs to know the smallest set of paths that covers all the nodes. It will also notify the unreachable nodes, so the peer can do the relay by the Messaging Service.
+It is a list of all the needed paths so all the network can be notified by the message. As every message is a broadcast, each peer needs to know the smallest set of paths that covers all the nodes. It will also notify the unreachable nodes, so the peer can do the relay by the Messaging Service. To calculate all the unreachable nodes, each peer will make a diff of the complete list of kwnon hosts against to all the nodes mentioned in all the paths.
 
 ```mermaid
 sequenceDiagram
@@ -91,12 +100,49 @@ sequenceDiagram
     participant Peer5
     participant RS as Routing Service
 
-    RS->>Peer1: { paths: [ [1, 2], [1, 3], [1, 4] ], unreachable: [5] }
-    RS->>Peer2: { paths: [ [2, 1, 4], [2, 3] }, unreachable: [5] }
-    RS->>Peer3: { paths: [ [3, 1, 4], [3, 2] }, unreachable: [5] }
-    RS->>Peer4: { paths: [ [4, 1, 2, 3] }, unreachable: [5] }
-    RS->>Peer5: { paths: [], unreachable: [1, 2, 3, 4] }
+    RS->>Peer1: { paths: [ [1, 2], [1, 3], [1, 4] ] }
+    RS->>Peer2: { paths: [ [2, 1, 4], [2, 3] } }
+    RS->>Peer3: { paths: [ [3, 1, 4], [3, 2] } }
+    RS->>Peer4: { paths: [ [4, 1, 2, 3] } }
+    RS->>Peer5: { paths: [] }
 ```
+
+```mermaid
+  graph TD;
+      Peer1---Peer2;
+      Peer1---Peer3;
+      Peer1---Peer4;
+      Peer2---Peer3;
+```
+Routes for Peer1
+```mermaid
+  graph TD;
+      Peer1-->Peer2;
+      Peer1-->Peer3;
+      Peer1-->Peer4;
+```
+Routes for Peer2
+```mermaid
+  graph TD;
+      Peer2-->Peer1;
+      Peer1-->Peer4;
+      Peer2-->Peer3;
+```
+Routes for Peer3
+```mermaid
+  graph TD;
+      Peer3-->Peer1;
+      Peer1-->Peer4;
+      Peer3-->Peer2;
+```
+Routes for Peer3
+```mermaid
+  graph TD;
+      Peer4-->Peer1;
+      Peer1-->Peer2;
+      Peer2-->Peer3;
+```
+Empty routes for Peer5
 
 ### Peer2 sends a message
 
@@ -123,24 +169,24 @@ sequenceDiagram
 
     Peer2->>Peer1: peer2 sends message directly to peer1
     Peer2->>Peer3: peer2 sends message directly to peer3
-    Peer2->>MS: peer2 sends message though messaging service to peer5
+    Peer2->>MS: peer2 sends message trough messaging service to peer5
 
     Peer1->>Peer4: peer1 sends message directly to peer4
 ```
 
 ## Example: A connection is lost while relaying a package
 
-Let's assume peer4 needs to distribute a package, but loses the conection to peer1 while trying to send the package.
+Let's assume peer4 needs to distribute a package, but loses the conection to peer1 while trying to send the package. Then it will relay the message to all the missing nodes trough the Messaging Service.
+Note: A message received by the Messaging Service is never relayed.
 
 ```
 {
   source: 4
   payload,
-  targets: [[4, 1, 2, 3], [5]]
+  targets: [[4, 1, 2, 3]]
 }
 ```
 
-Note: A message received by the Messaging Service is never relayed.
 
 ```mermaid
 sequenceDiagram
@@ -176,7 +222,7 @@ type Address = string
 type Route = Address[]
 
 // A list of all the paths that need to be covered to broadcast the network
-type PeerRoutingTable = List<Route>
+type PeerRoutingTable = Route[]
 ```
 
 ## Messaging service
@@ -229,8 +275,6 @@ type NewPeerRoutingTableEvent = {
 
 Reference implementation:
 
-// TODO: Update this
-<!-- 
 ```typescript
 type Route = string[] | 'server'
 type PeerRoutingTable = Map<string, Route>
@@ -317,9 +361,8 @@ A packet contains a source (peer id) and a target specifying to whom the packet 
 
 type Packet = {
   source: Address
-  target: List<Route>
+  target: Route[]
 }
-```
 
 ## Peer
 
