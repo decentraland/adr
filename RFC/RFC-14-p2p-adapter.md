@@ -17,6 +17,8 @@ This document describes a possible implementation for a P2P adapter using a fall
 
 A P2P adapter is needed in order to provide a light mechanism for comms (compared to [RFC-5: comms service using websocket](/RFC/RFC-5-ws-comms.md)). This adapter should guarantee the delivery of a message to any peer in the network (or cluster, [real-time clustering of users in Islands (ADR-35)](/adr/ADR-35)).
 
+In this approach a Routing Table is used, which is managed by the Routing Service. The idea is to limit the amount of times that any peer receives a packet to 1, currently with naive broadcasting p2p solution each node relays a package only once but it can receive as many times as peer conections has.
+
 ## Approach
 
 This approach is simple, it should be easy to debug and it could be refined in the future for performance if needed. 
@@ -28,10 +30,11 @@ This implementation requires two extra services:
 
 As defined in [ADR-81](/ADR/ADR-81-minimum-comms-transport.md), each peer will know the ids of the peers around them using the information provided by the `CommunicationsDirector`.
 
-The basic idea of this implementation is for peers to connect randomly to a subset of the others forming a mesh, and reporting their connections to the routing service. The routing service will build routing tables for each peer to connect to every other. Each peer will receive from the routing service the path to all other connected peers. When a peer needs to deliver a message, it will use the path provided by the routing table, and if there is not any, it will fallback to the messaging service.
+The basic idea of this implementation is for peers to connect randomly to a subset of the others forming a mesh, and reporting their connections to the routing service. The routing service will build routing tables for each peer to connect to every other. Each peer will receive from the routing service the path to all other connected peers, this means all the paths that the peer needs to send the package to so all the mesh is notified. When a peer needs to deliver a message, it will use the paths provided by the routing table, and if the conection to the neighbour fails, it will fallback to the messaging service for all the pending peers.
 
 Although this implementation requires a server, it tries to maximize the usage of P2P connections, while also keeping in mind that peers may run in a constrained environment (like a browser) in which it is not always possible to have a lot of open connections.
-
+If broadcasting every message, then you can receive the same packet many times even if you are not distributing it anymore. This creates a congestion of the network, in this solution it is guaranteed that every packet will be processed only once per peer.
+Also, each peer needs to decode the package to parse it but they don't make changes to it, so there is no cost associated to the enconding of each package.
 ## Flow example
 
 ### 1. Peers establish random connections with their known peers.
@@ -57,6 +60,15 @@ sequenceDiagram
     Peer3->>Peer2: Establish P2P webrtc connection
 ```
 
+```mermaid
+  graph TD;
+      Peer1---Peer2;
+      Peer1---Peer3;
+      Peer1---Peer4;
+      Peer2---Peer3;
+```
+
+
 ### 2. Each peer report its connections to the routing service
 
 ```mermaid
@@ -77,9 +89,7 @@ sequenceDiagram
 
 ### 3. The routing service create a routing table for each peer
 
-A route is a list of peer ids. It doesn't contain the source or destination, so for example if a->b->c:
-- the route between a and c is [ b ]
-- and the route between b and c is []
+It is a list of all the needed paths so all the network can be notified by the message. As every message is a broadcast, each peer needs to know the smallest set of paths that covers all the nodes. It will also notify the unreachable nodes, so the peer can do the relay by the Messaging Service. To calculate all the unreachable nodes, each peer will make a diff of the complete list of kwnon hosts against to all the nodes mentioned in all the paths.
 
 ```mermaid
 sequenceDiagram
@@ -90,53 +100,110 @@ sequenceDiagram
     participant Peer5
     participant RS as Routing Service
 
-    RS->>Peer1: { peer2: [], peer3: [], peer4: [] }
-    RS->>Peer2: { peer1: [], peer3: [], peer4: [ peer1 ] }
-    RS->>Peer3: { peer1: [], peer2: [], peer4: [ peer1 ] }
-    RS->>Peer4: { peer1: [], peer2: [ peer1 ], peer3: [ peer1 ] }
-    RS->>Peer5: {}
+    RS->>Peer1: { paths: [ [1, 2], [1, 3], [1, 4] ] }
+    RS->>Peer2: { paths: [ [2, 1, 4], [2, 3] } }
+    RS->>Peer3: { paths: [ [3, 1, 4], [3, 2] } }
+    RS->>Peer4: { paths: [ [4, 1, 2, 3] } }
+    RS->>Peer5: { paths: [] }
 ```
 
-### Peer1 sends a message directly to peer2
+```mermaid
+  graph TD;
+      Peer1---Peer2;
+      Peer1---Peer3;
+      Peer1---Peer4;
+      Peer2---Peer3;
+```
+Paths for Peer1
+```mermaid
+  graph TD;
+      Peer1-->Peer2;
+      Peer1-->Peer3;
+      Peer1-->Peer4;
+```
+Paths for Peer2
+```mermaid
+  graph TD;
+      Peer2-->Peer1;
+      Peer1-->Peer4;
+      Peer2-->Peer3;
+```
+Paths for Peer3
+```mermaid
+  graph TD;
+      Peer3-->Peer1;
+      Peer1-->Peer4;
+      Peer3-->Peer2;
+```
+Paths for Peer4
+```mermaid
+  graph TD;
+      Peer4-->Peer1;
+      Peer1-->Peer2;
+      Peer2-->Peer3;
+```
+Empty Paths for Peer5
+
+### Peer2 sends a message
+
+First the peer2 creates and encodes a package that contains its own paths, so all the peers obay that rule.
+
+Paths for Peer2
+```mermaid
+  graph TD;
+      Peer2-->Peer1;
+      Peer1-->Peer4;
+      Peer2-->Peer3;
+```
+
+```
+{
+  source: 2
+  payload,
+  targets: [[2, 1, 4], [2, 3]]
+}
+```
+
+When each peer receives a package, it checks if it is contained in any of the paths and continues the relay with the given order.
 
 ```mermaid
 sequenceDiagram
     participant Peer1
     participant Peer2
-    participant MS as Messaging Service
-
-    Peer1->>Peer2: peer1 sends message directly to peer2
-```
-
-### Peer2 sends message to peer4 through peer1
-
-```mermaid
-sequenceDiagram
-    participant Peer1
-    participant Peer2
+    participant Peer3
     participant Peer4
-    participant MS as Messaging Service
-
-    Peer2->>Peer1: peer2 sends message to peer4 through peer1
-    Peer1->>Peer4: peer2 sends message to peer4 through peer1
-
-```
-
-### Peer1 sends message though messaging service to peer5
-
-```mermaid
-sequenceDiagram
-    participant Peer1
     participant Peer5
     participant MS as Messaging Service
 
-      Peer1->>MS: peer1 sends message though messaging service to peer5
-      MS->>Peer5: peer1 sends message though messaging service to peer5
+    Peer2->>Peer1: peer2 sends message directly to peer1
+    Peer2->>Peer3: peer2 sends message directly to peer3
+    Peer2->>MS: peer2 sends message trough messaging service to peer5
+
+    Peer1->>Peer4: peer1 sends message directly to peer4
 ```
 
 ## Example: A connection is lost while relaying a package
 
-Let's assume the mesh is connected as: `peer1 <-> peer2 <-> peer3 <-> peer4`, and peer1 needs to send a message to peer4
+Let's assume peer4 needs to distribute a package, but loses the conection to peer1 while trying to send the package. Then it will relay the message to all the missing nodes trough the Messaging Service.
+Note: A message received by the Messaging Service is never relayed.
+
+
+Paths for Peer4
+```mermaid
+  graph TD;
+      Peer4-->Peer1;
+      Peer1-->Peer2;
+      Peer2-->Peer3;
+```
+
+```
+{
+  source: 4
+  payload,
+  targets: [[4, 1, 2, 3]]
+}
+```
+
 
 ```mermaid
 sequenceDiagram
@@ -144,16 +211,22 @@ sequenceDiagram
     participant Peer2
     participant Peer3
     participant Peer4
+    participant Peer5
     participant MS as Messaging Service
     participant RS as Routing Service
 
-    Peer1->>Peer2: send message to relay to peer3
+    Peer4->>Peer1: send message
+    Note over Peer1: peer1 is disconnected
+    Peer4->>RS: update status: lost connection to peer1
 
-    Note over Peer3: peer3 is disconnected
-
-    Peer2->>RS: update status: lost connection to peer3
-    Peer2->>MS: relay this message to peer4
-    MS->>Peer4: relay this message to peer4
+    Peer4->>MS: relay this message to peer1
+    MS->>Peer1: relay this message to peer1
+    Peer4->>MS: relay this message to peer2
+    MS->>Peer2: relay this message to peer2
+    Peer4->>MS: relay this message to peer3
+    MS->>Peer3: relay this message to peer3
+    Peer4->>MS: relay this message to peer5
+    MS->>Peer5: relay this message to peer5
 ```
 
 ## Definitions
@@ -162,13 +235,11 @@ sequenceDiagram
 
 type Address = string
 
-// A route is a list of peer ids. It doesn't contain the source or destination, so for example if a->b->c
-// the route between a and c is [ b ]
-// and the route between b and c is []
+// A route is a list of peer ids.
 type Route = Address[]
 
-// A map between peer and a route. If a peer is missing, it means there is no direct or indirect P2P connection to the peer, so the messaging server should be used
-type PeerRoutingTable = Map<Address, Route>
+// A list of all the paths that need to be covered to broadcast the network
+type PeerRoutingTable = Route[]
 ```
 
 ## Messaging service
@@ -297,32 +368,31 @@ function calculateRoutingTables(mesh: Map<string, Set<string>>) {
 
   return routingTables
 }
-```
+``` -->
 
 ## Packet
 
-A packet contains a source (peer id) and map specifying to whom the packet is for and the route to follow to reach it.
+A packet contains a source (peer id) and a target specifying to whom the packet is for and the route to follow to reach it.
 
 ```typescript
 
 type Packet = {
   source: Address
-  to: Record<Address, Route>
+  target: Route[]
 }
-```
 
 ## Peer
 
-The peer will send a message to every known peer using the routing table, sending it once to each peer. Let's say peer1 is connected to peer2 and peer2 to peer3, when broadcasting to the network peer1 will send:
+Each time a package needs to be sent, then the peer will create it using its own paths as routing table and will make the network to obey that flow.
 
 ```typescript
 { 
   source: 'peer1', 
-  to: { 'peer2': [], 'peer3': ['peer2'] }
+  target: [ ['peer2', 'peer3'] ]
 }
 ```
 
-This means each peer will check the `to` field, if they are one of the recipent of the messages the message will be processed, otherwise it will be relayed in the way the route value indicates.
+This means each peer will check the `target` field, always the message will be processed, and then it will be relayed in the way the route value indicates.
 
 Notice the peer relaying the message is not expected to remove itself either as a recipent or as a hop in the route, since this will require encoding the package again. 
 
@@ -335,7 +405,7 @@ Notice the peer relaying the message is not expected to remove itself either as 
 
 # Competition (alternatives)
 
-- One simple solution using a P2P mesh, in which peers broadcast to others, and upon receiving a message, they relay to their connections. The problem with this solution is there is the possibility of messages going thought the network after the same message is delivered, which implies the need to build a mechanism to discard old messages (using time or hops). Another problem is the possibility of clusters in the mesh, which may cause certain group of peers to not see the ones in another group (partitioned).
+- One simple solution using a P2P mesh, in which peers broadcast to others, and upon receiving a message, they relay to their connections. The problem with this solution is there is the possibility of messages going through the network after the same message is delivered, which implies the need to build a mechanism to discard old messages (using time or hops). Another problem is the possibility of clusters in the mesh, which may cause certain group of peers to not see the ones in another group (partitioned).
 
 # Non-goals
 
