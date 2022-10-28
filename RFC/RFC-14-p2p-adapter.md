@@ -246,7 +246,7 @@ type PeerRoutingTable = Route[]
 
 To establish a P2P webrtc connection, peers will exchange signals with each other using the messaging service. This service will act as a fallback when no P2P route is available to deliver a message.
 
-This service has same level of trust than any peer in the network, this means it has no specific authentication requirements, and any trust feature has to be built in the message itself. That been said implementators may choose to add some extra validation when doing high level clustering (like [real-time clustering of users in Islands (ADR-35)](/adr/ADR-35)), for clusters to remain isolated.
+This service has same level of trust than any peer in the network, this means it has no specific authentication requirements, and any trust feature has to be built in the message itself. That been said implementors may choose to add some extra validation when doing high level clustering (like [real-time clustering of users into Islands (ADR-35)](/adr/ADR-35)), for clusters to remain isolated.
 
 ## Routing service
 
