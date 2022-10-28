@@ -160,7 +160,7 @@ Paths for Peer2
 {
   source: 2
   payload,
-  targets: [[2, 1, 4], [2, 3], [5]]
+  targets: [[2, 1, 4], [2, 3]]
 }
 ```
 
