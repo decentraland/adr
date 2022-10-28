@@ -114,39 +114,47 @@ sequenceDiagram
       Peer1---Peer4;
       Peer2---Peer3;
 ```
-Routes for Peer1
+Paths for Peer1
 ```mermaid
   graph TD;
       Peer1-->Peer2;
       Peer1-->Peer3;
       Peer1-->Peer4;
 ```
-Routes for Peer2
+Paths for Peer2
 ```mermaid
   graph TD;
       Peer2-->Peer1;
       Peer1-->Peer4;
       Peer2-->Peer3;
 ```
-Routes for Peer3
+Paths for Peer3
 ```mermaid
   graph TD;
       Peer3-->Peer1;
       Peer1-->Peer4;
       Peer3-->Peer2;
 ```
-Routes for Peer3
+Paths for Peer4
 ```mermaid
   graph TD;
       Peer4-->Peer1;
       Peer1-->Peer2;
       Peer2-->Peer3;
 ```
-Empty routes for Peer5
+Empty Paths for Peer5
 
 ### Peer2 sends a message
 
 First the peer2 creates and encodes a package that contains its own paths, so all the peers obay that rule.
+
+Paths for Peer2
+```mermaid
+  graph TD;
+      Peer2-->Peer1;
+      Peer1-->Peer4;
+      Peer2-->Peer3;
+```
 
 ```
 {
@@ -178,6 +186,15 @@ sequenceDiagram
 
 Let's assume peer4 needs to distribute a package, but loses the conection to peer1 while trying to send the package. Then it will relay the message to all the missing nodes trough the Messaging Service.
 Note: A message received by the Messaging Service is never relayed.
+
+
+Paths for Peer4
+```mermaid
+  graph TD;
+      Peer4-->Peer1;
+      Peer1-->Peer2;
+      Peer2-->Peer3;
+```
 
 ```
 {
