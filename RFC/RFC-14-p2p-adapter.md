@@ -69,7 +69,7 @@ sequenceDiagram
 ```
 
 
-### 2. Each peer report its connections to the routing service
+### 2. Each peer reports its connections to the routing service
 
 ```mermaid
 sequenceDiagram
