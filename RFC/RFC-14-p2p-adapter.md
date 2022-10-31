@@ -21,7 +21,7 @@ The new implementation should solve the problems in the old version[link]:
 
 - When two peers are unable to see each other, it's hard to identify if there is a network failure or a cluster or a bug in the client.
 - Since all peers broadcast information on an ever changing logical mesh (every tick the relay changes), it's almost impossible to measure latency. We also don't know the impact of the amount of packages that are circulating around the network or even how many are been currently relayed. The relay suspension mechanism that prevents the network to be flooded with packages also prevents the stabilization of the mesh.
-- We don't have a way to measure the impact of the "suspension relay" heuristic, which means we don't know if the available routes are efficent.
+- We don't have a way to measure the impact of the "suspension relay" heuristic, which means we don't know if the available routes are efficient.
 - There are two unhandled scenarios which may cause messages to not be deliver:
   - if there are two clusters (or more), peers will be completely isolated between each other, no communication using the P2P mesh is possible.
   - At some point, relay suspension may suspend the only peer that is able to deliver a message. This is a temporal failure, since the next time the mesh is negotiated, the delivery will be resumed. 
@@ -29,8 +29,8 @@ The new implementation should solve the problems in the old version[link]:
 ## Approach
 
 This approach focuses on addressing the problems mentioned above:
-  1. Handle clusters: identifing peers outside of the current mesh, and providing a fallback service to deliver the messages. Optionally (outside of the scope of this RFC), this service could provide hints to the peers in order to connect separated clusters.
-  2. Efficient usage of resources: messages are received only once, they are decoded only once, they are relayed using only the most efficent route and thus avoiding flooding the network. There is also no additional expiration ttl, or hops ttl since the route is already determined.
+  1. Handle clusters: identifying peers outside of the current mesh, and providing a fallback service to deliver the messages. Optionally (outside of the scope of this RFC), this service could provide hints to the peers in order to connect separated clusters.
+  2. Efficient usage of resources: messages are received only once, they are decoded only once, they are relayed using only the most efficient route and thus avoiding flooding the network. There is also no additional expiration ttl, or hops ttl since the route is already determined.
   3. Since the server has knowledge of the topology of the network, metrics can be used to understand its status, identify where optimizations are required and improve based on real data. 
   4. Eventually (outside of the scope of this RFC), the server can refine its algorithm, and consider other factors, like latency, in order to choose the best route.
   5. This solution aims to have a stable mesh, so is possible to have a consistent latency between peers.
@@ -44,9 +44,9 @@ This implementation requires two extra services:
 
 Note: *As defined in [ADR-81](/ADR/ADR-81-minimum-comms-transport.md), each peer will know the ids of the peers around them*
 
-The basic idea of this implementation is for peers to connect randomly to a subset of the others forming a mesh, and reporting their connections to the routing service. The routing service will build the routing information needed for each peer to distribute messages to every other. Each peer will receive from the routing service the minimal set of paths that cover all the connected peers. When a peer needs to deliver a message, it will use the paths provided by the routing service, and if the conection to the neighbour fails, it will fallback to the messaging service for all the pending peers.
+The basic idea of this implementation is for peers to connect randomly to a subset of the others forming a mesh, and reporting their connections to the routing service. The routing service will build the routing information needed for each peer to distribute messages to every other. Each peer will receive from the routing service the minimal set of paths that cover all the connected peers. When a peer needs to deliver a message, it will use the paths provided by the routing service, and if the connection to the neighbor fails, it will fallback to the messaging service for all the pending peers.
 
-Although this implementation requires a messaging service, it tries to maximize the usage of P2P connections. Also, each peer needs to decode the package to parse it but they don't make changes to it, so there is no cost associated to the enconding of each package.
+Although this implementation requires a messaging service, it tries to maximize the usage of P2P connections. Also, each peer needs to decode the package to parse it but they don't make changes to it, so there is no cost associated to the encoding of each package.
 
 This approach is simple, it should be easy to debug and it could be refined in the future for performance, if needed. 
 
@@ -161,7 +161,7 @@ Empty Paths for Peer5
 
 ### Peer2 sends a message
 
-First the peer2 creates and encodes a package that contains its own paths, so all the peers obay that rule.
+First the peer2 creates and encodes a package that contains its own paths, so all the peers obey that rule.
 
 Paths for Peer2
 ```mermaid
@@ -199,7 +199,7 @@ sequenceDiagram
 
 ## Example: A connection is lost while relaying a package
 
-Let's assume peer4 needs to distribute a package, but loses the conection to peer1 while trying to send the package. Then it will relay the message to all the missing nodes trough the Messaging Service.
+Let's assume peer4 needs to distribute a package, but loses the connection to peer1 while trying to send the package. Then it will relay the message to all the missing nodes trough the Messaging Service.
 Note: A message received by the Messaging Service is never relayed.
 
 
@@ -305,86 +305,6 @@ type NewPeerRoutingTableEvent = {
 }
 ```
 
-Reference implementation:
-
-```typescript
-type Route = string[] | 'server'
-type PeerRoutingTable = Map<string, Route>
-
-function calculateRoutingTables(mesh: Map<string, Set<string>>) {
-  const routingTables = new Map<string, PeerRoutingTable>()
-
-  const getOrCreateRoutingTable = (peerId: string) => {
-    let table = routingTables.get(peerId)
-    if (!table) {
-      table = new Map<string, Route>()
-      routingTables.set(peerId, table)
-    }
-    return table
-  }
-
-  function calculateRouteBeetwen(fromPeer: string, toPeer: string, _excluding: string[]): Route {
-    const excluding = new Set<string>(_excluding)
-
-    const calculatedRoutes = getOrCreateRoutingTable(fromPeer)
-
-    const calculatedRoute = calculatedRoutes.get(toPeer)
-    if (calculatedRoute) {
-      return calculatedRoute
-    }
-
-    let route: Route = 'server'
-
-    const fromPeerConnections = mesh.get(fromPeer)
-    if (!fromPeerConnections) {
-      route = 'server'
-    } else if (fromPeerConnections?.has(toPeer)) {
-      route = []
-    } else {
-      for (const p of fromPeerConnections) {
-        if (excluding.has(p)) {
-          continue
-        }
-        let relayedRoute = calculateRouteBeetwen(p, toPeer, [p, ..._excluding])
-        if (relayedRoute !== 'server') {
-          relayedRoute = [p, ...relayedRoute]
-          if (route === 'server' || route.length > relayedRoute.length) {
-            route = relayedRoute
-          }
-        }
-      }
-    }
-
-    calculatedRoutes.set(toPeer, route)
-
-    // NOTE: routes are bidirectional
-    getOrCreateRoutingTable(toPeer).set(fromPeer, route === 'server' ? route : Array.from(route).reverse())
-    return route
-  }
-
-  const peers = new Set<string>()
-
-  for (const [peer, connections] of mesh) {
-    peers.add(peer)
-    for (const connection of connections) {
-      peers.add(connection)
-    }
-  }
-
-  for (const peerFrom of peers) {
-    for (const peerTo of peers) {
-      if (peerFrom === peerTo) {
-        continue
-      }
-
-      calculateRouteBeetwen(peerFrom, peerTo, [])
-    }
-  }
-
-  return routingTables
-}
-``` -->
-
 ## Packet
 
 A packet contains a source (peer id) and a target specifying to whom the packet is for and the route to follow to reach it.
@@ -409,7 +329,7 @@ Each time a package needs to be sent, then the peer will create it using its own
 
 This means each peer will check the `target` field, always the message will be processed, and then it will be relayed in the way the route value indicates.
 
-Notice the peer relaying the message is not expected to remove itself either as a recipent or as a hop in the route, since this will require encoding the package again. 
+Notice the peer relaying the message is not expected to remove itself either as a recipient or as a hop in the route, since this will require encoding the package again. 
 
 # Benefits
 
@@ -420,7 +340,7 @@ Notice the peer relaying the message is not expected to remove itself either as 
 
 # Risks
 
-- Potentially the messages may be too big, if they include all the routes. Mitigation: if bandwith becomes a problem, it is possible to encode the message again by removing the current peer from the routing paths, this way the message is small but the process will consume more CPU instead. 
+- Potentially the messages may be too big, if they include all the routes. Mitigation: if bandwidth becomes a problem, it is possible to encode the message again by removing the current peer from the routing paths, this way the message is small but the process will consume more CPU instead. 
 - Routing service cost to keep the routes updated. Mitigation: based on metrics we can adjust the parameters: frequency of the routes calculation, the routing algorithm, how we store the graph in memory. 
 
 # Competition (alternatives)
