@@ -11,7 +11,7 @@ authors:
 
 # Abstract
 
-A new learning tool for SDK users, focused on learning by doing. It’s a light web editor where you can quickly write and iterate code and see its effects side by side. Users don’t need to install or set up anything, removing all friction. No file management, saving or deploying, it’s meant for prototyping code and throwing it away, or then pasting somewhere else. 
+This document presents the Playground, a new learning tool for SDK users, focused on learning by doing. It’s a light web editor where you can quickly write and iterate code and see its effects side by side. Users don’t need to install or set up anything, removing all friction. No file management, saving or deploying, it’s meant for prototyping code and throwing it away, or then pasting somewhere else. 
 
 # Need
 
