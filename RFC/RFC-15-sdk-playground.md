@@ -26,7 +26,7 @@ To experienced users of the SDK, this is also super valuable. When you encounter
 
 Thanks to this playground, if any doubt comes to your mind, you’re a click away from jumping into a safe and easy test environment.
 
-Developing an initial version of this tool would not take much extra effort, given that something similar is already being built for internal testing of the SDK7. The effort put into this is also likely reusable as part of the [Decentraland Editor](https://www.notion.so/RFC-Decentraland-Editor-8c6994c073a64892816aede16abe7908), a much more ambitious tool meant for creating fully-fledged content.
+Developing an initial version of this tool would not take much extra effort, given that something similar is already being built for internal testing of the SDK7. The effort put into this is also likely reusable as part of the [Decentraland Editor](https://github.com/decentraland/editor), a much more ambitious tool meant for creating fully-fledged content.
 
 # Approach
 
