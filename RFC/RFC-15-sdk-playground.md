@@ -73,4 +73,4 @@ Also, as mentioned, a similar tool to the playground is already in development, 
 *What are the open questions that may need to be explored? Be explicit and honest about any “elephants in the room”.*
 
 - How easy could it be to automatically add links to the playground from all snippets in our docs?
-- What about 3d models and other assets like sound files? Would the tool be able to load example scenes that include these? Maybe it can have a base catalog with a handful of models from the Builder, just for testing? Or would it be restricted to just working with primitive shapes?
+- What about 3D models and other assets like sound files? Would the tool be able to load example scenes that include these? Maybe it can have a base catalog with a handful of models from the Builder, just for testing? Or would it be restricted to just working with primitive shapes?
