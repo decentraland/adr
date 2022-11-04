@@ -28,6 +28,8 @@ The decision is to implement an HTTP endpoint that given a user address it retur
 
 `GET https://synapse.decentraland.org/profile-pictures/{address}`
 
+Internally, it will retrieve the user Profile from Lambdas and redirect the request to the corresponding URL (`face256`) or a default image in case of Profile absense.
+
 ## Status
 
 Accepted
