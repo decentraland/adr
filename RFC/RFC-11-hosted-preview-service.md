@@ -24,6 +24,10 @@ The solution for the scenes preview will be done in stages
 
 Create a BETA program where the technical feasibility of the project can be evaluated and test the experience from the content creators perspective.  
 
+WARNINGS: 
+- This stage is a Proof of Concept: do not build a production product on top of this or make this feature, as it is, a dependency on other product.
+- In order to go out form the BETA state and for this to scale, some restrictions may be needed besides owning a name as this can scale fast in terms of resources needed to run the preview server. 
+ 
 Scope of the BETA: 
 - Open to users owning a Decentraland NAME 
 - Only one scene per Decentraland NAME would be allowed 
@@ -39,17 +43,24 @@ Scope of the BETA:
 
 This implementation will allow content creators to deploy a scene in a preview server and join the scene with a maximum number of concurrent users. The solution is composed of three areas, the CLI, the backend infrastructure and the Explorer experience which will be detailed below. 
 
+Some common language considerations to have in mind while reading the next sections: 
+ - A scene hosted outside the Genesis City is called a World, and will be identified by a [Decentraland NAME](https://builder.decentraland.org/names) 
+ - When connected to Decentraland, you can only interact with users connected to the same **Realm**.
+ - In this stage and context, a Realm is equivalent to a World
+
 #### Content Creators 
 
 From the Content Creators point of view, the experience will be very simple, only run the same deploy command but adding as a target the URL of the new preview server, e.g.  
 
-`dcl deploy -t https://example-url-for-dcl-preview-server`  
+`dcl deploy --target-content  https://worlds-content-server.decentraland.org`  
  
- The output of this command should contain a link that can be shared and used to jump in to the scene preview, e.g. `https://play.decentraland.org/?PREVIEW_SERVER=...&SCENE=...&COMMS=....` 
+ The output of this command should contain a link that can be shared and used to jump in to the scene preview, e.g. `https://play.decentraland.org/?reaml=yourname.dcl.eth` 
+
+Adding the Decentraland NAME value to the **realm** queryParameter will take you to the uploaded World, or joining Decentraland and typing `/changerealm yourname.dcl.eth` will have the same effect.   
 
  #### Architecture 
 
-The Explorer client in order to work needs to resolve scenes, users identity (avatar, wearables, emotes, etc) and communications between peers. Unlike production where all of them are obtained from the same realm, here a Preview Content Server and a Comms Preview Server will be needed. 
+The Explorer client in order to work needs to resolve scenes, users identity (avatar, wearables, emotes, etc) and communications between peers. Unlike production where all of them are obtained from the same [Catalyst Node](https://docs.decentraland.org/contributor/catalyst/about/), here a Preview Content Server and a Comms Preview Server will be needed. 
 The scenes assets and information that the client needs will be resolved from the Preview Content Server and the communications orchestration between peers joining a preview will be handled by the Comms Preview Server. On the other hand, users identity will continue to be retrieved from a DAO Catalyst node.    
 For this to work, the client will receive several new parameters: **preview content server** from which to resolve the scene assets, **scene identifier**, and the **comms preview server URL**. 
 
@@ -150,6 +161,8 @@ Based on the BETA testing:
 - Define the max number of concurrent users allowed in a Preview
 - Implement a Garbage Collection 
 - Define strategy to open the Preview to all content creators
+- Support deploying a World to a specific Decentraland NAME so that accounts with more than one name can have support for different scenes 
+- Review the signing deployment experience in the dApp as it currently displays the Genesis City map 
 
 
 ### Stage 3: Run your own Preview Servers 
