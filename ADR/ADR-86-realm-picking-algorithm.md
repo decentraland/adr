@@ -64,7 +64,7 @@ Rules may be composed in the future, effectively turning the chain into a kind o
 #### Load Balancing
 
 _Description_:
-
+Is a Round Robin Mechanism to distribute all peers between all Catalysts.
 
 _Configuration_:
 ```typescript
