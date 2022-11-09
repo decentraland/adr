@@ -5,7 +5,7 @@ date: 2022-09-01
 title: Content server synchronization protocol
 authors:
 - agusaldasoro
-status: DRAFT
+status: ACCEPTED
 ---
 
 # Abstract
