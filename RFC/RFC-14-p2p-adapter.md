@@ -359,4 +359,4 @@ Notice the peer relaying the message is not expected to remove itself either as 
   - This solution is somehow more difficult to debug, since routing tables have no source of truth, and different peers may build them differently. 
 - Can we replace the messaging service by providing alternatives routes for broadcasting a message?
   - This won't solve the cluster partitions problem.
-  - By looking at the metrics of the messaging service usage, is possible to conclude the service is not solving a frequent enough problem, and then it can be removed or replaced.
+  - By looking at the metrics of the messaging service usage, it is possible to conclude that the service is not solving a frequent enough problem, and then it can be removed or replaced.
