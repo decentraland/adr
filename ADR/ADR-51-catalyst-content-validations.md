@@ -8,6 +8,8 @@ authors:
 - agusaldasoro
 - guidota
 - menduz
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

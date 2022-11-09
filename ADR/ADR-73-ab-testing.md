@@ -6,6 +6,8 @@ title: A/B testing
 status: ACCEPTED
 authors:
 - 2fd
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

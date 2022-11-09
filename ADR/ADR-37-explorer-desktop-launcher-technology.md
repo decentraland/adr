@@ -6,6 +6,8 @@ title: Explorer Desktop Launcher Technology
 status: ACCEPTED
 authors:
   - kuruk-mm
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

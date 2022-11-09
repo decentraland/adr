@@ -3,9 +3,11 @@ layout: doc
 adr: 12
 date: 2020-10-29
 title: Documentation as a priority
-status: ACCEPTED
+status: Final
 authors:
   - menduz
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

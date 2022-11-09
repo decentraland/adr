@@ -6,6 +6,8 @@ title: Content entity schema
 status: ACCEPTED
 authors:
   - menduz
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Abstract

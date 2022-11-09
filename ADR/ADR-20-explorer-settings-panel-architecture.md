@@ -3,7 +3,9 @@ layout: doc
 adr: 20
 date: 2020-12-11
 title: Explorer Settings Panel Architecture
-status: PROPOSED
+status: Living
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Motivation

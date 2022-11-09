@@ -3,7 +3,9 @@ layout: doc
 adr: 8
 date: 2020-10-16
 title: DAO content servers and local content servers
-status: ACCEPTED
+status: Stagnant
+type: Meta
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

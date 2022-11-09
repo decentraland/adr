@@ -8,6 +8,8 @@ authors:
 - cazala
 - nachomazzara
 status: PROPOSED
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 This document describe an improved mechanism to communicate Users with Decentraland Services over HTTP messages. This mechanism support all previously use case and includes new security features and follow common and well proved standards:

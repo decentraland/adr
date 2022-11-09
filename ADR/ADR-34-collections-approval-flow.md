@@ -8,6 +8,8 @@ authors:
   - nachomazzara
   - menduz
   - ShibuyaMartin
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Introduction

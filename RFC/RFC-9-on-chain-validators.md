@@ -6,6 +6,8 @@ title: On-chain validators
 authors:
   - nachomazzara
 status: DRAFT
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 # Abstract

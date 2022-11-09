@@ -7,6 +7,8 @@ status: DRAFT
 authors:
   - hugoArregui
   - agusAldasoro
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Abstract

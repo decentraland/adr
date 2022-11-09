@@ -7,7 +7,9 @@ excerpt_separator: <!--more-->
 authors:
   - menduz
   - eordano
-status: ACCEPTED
+status: Stagnant
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

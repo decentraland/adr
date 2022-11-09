@@ -6,6 +6,8 @@ title: Crashbot
 status: ACCEPTED
 authors:
 - manumena
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

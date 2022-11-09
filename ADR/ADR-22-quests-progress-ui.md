@@ -3,9 +3,11 @@ layout: doc
 adr: 22
 date: 2021-01-19
 title: Quests Progress UI
-status: PROPOSED
+status: Living
 authors:
 - menduz
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

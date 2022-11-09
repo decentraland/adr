@@ -7,6 +7,8 @@ status: PROPOSED
 authors:
   - kuruk-mm
   - BrianAmadori
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Abstract

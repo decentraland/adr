@@ -3,10 +3,12 @@ layout: doc
 adr: 21
 date: 2020-12-14
 title: Update cycle of catalysts
-status: ACCEPTED
+status: Stagnant
 authors:
 - menduz
 - HPrivakos
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 Since catalyst servers are bound to a persistent volumes, a deployment schema where we delete the machine and create another (new) one is not a viable choice without downtime.

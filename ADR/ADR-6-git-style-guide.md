@@ -6,7 +6,9 @@ title: Decentraland's git style guide
 authors:
 - eordano
 - menduz
-status: ACCEPTED
+status: Living
+type: Meta
+spdx-license: CC0-1.0
 ---
 
 ## Context or problem to solve

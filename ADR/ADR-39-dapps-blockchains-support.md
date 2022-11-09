@@ -4,6 +4,8 @@ adr: 39
 date: 2021-08-10
 title: DApps Blockchains Support
 status: ACCEPTED
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

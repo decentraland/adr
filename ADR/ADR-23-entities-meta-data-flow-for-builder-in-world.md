@@ -3,7 +3,9 @@ layout: doc
 adr: 23
 date: 2021-02-03
 title: Entities meta-data flow for builder in-world
-status: DEPRECATED
+status: Withdrawn
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

@@ -6,7 +6,9 @@ title: How to organize ADR files
 authors:
   - nachomazzara
   - menduz
-status: ACCEPTED
+status: Withdrawn
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

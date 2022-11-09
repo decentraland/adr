@@ -8,6 +8,8 @@ authors:
   - aixaCode
   - menduz
   - ShibuyaMartin
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context of the problem

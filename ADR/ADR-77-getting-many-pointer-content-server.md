@@ -6,6 +6,8 @@ title: New endpoints to retrive pointers
 status: ACCEPTED
 authors:
   - agusaldasoro
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context

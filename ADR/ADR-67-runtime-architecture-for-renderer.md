@@ -6,6 +6,8 @@ title: Runtime Architecture For Renderer
 status: ACCEPTED
 authors:
   - brianamadori
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Problem Statement

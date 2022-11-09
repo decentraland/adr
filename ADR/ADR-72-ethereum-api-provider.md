@@ -8,6 +8,8 @@ authors:
   - 2fd
   - menduz
   - nachomazzara
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

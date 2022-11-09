@@ -7,6 +7,8 @@ title: Kernel repository separation
 status: ACCEPTED
 authors:
   - menduz
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

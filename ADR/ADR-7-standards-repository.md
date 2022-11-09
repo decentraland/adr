@@ -5,7 +5,9 @@ date: 2020-10-16
 title: Archive standards repository
 authors:
 - menduz
-status: ACCEPTED
+status: Final
+type: Meta
+spdx-license: CC0-1.0
 ---
 
 # Context

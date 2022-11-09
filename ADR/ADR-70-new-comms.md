@@ -10,6 +10,8 @@ authors:
   - juancito.eth
   - menduz
   - pentreathm
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

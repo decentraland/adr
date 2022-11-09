@@ -6,7 +6,9 @@ title: Wearable Committee Reverts
 status: ACCEPTED
 authors:
   - nchamo
-  - mendez
+  - menduz
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

@@ -6,6 +6,8 @@ title: Plugin pattern for Renderer features
 status: ACCEPTED
 authors:
 - BrianAmadori
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Problem Statement

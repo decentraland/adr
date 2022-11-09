@@ -4,6 +4,8 @@ adr: 33
 date: 2021-07-07
 title: Collections v2 Bridge
 status: ACCEPTED
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Abstract

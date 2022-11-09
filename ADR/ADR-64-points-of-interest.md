@@ -6,6 +6,8 @@ title: Points of interest (POIs)
 status: PROPOSED
 authors:
   - davidejensen
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context

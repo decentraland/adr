@@ -6,6 +6,8 @@ title: Specific optimizers for explorer assets
 authors:
 - menduz
 status: DRAFT
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 # Abstract

@@ -3,7 +3,9 @@ layout: doc
 adr: 3
 date: 2020-10-08
 title: Explorer packages organization
-status: DEPRECATED
+status: Withdrawn
+type: Meta
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

@@ -8,6 +8,8 @@ authors:
   - guidota
   - cazala
   - fzavalia
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Statement of the problem

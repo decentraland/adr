@@ -8,6 +8,8 @@ authors:
   - fzavalia
   - nachomazzara
   - LautaroPetaccio
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context

@@ -3,7 +3,9 @@ layout: doc
 adr: 2
 date: 2020-10-06
 title: State sync for builder-in-world
-status: DEPRECATED
+status: Withdrawn
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

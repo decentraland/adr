@@ -7,6 +7,8 @@ status: PROPOSED
 authors:
 - brianamadori
 - JuanMartinSalice
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

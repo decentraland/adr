@@ -6,6 +6,8 @@ title: Avatar assembling instructions for visualization
 status: ACCEPTED
 authors:
 - AjimenezDCL
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 # Context

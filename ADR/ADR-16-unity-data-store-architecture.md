@@ -3,7 +3,9 @@ layout: doc
 adr: 16
 date: 2020-11-05
 title: Unity data store architecture
-status: ACCEPTED
+status: Living
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

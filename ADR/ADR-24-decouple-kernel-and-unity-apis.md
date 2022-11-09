@@ -3,7 +3,9 @@ layout: doc
 adr: 24
 date: 2021-04-06
 title: Decouple kernel and unity APIs
-status: PROPOSED
+status: Stagnant
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

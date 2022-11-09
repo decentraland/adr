@@ -6,6 +6,8 @@ title: Port signup screen to unity
 status: ACCEPTED
 authors:
 - AjimenezDCL
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Abstract

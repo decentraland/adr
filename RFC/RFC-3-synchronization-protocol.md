@@ -6,6 +6,8 @@ title: Content server synchronization protocol
 authors:
 - agusaldasoro
 status: ACCEPTED
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 # Abstract

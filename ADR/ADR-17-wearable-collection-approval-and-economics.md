@@ -3,7 +3,9 @@ layout: doc
 adr: 17
 date: 2020-11-16
 title: Wearable Collection Approval And Economics
-status: ACCEPTED
+status: Final
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

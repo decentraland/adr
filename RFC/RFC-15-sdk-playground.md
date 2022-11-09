@@ -6,6 +6,8 @@ title: SDK Playground
 status: DRAFT
 authors:
   - nearnshaw
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 

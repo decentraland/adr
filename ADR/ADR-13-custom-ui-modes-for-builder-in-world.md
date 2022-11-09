@@ -3,7 +3,9 @@ layout: doc
 adr: 13
 date: 2020-11-02
 title: Custom UI modes for builder in world
-status: DEPRECATED
+status: Withdrawn
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

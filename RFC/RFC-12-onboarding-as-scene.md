@@ -6,6 +6,8 @@ title: Onboarding experience as Portable Experience
 authors:
   - menduz
 status: DRAFT
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 # Abstract

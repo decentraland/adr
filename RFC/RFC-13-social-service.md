@@ -6,6 +6,8 @@ title: Social service
 authors:
   - jmoguilevsky
 status: In progress
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Abstract

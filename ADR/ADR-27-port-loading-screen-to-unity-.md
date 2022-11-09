@@ -7,6 +7,8 @@ status: ACCEPTED
 authors:
   - AjimenezDCL
   - kuruk-mm
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Abstract

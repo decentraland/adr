@@ -7,19 +7,22 @@ status: ACCEPTED
 authors:
   - pablitar
   - agusaldasoro
+type: Standards Track
+spdx-license: CC0-1.0
 ---
-
 
 ## Abstract
 
 This ADR documents the current implementation for Realm Picking in Kernel.
 
 ## Need
+
 When an user starts the client and no realm is specified, then there are multiple criterias to pick realms, and there is no clear agreement on which of these criterias is more important.
 
 ## Approach
 
 There are different variables to take into consideration:
+
 - **Latency**: Different realms will have different latency. The user should prioritize those with lower latency, and if using P2P connections that will group people that have low latency to each other too.
 - **Amount of users**: In order for people to have a fun and social experience, they should be directed to those realms that have the most amount of people.
 - **Load balancing**: When there is a high load of users, or all other criteria being equal, the users should be distributed to different catalysts servers in order to balance the load.
@@ -30,6 +33,7 @@ A simple solution would be to define a priority of these variables. But which is
 Let’s say that there’s an event, and there are 3 catalysts that have at least 1000 people. In that case, given their latency can be considered equal, balancing the load would probably be the most important factor.
 
 ## The Algorithm
+
 Taking into consideration the cases variables and cases listed above is how the algorithm works. Something that will try to “intelligently” decide which is the best realm, given all the conditions.
 
 1. It considers the latency difference as the most important factor. If the difference is greater than a hard limit (for instance, 1.5 seconds), always prefer the catalyst with the lowest latency. If the latency difference is less than this hard limit, consider the next criteria.
@@ -43,17 +47,19 @@ This algorithm considers the three variables listed above balancing between them
 The algorithm has some configurable parameters, in order to be able to tune it without deploying, and even making hot changes.
 
 There are a couple of requirements that are nice to have for the algorithm, namely:
+
 - Making it so it is easy to add/remove/tune the different rules considered
 - Adding the possibility of changing parameters of the algorithm in runtime
 
 ### Chain of Responsibility
+
 This algorithm is implemented as a [Chain of Responsibility](https://sourcemaking.com/design_patterns/chain_of_responsibility).
 
 This means that it encapsulates the processing elements inside a "pipeline" abstraction; and have clients "launch and leave" their requests at the entrance to the pipeline. The pattern chains the receiving objects together, and then passes any request messages from object to object until it reaches an object capable of handling the message. The number and type of handler objects isn't known a priori, they can be configured dynamically. The chaining mechanism uses recursive composition to allow an unlimited number of handlers to be linked.
 
 The request for the chain will be picking a realm from a list of candidates. Each “rule” of the algorithm can be a link of the chain. Rules are prioritized. If a rule can make a decision, then it does. If not, it delegates in the following rules.
 
-Rules can share a context. This context could be used to avoid recalculating values if rules can reuse them. Rules have a name, which is used to log and report analytics on which rule was used to make a decision. 
+Rules can share a context. This context could be used to avoid recalculating values if rules can reuse them. Rules have a name, which is used to log and report analytics on which rule was used to make a decision.
 The rules can be enabled or disabled through runtime configuration. Rules have parameters to tune their configuration.
 
 Extending the algorithm should be as simple as adding a new rule and selecting the appropriate priority for it. In the same vein, changing or tuning an existing rule should be quite independent from other rules.
@@ -67,6 +73,7 @@ _Description_:
 Is a Round Robin Mechanism to distribute all peers between all Catalysts.
 
 _Configuration_:
+
 ```typescript
 export type LoadBalancingConfig = {
   type: AlgorithmLinkTypes.LOAD_BALANCING
@@ -79,9 +86,9 @@ _Description_:
 Calculates the latency to all peer candidates, then filters out the ones with a latency greater than the threshold. If only one meets the condition, then it's returned. If not, then it delegates the decision to the next link from the filtered peers.
 
 _Pseudo Code_:
+
 ```typescript
 export function largeLatencyLink() {
-
   const sorted // all peers sorted by latency
   const minElapsed = sorted[0]
 
@@ -96,6 +103,7 @@ export function largeLatencyLink() {
 ```
 
 _Configuration_:
+
 ```typescript
 export type LargeLatencyConfig = {
   type: AlgorithmLinkTypes.LARGE_LATENCY
@@ -109,9 +117,10 @@ _Description_:
 Assigns to all peers a scored based on their amount of total users. Then calculates the estimation of the size of the peer if assigning current user to it, and returns the score deduced by latency, equivalent to users. This responds to the following formula: `m * (e ^ (x / d) - 1)`.
 
 _Pseudo Code_:
+
 ```typescript
 export function allPeersScoreLink() {
-  const score = peers.forEach(peer => calculateAllPeersScore(peer))
+  const score = peers.forEach((peer) => calculateAllPeersScore(peer))
   return selectFirstByScore(context, score, definitiveDecisionThreshold)
 }
 
@@ -120,18 +129,17 @@ function linearUsersScore(usersCount: number) {
 }
 
 export function calculateAllPeersScore(peer) {
-  
   if (peer.usersCount === 0) return 0 // Prefer realms that have users. Those will have at least baseScore
- 
+
   if (maxUsers) {
     // Try to fill all realms until around the percentage provided
-    if (peer.usersCount >= fillTargetPercentage * max) { 
+    if (peer.usersCount >= fillTargetPercentage * max) {
       // If this is the case, then it's "downward" phase of the score
       // Calculate a segment joining the fillTargetPercentage% of users with baseScore at discourageFillTargetPercentage% maxUsers
       // In that way, when reach discourageFillTargetPercentage% maxUsers, realms that have at least one user start to get prioritized
       const segment = {
         start: { x: fillTargetPercentage * max, y: linearUsersScore(fillTargetPercentage * max) },
-        end: { x: discourageFillTargetPercentage * max, y: baseScore }
+        end: { x: discourageFillTargetPercentage * max, y: baseScore },
       }
 
       const slope = (segment.end.y - segment.start.y) / (segment.end.x - segment.start.x)
@@ -146,6 +154,7 @@ export function calculateAllPeersScore(peer) {
 ```
 
 _Configuration_:
+
 ```typescript
 export type AllPeersScoreConfig = {
   type: AlgorithmLinkTypes.ALL_PEERS_SCORE
@@ -167,8 +176,8 @@ Calculates the score acording the amount of users near the current parcel.
 _Pseudo Code_:
 
 ```typescript
-export function closePeersScoreLink(){
-  const score = peers.forEach(peer => closeUsersScore(peer))
+export function closePeersScoreLink() {
+  const score = peers.forEach((peer) => closeUsersScore(peer))
   return selectFirstByScore(context, score, definitiveDecisionThreshold)
 }
 
@@ -181,6 +190,7 @@ export function closeUsersScore(peer) {
 ```
 
 _Configuration_:
+
 ```typescript
 export type ClosePeersScoreConfig = {
   type: AlgorithmLinkTypes.CLOSE_PEERS_SCORE
@@ -194,6 +204,7 @@ export type ClosePeersScoreConfig = {
 ```
 
 #### Common Configurations
+
 ```typescript
 export type LatencyDeductionsConfig = Partial<LatencyDeductionsParameters>
 /**
@@ -226,32 +237,34 @@ export type LatencyDeductionsParameters = {
 To Configure which algorithms to use, then a feature flag `explorer-pick_realm_algorithm_config` is used. Currently it has two configurations:
 
 1. Default config
+
 ```json
-[ 
-   {
-      "type": "ALL_PEERS_SCORE"
-   },
+[
   {
-      "type": "CLOSE_PEERS_SCORE"
-   }
+    "type": "ALL_PEERS_SCORE"
+  },
+  {
+    "type": "CLOSE_PEERS_SCORE"
+  }
 ]
 ```
 
 2. Prioritize Load Balancing
+
 ```json
 [
-   {
-      "type": "LARGE_LATENCY"
-   },
-   {
-      "type": "LOAD_BALANCING"
-   },
-   {
-      "type": "CLOSE_PEERS_SCORE"
-   },
-   {
-      "type": "ALL_PEERS_SCORE"
-   }
+  {
+    "type": "LARGE_LATENCY"
+  },
+  {
+    "type": "LOAD_BALANCING"
+  },
+  {
+    "type": "CLOSE_PEERS_SCORE"
+  },
+  {
+    "type": "ALL_PEERS_SCORE"
+  }
 ]
 ```
 
@@ -264,7 +277,7 @@ pickCandidate(candidates: Candidate[], userParcel: Parcel) { // candidates = all
   for (const link of chain) { // Default: chain = ["ALL_PEERS_SCORE", "CLOSE_PEERS_SCORE"]
 
     context = link.pick(context) // Execute the current Link
-    
+
     if (context.selected) return context.selected // If a link picks a particular candidate, it is returned
   }
 
@@ -274,13 +287,9 @@ pickCandidate(candidates: Candidate[], userParcel: Parcel) { // candidates = all
 ```
 
 ## Benefit
+
 The main benefit is having an algorithm that can be tuned. In the long run, it could take advantage of the resources available to enable a nice user experience for those users who don’t pick a particular realm.
 
 ## Competition (alternatives)
 
 Another option is also to leave the choice of the realm to the user, making them pick a realm from a list of options or suggestions when they haven’t selected one.
-
-
-## Status
-
-Accepted

@@ -8,6 +8,8 @@ authors:
 - menduz
 status: DRAFT
 discussion: https://github.com/decentraland/adr/discussions/88
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 # Abstract

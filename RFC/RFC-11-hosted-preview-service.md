@@ -6,6 +6,8 @@ title: Scene Preview Server
 authors:
 - pentreathm
 status: ACCEPTED
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 # Abstract

@@ -3,7 +3,9 @@ layout: doc
 adr: 10
 date: 2020-10-26
 title: Deployment debouncing
-status: DEPRECATED
+status: Withdrawn
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

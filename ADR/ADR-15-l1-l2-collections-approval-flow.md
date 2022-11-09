@@ -3,7 +3,9 @@ layout: doc
 adr: 15
 date: 2020-11-05
 title: L1 & L2 Collections Approval Flow
-status: ACCEPTED
+status: Final
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Context and Problem Statement

@@ -6,6 +6,8 @@ title: ADR 66 Emotes System for Renderer (Unity)
 status: PROPOSED
 authors:
 - AjimenezDCL
+type: Standards Track
+spdx-license: CC0-1.0
 ---
 
 ## Problem Statement
