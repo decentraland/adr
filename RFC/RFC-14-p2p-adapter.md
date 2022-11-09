@@ -104,7 +104,7 @@ sequenceDiagram
 
 ### 3. The routing service creates a routing table for each peer
 
-It is a list of all the needed paths so all the network can be notified by the message. As every message is a broadcast, each peer needs to know the smallest set of paths that covers all the nodes. It will also notify the unreachable nodes, so the peer can do the relay by the Messaging Service. To calculate all the unreachable nodes, each peer will make a diff of the complete list of known peers against all the other peers mentioned in all the paths.
+It is a list of all the needed paths so that the whole network can be notified by the message. As every message is broadcast, each peer needs to know the smallest set of paths that covers all the nodes. It will also notify the unreachable nodes, so the peer can do the relay by the Messaging Service. To calculate all the unreachable nodes, each peer will make a diff of the complete list of known peers against all the other peers mentioned in all the paths.
 
 ```mermaid
 sequenceDiagram
