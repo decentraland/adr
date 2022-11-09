@@ -19,7 +19,7 @@ A P2P adapter is needed in order to provide a light mechanism for comms (compare
 
 The new implementation should solve the problems in the old version[link]:
 
-- When two peers are unable to see each other, it's hard to identify if there is a network failure or a cluster or a bug in the client.
+- When two peers are unable to see each other, it's hard to identify if there is a network failure or they are in different clusters, or a bug in the client.
 - Since all peers broadcast information on an ever changing logical mesh (every tick the relay changes), it's almost impossible to measure latency. We also don't know the impact of the amount of packages that are circulating around the network or even how many are been currently relayed. The relay suspension mechanism that prevents the network to be flooded with packages also prevents the stabilization of the mesh.
 - We don't have a way to measure the impact of the "suspension relay" heuristic, which means we don't know if the available routes are efficient.
 - There are two unhandled scenarios which may cause messages to not be deliver:
