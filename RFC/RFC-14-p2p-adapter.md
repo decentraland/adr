@@ -341,7 +341,7 @@ Notice the peer relaying the message is not expected to remove itself either as 
 # Risks
 
 - Potentially the messages may be too big, if they include all the routes. Mitigation: if bandwidth becomes a problem, it is possible to encode the message again by removing the current peer from the routing paths, this way the message is small but the process will consume more CPU instead. 
-- Routing service cost to keep the routes updated. Mitigation: based on metrics we can adjust the parameters: frequency of the routes calculation, the routing algorithm, how we store the graph in memory. 
+- Routing service cost to keep the routes updated. Mitigation: based on metrics we can adjust the parameters: frequency of the routes calculation, the routing algorithm, and how the graph is stored in memory. 
 
 # Competition (alternatives)
 
