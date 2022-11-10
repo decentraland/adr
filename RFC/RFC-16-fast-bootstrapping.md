@@ -23,7 +23,7 @@ With this work, we estimate to delete or reduce as much as possible the job of r
 Every 6 hours a Catalyst runs a job that re-creates a snapshot file that contains all its active entity hashes and also the timestamp of the latest entity included. When a Catalyst starts, it asks each of the rest of the nodes for this snapshot file and processes all of them. A snapshot is at most ~6 hs outdated. Then using the timestamp of the last entity included in it, asks for the "newest" active entities using an expensive endpoint /pointer-changes. Before the snapshots mechanism, the /pointer-changes was used to synchronize the whole catalyst and there were performance issues. It is a huge improvement for starting a catalyst from scratch and it works relatively fine for a synchronization not from scratch (i.e. normal restart).
 But we want to continue improving that by solving the problem where for each restart it needs to process the whole snapshot in order to be up to date **even though the downtime is very little**.
 
-![old_snapshot](img/rfc-16/old_snapshot.png)
+![old snapshot](img/rfc-16/old_snapshot.png)
 
 # Approach
 Leverage the snapshots mechanism by partitioning the snapshots by time range. The snapshot structure and how it is processed will remain the same.  A catalyst will serve the content of all its active entities in multiple snapshots separated by its local deploy timestamp. Any time a snapshot is processed, a Catalyst remembers this and won't process it again anymore.
@@ -31,7 +31,7 @@ Leverage the snapshots mechanism by partitioning the snapshots by time range. Th
 #### Snapshot generation
 Instead of generating a complete snapshot every 6 hs, it will generate snapshots as time goes by only for the newest entities. Let's say the snapshot units are daily, weekly, monthly and yearly. It will create daily snapshots until a week has passed, then it will replace the 7 daily snapshots with the weekly one and continue generating daily snapshots again. The same logic goes for weekly, monthly and yearly snapshots. 
 
-![multiple_snapshots](img/rfc-16/multiple_snapshots.png)
+![multiple snapshots](img/rfc-16/multiple_snapshots.png)
 
 
 #### Snapshot process at bootstrap
@@ -46,7 +46,7 @@ a. The hash of the snapshot
 b. A list of hashes that it replaces.
 Now a Catalyst processing the snapshots would process the snapshot only if it hasn't processed its hash or one hash of the list of replaced ones.
 
-![snapshot_replacement](img/rfc-16/snapshot_replacement.png)
+![snapshot replacement](img/rfc-16/snapshot_replacement.png)
 
 The returned objects from the endpoint /snapshots will change to:
 ```
