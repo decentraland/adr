@@ -8,7 +8,7 @@ authors:
 status: ACCEPTED
 ---
 
-# Abstract:
+# Abstract
 Every time a Catalyst is restarted, the content server processes a snapshot containing all the active entities ƒor each server. It reads all the entities in these snapshots and deploys the ones that it does not already have locally. This process takes up to ~half an hour. This document discusses and proposes solutions to improve this situation.
 
 # Need
@@ -28,13 +28,13 @@ But we want to continue improving that by solving the problem where for each res
 # Approach
 Leverage the snapshots mechanism by partitioning the snapshots by time range. The snapshot structure and how it is processed will remain the same.  A catalyst will serve the content of all its active entities in multiple snapshots separated by its local deploy timestamp. Any time a snapshot is processed, a Catalyst remembers this and won't process it again anymore.
 
-#### Snapshot generation
+### Snapshot generation
 Instead of generating a complete snapshot every 6 hs, it will generate snapshots as time goes by only for the newest entities. Let's say the snapshot units are daily, weekly, monthly and yearly. It will create daily snapshots until a week has passed, then it will replace the 7 daily snapshots with the weekly one and continue generating daily snapshots again. The same logic goes for weekly, monthly and yearly snapshots. 
 
 ![multiple snapshots](img/rfc-16/multiple_snapshots.png)
 
 
-#### Snapshot process at bootstrap
+### Snapshot process at bootstrap
 A Catalyst asks another for its snapshots, then it will process the same way it's done now, but will save in the database its hash. Next time a Catalyst sees this hash, it won't process it again.
 
 This way we avoid reprocessing snapshots but two complexities arise:
