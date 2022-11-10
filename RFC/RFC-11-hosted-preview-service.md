@@ -126,8 +126,7 @@ To accomplish this, a new `worldConfiguration` field should be added to the `sce
 
 These properties will only be processed by the Hosted Scene preview service and be ignored if they are present in any scene deployed to the Genesis City.
  
-
-![mini-map](img/rfc-11/minimap.png)
+![mini-map](resources/RFC-11/minimap.png)
 
 
 ###### Chat commands
