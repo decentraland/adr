@@ -3,7 +3,7 @@ layout: doc
 adr: 82
 date: 2022-10-06
 title: Mesh name of pointer events for GLTF in ECS7
-status: PROPOSED
+status: Draft
 authors:
   - gonpombo8
   - kuruk-mm

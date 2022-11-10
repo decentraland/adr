@@ -10,7 +10,7 @@ authors:
   - cazala
   - lautaropetaccio
   - nachomazzara
-status: ACCEPTED
+status: Living
 type: Standards Track
 spdx-license: CC0-1.0
 ---

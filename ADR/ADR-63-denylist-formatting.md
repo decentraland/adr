@@ -3,7 +3,7 @@ layout: doc
 adr: 63
 date: 2022-03-16
 title: Denylist format
-status: ACCEPTED
+status: Living
 authors:
   - agusaldasoro
   - jmoguilevsky

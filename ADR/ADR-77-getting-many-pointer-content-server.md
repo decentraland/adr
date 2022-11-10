@@ -3,7 +3,7 @@ layout: doc
 adr: 77
 date: 2022-04-04
 title: New endpoints to retrive pointers
-status: ACCEPTED
+status: Living
 authors:
   - agusaldasoro
 type: Standards Track

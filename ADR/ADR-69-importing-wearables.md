@@ -3,7 +3,7 @@ layout: doc
 adr: 69
 date: 2022-05-10
 title: Importing wearables
-status: ACCEPTED
+status: Living
 authors:
   - lpetaccio
   - menduz

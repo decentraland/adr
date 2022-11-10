@@ -87,12 +87,16 @@ If this period results in necessary normative changes it will revert the ADR to 
 
 Each ADR should have the following parts:
 
-- Preamble - RFC 822 style headers containing metadata about the ADR, including the ADR number, a short descriptive title (limited to a maximum of 44 characters), a description (limited to a maximum of 140 characters), and the author details. Irrespective of the category, the title and description should not include ADR number. See below for details.
+- Preamble - RFC 822 style headers containing metadata about the ADR, including the ADR number, a short descriptive title (limited to a maximum of 44 characters), a description (limited to a maximum of 140 characters), and the author details. Irrespective of the category, the title and description should not include ADR number.
 - Abstract - Abstract is a multi-sentence (short paragraph) technical summary. This should be a very terse and human-readable version of the specification section. Someone should be able to read only the abstract to get the gist of what this specification does.
 - Need - Why is this ADR needed? Briefly describe the need motivating this proposed artifact to be created or work be done. What problem does it solve?
 - Specification - The technical specification should describe the syntax and semantics of any new feature.
 - Approach - How do you intend on addressing the need? Describe what you plan on doing and the rationale behind the decisions you propose. The level of detail here has to be enough to give the reader a clear understanding of the solution. Further detail can be addressed to satisfy comments and increase clarity.
 - Copyright Waiver - All EIPs must be in the public domain. The copyright waiver MUST link to the license file and use the following wording: `Copyright and related rights waived via [CC0](/LICENSE).`
+
+## Picking an ADR number
+
+The pull request number that adds the file to the [decentraland/adr](https://github.com/decentraland/adr) **MUST** be used as the final ADR number.
 
 ## ADR Formats and Templates
 

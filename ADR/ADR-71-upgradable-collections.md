@@ -3,7 +3,7 @@ layout: doc
 adr: 71
 date: 2022-05-31
 title: Upgradable Collections
-status: ACCEPTED
+status: Living
 authors:
   - fzavalia
   - nachomazzara

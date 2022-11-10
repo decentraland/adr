@@ -3,7 +3,7 @@ layout: doc
 adr: 65
 date: 2022-04-07
 title: Avatar System for Renderer (Unity)
-status: ACCEPTED
+status: Living
 authors:
 - AjimenezDCL
 type: Standards Track

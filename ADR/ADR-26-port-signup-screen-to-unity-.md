@@ -3,7 +3,7 @@ layout: doc
 adr: 26
 date: 2020-06-08
 title: Port signup screen to unity
-status: ACCEPTED
+status: Living
 authors:
 - AjimenezDCL
 type: Standards Track

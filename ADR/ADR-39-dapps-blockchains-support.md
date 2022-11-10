@@ -3,7 +3,7 @@ layout: doc
 adr: 39
 date: 2021-08-10
 title: DApps Blockchains Support
-status: ACCEPTED
+status: Living
 type: Standards Track
 spdx-license: CC0-1.0
 ---

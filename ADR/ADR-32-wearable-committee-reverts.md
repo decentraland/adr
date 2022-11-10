@@ -3,7 +3,7 @@ layout: doc
 adr: 32
 date: 2021-07-02
 title: Wearable Committee Reverts
-status: ACCEPTED
+status: Living
 authors:
   - nchamo
   - menduz

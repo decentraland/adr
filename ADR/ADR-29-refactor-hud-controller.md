@@ -3,7 +3,7 @@ layout: doc
 adr: 29
 date: 2020-06-18
 title: Refactor HUD control
-status: PROPOSED
+status: Draft
 authors:
   - kuruk-mm
   - BrianAmadori

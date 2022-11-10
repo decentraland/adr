@@ -3,7 +3,7 @@ layout: doc
 adr: 53
 date: 2022-01-20
 title: Test collections in the explorer
-status: ACCEPTED
+status: Living
 authors:
   - menduz
   - ShibuyaMartin

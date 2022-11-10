@@ -3,7 +3,7 @@ layout: doc
 adr: 34
 date: 2021-07-07
 title: Collections Technical Approval Flow
-status: ACCEPTED
+status: Living
 authors:
   - nachomazzara
   - menduz

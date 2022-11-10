@@ -7,7 +7,7 @@ authors:
 - 2fd
 - cazala
 - nachomazzara
-status: PROPOSED
+status: Draft
 type: Standards Track
 spdx-license: CC0-1.0
 ---

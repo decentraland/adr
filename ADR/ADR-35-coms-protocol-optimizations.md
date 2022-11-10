@@ -3,7 +3,7 @@ layout: doc
 adr: 35
 date: 2021-07-27
 title: Catalyst communication protocol optimizations
-status: ACCEPTED
+status: Living
 authors:
   - pablitar
   - menduz

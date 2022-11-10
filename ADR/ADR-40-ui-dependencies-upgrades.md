@@ -6,7 +6,7 @@ title: DCL UI dependencies upgrades
 authors:
   - LautaroPetaccio
   - nachomazzara
-status: ACCEPTED
+status: Living
 type: Standards Track
 spdx-license: CC0-1.0
 ---

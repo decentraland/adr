@@ -4,7 +4,7 @@ adr: 36
 team: sdk
 date: 2021-07-27
 title: Kernel repository separation
-status: ACCEPTED
+status: Living
 authors:
   - menduz
 type: Standards Track

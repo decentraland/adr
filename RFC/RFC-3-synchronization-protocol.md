@@ -5,7 +5,7 @@ date: 2022-09-01
 title: Content server synchronization protocol
 authors:
 - agusaldasoro
-status: ACCEPTED
+status: Living
 type: Standards Track
 spdx-license: CC0-1.0
 ---

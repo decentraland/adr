@@ -3,7 +3,7 @@ layout: doc
 adr: 28
 date: 2021-06-15
 title: Smart contract wallets and meta-transactions
-status: ACCEPTED
+status: Living
 authors:
   - cazala
   - nachomazzara

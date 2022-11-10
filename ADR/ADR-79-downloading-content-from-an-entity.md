@@ -3,7 +3,7 @@ layout: doc
 adr: 79
 date: 2022-09-18
 title: Method to download the content from an entity
-status: ACCEPTED
+status: Living
 authors:
   - menduz
 type: Standards Track

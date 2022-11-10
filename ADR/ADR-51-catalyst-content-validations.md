@@ -3,7 +3,7 @@ layout: doc
 adr: 51
 date: 2022-02-02
 title: Catalyst Content validations
-status: ACCEPTED
+status: Living
 authors:
 - agusaldasoro
 - guidota

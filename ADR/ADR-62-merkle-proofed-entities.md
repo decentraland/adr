@@ -3,7 +3,7 @@ layout: doc
 adr: 62
 date: 2022-03-16
 title: Merkle proofed entity deployments
-status: ACCEPTED
+status: Living
 authors:
   - menduz
   - guidota

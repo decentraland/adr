@@ -3,7 +3,7 @@ layout: doc
 adr: 27
 date: 2020-06-14
 title: Port loading screen to unity
-status: ACCEPTED
+status: Living
 authors:
   - AjimenezDCL
   - kuruk-mm

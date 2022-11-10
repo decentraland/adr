@@ -3,7 +3,7 @@ layout: doc
 adr: 56
 date: 2022-01-26
 title: Plugin pattern for Renderer features
-status: ACCEPTED
+status: Living
 authors:
 - BrianAmadori
 type: Standards Track

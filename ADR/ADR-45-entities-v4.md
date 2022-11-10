@@ -3,7 +3,7 @@ layout: doc
 adr: 45
 date: 2020-01-45
 title: Evolution of deployed entities
-status: ACCEPTED
+status: Living
 type: Standards Track
 spdx-license: CC0-1.0
 ---

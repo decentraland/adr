@@ -3,7 +3,7 @@ layout: doc
 adr: 58
 date: 2022-06-07
 title: Third Party Collections Registry V2 (Merkle Tree)
-status: ACCEPTED
+status: Living
 authors:
   - pentreathm
   - agusaldasoro

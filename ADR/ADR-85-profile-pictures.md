@@ -3,7 +3,7 @@ layout: doc
 adr: 85
 date: 2022-10-20
 title: Profile Pictures
-status: ACCEPTED
+status: Living
 authors:
   - guidota
 type: Standards Track

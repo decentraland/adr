@@ -3,7 +3,7 @@ layout: doc
 adr: 44
 date: 2022-01-26
 title: Signed Fetch
-status: ACCEPTED
+status: Living
 authors:
 - 2fd
 - nachomazzara

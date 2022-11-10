@@ -3,7 +3,7 @@ layout: doc
 adr: 54
 date: 2022-01-24
 title: Use an Oracle for MANA pricing according to USD rate
-status: ACCEPTED
+status: Living
 authors:
   - nachomazzara
   - fzavalia

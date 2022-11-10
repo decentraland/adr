@@ -3,7 +3,7 @@ layout: doc
 adr: 57
 date: 2022-01-27
 title: Avatar assembling instructions for visualization
-status: ACCEPTED
+status: Living
 authors:
 - AjimenezDCL
 type: Standards Track

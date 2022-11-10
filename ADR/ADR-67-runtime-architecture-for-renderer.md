@@ -3,7 +3,7 @@ layout: doc
 adr: 67
 date: 2022-04-27
 title: Runtime Architecture For Renderer
-status: ACCEPTED
+status: Living
 authors:
   - brianamadori
 type: Standards Track

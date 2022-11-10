@@ -3,7 +3,7 @@ layout: doc
 adr: 84
 date: 2022-09-21
 title: Crashbot
-status: ACCEPTED
+status: Living
 authors:
 - manumena
 type: Standards Track
