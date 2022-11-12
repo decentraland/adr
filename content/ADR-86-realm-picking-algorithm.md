@@ -270,7 +270,7 @@ To Configure which algorithms to use, then a feature flag `explorer-pick_realm_a
 ### Pseudo Code
 
 ```typescript
-pickCandidate(candidates: Candidate[], userParcel: Parcel) { // candidates = all DAO Peers
+function pickCandidate(candidates: Candidate[], userParcel: Parcel) { // candidates = all DAO Peers
   if (candidates.length === 0) throw new Error('Cannot pick candidates from an empty list')
 
   for (const link of chain) { // Default: chain = ["ALL_PEERS_SCORE", "CLOSE_PEERS_SCORE"]

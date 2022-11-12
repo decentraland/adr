@@ -3,16 +3,16 @@ adr: 42
 date: 2021-10-04
 title: Third Party Integration
 authors:
-- menduz
-- pentreathm
-- agusaldasoro
-- guidota
-- jmoguilevsky
-- LautaroPetaccio
-- nicosantangelo
-- fzavalia
-- cazala
-- nachomazzara
+  - menduz
+  - pentreathm
+  - agusaldasoro
+  - guidota
+  - jmoguilevsky
+  - LautaroPetaccio
+  - nicosantangelo
+  - fzavalia
+  - cazala
+  - nachomazzara
 status: Living
 type: Standards Track
 spdx-license: CC0-1.0
@@ -54,12 +54,9 @@ Each Third Party will require to create and maintain an API with these endpoints
 
 #### Request
 
-```javascript
-GET /registry/:registry-id/owners-bloom-filter {
-    registry-id: "cryptohats"
-}
-
-# https://api.cryptohats.io/registry/cryptohats/owners-bloom-filter
+```http
+GET /registry/:registry-id/owners-bloom-filter
+Example: https://api.cryptohats.io/registry/cryptohats/owners-bloom-filter
 ```
 
 #### Response
@@ -72,9 +69,9 @@ GET /registry/:registry-id/owners-bloom-filter {
 
 If the registry is invalid or non-existent, the data property should return an empty string.
 
-```javascript
+```json
 {
-  data: "";
+  "data": ""
 }
 ```
 
@@ -82,13 +79,9 @@ If the registry is invalid or non-existent, the data property should return an e
 
 #### Request
 
-```javascript
-GET /registry/:registry-id/address/:address/assets {
-    registry-id: "cryptohats"
-    address: "0x0f5d2fb29fb7d3cfee444a200298f468908cc942"
-}
-
-# https://api.cryptohats.io/registry/cryptohats/address/0x0f5d2fb29fb7d3cfee444a200298f468908cc942/assets
+```http
+GET /registry/:registry-id/address/:address/assets
+Example: https://api.cryptohats.io/registry/cryptohats/address/0x0f5d2fb29fb7d3cfee444a200298f468908cc942/assets
 ```
 
 #### Response
@@ -134,14 +127,9 @@ If the registry is invalid or the address does not own assets the `assets` prop 
 
 #### Request
 
-```javascript
-GET /registry/:registry-id/address/:address/assets/:id {
-    registry-id: "cryptohats"
-    address: "0x0f5d2fb29fb7d3cfee444a200298f468908cc942"
-    id: "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1"
-}
-
-# https://api.cryptohats.io/registry/cryptohats/address/0x0f5d2fb29fb7d3cfee444a200298f468908cc942
+```http
+GET /registry/:registry-id/address/:address/assets/:id
+Example: https://api.cryptohats.io/registry/cryptohats/address/0x0f5d2fb29fb7d3cfee444a200298f468908cc942
 /assets/0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1
 ```
 

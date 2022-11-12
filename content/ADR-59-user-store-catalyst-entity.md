@@ -33,7 +33,7 @@ A `Store` entity stored in the catalyst to support this type of data while lever
 ## Schema
 
 ```ts
-Store {
+type Store = {
   id: string
   owner: string
   description: string

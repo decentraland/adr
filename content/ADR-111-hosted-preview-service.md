@@ -40,7 +40,7 @@ Scope of the BETA:
 - Besides scene size and owning a NAME, no other validations will be made as this is just a preview
 - Explorer mini map won't be displayed
 - Explorer skybox light can be set up for the scene
-- Display a Jump to Genesis Ctity button to leave the scene preview
+- Display a Jump to Genesis City button to leave the scene preview
 - Validated by hosting a scene with the new onboarding experience
 
 #### The Solution
@@ -120,9 +120,11 @@ To accomplish this, a new `worldConfiguration` field should be added to the `sce
 **scene.json**
 
 ```json
-"worldConfiguration" : {
-     "skybox" : 36000
-     "minimapVisible" : false
+{
+  "worldConfiguration": {
+    "skybox": 36000,
+    "minimapVisible": false
+  }
 }
 ```
 

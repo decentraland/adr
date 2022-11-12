@@ -33,11 +33,11 @@ The response to the previous request is the list of active entities correspondin
 
 The type of the response is the standard entity type for content servers and deployments defined in [ADR-80](/adr/ADR-80).
 
-```yaml
+```javascript
 [
   {
     "version": "v3",
-    # we care about this ID 👇
+    // we care about this ID 👇
     "id": "bafkreif5c6rjswu6cbj5astv5uuc7yrxbm73tycegrnjqhhp3q6qeop3ym",
     "type": "scene",
     "pointers": [
@@ -49,8 +49,12 @@ The type of the response is the standard entity type for content servers and dep
       "-47,-99"
     ],
     "timestamp": 1656605369643,
-    "content": [ ... ],
-    "metadata": { ... }
+    "content": [
+     // ...
+    ],
+    "metadata": {
+      // ...
+    }
   }
 ]
 ```
@@ -225,7 +229,7 @@ Host: https://peer.decentraland.org
 
 In the entity response, as defined in ADR-80, all the content files can be found in the `.content` section. All content files MUST be available for actively pointed entities.
 
-```json
+```jsonc
 {
   "version": "v3",
   "type": "scene",
@@ -237,9 +241,9 @@ In the entity response, as defined in ADR-80, all the content files can be found
       "file": "bin/game.js",
       "hash": "bafybeianxkwd7i4cgxdat7mu4nbxfyic6qtswxlq2ehk634xefsscxsuya"
     },
-    ...
+    // ...
   ],
-  ...
+  // ...
 }
 ```
 

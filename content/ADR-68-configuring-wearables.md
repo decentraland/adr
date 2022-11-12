@@ -126,7 +126,7 @@ enum Locale {
     ES = "es"
 }
 
-enum Rarity = {
+enum Rarity {
   UNIQUE = 'unique',
   MYTHIC = 'mythic',
   LEGENDARY = 'legendary',
@@ -136,7 +136,7 @@ enum Rarity = {
   COMMON = 'common'
 }
 
-enum WearableCategory = {
+enum WearableCategory {
   EYEBROWS = 'eyebrows',
   EYES = 'eyes',
   FACIAL_HAIR = 'facial_hair',

@@ -82,11 +82,11 @@ Every time an item changes, the curator must submit the new root to the blockcha
 
 The entity metadata that will be stored in the Content Server will have a shape similar to:
 
-```typescript
+```json5
 {
-  …, // current metadata
-  index: 15, // number
-  proof: [ // Dynamic bytes array. log2 N \* 32bytes size with a complexity of O(log2 N). Where N is the number of items.
+  // …, current metadata
+  "index": 15, // number
+  "proof": [ // Dynamic bytes array. log2 N \* 32bytes size with a complexity of O(log2 N). Where N is the number of items.
     "0xc8ae2407cffddd38e3bcb6c6f021c9e7ac21fcc60be44e76e4afcb34f637d562",
     "0x16123d205a70cdeff7643de64cdc69a0517335d9c843479e083fd444ea823172",
     "0x1fbe73f1e71f11fb4e88de5404f3177673bdfc89e93d9a496849b4ed32c9b04f",

@@ -33,7 +33,7 @@ Needless to say, the content servers and potentially other tools (like the build
 
 All validations will know this context and will decide if must do something different, but no validation list per context will exist, i.e. all validations will run on each deployment.
 
-Also, the concept of "entity version" will be removed, instead, timestamps will be used to perform protocol change validations. That is so, to avoid duplicated/deprecation logic. An example of this timestamp mechanism is</span> defined in (ADR-45)[1].
+Also, the concept of "entity version" will be removed, instead, timestamps will be used to perform protocol change validations. That is so, to avoid duplicated/deprecation logic. An example of this timestamp mechanism is defined in (ADR-45)[1].
 
 ### Validations
 
@@ -80,7 +80,7 @@ Adding validations will be easier any developer.
 
 Catalysts will need to provide external calls that may introduce some complexity.
 
-[1]: ./ADR-45-entities-v4.md
+[1]: /adr/ADR-45
 [signature]: ./resources/ADR-51/signature.md
 [ipfs hashing]: ./resources/ADR-51/ipfs-hashing.md
 [structure]: ./resources/ADR-51/structure.md

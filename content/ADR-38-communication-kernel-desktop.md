@@ -84,8 +84,8 @@ Some pseudo code of how `explorer-website` and `explorer-desktop` will start:
 ```typescript
 // shell=explorer-website (browser)
 
-import Renderer
-import Kernel
+import Renderer from '...'
+import Kernel from '...'
 
 const kernel = new Kernel({
     renderer: new Renderer()
@@ -99,8 +99,8 @@ await kernel.authenticate(provider, isGuest=true)
 ```typescript
 // shell=explorer-desktop (NodeJS)
 
-import Renderer
-import Kernel
+import Renderer from '...'
+import Kernel from '...'
 
 const renderer = new WebSocket_Remote_Renderer('ws://localhost:8000')
 

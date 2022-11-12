@@ -67,7 +67,7 @@ The property works by **whitelisting the keys at root level** that will be inclu
 
 Example of a Wearable entity metadata:
 
-```typescript
+```yaml
 {
   id: "urn:decentraland:off-chain:base-avatars:aviatorstyle",
   name: "Aviator Style",
@@ -111,7 +111,7 @@ Example of a Wearable entity metadata:
 
 Example of a Third Party wearable entity metadata with a `merkleProof`:
 
-```typescript
+```yaml
 {
   id: "urn:decentraland:off-chain:base-avatars:aviatorstyle",
   name: "Aviator Style",

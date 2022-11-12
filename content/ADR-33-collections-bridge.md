@@ -20,9 +20,9 @@ The alternative needs one transaction per collection to approve the assets, and 
 Tx.1) The user should approve the bridge contract to use their assets on their behalf for each collection. The transaction to approve is required only once per collection. It means that once the user approves the bridge on the collection, every time the user wants to move assets, the transaction to approve won't be needed. The user will be able to revoke the approval whenever they want.
 
 ```ts
-collection1.approveForAll(user, bridge) # ERC721 standard approvalForAll method
-collection2.approveForAll(user, bridge) # ERC721 standard approvalForAll method
-collection3.approveForAll(user, bridge) # ERC721 standard approvalForAll method
+collection1.approveForAll(user, bridge) // ERC721 standard approvalForAll method
+collection2.approveForAll(user, bridge) // ERC721 standard approvalForAll method
+collection3.approveForAll(user, bridge) // ERC721 standard approvalForAll method
 ```
 
 Tx.2) The user should call the bridge smart contract to poll assets from their account to the bridge. The transaction to poll is required each time the user wants to deposit assets.
@@ -46,9 +46,9 @@ The alternative needs one transaction per collection to transfer the assets to t
 Tx.1) The user should transfer the assets to the bridge contract. A transaction per collection is needed.
 
 ```ts
-collection1.safeTransferFrom(user, bridge, [tokenIds]) # ERC721 standard safeTransferFrom method
-collection2.safeTransferFrom(user, bridge, [tokenIds]) # ERC721 standard safeTransferFrom method
-collection3.safeTransferFrom(user, bridge, [tokenIds]) # ERC721 standard safeTransferFrom method
+collection1.safeTransferFrom(user, bridge, [tokenIds]) // ERC721 standard safeTransferFrom method
+collection2.safeTransferFrom(user, bridge, [tokenIds]) // ERC721 standard safeTransferFrom method
+collection3.safeTransferFrom(user, bridge, [tokenIds]) // ERC721 standard safeTransferFrom method
 ```
 
 _**Min transactions:** 1_

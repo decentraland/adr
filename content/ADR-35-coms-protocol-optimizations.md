@@ -147,7 +147,7 @@ If it is an old catalyst, will return something like this:
     "catalystVersion": "1.2.0"
   },
   "ready": true,
-  "layers": [...list of layers...]
+  "layers": []
 }
 ```
 

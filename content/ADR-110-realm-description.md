@@ -109,6 +109,7 @@ There are several possible comms configs:
 - If `protocol` is `v2` it will present an structure like:
 
 ```json
+{
   "comms": {
     "healthy": true,
     "protocol": "v2",
@@ -116,6 +117,7 @@ There are several possible comms configs:
     "commitHash": "43d2173cf5e2078b32bddab5adb90e4778170c44",
     "usersCount": 152
   }
+}
 ```
 
 - When `protocol` is `v3` there are two alternatives.
@@ -123,11 +125,13 @@ There are several possible comms configs:
   - Fixed adapter
 
     ```json
+    {
       "comms": {
         "healthy": true,
         "protocol": "v3",
         "fixedAdapter": "ws-room:mini-comms.decentraland.org/rooms/test-room"
       }
+    }
     ```
 
     This means the client will connect to the provided adapter, there is no clustering process involved.

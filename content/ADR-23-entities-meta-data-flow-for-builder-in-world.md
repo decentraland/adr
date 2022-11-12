@@ -63,7 +63,7 @@ The following concerns were raised against this approach:
 
 To deal with the Option 1 scalability issues, we discussed to just put all the attributes into a single component.
 
-``` 
+```
 {
   entities: [
     {

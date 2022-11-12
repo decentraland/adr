@@ -24,7 +24,7 @@ In this approach a Routing Table is used, which is managed by the Routing Servic
 
 ## Approach
 
-This approach is simple, it should be easy to debug and it could be refined in the future for performance if needed. 
+This approach is simple, it should be easy to debug and it could be refined in the future for performance if needed.
 
 This implementation requires two extra services:
 
@@ -38,6 +38,7 @@ The basic idea of this implementation is for peers to connect randomly to a subs
 Although this implementation requires a server, it tries to maximize the usage of P2P connections, while also keeping in mind that peers may run in a constrained environment (like a browser) in which it is not always possible to have a lot of open connections.
 If broadcasting every message, then you can receive the same packet many times even if you are not distributing it anymore. This creates a congestion of the network, in this solution it is guaranteed that every packet will be processed only once per peer.
 Also, each peer needs to decode the package to parse it but they don't make changes to it, so there is no cost associated to the enconding of each package.
+
 ## Flow example
 
 ### 1. Peers establish random connections with their known peers.
@@ -70,7 +71,6 @@ sequenceDiagram
       Peer1---Peer4;
       Peer2---Peer3;
 ```
-
 
 ### 2. Each peer reports its connections to the routing service
 
@@ -117,34 +117,43 @@ sequenceDiagram
       Peer1---Peer4;
       Peer2---Peer3;
 ```
+
 Paths for Peer1
+
 ```mermaid
   graph TD;
       Peer1-->Peer2;
       Peer1-->Peer3;
       Peer1-->Peer4;
 ```
+
 Paths for Peer2
+
 ```mermaid
   graph TD;
       Peer2-->Peer1;
       Peer1-->Peer4;
       Peer2-->Peer3;
 ```
+
 Paths for Peer3
+
 ```mermaid
   graph TD;
       Peer3-->Peer1;
       Peer1-->Peer4;
       Peer3-->Peer2;
 ```
+
 Paths for Peer4
+
 ```mermaid
   graph TD;
       Peer4-->Peer1;
       Peer1-->Peer2;
       Peer2-->Peer3;
 ```
+
 Empty Paths for Peer5
 
 ### Peer2 sends a message
@@ -152,6 +161,7 @@ Empty Paths for Peer5
 First the peer2 creates and encodes a package that contains its own paths, so all the peers obay that rule.
 
 Paths for Peer2
+
 ```mermaid
   graph TD;
       Peer2-->Peer1;
@@ -190,8 +200,8 @@ sequenceDiagram
 Let's assume peer4 needs to distribute a package, but loses the conection to peer1 while trying to send the package. Then it will relay the message to all the missing nodes trough the Messaging Service.
 Note: A message received by the Messaging Service is never relayed.
 
-
 Paths for Peer4
+
 ```mermaid
   graph TD;
       Peer4-->Peer1;
@@ -206,7 +216,6 @@ Paths for Peer4
   targets: [[4, 1, 2, 3]]
 }
 ```
-
 
 ```mermaid
 sequenceDiagram
@@ -235,7 +244,6 @@ sequenceDiagram
 ## Definitions
 
 ```typescript
-
 type Address = string
 
 // A route is a list of peer ids.
@@ -262,21 +270,20 @@ interface MessagingService {
   /**
    * The .send method is used to send the message `message` to the peers provided in the `to` field.
    */
-    send(message: Uint8Array, to: Address[]): void
+  send(message: Uint8Array, to: Address[]): void
 }
 
 type PeerStatus = {
-    timestamp: number,
-    room: string,
-    connectedTo: Address[]
+  timestamp: number
+  room: string
+  connectedTo: Address[]
 }
 
 interface RoutingService {
-
   /**
    * The .updatePeerStatus method is used to update the peer status in the service.
    */
-   updatePeerStatus(status: PeerStatus): void
+  updatePeerStatus(status: PeerStatus): void
 
   /**
    * Event emitter (mitt) with all the events produced by the service.
@@ -296,7 +303,7 @@ type NewPeerRoutingTableEvent = {
 Reference implementation:
 
 ```typescript
-type Route = string[] | 'server'
+type Route = string[] | "server"
 type PeerRoutingTable = Map<string, Route>
 
 function calculateRoutingTables(mesh: Map<string, Set<string>>) {
@@ -321,11 +328,11 @@ function calculateRoutingTables(mesh: Map<string, Set<string>>) {
       return calculatedRoute
     }
 
-    let route: Route = 'server'
+    let route: Route = "server"
 
     const fromPeerConnections = mesh.get(fromPeer)
     if (!fromPeerConnections) {
-      route = 'server'
+      route = "server"
     } else if (fromPeerConnections?.has(toPeer)) {
       route = []
     } else {
@@ -334,9 +341,9 @@ function calculateRoutingTables(mesh: Map<string, Set<string>>) {
           continue
         }
         let relayedRoute = calculateRouteBeetwen(p, toPeer, [p, ..._excluding])
-        if (relayedRoute !== 'server') {
+        if (relayedRoute !== "server") {
           relayedRoute = [p, ...relayedRoute]
-          if (route === 'server' || route.length > relayedRoute.length) {
+          if (route === "server" || route.length > relayedRoute.length) {
             route = relayedRoute
           }
         }
@@ -346,7 +353,7 @@ function calculateRoutingTables(mesh: Map<string, Set<string>>) {
     calculatedRoutes.set(toPeer, route)
 
     // NOTE: routes are bidirectional
-    getOrCreateRoutingTable(toPeer).set(fromPeer, route === 'server' ? route : Array.from(route).reverse())
+    getOrCreateRoutingTable(toPeer).set(fromPeer, route === "server" ? route : Array.from(route).reverse())
     return route
   }
 
@@ -371,40 +378,40 @@ function calculateRoutingTables(mesh: Map<string, Set<string>>) {
 
   return routingTables
 }
-``` -->
+```
 
 ## Packet
 
 A packet contains a source (peer id) and a target specifying to whom the packet is for and the route to follow to reach it.
 
 ```typescript
-
 type Packet = {
   source: Address
   target: Route[]
 }
+```
 
 ## Peer
 
 Each time a package needs to be sent, then the peer will create it using its own paths as routing table and will make the network to obey that flow.
 
-```typescript
-{ 
-  source: 'peer1', 
-  target: [ ['peer2', 'peer3'] ]
+```json
+{
+  "source": "peer1",
+  "target": [["peer2", "peer3"]]
 }
 ```
 
 This means each peer will check the `target` field, always the message will be processed, and then it will be relayed in the way the route value indicates.
 
-Notice the peer relaying the message is not expected to remove itself either as a recipent or as a hop in the route, since this will require encoding the package again. 
+Notice the peer relaying the message is not expected to remove itself either as a recipent or as a hop in the route, since this will require encoding the package again.
 
 # Benefits
 
 - Since there is a specific routing table for each message, there is no need to expire message or count hops. If a route is cut, the message will not be delivered by the mesh, this means the message should be relayed using the messaging service (if reliable) or discarded (if unreliable).
 - The messaging service fallback provide a safety guarantee against network cluster partitions.
 - A given implementation can be optimized by suggesting peers to connect to certain others in order to avoid clustering and minimize messaging service usage. This is out of the scope for this document.
-- Since the routing service will know the status of the mesh at all times, it's easy to graph and debug network problems. 
+- Since the routing service will know the status of the mesh at all times, it's easy to graph and debug network problems.
 
 # Competition (alternatives)
 
@@ -418,4 +425,4 @@ Notice the peer relaying the message is not expected to remove itself either as 
 
 - Why not let each peer calculate the best routing table, by broadcasting each peer status to the network?
   - This solution will consume a lot of resources from each client, since the table needs to be updated (or verified) every time there is a change.
-  - This solution is somehow more difficult to debug, since routing tables have no source of truth, and different peers may build them differently. 
+  - This solution is somehow more difficult to debug, since routing tables have no source of truth, and different peers may build them differently.

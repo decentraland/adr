@@ -82,7 +82,7 @@ Meanwhile `Credentials` is the user signature of the request (called `CanonicalR
   Payload = SHA256(CanonicalRequest)
 
   // Generate User AuthLink (Signature)
-  AuthLink = Authenticator.signPayload(<Identity>, Payload)
+  AuthLink = Authenticator.signPayload(Identity, Payload)
 
   // Stringify AuthLink to get the credentials
   Credentials = JSON.stringify(AuthLink)
@@ -98,12 +98,14 @@ Meanwhile `Credentials` is the user signature of the request (called `CanonicalR
 
 > Example:
 >
-> ```ts
->  'Authorization': 'DCL+SHA256 [{"type":"SIGNER","payload":"0x978561a2fcf322d668906a30e561ec3e70756208","signature":""},{"type":"ECDSA_EPHEMERAL","payload":"Decentraland Login\\nEphemeral address: 0x0F7254618741D2FbBAaa2187195B241be2B06BB7\\nExpiration: 2022-01-07T19:38:17.741Z","signature":"0x29b5f488411f059b45b22eff66debb716b0617408e5d648f21d8ded12a15089e7232a591cad5a82f41b6020c779ed4427c8f6d84e4cd4b8be5e26c82eec374b71b"},{"type":"ECDSA_SIGNED_ENTITY","payload":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","signature":"0x5b3cf13b6e21b41df56bbd5b8fb4ef6241306c666bb4136205a15ff74b698d5b10f2c1eab94306ae83d8b61350e19856cc6a610da135dd1b8601beac855e3d321b"}]'
->
->  'Authorization': 'DCL+SHA256+BASE64 W3sidHlwZSI6IlNJR05FUiIsInBheWxvYWQiOiIweDk3ODU2MWEyZmNmMzIyZDY2ODkwNmEzMGU1NjFlYzNlNzA3NTYyMDgiLCJzaWduYXR1cmUiOiIifSx7InR5cGUiOiJFQ0RTQV9FUEhFTUVSQUwiLCJwYXlsb2FkIjoiRGVjZW50cmFsYW5kIExvZ2luXFxuRXBoZW1lcmFsIGFkZHJlc3M6IDB4MEY3MjU0NjE4NzQxRDJGYkJBYWEyMTg3MTk1QjI0MWJlMkIwNkJCN1xcbkV4cGlyYXRpb246IDIwMjItMDEtMDdUMTk6Mzg6MTcuNzQxWiIsInNpZ25hdHVyZSI6IjB4MjliNWY0ODg0MTFmMDU5YjQ1YjIyZWZmNjZkZWJiNzE2YjA2MTc0MDhlNWQ2NDhmMjFkOGRlZDEyYTE1MDg5ZTcyMzJhNTkxY2FkNWE4MmY0MWI2MDIwYzc3OWVkNDQyN2M4ZjZkODRlNGNkNGI4YmU1ZTI2YzgyZWVjMzc0YjcxYiJ9LHsidHlwZSI6IkVDRFNBX1NJR05FRF9FTlRJVFkiLCJwYXlsb2FkIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsInNpZ25hdHVyZSI6IjB4NWIzY2YxM2I2ZTIxYjQxZGY1NmJiZDViOGZiNGVmNjI0MTMwNmM2NjZiYjQxMzYyMDVhMTVmZjc0YjY5OGQ1YjEwZjJjMWVhYjk0MzA2YWU4M2Q4YjYxMzUwZTE5ODU2Y2M2YTYxMGRhMTM1ZGQxYjg2MDFiZWFjODU1ZTNkMzIxYiJ9XQ=='
->
->  'Authorization': 'SIGN+SHA256 0x5b3cf13b6e21b41df56bbd5b8fb4ef6241306c666bb4136205a15ff74b698d5b10f2c1eab94306ae83d8b61350e19856cc6a610da135dd1b8601beac855e3d321b'
+> ```yaml
+> Authorization: 'DCL+SHA256 [{"type":"SIGNER","payload":"0x978561a2fcf322d668906a30e561ec3e70756208","signature":""},{"type":"ECDSA_EPHEMERAL","payload":"Decentraland Login\\nEphemeral address: 0x0F7254618741D2FbBAaa2187195B241be2B06BB7\\nExpiration: 2022-01-07T19:38:17.741Z","signature":"0x29b5f488411f059b45b22eff66debb716b0617408e5d648f21d8ded12a15089e7232a591cad5a82f41b6020c779ed4427c8f6d84e4cd4b8be5e26c82eec374b71b"},{"type":"ECDSA_SIGNED_ENTITY","payload":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","signature":"0x5b3cf13b6e21b41df56bbd5b8fb4ef6241306c666bb4136205a15ff74b698d5b10f2c1eab94306ae83d8b61350e19856cc6a610da135dd1b8601beac855e3d321b"}]'
+> ```
+> ```yaml
+> Authorization: 'DCL+SHA256+BASE64 W3sidHlwZSI6IlNJR05FUiIsInBheWxvYWQiOiIweDk3ODU2MWEyZmNmMzIyZDY2ODkwNmEzMGU1NjFlYzNlNzA3NTYyMDgiLCJzaWduYXR1cmUiOiIifSx7InR5cGUiOiJFQ0RTQV9FUEhFTUVSQUwiLCJwYXlsb2FkIjoiRGVjZW50cmFsYW5kIExvZ2luXFxuRXBoZW1lcmFsIGFkZHJlc3M6IDB4MEY3MjU0NjE4NzQxRDJGYkJBYWEyMTg3MTk1QjI0MWJlMkIwNkJCN1xcbkV4cGlyYXRpb246IDIwMjItMDEtMDdUMTk6Mzg6MTcuNzQxWiIsInNpZ25hdHVyZSI6IjB4MjliNWY0ODg0MTFmMDU5YjQ1YjIyZWZmNjZkZWJiNzE2YjA2MTc0MDhlNWQ2NDhmMjFkOGRlZDEyYTE1MDg5ZTcyMzJhNTkxY2FkNWE4MmY0MWI2MDIwYzc3OWVkNDQyN2M4ZjZkODRlNGNkNGI4YmU1ZTI2YzgyZWVjMzc0YjcxYiJ9LHsidHlwZSI6IkVDRFNBX1NJR05FRF9FTlRJVFkiLCJwYXlsb2FkIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsInNpZ25hdHVyZSI6IjB4NWIzY2YxM2I2ZTIxYjQxZGY1NmJiZDViOGZiNGVmNjI0MTMwNmM2NjZiYjQxMzYyMDVhMTVmZjc0YjY5OGQ1YjEwZjJjMWVhYjk0MzA2YWU4M2Q4YjYxMzUwZTE5ODU2Y2M2YTYxMGRhMTM1ZGQxYjg2MDFiZWFjODU1ZTNkMzIxYiJ9XQ=='
+> ```
+> ```yaml
+> Authorization: 'SIGN+SHA256 0x5b3cf13b6e21b41df56bbd5b8fb4ef6241306c666bb4136205a15ff74b698d5b10f2c1eab94306ae83d8b61350e19856cc6a610da135dd1b8601beac855e3d321b'
 > ```
 
 ### CanonicalRequest
@@ -300,7 +302,7 @@ Additionally if some fields are files they *MUST* also include `filename` and `t
 
 #### `GET https://decentraland.org/api/status`
 
-```txt
+```http
 GET /api/status
 host:decentraland.org
 x-identity-expiration:2020-01-01T00:00:00Z
@@ -308,7 +310,7 @@ x-identity-expiration:2020-01-01T00:00:00Z
 
 #### `GET https://decentraland.org/api/status` with metadata
 
-```txt
+```http
 GET /api/status
 host:decentraland.org
 x-identity-expiration:2020-01-01T00:00:00Z
@@ -317,7 +319,7 @@ x-identity-metadata:{"service":"market.decentraland.org"}
 
 #### `POST https://decentraland.org/api/status?filter=asc` with metadata
 
-```txt
+```http
 POST /api/status?filter=asc
 host:decentraland.org
 x-identity-expiration:2020-01-01T00:00:00Z
@@ -326,7 +328,7 @@ x-identity-metadata:{"service":"market.decentraland.org"}
 
 #### `POST https://decentraland.org/api/status` with metadata and extra headers
 
-```txt
+```http
 POST /api/status
 host:decentraland.org
 x-identity-expiration:2020-01-01T00:00:00Z
@@ -338,7 +340,7 @@ cookie:eu_cn=1;
 
 #### `POST https://decentraland.org/api/status` with json data
 
-```txt
+```http
 POST /api/status
 host:decentraland.org
 content-type:application/json; charset=utf-8
@@ -348,7 +350,7 @@ x-identity-expiration:2020-01-01T00:00:00Z
 
 #### `POST https://decentraland.org/api/status` with multipart data
 
-```txt
+```http
 POST /api/status
 host:decentraland.org
 content-type:multipart/form-data
