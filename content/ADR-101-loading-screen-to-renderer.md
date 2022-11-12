@@ -1,14 +1,15 @@
 ---
-layout: doc
-rfc: 1
+adr: 101
 date: 2022-08-17
 title: Move loading screen logic from kernel to renderer
 authors:
-- menduz
-- AjimenezDCL
-status: DRAFT
-type: Standards Track
+  - menduz
+  - AjimenezDCL
+status: Draft
+type: RFC
 spdx-license: CC0-1.0
+redirect_from:
+  - /rfc/RFC-1
 ---
 
 ## Abstract
@@ -53,9 +54,7 @@ RendererVisible is used to both show and hide the entire renderer to make room f
 
 RendererVisible has a different lifecycle, it depends on several conditions including state of the login, state of the renderingVisible ( reported from renderer) and world loading status (amount of pending parcels, also reported by the renderer in addition to runtime information).
 
-
 ```ts
-
 export const getFatalError = (state: RootLoadingState) => state.loading.error
 export const getLoadingState = (state: RootLoadingState) => state.loading
 export const isInitialLoading = (state: RootLoadingState) => state.loading.initialLoad
@@ -129,7 +128,6 @@ export function isRendererVisible(state: RootState) {
 
   return state.loading.renderingActivated || isLoadingScreenVisible(state)
 }
-
 ```
 
 The proposed approach is:

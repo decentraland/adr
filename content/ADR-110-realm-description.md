@@ -1,15 +1,16 @@
 ---
-layout: doc
-rfc: 10
+adr: 110
 date: 2022-10-04
 title: Realm description
 authors:
-- agusaldasoro
-- hugoarregui
-- menduz
+  - agusaldasoro
+  - hugoarregui
+  - menduz
 status: Living
-type: Standards Track
+type: RFC
 spdx-license: CC0-1.0
+redirect_from:
+  - /rfc/RFC-10
 ---
 
 # Abstract
@@ -26,35 +27,35 @@ This endpoint should return a json like [this](https://github.com/decentraland/p
 
 ```typescript
 type About = {
-  healthy: boolean,
+  healthy: boolean
   configurations: {
-    networkId: number,
-    realmName?: string,
-    scenesUrn: string[],
-    globalScenesUrn: string[],
-  },
+    networkId: number
+    realmName?: string
+    scenesUrn: string[]
+    globalScenesUrn: string[]
+  }
   content: {
-    healthy: boolean,
-    version?: string,
-    commitHash?: string,
+    healthy: boolean
+    version?: string
+    commitHash?: string
     publicUrl: string
-  },
+  }
   comms: {
-    healthy: boolean,
-    protocol: string,
-    fixedAdapter?: string,
+    healthy: boolean
+    protocol: string
+    fixedAdapter?: string
     usersCount?: number
-  },
+  }
   lambdas: {
-    healthy: boolean,
-    version?: string,
-    commitHash?: string,
+    healthy: boolean
+    version?: string
+    commitHash?: string
     publicUrl: string
-  },
+  }
   bff?: {
-    healthy: boolean,
-    userCount: number,
-    commitHash?: string,
+    healthy: boolean
+    userCount: number
+    commitHash?: string
     publicUrl: string
   }
 }
@@ -117,9 +118,10 @@ There are several possible comms configs:
   }
 ```
 
-- When `protocol` is `v3` there are two alternatives. 
+- When `protocol` is `v3` there are two alternatives.
 
-  - Fixed adapter 
+  - Fixed adapter
+
     ```json
       "comms": {
         "healthy": true,

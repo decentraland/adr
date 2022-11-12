@@ -1,13 +1,14 @@
 ---
-layout: doc
-rfc: 8
+adr: 108
 date: 2022-09-21
 title: Specific optimizers for explorer assets
 authors:
-- menduz
-status: DRAFT
-type: Standards Track
+  - menduz
+status: Draft
+type: RFC
 spdx-license: CC0-1.0
+redirect_from:
+  - /rfc/RFC-8
 ---
 
 # Abstract

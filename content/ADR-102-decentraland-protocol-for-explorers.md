@@ -1,15 +1,16 @@
 ---
-layout: doc
-rfc: 2
+adr: 102
 date: 2022-09-13
 title: Decentraland Protocol for Explorers
 authors:
   - menduz
   - agusaldasoro
   - jmoguilevsky
-status: DRAFT
-type: Standards Track
+status: Draft
+type: RFC
 spdx-license: CC0-1.0
+redirect_from:
+  - /rfc/RFC-2
 ---
 
 # Abstract

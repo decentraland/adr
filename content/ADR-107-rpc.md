@@ -1,15 +1,16 @@
 ---
-layout: doc
-rfc: 7
+adr: 107
 date: 2022-09-21
 title: Decentraland RPC Streams
 authors:
-- kuruk-mm
-- menduz
-status: DRAFT
+  - kuruk-mm
+  - menduz
+status: Draft
 discussion: https://github.com/decentraland/adr/discussions/88
-type: Standards Track
+type: RFC
 spdx-license: CC0-1.0
+redirect_from:
+  - /rfc/RFC-7
 ---
 
 # Abstract
@@ -94,6 +95,7 @@ service SomeService {
 It is a stream generated in the client and consumed by the server. It works exactly like `Server Stream`, but the other way around.
 
 Some considerations are needed for client streams:
+
 - The client stream may never be consumed by the server. The stream only starts upon a signal from the server. (Review if this also happens without ACK)
 - It may be possible that the client stream lifeclycle is longer than the execution of the server method. That is, the stream may run forever regardless of the method responding.
 
@@ -135,6 +137,7 @@ service SomeService {
 In the case of Bidirectional streams, the Client and the Server can send messages independently without but not limited to synchronization between streams.
 
 Some considerations for bidirectional streams:
+
 - Both streams MUST have decoupled generation/iteration cycles. But synchronizing messages is possible like in the follwing exaple
   ```ts
   async function* bidirectionalMethod(clientStream: AsyncIterator<Req>): AsyncGenerator<Res> {
@@ -145,7 +148,6 @@ Some considerations for bidirectional streams:
   ```
 - The client stream MAY be closed by either party at any moment.
 - The server stream MAY be closed by either party at any moment.
-
 
 ```mermaid
 sequenceDiagram
@@ -165,6 +167,7 @@ sequenceDiagram
 ```
 
 Protobuf specification for Bidirectional Streams:
+
 ```
 service {
   rpc ClientStream(stream StreamRequest) returns (stream StreamResponse)

@@ -20,8 +20,8 @@ module.exports = function ({ context }) {
 
       checkAdrStatus(page)
     } else if (page.matterfront.rfc) {
-      page.slug = `/rfc/RFC-${page.matterfront.rfc}`
-      page.layout = "doc"
+      console.error(page)
+      throw new Error(`RFC are deprecated, plase upgrade. More info in ADR-1`)
     }
   }
 }
@@ -36,7 +36,7 @@ function checkAdrStatus(page) {
       "ADR-" +
         page.matterfront.adr +
         " has invalid `type: " +
-        page.status +
+        page.matterfront.type +
         "`, valid types are: " +
         Array.from(validTypes).join(",")
     )
@@ -46,7 +46,7 @@ function checkAdrStatus(page) {
       "ADR-" +
         page.matterfront.adr +
         " has invalid `status: " +
-        page.status +
+        page.matterfront.status +
         "`, valid statuses are: " +
         Array.from(validStatuses).join(",")
     )

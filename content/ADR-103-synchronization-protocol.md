@@ -1,13 +1,14 @@
 ---
-layout: doc
-rfc: 3
+adr: 103
 date: 2022-09-01
 title: Content server synchronization protocol
 authors:
-- agusaldasoro
+  - agusaldasoro
 status: Living
-type: Standards Track
+type: RFC
 spdx-license: CC0-1.0
+redirect_from:
+  - /rfc/RFC-3
 ---
 
 # Abstract

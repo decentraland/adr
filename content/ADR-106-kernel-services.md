@@ -1,14 +1,15 @@
 ---
-layout: doc
-rfc: 6
+adr: 106
 date: 2022-09-19
 title: Kernel services code generation
 authors:
-- kuruk-mm
-- menduz
-status: DRAFT
-type: Standards Track
+  - kuruk-mm
+  - menduz
+status: Draft
+type: RFC
 spdx-license: CC0-1.0
+redirect_from:
+  - /rfc/RFC-6
 ---
 
 # Abstract

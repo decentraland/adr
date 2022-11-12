@@ -1,13 +1,14 @@
 ---
-layout: doc
-rfc: 9
+adr: 109
 date: 2022-09-28
 title: On-chain validators
 authors:
   - nachomazzara
-status: DRAFT
-type: Standards Track
+status: Draft
+type: RFC
 spdx-license: CC0-1.0
+redirect_from:
+  - /rfc/RFC-9
 ---
 
 # Abstract

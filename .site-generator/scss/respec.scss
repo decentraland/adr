@@ -1745,8 +1745,14 @@ p,
 li,
 td {
   & > code {
-    background: #f6f8fa;
+    background: var(--note-bg);
     color: #d73a49;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+    padding: .2em .4em;
+    margin: 0;
+    font-size: 85%;
+    background-color: var(--color-neutral-muted);
+    border-radius: 6px;
   }
 }
 

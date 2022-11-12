@@ -1,13 +1,14 @@
 ---
-layout: doc
-rfc: 11
+adr: 111
 date: 2022-09-28
 title: Scene Preview Server
 authors:
   - pentreathm
 status: Living
-type: Standards Track
+type: RFC
 spdx-license: CC0-1.0
+redirect_from:
+  - /rfc/RFC-11
 ---
 
 # Abstract

@@ -1,16 +1,17 @@
 ---
-layout: doc
-rfc: 4
+adr: 104
 date: 2022-09-14
 title: Comms protocol for explorers
 authors:
-- agusaldasoro
-- hugoarregui
-- marianogoldman
-- menduz
+  - agusaldasoro
+  - hugoarregui
+  - marianogoldman
+  - menduz
 status: Living
-type: Standards Track
+type: RFC
 spdx-license: CC0-1.0
+redirect_from:
+  - /rfc/RFC-4
 ---
 
 # Abstract
@@ -88,7 +89,6 @@ sequenceDiagram
   A->>B: Broadcast ProfileResponse(address,data,version=N)
   B->>B: Update local information about Alice
 ```
-
 
 ### Caching ProfileResponse messages
 

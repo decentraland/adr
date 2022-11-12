@@ -2,6 +2,13 @@
 layout: index
 slug: /
 title: Decentraland ADRs
+states:
+- Living
+- Final
+- Draft
+- LastCall
+- Stagnant
+- Withdrawn
 ---
 
 ## What is an ADR?

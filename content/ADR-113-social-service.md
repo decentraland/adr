@@ -1,13 +1,15 @@
 ---
 layout: doc
-rfc: 13
+adr: 113
 date: 2022-10-06
 title: Social service
 authors:
   - jmoguilevsky
-status: In progress
-type: Standards Track
+status: Draft
+type: RFC
 spdx-license: CC0-1.0
+redirect_from:
+  - /rfc/RFC-13
 ---
 
 ## Abstract
@@ -212,7 +214,7 @@ A: Yes, since this service will work as a proxy to send messages, if it's down t
 
 Q: Do we really need to expose users' friends? Isn’t it an issue on the privacy side?
 
-A: Since exposing users' friends is a privacy intrusion, this service won't expose them to anyone, only the same user will be able to query their own friends. 
+A: Since exposing users' friends is a privacy intrusion, this service won't expose them to anyone, only the same user will be able to query their own friends.
 
 Q: Does this service having access to messages poses a threat to users' privacy?
 

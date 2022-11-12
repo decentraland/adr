@@ -1,16 +1,17 @@
 ---
-layout: doc
-rfc: 5
+adr: 105
 date: 2022-09-15
 title: WebSocket based comms protocol
 authors:
-- agusaldasoro
-- hugoarregui
-- marianogoldman
-- menduz
+  - agusaldasoro
+  - hugoarregui
+  - marianogoldman
+  - menduz
 status: Living
-type: Standards Track
+type: RFC
 spdx-license: CC0-1.0
+redirect_from:
+  - /rfc/RFC-5
 ---
 
 # Abstract

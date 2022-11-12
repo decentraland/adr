@@ -1,13 +1,14 @@
 ---
-layout: doc
-rfc: 12
+adr: 112
 date: 2022-10-05
 title: Onboarding experience as Portable Experience
 authors:
   - menduz
-status: DRAFT
+status: Draft
 type: Standards Track
 spdx-license: CC0-1.0
+redirect_from:
+  - /rfc/RFC-12
 ---
 
 # Abstract
