@@ -177,7 +177,7 @@ Each Plugin will create its own folder in the root folder DCLPlugins.
 
 There is a template structure to follow but each plugin can have its own structure based on the needs
 
-```jsx
+```
 PluginNameFolder
 ...Scripts
 ...Editor

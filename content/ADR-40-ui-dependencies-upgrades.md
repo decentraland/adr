@@ -84,63 +84,65 @@ These components describe a conditional rendering based on the media the page in
 Where we had:
 
 ```tsx
-<Responsive
-  as={Menu}
-  secondary
-  stackable
-  minWidth={Responsive.onlyTablet.minWidth}
->
-  <a className="dcl navbar-logo" href="https://decentraland.org">
-    <Logo />
-  </a>
-  {this.renderLeftMenu()}
-</Responsive>
-<Responsive
-  {...Responsive.onlyMobile}
-  className="dcl navbar-mobile-menu"
->
-  <a className="dcl navbar-logo" href="https://decentraland.org">
-    <Logo />
-  </a>
-  <Header
-    size="small"
-    className={`dcl active-page ${
-      this.state.toggle ? 'caret-up' : 'caret-down'
-    }`}
-    onClick={this.handleToggle}
-  >
-    {activePage}
-  </Header>
-</Responsive>
-```
-
-We now have:
-
-```tsx
-<NotMobile>
-  <Menu secondary stackable>
+return (
+  <Responsive as={Menu} secondary stackable minWidth={Responsive.onlyTablet.minWidth}>
     <a className="dcl navbar-logo" href="https://decentraland.org">
       <Logo />
     </a>
     {this.renderLeftMenu()}
-  </Menu>
-</NotMobile>
-<Mobile>
-  <div className="dcl navbar-mobile-menu">
+  </Responsive>
+)
+```
+
+```tsx
+return (
+  <Responsive {...Responsive.onlyMobile} className="dcl navbar-mobile-menu">
     <a className="dcl navbar-logo" href="https://decentraland.org">
       <Logo />
     </a>
     <Header
       size="small"
-      className={`dcl active-page ${
-        this.state.toggle ? 'caret-up' : 'caret-down'
-      }`}
+      className={`dcl active-page ${this.state.toggle ? "caret-up" : "caret-down"}`}
       onClick={this.handleToggle}
     >
       {activePage}
     </Header>
-  </div>
-</Mobile>
+  </Responsive>
+)
+```
+
+We now have:
+
+```tsx
+return (
+  <NotMobile>
+    <Menu secondary stackable>
+      <a className="dcl navbar-logo" href="https://decentraland.org">
+        <Logo />
+      </a>
+      {this.renderLeftMenu()}
+    </Menu>
+  </NotMobile>
+)
+```
+
+```tsx
+return (
+  <Mobile>
+    <div className="dcl navbar-mobile-menu">
+      <a className="dcl navbar-logo" href="https://decentraland.org">
+        <Logo />
+      </a>
+      <Header
+        size="small"
+        className={`dcl active-page ${this.state.toggle ? "caret-up" : "caret-down"}`}
+        onClick={this.handleToggle}
+      >
+        {activePage}
+      </Header>
+    </div>
+  </Mobile>
+)
 ```
 
 And, alongside these components, as explained before, we're exposing the following set of hooks:
@@ -160,7 +162,5 @@ As an example, we can apply certain styles by simply:
 ```tsx
 const isMobile = useMobileMediaQuery()
 const classes = isMobile ? "dcl mobile" : "dcl"
-<div className={classes}>
-...
-</div>
+return <div className={classes}>...</div>
 ```
