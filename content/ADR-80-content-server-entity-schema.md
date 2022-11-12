@@ -2,7 +2,7 @@
 layout: doc
 adr: 80
 date: 2022-09-18
-title: Content entity schema
+title: Entity schema & virtual file system
 status: Living
 authors:
   - menduz
@@ -12,11 +12,11 @@ spdx-license: CC0-1.0
 
 ## Abstract
 
-This document describes the schema for entities to be deployed, sinchronized and stored for the content servers. The entity format is consistent across all services of Decentraland.
+This document describes the schema for entities to be deployed, synchronized and stored for the content servers. The entity schema is consistent across all services of Decentraland.
 
 Entities are the representation in files of blockchain assets like LAND, ESTATE, NAME, Wearables or Emotes.
 
-Entities are unique and immutable because their content is hashed using IPFS CIDv2. Uploading new versions of entities is possible via full replacement of the old entities. We call this upload+update a _Deployment_.
+Entities are unique and immutable because their content is hashed using IPFS CIDv2. Uploading new versions of entities is possible via full replacement of the old entities. We call this upload+update process a _Deployment_.
 
 ## File system
 
