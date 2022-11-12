@@ -32,17 +32,41 @@
     padding: 1em 0;
   }
 
-  .status-ACCEPTED .status {
+  .status-Final .status,
+  .status-Living .status {
     display: none;
   }
 
-  .status-PROPOSED,
-  .status-DRAFT {
+  .status-Idea {
+    color: #999;
+  }
+  .status-Draft {
     color: #d73a49;
   }
 
-  .status-DEPRECATED {
+  .status-Review {
+    color: #ef7e3a;
+  }
+
+  .status-LastCall {
+    color: magenta;
+  }
+
+  .status-Withdrawn {
     text-decoration: line-through !important;
     color: #999;
   }
+}
+
+.type-label {
+  font-family: monospace;
+  display: inline-block;
+  padding: 0 7px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+  white-space: nowrap;
+  border-radius: 2em;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+  text-decoration: none !important;
 }

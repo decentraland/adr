@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  {{> head}}
+  <body>
+    <main role="main">
+      {{> nav}}
+      <section>
+        <h1>{{ matterfront.title }}</h1>
+
+        {{{ markdown content }}}
+      </section>
+    </main>
+    {{>footer}}
+  </body>
+</html>

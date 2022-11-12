@@ -1090,7 +1090,7 @@ details.annoying-warning:not([open]) > summary {
 
 /** Entity Definition Boxes ***************************************************/
 
-.def {
+.spec > table {
   padding: 0.5em 1em;
   background: #def;
   background: var(--def-bg);
@@ -1113,26 +1113,26 @@ td {
 
 /** Property/Descriptor Definition Tables *************************************/
 
-table.def {
+.spec > table {
   /* inherits .def box styling, see above */
   width: 100%;
   border-spacing: 0;
 }
 
-table.def td,
-table.def th {
+.spec > table td,
+.spec > table th {
   padding: 0.5em;
   vertical-align: baseline;
   border-bottom: 1px solid #bbd7e9;
   border-bottom: 1px solid var(--defrow-border);
 }
 
-table.def > tbody > tr:last-child th,
-table.def > tbody > tr:last-child td {
+.spec > table > tbody > tr:last-child th,
+.spec > table > tbody > tr:last-child td {
   border-bottom: 0;
 }
 
-table.def th {
+.spec > table th {
   font-style: italic;
   font-weight: normal;
   padding-left: 1em;
@@ -1145,10 +1145,10 @@ table td.pre {
 }
 
 /* A footnote at the bottom of a def table */
-table.def td.footnote {
+.spec > table td.footnote {
   padding-top: 0.6em;
 }
-table.def td.footnote::before {
+.spec > table td.footnote::before {
   content: " ";
   display: block;
   height: 0.6em;
@@ -1745,8 +1745,13 @@ p,
 li,
 td {
   & > code {
-    background: #f6f8fa;
+    background: rgba(240,240,240,0.5);
     color: #d73a49;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+    padding: .2em .4em;
+    margin: 0;
+    font-size: 85%;
+    border-radius: 6px;
   }
 }
 

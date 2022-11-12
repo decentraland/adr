@@ -5,27 +5,29 @@
     <main role="main">
       {{> nav}}
       <section>
-        <h1>Architecture Decisions Records</h1>
+        <h1>{{ matterfront.title }}</h1>
 
-        {{#each (sortAsc context.pages "matterfront.adr") as |doc| }} {{#if doc.matterfront.adr }}
-        <a href="{{ publicUrl }}" class="post-item" title="{{ doc.matterfront.title }}">
-          <div class="article-title status-{{ doc.matterfront.status }}">
-            <span>ADR-{{ doc.matterfront.adr }} - {{ doc.matterfront.title }} <span class="status">{{doc.matterfront.status}}</span></span>
-            <time datetime="{{ isoDate doc.matterfront.date }}">{{ prettyDate doc.matterfront.date }}</time>
-          </div>
-        </a>
-        {{/if}} {{/each}}
-        <h1>Request for comments</h1>
+        {{{ markdown content }}}
 
-        {{#each (sortAsc context.pages "matterfront.rfc") as |doc| }} {{#if doc.matterfront.rfc }}
-        <a href="{{ publicUrl }}" class="post-item" title="{{ doc.matterfront.title }}">
-          <div class="article-title status-{{ doc.matterfront.status }}">
-            <span>RFC-{{ doc.matterfront.rfc }} - {{ doc.matterfront.title }} <span class="status">{{doc.matterfront.status}}</span></span>
-            <time datetime="{{ isoDate doc.matterfront.date }}">{{ prettyDate doc.matterfront.date }}</time>
-          </div>
-        </a>
-        {{/if}} {{/each}} {{{ markdown content }}}
+        <h1 title="all">List of ADRs</h1>
+
+        {{#each matterfront.states as |status| }}
+          <h2>{{status}}</h2>
+          {{#each (sortAsc @root.context.pages "matterfront.adr") as |doc| }}
+            {{#if (eq doc.matterfront.status status) }}
+              <a href="{{ publicUrl }}" class="post-item" title="{{ doc.matterfront.title }}">
+                <div class="article-title status-{{ doc.matterfront.status }}">
+                  <span>ADR-{{ doc.matterfront.adr }} - {{ doc.matterfront.title }} <span class="status">{{doc.matterfront.status}}</span></span>
+                  <span class="type-label"><span>{{ doc.matterfront.type }}</span> <time datetime="{{ isoDate doc.matterfront.date }}">{{ prettyDate doc.matterfront.date }}</time></span>
+                </div>
+              </a>
+            {{/if}}
+          {{/each}}
+        {{/each}}
+
+        {{> license-section }}
       </section>
     </main>
+    {{>footer}}
   </body>
 </html>
