@@ -3,7 +3,7 @@ layout: doc
 adr: 81
 date: 2022-09-21
 title: Minimum communications adapter
-status: Draft
+status: Living
 authors:
   - HugoArregui
   - menduz

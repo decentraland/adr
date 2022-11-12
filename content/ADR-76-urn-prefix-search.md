@@ -2,8 +2,8 @@
 layout: doc
 adr: 76
 date: 2022-04-04
-title: URN prefix search
-status: Draft
+title: Enable searching entities by URN prefix
+status: Living
 authors:
 - agusaldasoro
 - nachomazzara

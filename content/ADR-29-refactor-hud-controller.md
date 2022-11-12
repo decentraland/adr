@@ -1,9 +1,9 @@
 ---
 layout: doc
 adr: 29
-date: 2020-06-18
+date: 2021-06-18
 title: Refactor HUD control
-status: Draft
+status: Stagnant
 authors:
   - kuruk-mm
   - BrianAmadori
