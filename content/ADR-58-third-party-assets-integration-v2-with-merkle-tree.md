@@ -108,7 +108,7 @@ curl https://peer.decentraland.org/content/entities/active/collections/urn:decen
 
 Request response: Item pointers
 
-```json
+```jsonc
 [
   {
     "pointer": "urn:decentraland:mumbai:collections-thirdparty:cryptohats:0xbac:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd",

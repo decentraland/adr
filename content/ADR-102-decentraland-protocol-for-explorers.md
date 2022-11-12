@@ -104,8 +104,8 @@ Entities must be compliant with the defined schema in [Entities Schemas](https:/
 
 The schema of the entities is:
 
-```yaml
-{
+```typescript
+const entityJsonSchema = {
   version: { type: "string", enum: ["v3"] },
   id: { type: "string", oneOf: [IPFSv1.schema, IPFSv2.schema] },
   type: { type: "string" },
@@ -142,19 +142,19 @@ The idea is that the user signs an ephemeral key with a certain expiration date.
 
 In order for the server to validate the authenticity of a deployment, the client will need to send the full chain of signatures. This is an example:
 
-```yaml
+```json
 [
-  { type: "SIGNER", payload: "0x716954738e57686a08902d9dd586e813490fee23" },
+  { "type": "SIGNER", "payload": "0x716954738e57686a08902d9dd586e813490fee23" },
   {
-    type: "ECDSA_EPHEMERAL",
-    payload: "Decentraland Login\nEphemeral address: 0x90a43461d3e970785B945FFe8f7628F2BC962D6a\nExpiration: 2021-07-10T20:55:42.215Z",
-    signature: "0xe64e46fdd7d8789c0debec54422ae77e31b77e5a28287e072998e1114e252c57328c17756400d321e9e77032347c9d05e63fb59a3b6c3ab754565f9db86b8c481b",
+    "type": "ECDSA_EPHEMERAL",
+    "payload": "Decentraland Login\nEphemeral address: 0x90a43461d3e970785B945FFe8f7628F2BC962D6a\nExpiration: 2021-07-10T20:55:42.215Z",
+    "signature": "0xe64e46fdd7d8789c0debec54422ae77e31b77e5a28287e072998e1114e252c57328c17756400d321e9e77032347c9d05e63fb59a3b6c3ab754565f9db86b8c481b"
   },
   {
-    type: "ECDSA_SIGNED_ENTITY",
-    payload: "QmNMZBy7khBxdigikA8mcJMyv6yeBXfMv3iAcUiBr6n72C",
-    signature: "0xbed22719dcdc19580353108027c41c65863404879592c65014d806efa961c629777adc76986193eaee4e48f278ec59feb1c289827254230af85b2955157ec8061b",
-  },
+    "type": "ECDSA_SIGNED_ENTITY",
+    "payload": "QmNMZBy7khBxdigikA8mcJMyv6yeBXfMv3iAcUiBr6n72C",
+    "signature": "0xbed22719dcdc19580353108027c41c65863404879592c65014d806efa961c629777adc76986193eaee4e48f278ec59feb1c289827254230af85b2955157ec8061b"
+  }
 ]
 ```
 

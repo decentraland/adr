@@ -67,42 +67,42 @@ The property works by **whitelisting the keys at root level** that will be inclu
 
 Example of a Wearable entity metadata:
 
-```yaml
+```json
 {
-  id: "urn:decentraland:off-chain:base-avatars:aviatorstyle",
-  name: "Aviator Style",
-  description: "aDescription",
-  image: "image.png",
-  thumbnail: "thumbnail.png",
-  collectionAddress: "0x06012c8cf97bead5deae237070f9587f8e7a266d",
-  rarity: "unique",
-  data: {
-    tags: ["male", "man", "base-wearable"],
-    category: "eyewear",
-    replaces: [],
-    hides: [],
-    representations: [
+  "id": "urn:decentraland:off-chain:base-avatars:aviatorstyle",
+  "name": "Aviator Style",
+  "description": "aDescription",
+  "image": "image.png",
+  "thumbnail": "thumbnail.png",
+  "collectionAddress": "0x06012c8cf97bead5deae237070f9587f8e7a266d",
+  "rarity": "unique",
+  "data": {
+    "tags": ["male", "man", "base-wearable"],
+    "category": "eyewear",
+    "replaces": [],
+    "hides": [],
+    "representations": [
       {
-        bodyShapes: ["urn:decentraland:off-chain:base-avatars:BaseMale"],
-        mainFile: "M_Eyewear_AviatorStyle.glb",
-        overrideReplaces: [],
-        overrideHides: [],
-        contents: ["M_Eyewear_AviatorStyle.glb"],
-      },
-    ],
+        "bodyShapes": ["urn:decentraland:off-chain:base-avatars:BaseMale"],
+        "mainFile": "M_Eyewear_AviatorStyle.glb",
+        "overrideReplaces": [],
+        "overrideHides": [],
+        "contents": ["M_Eyewear_AviatorStyle.glb"]
+      }
+    ]
   },
-  i18n: [{ code: "en", text: "Aviator Style" }],
-  createdAt: 1646935739,
-  updatedAt: 1646935739,
-  metrics: {
-    triangles: 0,
-    materials: 0,
-    meshes: 0,
-    bodies: 0,
-    entities: 0,
-    textures: 0,
+  "i18n": [{ "code": "en", "text": "Aviator Style" }],
+  "createdAt": 1646935739,
+  "updatedAt": 1646935739,
+  "metrics": {
+    "triangles": 0,
+    "materials": 0,
+    "meshes": 0,
+    "bodies": 0,
+    "entities": 0,
+    "textures": 0
   },
-  content: {
+  "content": {
     "some-file.glb": "3999dc565303be392b94568fe252fd09482c2329e3381b66d730f870cb6c2afa",
     "thumbnail.png": "b9b9563ea35e1f995e272e9c699326ac61b94cfe46dc4f49b5215c94d3209854"
   }
@@ -111,46 +111,46 @@ Example of a Wearable entity metadata:
 
 Example of a Third Party wearable entity metadata with a `merkleProof`:
 
-```yaml
+```json
 {
-  id: "urn:decentraland:off-chain:base-avatars:aviatorstyle",
-  name: "Aviator Style",
-  description: "aDescription",
-  image: "image.png",
-  thumbnail: "thumbnail.png",
-  data: {
-    tags: ["male", "man", "base-wearable"],
-    category: "eyewear",
-    replaces: [],
-    hides: [],
-    representations: [
+  "id": "urn:decentraland:off-chain:base-avatars:aviatorstyle",
+  "name": "Aviator Style",
+  "description": "aDescription",
+  "image": "image.png",
+  "thumbnail": "thumbnail.png",
+  "data": {
+    "tags": ["male", "man", "base-wearable"],
+    "category": "eyewear",
+    "replaces": [],
+    "hides": [],
+    "representations": [
       {
-        bodyShapes: ["urn:decentraland:off-chain:base-avatars:BaseMale"],
-        mainFile: "M_Eyewear_AviatorStyle.glb",
-        overrideReplaces: [],
-        overrideHides: [],
-        contents: ["M_Eyewear_AviatorStyle.glb"],
-      },
-    ],
+        "bodyShapes": ["urn:decentraland:off-chain:base-avatars:BaseMale"],
+        "mainFile": "M_Eyewear_AviatorStyle.glb",
+        "overrideReplaces": [],
+        "overrideHides": [],
+        "contents": ["M_Eyewear_AviatorStyle.glb"]
+      }
+    ]
   },
-  i18n: [{ code: "en", text: "Aviator Style" }],
-  createdAt: 1646935739,
-  updatedAt: 1646935739,
-  metrics: {
-    triangles: 0,
-    materials: 0,
-    meshes: 0,
-    bodies: 0,
-    entities: 0,
-    textures: 0,
+  "i18n": [{ "code": "en", "text": "Aviator Style" }],
+  "createdAt": 1646935739,
+  "updatedAt": 1646935739,
+  "metrics": {
+    "triangles": 0,
+    "materials": 0,
+    "meshes": 0,
+    "bodies": 0,
+    "entities": 0,
+    "textures": 0
   },
-  content: {
+  "content": {
     "some-file.glb": "3999dc565303be392b94568fe252fd09482c2329e3381b66d730f870cb6c2afa",
     "thumbnail.png": "b9b9563ea35e1f995e272e9c699326ac61b94cfe46dc4f49b5215c94d3209854"
   },
-  merkleProof: {
-    index: 61575,
-    proof: [
+  "merkleProof": {
+    "index": 61575,
+    "proof": [
       "0xc8ae2407cffddd38e3bcb6c6f021c9e7ac21fcc60be44e76e4afcb34f637d562",
       "0x16123d205a70cdeff7643de64cdc69a0517335d9c843479e083fd444ea823172",
       "0x1fbe73f1e71f11fb4e88de5404f3177673bdfc89e93d9a496849b4ed32c9b04f",
@@ -167,9 +167,9 @@ Example of a Third Party wearable entity metadata with a `merkleProof`:
       "0xc2088dbbecba4f7dd06c689b7c1a1e6a822d20d4665b2f9353715fc3a5f0d588",
       "0x9e191109e34d166ac72033dce274a82c488721a274087ae97b62c9a51944e86f",
       "0x5ff2905107fe4cce21c93504414d9548f311cd27efe5696c0e03acc059d2e445",
-      "0x6c764a5d8ded16bf0b04028b5754afbd216b111fa0c9b10f2126ac2e9002e2fa",
+      "0x6c764a5d8ded16bf0b04028b5754afbd216b111fa0c9b10f2126ac2e9002e2fa"
     ],
-    hashingKeys: [
+    "hashingKeys": [
       "id",
       "name",
       "description",
@@ -182,8 +182,8 @@ Example of a Third Party wearable entity metadata with a `merkleProof`:
       "metrics",
       "content"
     ],
-    entityHash: "52c312f5e5524739388af971cddb526c3b49ba31ec77abc07ca01f5b113f1eba",
-  },
+    "entityHash": "52c312f5e5524739388af971cddb526c3b49ba31ec77abc07ca01f5b113f1eba"
+  }
 }
 ```
 

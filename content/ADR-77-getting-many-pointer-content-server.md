@@ -84,7 +84,7 @@ post:
 
 Response
 
-```json
+```jsonc
 [
   {
     "version": "v3",

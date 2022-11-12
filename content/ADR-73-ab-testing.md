@@ -4,7 +4,7 @@ date: 2022-06-14
 title: A/B testing
 status: Living
 authors:
-- 2fd
+  - 2fd
 type: Standards Track
 spdx-license: CC0-1.0
 ---
@@ -80,28 +80,28 @@ In the `VARIANT` tab you can define as many cases as you need and control the pe
 
 Once your A/B testing is ready you should get something like this:
 
-```yaml
+```jsonc
 {
-  flags: {
-    "test-flag": true, # not an A/B testing
-    "test-test-feature_name_variant": true,
+  "flags": {
+    "test-flag": true, // not an A/B testing
+    "test-test-feature_name_variant": true
   },
-  variants: {
+  "variants": {
     "test-feature_name_variant": {
-      name: "enabled", # or "disabled"
-    },
-  },
+      "name": "enabled" // or "disabled"
+    }
+  }
 }
 ```
 
 If instead your A/B testing is inactive you should get something like this:
 
-```yaml
+```jsonc
 {
-  flags: {
-    "test-flag": true, # not an A/B testing
+  "flags": {
+    "test-flag": true // not an A/B testing
   },
-  variants: {},
+  "variants": {}
 }
 ```
 
@@ -124,16 +124,16 @@ To measure if any of the variants of an A/B testing is significant we need to kn
 To know the total number of users we send an event `feature_flags` each time a user gets a new set of feature flags, but to know which variant each user gets we need to format our feature flags as the following array:
 
 ```js
-[`${FEATURE_FLAG_NAME}`, `${FEATURE_FLAG_NAME}:${FEATURE_FLAG_VARIANT_NAME}`]
+;[`${FEATURE_FLAG_NAME}`, `${FEATURE_FLAG_NAME}:${FEATURE_FLAG_VARIANT_NAME}`]
 ```
 
 For example, the previous feature flags will be format as:
 
-```js
+```jsonc
 [
   "test-flag", // not an A/B testing
   "test-feature_name_variant",
-  "test-feature_name_variant:enabled",
+  "test-feature_name_variant:enabled"
   // or "test-feature_name_variant:disabled",
 ]
 ```

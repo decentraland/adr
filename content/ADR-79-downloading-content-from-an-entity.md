@@ -33,24 +33,17 @@ The response to the previous request is the list of active entities correspondin
 
 The type of the response is the standard entity type for content servers and deployments defined in [ADR-80](/adr/ADR-80).
 
-```javascript
+```jsonc
 [
   {
     "version": "v3",
     // we care about this ID 👇
     "id": "bafkreif5c6rjswu6cbj5astv5uuc7yrxbm73tycegrnjqhhp3q6qeop3ym",
     "type": "scene",
-    "pointers": [
-      "-49,-100",
-      "-49,-99",
-      "-48,-100",
-      "-48,-99",
-      "-47,-100",
-      "-47,-99"
-    ],
+    "pointers": ["-49,-100", "-49,-99", "-48,-100", "-48,-99", "-47,-100", "-47,-99"],
     "timestamp": 1656605369643,
     "content": [
-     // ...
+      // ...
     ],
     "metadata": {
       // ...
@@ -77,14 +70,7 @@ Host: https://peer.decentraland.org
 {
   "version": "v3",
   "type": "scene",
-  "pointers": [
-    "-49,-100",
-    "-49,-99",
-    "-48,-100",
-    "-48,-99",
-    "-47,-100",
-    "-47,-99"
-  ],
+  "pointers": ["-49,-100", "-49,-99", "-48,-100", "-48,-99", "-47,-100", "-47,-99"],
   "timestamp": 1656605369643,
   "content": [
     {
@@ -198,14 +184,7 @@ Host: https://peer.decentraland.org
     "main": "bin/game.js",
     "tags": [],
     "scene": {
-      "parcels": [
-        "-49,-100",
-        "-49,-99",
-        "-48,-100",
-        "-48,-99",
-        "-47,-100",
-        "-47,-99"
-      ],
+      "parcels": ["-49,-100", "-49,-99", "-48,-100", "-48,-99", "-47,-100", "-47,-99"],
       "base": "-49,-100"
     },
     "source": {
@@ -225,6 +204,7 @@ Host: https://peer.decentraland.org
   }
 }
 ```
+
 </details>
 
 In the entity response, as defined in ADR-80, all the content files can be found in the `.content` section. All content files MUST be available for actively pointed entities.
@@ -233,16 +213,15 @@ In the entity response, as defined in ADR-80, all the content files can be found
 {
   "version": "v3",
   "type": "scene",
-  "pointers": [ "-49,-100", "-49,-99", "-48,-100",
-                "-48,-99", "-47,-100", "-47,-99" ],
+  "pointers": ["-49,-100", "-49,-99", "-48,-100", "-48,-99", "-47,-100", "-47,-99"],
   "timestamp": 1656605369643,
   "content": [
     {
       "file": "bin/game.js",
       "hash": "bafybeianxkwd7i4cgxdat7mu4nbxfyic6qtswxlq2ehk634xefsscxsuya"
-    },
+    }
     // ...
-  ],
+  ]
   // ...
 }
 ```

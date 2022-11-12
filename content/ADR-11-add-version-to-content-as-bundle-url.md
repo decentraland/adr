@@ -21,14 +21,9 @@ The URL for the asset bundles (Unity) are created using the content-server hash 
 
 Prepend `/v1` to the original content-as-bundle URL pathname.
 
-```yaml
-Old: https://content-assets-as-bundle.decentraland.org/QmfNvE3nKmahA5emnBnXN2LzydpYncHVz4xy4piw84Er1D
-New: https://content-assets-as-bundle.decentraland.org/v1/QmfNvE3nKmahA5emnBnXN2LzydpYncHVz4xy4piw84Er1D
+```diff
+-https://content-assets-as-bundle.decentraland.org/QmfNvE3nKmahA5emnBnXN2LzydpYncHVz4xy4piw84Er1D
++https://content-assets-as-bundle.decentraland.org/v1/QmfNvE3nKmahA5emnBnXN2LzydpYncHVz4xy4piw84Er1D
 ```
 
 The current (unversioned) URL must continue working.
-
-## Participants
-
-- Esteban Ordano
-- Agustin Mendez
