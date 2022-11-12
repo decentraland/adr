@@ -22,7 +22,7 @@ For Decentraland implementers, ADRs are a convenient way to track the progress o
 
 ## ADR Types
 
-There are three types of DIP:
+There are three types of ADR:
 
 - A **Standards Track** ADR describes any change that affects most or all Decentraland implementations, such as—a change to the synchronzation protocol, a change in deployments validity rules, proposed application standards/conventions, or any change or addition that affects the interoperability of applications using Decentraland. Standards Track ADRs consist of three parts—a design document, an implementation, and (if warranted) an update to the [formal specification](https://github.com/decentraland/yellowpaper).
 
@@ -92,7 +92,7 @@ Each ADR should have the following parts:
 - Need - Why is this ADR needed? Briefly describe the need motivating this proposed artifact to be created or work be done. What problem does it solve?
 - Specification - The technical specification should describe the syntax and semantics of any new feature.
 - Approach - How do you intend on addressing the need? Describe what you plan on doing and the rationale behind the decisions you propose. The level of detail here has to be enough to give the reader a clear understanding of the solution. Further detail can be addressed to satisfy comments and increase clarity.
-- Copyright Waiver - All EIPs must be in the public domain. The copyright waiver MUST link to the license file and use the following wording: `Copyright and related rights waived via [CC0](/LICENSE).`
+- Copyright Waiver - All ADRs must be in the public domain. The copyright waiver MUST link to the license file and use the following wording: `Copyright and related rights waived via [CC0](/LICENSE).`
 
 ## Picking an ADR number
 
@@ -158,7 +158,7 @@ Links to external resources **SHOULD NOT** be included. External resources may d
 
 References to other ADRs should follow the format `ADR-N` where `N` is the ADR number you are referring to. Each ADR that is referenced in an ADR **MUST** be accompanied by an absolute markdown link to the absolute rendered path i.e. `/adr/ADR-1`.
 
-<!--  Each ADR that is referenced in an ADR **MUST** be accompanied by a relative markdown link the first time it is referenced, and **MAY** be accompanied by a link on subsequent references. The link **MUST** always be done via relative paths so that the links work in this GitHub repository, forks of this repository, the main ADRs site, mirrors of the main ADR site, etc.  For example, you would link to this EIP as `/adr/ADR-1`. -->
+<!--  Each ADR that is referenced in an ADR **MUST** be accompanied by a relative markdown link the first time it is referenced, and **MAY** be accompanied by a link on subsequent references. The link **MUST** always be done via relative paths so that the links work in this GitHub repository, forks of this repository, the main ADRs site, mirrors of the main ADR site, etc.  For example, you would link to this ADR as `/adr/ADR-1`. -->
 
 ## Auxiliary Files
 
@@ -179,7 +179,7 @@ When referring to an ADR by number, it should be written in the hyphenated form 
 
 ### RFC 2119 and RFC 8174
 
-EIPs are encouraged to follow [RFC 2119](https://www.ietf.org/rfc/rfc2119.html) and [RFC 8174](https://www.ietf.org/rfc/rfc8174.html) for terminology and to insert the following at the beginning of the Specification section:
+ADRs are encouraged to follow [RFC 2119](https://www.ietf.org/rfc/rfc2119.html) and [RFC 8174](https://www.ietf.org/rfc/rfc8174.html) for terminology and to insert the following at the beginning of the Specification section:
 
 > The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.
 

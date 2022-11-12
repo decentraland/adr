@@ -44,7 +44,7 @@ flowchart TB
 
 ## ADR Types
 
-There are three types of DIP:
+There are three types of ADRs:
 
 - A **Standards Track** ADR describes any change that affects most or all Decentraland implementations, such as—a change to the synchronzation protocol, a change in deployments validity rules, proposed application standards/conventions, or any change or addition that affects the interoperability of applications using Decentraland. Standards Track ADRs consist of three parts—a design document, an implementation, and (if warranted) an update to the [formal specification](https://github.com/decentraland/yellowpaper).
 
