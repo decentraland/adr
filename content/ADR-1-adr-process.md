@@ -2,7 +2,7 @@
 layout: doc
 adr: 1
 date: 2020-10-05
-title: ADR Process
+title: ADR documents specification & process
 status: Living
 type: Meta
 spdx-license: CC0-1.0
@@ -100,7 +100,7 @@ The pull request number that adds the file to the [decentraland/adr](https://git
 
 ## ADR Formats and Templates
 
-ADRs should be written in [markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) format. There is a [template](https://github.com/decentraland/adr/blob/main/.TEMPLATE.md) to follow.
+ADRs should be written in [markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) format. There is a [template](https://github.com/decentraland/adr/blob/main/content/.TEMPLATE.md) to follow.
 
 ## ADR Header Preamble
 

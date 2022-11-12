@@ -1,7 +1,7 @@
 ---
 layout: index
 slug: /
-title: Decentraland ADRs
+title: Architecture Decision Records
 states:
 - Living
 - Final
@@ -9,11 +9,12 @@ states:
 - LastCall
 - Stagnant
 - Withdrawn
+spdx-license: CC0-1.0
 ---
 
 ## What is an ADR?
 
-ADR stands for Architecture Decision Record. An ADR is a design document providing information to the Decentraland community, or describing a new feature for Decentraland or its processes or environment. The ADR should provide a concise technical specification of the feature and a rationale for the feature. The ADR author is responsible for building consensus within the community and documenting dissenting opinions.
+ADR stands for _Architecture Decision Record_. An ADR is a design document providing information to the Decentraland community, or describing a new feature for Decentraland or its processes or environment. The ADR should provide a concise technical specification of the feature and a rationale for the feature. The ADR author is responsible for building consensus within the community and documenting dissenting opinions.
 
 ## How do ADRs work?
 

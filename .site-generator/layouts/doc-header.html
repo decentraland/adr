@@ -12,15 +12,11 @@
       />
     </a>
   </p>
-  {{#if matterfront.rfc }}
-  <h1 id="title" class="title">RFC-{{ matterfront.rfc }}: {{ matterfront.title }}</h1>
-  {{else if matterfront.adr}}
   <h1 id="title" class="title">ADR-{{ matterfront.adr }}: {{ matterfront.title }}</h1>
-  {{/if}}
   <p id="w3c-state">
     <time class="dt-published" datetime="{{ isoDate matterfront.date }}">{{ prettyDate matterfront.date }}</time>
   </p>
-  <details>
+  <details open="">
     <summary>More details about this document</summary>
     <dl>
       <dt>Latest published version:</dt>
