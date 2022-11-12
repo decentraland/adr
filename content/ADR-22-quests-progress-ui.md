@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 22
 date: 2021-01-19
 title: Quests Progress UI

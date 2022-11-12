@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 32
 date: 2021-07-02
 title: Wearable Committee Reverts

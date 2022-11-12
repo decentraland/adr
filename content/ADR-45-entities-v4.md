@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 45
 date: 2020-01-45
 title: Entity versioning and new validations for deployment

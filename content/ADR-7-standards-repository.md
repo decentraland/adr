@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 7
 date: 2020-10-16
 title: Archive standards repository

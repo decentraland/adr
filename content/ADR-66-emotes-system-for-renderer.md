@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 66
 date: 2022-04-07
 title: Emotes System for Renderer (Unity)

@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 80
 date: 2022-09-18
 title: Entity schema & virtual file system

@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 21
 date: 2020-12-14
 title: Update cycle of catalysts

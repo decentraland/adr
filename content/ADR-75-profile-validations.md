@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 75
 date: 2022-06-10
 title: Profile validations

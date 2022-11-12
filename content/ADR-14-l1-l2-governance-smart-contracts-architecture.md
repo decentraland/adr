@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 14
 date: 2020-11-03
 title: L1 & L2 Governance Smart Contracts Architecture

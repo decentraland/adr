@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 12
 date: 2020-10-29
 title: Documentation as a priority

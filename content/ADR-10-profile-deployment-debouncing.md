@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 10
 date: 2020-10-26
 title: Deployment debouncing

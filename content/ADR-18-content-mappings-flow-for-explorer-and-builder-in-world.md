@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 18
 date: 2020-11-19
 title: Content mappings flow for explorer and builder in-world

@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 73
 date: 2022-06-14
 title: A/B testing

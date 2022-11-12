@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 48
 date: 2021-12-06
 title: Locking Collections in the builder

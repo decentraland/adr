@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 6
 date: 2020-10-16
 title: Decentraland's git style guide

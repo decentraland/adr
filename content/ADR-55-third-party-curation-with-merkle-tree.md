@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 55
 date: 2022-01-26
 title: Third Party Curation With Merkle Tree

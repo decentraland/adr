@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 2
 date: 2020-10-06
 title: State sync for builder-in-world

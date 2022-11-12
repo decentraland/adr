@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 52
 date: 2021-12-20
 title: Content Server - New Synchronization

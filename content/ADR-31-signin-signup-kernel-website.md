@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 31
 date: 2021-07-05
 title: Signin/signup Kernel<>Website

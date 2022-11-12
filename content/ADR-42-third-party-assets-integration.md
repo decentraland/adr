@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 42
 date: 2021-10-04
 title: Third Party Integration

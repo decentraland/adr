@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 9
 date: 2020-10-22
 title: DecentralandInterface evolution plan

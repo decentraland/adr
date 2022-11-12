@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 5
 date: 2020-10-15
 title: How to organize ADR files

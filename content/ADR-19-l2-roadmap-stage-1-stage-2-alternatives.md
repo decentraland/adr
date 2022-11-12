@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 19
 date: 2020-12-03
 title: "L2 Roadmap: Stage 1 & Stage 2 alternatives"

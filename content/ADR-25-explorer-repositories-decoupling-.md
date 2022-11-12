@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 25
 date: 2021-04-16
 title: Explorer repositories decoupling

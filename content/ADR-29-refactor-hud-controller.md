@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 29
 date: 2021-06-18
 title: Refactor HUD control

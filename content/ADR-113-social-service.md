@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 113
 date: 2022-10-06
 title: Social service

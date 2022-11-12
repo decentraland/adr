@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 78
 date: 2022-08-18
 title: Ropsten To Goerli Migration

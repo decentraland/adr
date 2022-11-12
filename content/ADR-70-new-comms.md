@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 70
 date: 2022-05-31
 title: "Catalyst: New Communications Architecture"

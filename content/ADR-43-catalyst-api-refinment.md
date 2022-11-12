@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 43
 date: 2021-11-09
 title: Catalyst API and Protocol refinement

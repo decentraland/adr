@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 38
 date: 2021-08-05
 title: Communication between Desktop unity and Kernel

@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 115
 date: 2022-11-01
 title: SDK Playground

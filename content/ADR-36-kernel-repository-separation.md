@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 36
 team: sdk
 date: 2021-07-27

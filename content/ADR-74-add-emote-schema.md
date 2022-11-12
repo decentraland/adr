@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 74
 date: 2022-06-09
 title: Add Emote schema and versioning

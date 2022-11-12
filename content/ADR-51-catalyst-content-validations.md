@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 51
 date: 2022-02-02
 title: Catalyst Content validations

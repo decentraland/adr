@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 71
 date: 2022-05-31
 title: Upgradable Collections

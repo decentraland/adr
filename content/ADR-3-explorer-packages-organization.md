@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 3
 date: 2020-10-08
 title: Explorer packages organization

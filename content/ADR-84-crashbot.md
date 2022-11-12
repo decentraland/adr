@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 84
 date: 2022-09-21
 title: Crashbot

@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 11
 date: 2020-10-26
 title: Add version to content-as-bundle URL

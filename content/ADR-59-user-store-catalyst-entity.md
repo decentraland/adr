@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 59
 date: 2022-01-28
 title: User Store catalyst entity

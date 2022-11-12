@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 86
 date: 2022-11-03
 title: Realm Picking Algorithm

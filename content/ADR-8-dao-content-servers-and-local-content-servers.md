@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 8
 date: 2020-10-16
 title: DAO content servers and local content servers

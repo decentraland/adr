@@ -13,8 +13,8 @@ module.exports = function ({ context }) {
     if (!page.matterfront) console.error(page)
     if (page.matterfront.adr) {
       page.slug = `/adr/ADR-${page.matterfront.adr}`
-      page.layout = "doc"
-      page.matterfront.layout = "doc"
+      page.layout = "adr"
+      page.matterfront.layout = "adr"
       if (page.matterfront["spdx-license"] !== "CC0-1.0")
         throw new Error(`Page ADR-${page.matterfront.adr} as invalid license: ${page.matterfront["spdx-license"]}`)
 

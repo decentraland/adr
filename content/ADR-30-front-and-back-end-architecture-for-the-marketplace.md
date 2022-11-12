@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 30
 date: 2021-06-22
 title: Front and back end architecture for the Marketplace

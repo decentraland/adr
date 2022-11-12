@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 4
 date: 2020-10-13
 title: Collections architecture in L1 & L2

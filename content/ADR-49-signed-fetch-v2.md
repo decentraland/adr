@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 49
 date: 2022-01-26
 title: Signed Fetch V2

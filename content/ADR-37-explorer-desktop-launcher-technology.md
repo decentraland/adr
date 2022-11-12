@@ -1,5 +1,4 @@
 ---
-layout: doc
 adr: 37
 date: 2021-07-30
 title: Explorer Desktop Launcher Technology
