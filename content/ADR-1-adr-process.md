@@ -95,7 +95,7 @@ Each ADR should have the following parts:
 
 ## Picking an ADR number
 
-The pull request number that adds the file to the [decentraland/adr](https://github.com/decentraland/adr) **MUST** be used as the final ADR number.
+The initial issue number or the pull request number that adds the file to the [decentraland/adr](https://github.com/decentraland/adr) **MUST** be used as the final ADR number. This will ensure not having number conflicts in "wip" pull requests.
 
 ## ADR Formats and Templates
 
