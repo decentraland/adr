@@ -88,7 +88,6 @@ Each ADR should have the following parts:
 
 - Preamble - RFC 822 style headers containing metadata about the ADR, including the ADR number, a short descriptive title (limited to a maximum of 44 characters), a description (limited to a maximum of 140 characters), and the author details. Irrespective of the category, the title and description should not include ADR number.
 - Abstract - Abstract is a multi-sentence (short paragraph) technical summary. This should be a very terse and human-readable version of the document section. **Someone should be able to read only the abstract to get the gist of what this document is about in its current state.** Abstracts should be always up to date with the current state of the document.
-- Need - Why is this ADR needed? Briefly describe the need motivating this proposed artifact to be created or work be done. What problem does it solve?
 - Context, Reach & Prioritization - Go into detail about the subject in question. Why is this decision important? The urgency of the decision? Datapoints and related background information. Vocabulary and key terms.
 - Solution Space Exploration - Discuss the potential alternatives and their impact. What alternatives are being considered, their benefits, their costs (team resources, money, time frames), and mitigations for any drawbacks.
 - Specification - The technical specification should describe the syntax and semantics of any new feature.
