@@ -109,7 +109,7 @@ We neither can modify a child struct.
 1. We have a flag in a BoxShape called `isTriggered` that indicates if a BoxShape was clicked.
 2. This flag was introduced in `components/BoxShape/v1.json`, at the begging of its life ECS 7.0.0.
 3. In ECS 7.3.0 we want to add the feature that indicates with what button was clicked.
-4. It sounds seductive to change the `isTriggered` from a `boolean` to a `struct` that has the flag and the button field. WE CAN NOT DO THIS.
+4. It sounds seductive to change the `isTriggered` from a `boolean` to a `struct` that has the flag and the button field. This MUST NOT be allowed.
 5. Instead, we add a field at the end with `isTriggeredV2` or a `triggeredButton`. In this case, we'll create `isTriggeredV2` as a struct with two fields: `flag: boolean` and `button: int32`.
 
 So far if the Renderer sends a BoxShapeV2 to a scene, the scene will be able to read it, no matter if the scene was compiled with ECS 7.0.0 or ECS 7.3.0. The same occurs on the opposite side if the renderer has the implementation of BoxShapeV2 as the last updated version also can get a BoxShapeV1 from the ECS 7.0.0 scene.
