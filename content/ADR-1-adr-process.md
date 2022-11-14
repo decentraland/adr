@@ -37,7 +37,7 @@ An ADR must meet certain minimum criteria. It must be a clear and complete descr
 
 ### Shepherding an ADR
 
-Before you begin writing a formal ADR, you should vet your idea. Ask the Ethereum community first if an idea is original to avoid wasting time on something that will be rejected based on prior research. It is thus recommended to open a discussion thread on [the ADR discussionshttps://github.com/decentraland/adr/discussions) to do this.
+Before you begin writing a formal ADR, you should vet your idea. Ask the Decentraland community first if an idea is original to avoid wasting time on something that will be rejected based on prior research. It is thus recommended to open a discussion thread on [the ADR discussions](https://github.com/decentraland/adr/discussions) to do this.
 
 Once the idea has been vetted, your next responsibility will be to present (by means of an ADR) the idea to the reviewers and all interested parties, invite editors, developers, and the community to give feedback on the aforementioned channels. You should try and gauge whether the interest in your ADR is commensurate with both the work involved in implementing it and how many parties will have to conform to it.
 
