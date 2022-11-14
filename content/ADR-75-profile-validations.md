@@ -4,7 +4,7 @@ date: 2022-06-10
 title: Profile validations
 authors:
   - marianogoldman
-status: Draft
+status: Living
 type: Standards Track
 spdx-license: CC0-1.0
 ---

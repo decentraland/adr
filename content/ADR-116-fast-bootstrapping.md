@@ -4,7 +4,7 @@ date: 2022-09-02
 title: Content-Server Fast Bootstrapping
 authors:
   - pedrotambo
-status: Draft
+status: Living
 type: RFC
 spdx-license: CC0-1.0
 redirect_from:
