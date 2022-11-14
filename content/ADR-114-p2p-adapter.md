@@ -318,7 +318,7 @@ type Packet = {
   target: Route[]
 }
 
-## Peer
+## Peer 
 
 Each time a package needs to be sent, then the peer will create it using its own paths as routing table and will make the network to obey that flow.
 
