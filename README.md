@@ -1,60 +1,54 @@
 ---
 layout: index
 slug: /
-title: Decentraland RFC & ADR
+title: Architecture Decision Records
+states:
+- Living
+- Final
+- Draft
+- LastCall
+- Stagnant
+- Withdrawn
+spdx-license: CC0-1.0
 ---
 
+## What is an ADR?
 
-## How to?
+ADR stands for _Architecture Decision Record_. An ADR is a design document providing information to the Decentraland community, or describing a new feature for Decentraland or its processes or environment. The ADR should provide a concise technical specification of the feature and a rationale for the feature. The ADR author is responsible for building consensus within the community and documenting dissenting opinions.
 
-Read [the ADR explaining the rationale](/adr/ADR-1), by Michael Nygard.
+## How do ADRs work?
 
-## Template
+Read [the ADR explaining the rationale](/adr/ADR-1) for a detailed explaination.
 
-For consistency, please name your files using incremental numbers in the shape `ADR/ADR-###-title-using-dashes.md`.
+### ADR Process
 
-To organize the files, please save the assets in a folder for each document using the same ADR
-number: `.site-generator/public/resources/ADR-###/{filename}`.
+The following is the standardization process for all ADRs in all tracks:
 
-More info: [ADR-5 - How to organize ADR files](/adr/ADR-5).
+```mermaid
+flowchart TB
+    Draft --> Withdrawn
+    Idea --> Draft
 
-Feel free to write the documents in the way that is more convenient to you. If you want, there is a template you can use
-to start with:
+    Draft --> Review
 
-```markdown
----
-layout: doc
-adr: 1
-date: 2020-01-01
-title: Documenting architecture decisions
----
+    Review <--> LastCall
+    LastCall --> Final
 
-## Context and Problem Statement
+    Review --> Withdrawn
+    LastCall --> Withdrawn
 
-This section describes the forces at play, including technological, political, social, and project local. These forces
-are probably in tension, and should be called out as such. The language in this section is value-neutral. It is simply
-describing facts.
+    LastCall <--> Stagnant
+    Review <--> Stagnant
+    Draft <--> Stagnant
 
-## Considered options
-
-- option 1
-- option 2
-- option 3
-
-## Decision
-
-This section describes our response to these forces. It is stated in full sentences, with active voice. "We will …"
-
-## Status
-
-Accepted (or "proposed", "deprecated" or "superseded"). A decision may be "proposed"
-if the project stakeholders haven't agreed with it yet, or "accepted" once it is agreed. If a later ADR changes or
-reverses a decision, it may be marked as "deprecated" or
-"superseded" with a reference to its replacement.
-
-## Consequences
-
-This section describes the resulting context, after applying the decision. All consequences should be listed here, not
-just the "positive" ones. A particular decision may have positive, negative, and neutral consequences, but all of them
-affect the team and project in the future.
 ```
+
+## ADR Types
+
+There are three types of ADRs:
+
+- A **Standards Track** ADR describes any change that affects most or all Decentraland implementations, such as—a change to the synchronzation protocol, a change in deployments validity rules, proposed application standards/conventions, or any change or addition that affects the interoperability of applications using Decentraland. Standards Track ADRs consist of three parts—a design document, an implementation, and (if warranted) an update to the [formal specification](https://github.com/decentraland/yellowpaper).
+
+- A **Meta** ADR describes a process surrounding Decentraland or proposes a change to (or an event in) a process. Process ADRs are like Standards Track ADRs but apply to areas other than the Decentraland protocol itself.
+
+- An **RFC** describes a Decentraland design issue, or provides general guidelines or information to the Decentraland community. RFCs do not necessarily represent Decentraland community consensus or a recommendation, so users and implementers are free to ignore RFCs or follow their advice.

@@ -1,0 +1,15 @@
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.sequenceConfig = {
+    diagramMarginX: 0,
+    diagramMarginY: 0,
+  };
+  mermaid.initialize({startOnLoad:true, fontFamily: 'sans-serif'});
+  mermaid.init(undefined, '.language-mermaid');
+  for (const dot of document.querySelectorAll(".language-x-dot")) {
+    const figure = document.createElement("figure")
+    const pre = dot.parentElement
+    figure.appendChild(dot)
+    pre.parentElement.replaceChild(figure, pre)
+  }
+</script>
