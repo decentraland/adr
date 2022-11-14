@@ -1,12 +1,15 @@
 ---
-layout: doc
-rfc: 14
+adr: 114
 date: 2022-10-17
 title: P2P adapter with routing service
-status: DRAFT
+status: Draft
 authors:
   - hugoArregui
   - agusAldasoro
+type: RFC
+spdx-license: CC0-1.0
+redirect_from:
+  - /rfc/RFC-14
 ---
 
 ## Abstract
