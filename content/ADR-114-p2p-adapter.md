@@ -317,6 +317,7 @@ type Packet = {
   source: Address
   target: Route[]
 }
+```
 
 ## Peer 
 
@@ -324,8 +325,8 @@ Each time a package needs to be sent, then the peer will create it using its own
 
 ```typescript
 { 
-  source: 'peer1', 
-  target: [ ['peer2', 'peer3'] ]
+  source: 'peer1';
+  target: [ ['peer2', 'peer3'] ];
 }
 ```
 
