@@ -45,11 +45,11 @@ This implementation requires an extra service:
 
 - Messaging service: in charge of sending messages between specific peers, when the target is in another cluster.
 
-This implementation also requires the usage of the Topic Service to send notifications to all peers about the changes in the mesh (every time a new conection is stablish or lost).
+This implementation also requires the usage of the Messaging Service to send notifications to all peers about the changes in the mesh (every time a new conection is stablish or lost).
 
 Note: *As defined in [ADR-81](/ADR/ADR-81-minimum-comms-transport.md), each peer will know the ids of the peers around them*
 
-The basic idea of this implementation is for peers to connect randomly to a subset of the others forming a mesh, and reporting their connections to each other using the Topic service. Then, each node will build the routing information needed for each package to be broadcasted to all the other peers: this is the minimal set of paths that cover all the connected peers from their point of view. So, when a peer needs to deliver a message, it will use the paths provided by the routing service, and if the connection to a neighbor fails, then nothing will be done. This may imply that some packages are lost, anyway the paths generation for the next package should reflect this change in the mesh so no path is cut.
+The basic idea of this implementation is for peers to connect randomly to a subset of the others forming a mesh, and reporting their connections to each other using the Messaging service. Then, each node will build the routing information needed for each package to be broadcasted to all the other peers: this is the minimal set of paths that cover all the connected peers from their point of view. So, when a peer needs to deliver a message, it will use the paths provided by the routing service, and if the connection to a neighbor fails, then nothing will be done. This may imply that some packages are lost, anyway the paths generation for the next package should reflect this change in the mesh so no path is cut.
 
 This implementation tries to maximize the usage of P2P connections, by ensuring that each peer recives the same package only once. Also, each peer needs to decode the package to parse it but they don't make changes to it, so there is no cost associated to the encoding of each package.
 
@@ -89,7 +89,7 @@ sequenceDiagram
 ```
 
 
-### 2. Each peer reports its connections to the topic service
+### 2. Each peer reports its connections to the Messaging Service
 
 ```mermaid
 sequenceDiagram
@@ -98,7 +98,7 @@ sequenceDiagram
     participant Peer3
     participant Peer4
     participant Peer5
-    participant TS as Topic Service
+    participant TS as Messaging Service
 
     Peer1->>TS: connected to peer2
     Peer1->>TS: connected to peer3
@@ -110,7 +110,7 @@ sequenceDiagram
     Peer4->>TS: connected to peer1
 ```
 
-### 3. The topic service sends all new connections to all peers
+### 3. The Messaging Service sends all new connections to all peers
 
 Each new connection is a new message, but for clarity in the diagram they are collapsed in one line.
 New connections includes a message for each of the following pairs: `[1, 2], [1, 3], [1, 4], [2, 3], [2, 1], [3, 1], [3, 2], [4, 1]`
@@ -339,12 +339,11 @@ Notice the peer relaying the message is not expected to remove itself either as 
 - Since there is a specific routing table for each message, there is no need to expire message or count hops. If a route is cut, the message will not be delivered by the mesh, this means the message should be relayed using the messaging service (if reliable) or discarded (if unreliable).
 - The messaging service fallback provide a safety guarantee against network cluster partitions.
 - A given implementation can be optimized by suggesting peers to connect to certain others in order to avoid clustering and minimize messaging service usage. This is out of the scope for this document.
-- Since the routing service will know the status of the mesh at all times, it's easy to graph and debug network problems. 
 
 # Risks
 
 - Potentially the messages may be too big, if they include all the routes. Mitigation: if bandwidth becomes a problem, it is possible to encode the message again by removing the current peer from the routing paths, this way the message is small but the process will consume more CPU instead. 
-- Routing service cost to keep the routes updated. Mitigation: based on metrics we can adjust the parameters: frequency of the routes calculation, the routing algorithm, and how the graph is stored in memory. 
+- The cost to keep the routes updated for each node. Mitigation: based on metrics we can adjust the parameters: frequency of the routes calculation, the routing algorithm, and how the graph is stored in memory. 
 
 # Competition (alternatives)
 
