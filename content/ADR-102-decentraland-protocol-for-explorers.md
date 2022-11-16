@@ -209,7 +209,7 @@ _The Rendering Engine_ is a component of the explorer that is in charge of inter
 
 ### Loading scenes
 
-As explained avobe, scenes are programs written in JavaScript. The deployed scenes must comply with the Scene schema defined in [ADR-51](/adr/ADR-51). Entities can be loaded as scenes if their metadata matches the `scene.json`. For the sake of simplicity in this specification, we are assuming a minimum interface `{"main": "bin/scene.js"}` to illustrate how to load and run the code.
+As explained above, scenes are programs written in JavaScript. The deployed scenes must comply with the Scene schema defined in [ADR-51](/adr/ADR-51). Entities can be loaded as scenes if their metadata matches the `scene.json`. For the sake of simplicity in this specification, we are assuming a minimum interface `{"main": "bin/scene.js"}` to illustrate how to load and run the code.
 
 First the information of the entity to be executed as scene is fetched. As stated avobe, the entities contain a list of all files deployed and the metadata for that entity (scene.json).
 
