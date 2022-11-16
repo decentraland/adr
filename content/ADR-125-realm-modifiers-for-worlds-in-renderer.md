@@ -134,6 +134,11 @@ Example:
 }
 ```
 
+## Current Implementation 
+
+![Untitled Diagram drawio](https://user-images.githubusercontent.com/1999557/202185605-65ebf318-a2bd-40c9-8908-200daa2166b5.png)
+
+
 ## Task breakdown 
 
 To complete the Beta version for worlds, the following modifiers are required:
