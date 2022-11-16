@@ -1,6 +1,6 @@
 ---
 layout: doc
-adr: X
+adr: 131
 date: 2022-11-16
 title: Chat and Friends protocol
 description: Document with chat and friends protocol definitions
