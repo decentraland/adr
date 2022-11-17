@@ -170,9 +170,10 @@ Besides these modifiers, we need to implement the following functionality.
 	- Players should be able to enter a world using /goto world. (Right now we are accessing using changerealm command)
 
 - **Wizard**
-	- We need to create a new wizard where the tutorial will take place. As a new player enters DCL, it will be taken to this new wizard.
+	- As a new player enters DCL, it will be taken to this new tutorial wizard.
 	- A world should never trigger the wizard.
 	- New users are teleported back to Genesis City after the wizard
+	- Remove the current tutorial for new users
 
 ## Task breakdown for SDK
 
