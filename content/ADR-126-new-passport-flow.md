@@ -2,8 +2,8 @@
 adr: 126
 title: Integrating a new user passport flow
 date: 2022-11-17
-status: Living
-type: Draft
+status: Draft
+type: RFC
 spdx-license: CC0-1.0
 authors:
   - davidejensen
