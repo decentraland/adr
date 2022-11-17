@@ -31,6 +31,10 @@ The new panel will be logically divided in 3 sub-panels:
 
 Each part will work independently from the others, with parallel loading spinners in order to provide as soon as possible any loaded infos from the user.
 
+To achieve this a main Controller/View of the entire panel will follow the old flow of the passport opening to obtain user informations, and will then share this informations to the sub panels.
+The specific processing of this infos will be done by the sub-panels controllers, i.e. the user data will be sent to the player info panel, its controller will be the one in charge of filtering the name if the profanity filter is enabled.
+This will allow us to easily extend the passport in the future.
+
 ## Specification
 
 ### Player info
@@ -51,7 +55,7 @@ This information needs to be provided by the backend, it is something not yet in
 #### Showing mutual friends
 
 A number with mutual connections will be presented along with a limited amount of profile pictures (5 or 6 based on the available space).
-Same as showing how many friends a user has this feature should be integrat ed at different levels:
+Same as showing how many friends a user has, this feature should be integrated at different levels:
 
 - Unity renderer will add the number of mutual friends and a list of profile pics to the user data structure
 - Kernel will add the mutual friends count in the payload of `AddUserProfileToCatalog` request
