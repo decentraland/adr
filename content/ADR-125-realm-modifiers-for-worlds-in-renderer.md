@@ -139,7 +139,7 @@ Example:
 ![Untitled Diagram drawio](https://user-images.githubusercontent.com/1999557/202185605-65ebf318-a2bd-40c9-8908-200daa2166b5.png)
 
 
-## Task breakdown 
+## Task breakdown for Explorer
 
 To complete the Beta version for worlds, the following modifiers are required:
 
@@ -149,12 +149,14 @@ To complete the Beta version for worlds, the following modifiers are required:
 	- A specific time should be added to the AboutResponse.Configuration to allow the creators set the time of their World
 	- Skybox should be set accordingly to the new variable mentioned above
 
-- **Green Blockers Modifiers:** Extra functionality should be added to the current green blockers modifier.
+- **Realms Blocker Modifier:** Extra functionality should be added to the current green blockers modifier.
 	- Green blockers should appear 2 parcels away from the scene area
 
 - **Loading Screen Modifier (V1 task):** This are required functionalities that should be built on top of the current loading screen when accessing worlds. Requires coordination with the design team.
 	- A message of entering world should be added
 	- If a world is full (100 users), a warning message should appear (“The world you are trying to access is full. Please try again later”)
+	- Add an image url for the loading screen to the AboutResponse json
+	- If an image url exists, replace the current loading animation with the new image.
 
 - **General World Modifiers**
 	- If user tries to go to an unexistent world, an empty world should be loaded
@@ -172,13 +174,15 @@ Besides these modifiers, we need to implement the following functionality.
 	- A world should never trigger the wizard.
 	- New users are teleported back to Genesis City after the wizard
 
+## Task breakdown for SDK
 
-- **SDK tasks:** This are the tasks that requires collaboration with the SDK team
-	- The world scene size is limited to 2x2
-	- Access via decentraland.org/world/NAME
-	- A world will have a maximum of 100 players connected to it. Reaching the limit will prevent players from entering
-	- Developers can deploy their Worlds on the Catalysts
-	- World scenes are up to 15MB*Parcel
+This are the tasks that requires collaboration with the SDK team
+
+- The world scene size is limited to 2x2
+- Access via decentraland.org/world/NAME
+- A world will have a maximum of 100 players connected to it. Reaching the limit will prevent players from entering
+- Developers can deploy their Worlds on the Catalysts
+- World scenes are up to 15MB*Parcel
 
 
 
