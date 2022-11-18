@@ -78,7 +78,7 @@ And the most important part is that all content servers will then sync with each
 
 ### Entities
 
-An [Entity](https://github.com/decentraland/common-schemas/blob/be7213b40a2180a9a99035eb87e8a5d4b8438e7f/src/platform/entity.ts#L21-L37) is a signed data structure holding a list of content files, a deployment date and pointers. An entity is the minimal object used to organize the content. An entity can represent an scene, a wearable, a profile, a user store, an emote, etc.
+An [Entity](https://github.com/decentraland/common-schemas/blob/be7213b40a2180a9a99035eb87e8a5d4b8438e7f/src/platform/entity.ts#L21-L37) as defined in [ADR-80](/adr/ADR-80) is a signed data structure holding a list of content files, a deployment date and pointers. An entity is the minimal object used to organize the content. An entity can represent an scene, a wearable, a profile, a user store, an emote, etc.
 
 An entity has the following properties:
 
@@ -201,131 +201,7 @@ When an user is connected through P2P with the others in the same island, and th
 
 ## Runtime layer
 
-Decentraland Explorers are often compared with operative systems that run programs, those are the scenes. Each scene in Decentraland is bound to a program that runs in a sandboxed environment. A set of functions is exposed to this sandboxed environment to enable the scene to communicate with the Rendering engine.
-
-_The Rendering Engine_ is a component of the explorer that is in charge of interpreting messages of scenes and convert those bits of information into a 3D representation of the scene. It is also in charge of managing the load/unload of resources and of forwarding input and player information back to the scenes for interactivity.
-
-> TODO: Write about the lifecycle of a scene and how it is loaded
-
-### Loading scenes
-
-As explained above, scenes are programs written in JavaScript. The deployed scenes must comply with the Scene schema defined in [ADR-51](/adr/ADR-51). Entities can be loaded as scenes if their metadata matches the `scene.json`. For the sake of simplicity in this specification, we are assuming a minimum interface `{"main": "bin/scene.js"}` to illustrate how to load and run the code.
-
-First, the information of the entity to be executed as the scene is fetched. As stated above, the entities contain a list of all files deployed and the metadata for that entity (scene.json).
-
-Based on that information, the renderer and runtime will know how to resolve assets. To start, the runtime will create an isolated runtime environment for the scene, and then it will fetch the compiled scene `bin/scene.js` and run it. After that first eval, the runtime will start a main loop.
-
-### Resolving files in an entity
-
-The mechanism to resolve files based on deployed entities is explained in detail in [ADR-79](/adr/ADR-79).
-
-### Hooking to the main loop
-
-Among the functions exposed to the scene runtime, a special function is exposed to register a callback for the main loop. This function must be called only once, to pass on a callback used to run the main loop.
-
-```ts
-declare function onUpdate(callback: (deltaTimeSeconds: number) => Promise<void>): void
-
-// The following example only illustrates an hypothetic scenario,
-// since it is a low-level API and it shouldn't be used this way
-let rotation = 0
-onUpdate(async function (deltaTimeSeconds) {
-  const speed = 0.001
-  rotation += deltaTimeSeconds * speed
-  updateEntityRotation(rotation)
-  await sendUpdatesToRenderer()
-})
-```
-
-> TODO: explain how to hook to other runtime events
-
-### Loading RPC modules in the scenes
-
-The scene runtime exposes two asynchronous functions `loadModule` and `callRpc`. Those are the key entrypoint to communicate the scenes with other modules like the renderer. The exposed modules are defined in the [protocol repository](https://github.com/decentraland/protocol/blob/main/proto/decentraland/kernel/apis/engine_api.proto).
-
-```ts
-// loadModule instantiates a remote module
-declare function loadModule(moduleName: string): Promise<ModuleDescriptor>
-
-// the callRpc function takes a rpcHandle from loadModule result and a
-// methodName from the same result, combined with a list of arguments
-// it returns a promise executed in the remote module.
-declare function callRpc(rpcHandle: string, methodName: string, args: any[]): Promise<ProxyModule>
-
-declare type MethodDescriptor = { name: string }
-declare type ModuleDescriptor = {
-  rpcHandle: string
-  methods: MethodDescriptor[]
-}
-```
-
-> TODO: define and document naming conventions about code generation for modules
-
-### Synchronizing scene's entities with the renderer
-
-The scenes synchronize with the renderer via the `EngineAPI.SendToRenderer` RPC using the CRDT protocol defined in [ADR-117](/rpc/ADR-117). The renderer will keep a local copy of all the entities and components required for rendering. Those components are mostly serialized using protobuf as defined in [ADR-123](/rpc/ADR-123).
-
-The `EngineAPI.SendToRenderer` response includes a list of CRDT messages to be applied in the local scene, that is used to send back information from the renderer like the position of the player.
-
-```mermaid
-sequenceDiagram
-  participant S as Scene
-  participant K as Runtime
-  participant R as Renderer
-
-  S->>S: Load the code of the scene and executes it
-
-  S->>K: loadModule("EngineAPI")
-  activate K
-  K-->>R: Create scene ID=1
-  K-->>S: rpcHandle+methods
-  deactivate K
-
-  S-->S: Load initial state
-
-  loop GameLoop
-    S-->>S: update(deltaTme)
-    S->>R: SendToRenderer(stateChanges)
-    activate R
-    R-->>R: Apply patches to the engine owned entities
-    R-->>R: Execute queries
-    R-->>S: CRDT changes (if any)
-    deactivate R
-    S-->>S: Apply patches to the scene owned entities
-  end
-```
-
-<details open="">
-    <summary>Pseudocode example of a scene</summary>
-
-```typescript
-const engineApi = await loadModule("EngineAPI")
-async function sendToRenderer(crdtMessage: Uint8Array[]) {
-  await callRpc(engineApi.rpcHandle, "SendToRenderer", [{ data: crdtMessage }])
-}
-
-// this is a lamport timestamp, required by the CRDT rules
-let timestamp = 0
-
-// entities are now numbers
-const entityId = 1234
-
-// component numbers, defined in .proto files
-const transformId = 1
-const rendererMeshId = 2
-
-const transform = Transform.serialize({ position, rotation, scale })
-const mesh = RendererMesh.serialize({ box: {} })
-
-// now we are sending the component messages from the LWW-ElementSet
-// this sets the transform & meshRenderer for the entity
-const messagesBackFromRenderer = await sendToRenderer([
-  CRDT.PutMessage(entityId, transformId, transform, timestamp++),
-  CRDT.PutMessage(entityId, rendererMeshId, mesh, timestamp++),
-])
-```
-
-</details>
+Decentraland Explorers are often compared with operative systems that run programs. **A scene is a deployable JavaScript program** that controls a set of entities in-world, the user-interface, and also may add functionality to the Explorer. Those programs run in a sandboxed environment exposing a set of functions to enable the scene to communicate with other components like the Rendering engine. The loading process and execution runtime of those programs is explained in detail on [ADR-133](/adr/ADR-133).
 
 # Appendix
 
