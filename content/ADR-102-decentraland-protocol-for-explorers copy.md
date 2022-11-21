@@ -193,7 +193,7 @@ On the homeserver side the main responsibility, besides implementing the Matrix 
 
 ### Communication Service (comms)
 
-A minimum communications protocol for Explorer is defined in the [RFC-4](/rfc/RFC-4). It describes the minimum to connect explorers together and see other people in the world. It does not describe the transport layers or connection topologies. Indeed, it assumes that all connections are made via a unified echo server that allows broadcasts of messages with all the people around you.
+A minimum communications protocol for Explorer is defined in the [ADR-104](/adr/ADR-104). It describes the minimum to connect explorers together and see other people in the world. It does not describe the transport layers or connection topologies. Indeed, it assumes that all connections are made via a unified echo server that allows broadcasts of messages with all the people around you.
 
 In a more production-like environment, the communications are managed by the Archipielago server in the Catalyst, it's the orchestrator of islands. The islands are the minimal unit of users groups. The universe that a user can see, talk and interact with is delimeted by the island. There will be available [ADR-70: different transports to support this communication: P2P, livekit and websocket](/adr/ADR-70).
 

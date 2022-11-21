@@ -35,7 +35,7 @@ This document will describe all the technical changes required to decouple the O
 
 Since the onboarding is not a LAND, a Preview server will be used to host the scene. This server will also allow multiple parallel versions of the onboarding to co-exist to redirect the first time user experience to a specific cohort of A/B test or to a specialized tutorial for each platform i.e. VR may have a different tutorial because it has a different input method.
 
-The preview server is specified in [RFC-11](/rfc/RFC-11). The configuration of the onboarding experience will be served by the `/about` endpoint specified in [RFC-10](/rfc/RFC-10)
+The preview server is specified in [ADR-111](/adr/ADR-111). The configuration of the onboarding experience will be served by the `/about` endpoint specified in [ADR-110](/adr/ADR-110)
 
 Some UX Considerations that need to be accounted for are:
 - Since the onboarding is not a LAND in the genesis city, the minimap MAY be shut down during this experience to prevent confusions.
@@ -50,7 +50,7 @@ At first, the onboarding experience will be a offline experience.
 
 # Starting the onboarding experience
 
-To all practical means, thanks to the `/about` endpoint of [RFC-10](/rfc/RFC-10), every onboarding experience will be its own Realm. And like the rest of the realms, the selection is controlled by Kernel.
+To all practical means, thanks to the `/about` endpoint of [ADR-110](/adr/ADR-110), every onboarding experience will be its own Realm. And like the rest of the realms, the selection is controlled by Kernel.
 
 Many conditions should be taken into account before deciding which realm is going to be used every time the Explorer starts (PENDING RFC). To those conditions, we will add the following.
 
