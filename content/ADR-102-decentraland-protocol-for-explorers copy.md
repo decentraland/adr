@@ -78,7 +78,7 @@ And the most important part is that all content servers will then sync with each
 
 ### Entities
 
-An [Entity](https://github.com/decentraland/common-schemas/blob/be7213b40a2180a9a99035eb87e8a5d4b8438e7f/src/platform/entity.ts#L21-L37) is a signed data structure holding a list of content files, a deployment date and pointers. An entity is the minimal object used to organize the content. An entity can represent an scene, a wearable, a profile, a user store, an emote, etc.
+An [Entity](https://github.com/decentraland/common-schemas/blob/be7213b40a2180a9a99035eb87e8a5d4b8438e7f/src/platform/entity.ts#L21-L37) as defined in [ADR-80](/adr/ADR-80) is a signed data structure holding a list of content files, a deployment date and pointers. An entity is the minimal object used to organize the content. An entity can represent an scene, a wearable, a profile, a user store, an emote, etc.
 
 An entity has the following properties:
 
@@ -201,17 +201,7 @@ When an user is connected through P2P with the others in the same island, and th
 
 ## Runtime layer
 
-Decentraland Explorers are often compared with operative systems that run programs, those are the scenes. Each scene in Decentraland is bound to a program that runs in a sandboxed environment. A set of functions is exposed to this sandboxed environment to enable the scene to communicate with the Rendering engine.
-
-_The Rendering Engine_ is a component of the explorer that is in charge of interpreting messages of scenes and convert those bits of information into a 3D representation of the scene. It is also in charge of managing the load/unload of resources and of forwarding input and player information back to the scenes for interactivity.
-
-> TODO: Write about the lifecycle of a scene and how it is loaded
-
-> TODO: Write about the ECS6 and the legacy protocol
-
-> TODO: Write about the CRDT protocol and ECS7
-
-> TODO: Write about resolving assets for models
+Decentraland Explorers are often compared with operative systems that run programs. **A scene is a deployable JavaScript program** that controls a set of entities in-world, the user-interface, and also may add functionality to the Explorer. Those programs run in a sandboxed environment exposing a set of functions to enable the scene to communicate with other components like the Rendering engine. The loading process and execution runtime of those programs is explained in detail on [ADR-133](/adr/ADR-133).
 
 # Appendix
 
