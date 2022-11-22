@@ -168,8 +168,7 @@ It would reduce the coupling between components and enable better loading UX in 
 - If teleport destination is already loaded, trigger the teleport without showing the loading screen.
 
 3. TELEPORTING – KERNEL
-- All teleport logic will be removed from Kernel. We would not rely anymore on the isLoadingScreenVisible() method in kernel to update the state of the LoadingScreen.
-
+- Loading screen and teleport analysis will be removed from Kernel. We would not rely anymore on the isLoadingScreenVisible() method in kernel to update the state of the LoadingScreen.
 
 3.  SIGN UP FLOW – KERNEL
 - Add a message that determines if the Avatar Creation is necessary. Show the avatar creation flow or move directly to Teleport Home according to the necessity.
