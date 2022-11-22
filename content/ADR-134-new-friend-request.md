@@ -43,13 +43,13 @@ sequenceDiagram
   participant renderer
   participant kernel
   
-note left of renderer: the user send a friend\nrequest from the pop-up
+note left of renderer: the user send a friend request from the pop-up
 renderer->kernel: RequestFriendship(requestFriendshipPayload{messageId:'<unique-id>', userId:'0x...', messageBody='hello!'})
-note right of kernel: ask the server to create\nthe friend request.
+note right of kernel: ask the server to create the friend request.
 note left of kernel: in case of success
 kernel-->renderer: AddUserProfilesToCatalog(addUserProfilesPayload)
 kernel-->renderer: RequestFriendshipConfirmation(requestFriendshipConfirmationPayload)
-note left of renderer: create a new entry in\nthe SENT requests list
+note left of renderer: create a new entry in the SENT requests list
 note left of kernel: in case of error
 kernel-->renderer: RequestFriendshipError(requestFriendshipErrorPayload)
 note left of renderer: show the error
@@ -83,12 +83,12 @@ sequenceDiagram
   participant renderer
   participant kernel
   
-note left of renderer: the user cancels a friend\nrequest from the list
+note left of renderer: the user cancels a friend request from the list
 renderer->kernel: CancelFriendship(cancelFriendshipPayload{messageId:'<unique-id>', friendRequestId: '<any id>'})
-note right of kernel: ask the server to cancel\nthe friend request.
+note right of kernel: ask the server to cancel the friend request.
 note left of kernel: in case of success
 kernel-->renderer: CancelFriendshipConfirmation(cancelFriendshipConfirmationPayload)
-note left of renderer: remove the entry from\nthe SENT requests list
+note left of renderer: remove the entry from the SENT requests list
 note left of kernel: in case of error
 kernel-->renderer: CancelFriendshipError(cancelFriendshipErrorPayload)
 note left of renderer: show the error
@@ -122,11 +122,11 @@ sequenceDiagram
   participant kernel
   
 note left of renderer: during the session
-note right of kernel: an user send us a\nfriend request
+note right of kernel: an user send us a friend request
 kernel-->renderer: AddUserProfilesToCatalog(addUserProfilesPayload)
 kernel->renderer: AddFriendRequest(friendRequestPayload)
-note left of renderer: create a new entry in\nthe RECEIVED requests list
-note left of renderer: add a new entry in\nthe notifications panel
+note left of renderer: create a new entry in the RECEIVED requests list
+note left of renderer: add a new entry in the notifications panel
 ```
 
 ## Accept a Friend Request
@@ -135,17 +135,17 @@ sequenceDiagram
   participant renderer
   participant kernel
   
-note left of renderer: the user accept a friend\nrequest from the pop-up
+note left of renderer: the user accept a friend request from the pop-up
 renderer->kernel: AcceptFriendship(acceptFriendshipPayload{messageId:'<unique-id>', friendRequestId: '<any id>'})
-note right of kernel: ask the server to accept\nthe friend request.
+note right of kernel: ask the server to accept the friend request.
 note left of kernel: in case of success
 kernel-->renderer: AcceptFriendshipConfirmation(acceptFriendshipConfirmationPayload)
-note left of renderer: remove the new entry from\nthe RECEIVED requests list
-note left of renderer: add a new entry in\nthe notifications panel
-note left of kernel: in case the friend request\nhas a non-empty message body
-note right of kernel: the message of the request must be\nregistered as part of the messages\nhistory of that user
-kernel-->renderer: Add the chat message and increase the unseen\nnotifications counter for that specific user
-note left of renderer: display the unseen\nmessage as usual
+note left of renderer: remove the new entry from the RECEIVED requests list
+note left of renderer: add a new entry in the notifications panel
+note left of kernel: in case the friend request has a non-empty message body
+note right of kernel: the message of the request must be registered as part of the messages history of that user
+kernel-->renderer: Add the chat message and increase the unseen notifications counter for that specific user
+note left of renderer: display the unseen message as usual
 note left of kernel: in case of error
 kernel-->renderer: AcceptFriendshipError(acceptFriendshipErrorPayload)
 note left of renderer: show the error
@@ -178,12 +178,12 @@ sequenceDiagram
   participant renderer
   participant kernel
   
-note left of renderer: the user reject a friend\nrequest from the pop-up
+note left of renderer: the user reject a friend request from the pop-up
 renderer->kernel: RejectFriendship(rejectFriendshipPayload{messageId:'<unique-id>', friendRequestId: '<any id>'})
-note right of kernel: ask the server to reject\nthe friend request.
+note right of kernel: ask the server to reject the friend request.
 note left of kernel: in case of success
 kernel-->renderer: RejectFriendshipConfirmation(rejectFriendshipConfirmationPayload)
-note left of renderer: remove the new entry from\nthe RECEIVED requests list
+note left of renderer: remove the new entry from the RECEIVED requests list
 note left of kernel: in case of error
 kernel-->renderer: RejectFriendshipError(rejectFriendshipErrorPayload)
 note left of renderer: show the error
@@ -218,16 +218,16 @@ sequenceDiagram
   participant kernel
   
 renderer->kernel: GetFriendRequests(getFriendRequestsPayload{sentLimit:50, sentSkip:0, receivedLimit:50, receivedSkip:0})
-note right of kernel: request the first (50)\nsent/received requests\nto the server
+note right of kernel: request the first (50) sent/received requests to the server
 kernel-->renderer: AddUserProfilesToCatalog(addUserProfilesPayload)
-note left of renderer: needed to fill\nin the ui info later
+note left of renderer: needed to fill in the ui info later
 kernel-->renderer: AddFriendRequests(addFriendRequestsPayload)
 kernel-->renderer: UpdateUserPresence(userPresencePayload)
-note left of renderer: show online/offline\nstatus of each request
-note right of kernel: register that th user\nseen requests with\nthe current timestamp
-note left of renderer: the users clicks on\n"show more requests"
+note left of renderer: show online/offline status of each request
+note right of kernel: register that th user seen requests with the current timestamp
+note left of renderer: the users clicks on "show more requests"
 renderer->kernel: GetFriendRequests(getFriendRequestsPayload{sentLimit:30, sentSkip:50, receivedLimit:30, receivedSkip:50})
-note right of kernel: requests the next 30\nfriend requests to server
+note right of kernel: requests the next 30 friend requests to server
 kernel-->renderer: AddUserProfilesToCatalog(addUserProfilesPayload)
 kernel-->renderer: AddFriendRequests(addFriendRequestsPayload)
 kernel-->renderer: UpdateUserPresence(userPresencePayload)
