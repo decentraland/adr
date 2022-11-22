@@ -1,7 +1,7 @@
 ---
 adr: 114
 date: 2022-10-17
-title: P2P adapter with routing service
+title: P2P adapter with routing
 status: Draft
 authors:
   - hugoArregui
@@ -18,7 +18,7 @@ This document describes a possible implementation for a P2P adapter using a mini
 
 ## Need
 
-A P2P adapter is needed in order to provide a light mechanism for comms. This alternative won't require extra infrastructure to work, which means it can be used in constraint environments as opposed to [RFC-5: comms service using websocket](/RFC/RFC-5-ws-comms.md). For example: P2P could be a default adapter for [comms v3](/ADR/ADR-70).
+A P2P adapter is needed in order to provide a light mechanism for comms. This alternative won't require extra infrastructure to work, which means it can be used in constraint environments as opposed to [ADR-105: comms service using websocket](/adr/ADR-105). For example: P2P could be a default adapter for comms v3 [ADR-70](/adr/ADR-70).
 
 
 ## Current implementation

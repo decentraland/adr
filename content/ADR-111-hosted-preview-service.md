@@ -79,7 +79,7 @@ flowchart TD
 
 #### Realm
 
-In order to run, the Client needs to connect to a Realm. In this case, the Preview Content Server will act as Realm implementing the endpoint `/about` documented in [RFC-10](/rfc/RFC-10).
+In order to run, the Client needs to connect to a Realm. In this case, the Preview Content Server will act as Realm implementing the endpoint `/about` documented in [ADR-110](/adr/ADR-110).
 
 This way the Client will load:
 

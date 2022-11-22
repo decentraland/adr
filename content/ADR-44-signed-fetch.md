@@ -1,15 +1,19 @@
 ---
 adr: 44
 date: 2022-01-26
-title: Signed Fetch
+title: "Authentication mechanism for HTTP requests: Signed Fetch"
 status: Living
 authors:
-- 2fd
-- nachomazzara
-- cazala
+  - 2fd
+  - nachomazzara
+  - cazala
 type: Standards Track
 spdx-license: CC0-1.0
 ---
+
+## Abstract
+
+This document presents the problem of authenticating requests in http servers at Decentraland. It presents two alternatives: Ephemeral keys or Private keys. Ephemeral keys are decided to improve the user experience to not require N interactions on the wallet.
 
 ## Context and Problem Statement
 

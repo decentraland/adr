@@ -81,7 +81,7 @@ type AdapterMessageEvent = {
 }
 ```
 
-This interface was designed with extensibility in mind and abstracting all the necessary functions to make Decentraland work. The communications protocol that is transferred using this Adapter is defined in the [RFC-4](/rfc/RFC-4).
+This interface was designed with extensibility in mind and abstracting all the necessary functions to make Decentraland work. The communications protocol that is transferred using this Adapter is defined in the [ADR-104](/adr/ADR-104).
 
 ## Lifecycle of an Adapter
 
