@@ -5,7 +5,7 @@ date: 2022-11-16
 title: Chat and Friends protocol
 description: Document with chat and friends protocol definitions
 type: RFC
-status: Draft
+status: Review
 spdx-license: CC0-1.0
 authors:
   - guidota
