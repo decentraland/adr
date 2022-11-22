@@ -1,7 +1,7 @@
 ---
 adr: 114
 date: 2022-10-17
-title: P2P adapter with routing service
+title: P2P adapter with routing
 status: Draft
 authors:
   - hugoArregui
