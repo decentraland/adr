@@ -29,7 +29,7 @@ First of all, every feature flow should be identified in order to define the mes
 - Review messages that are not Request-Response based
 - Add chat and friends definitions to Decentraland Protocol (@dcl/protocol)
 - Implement RPC Server on Kernel
-- Implement RPC Client on Explorer
+- Implement RPC Client on Renderer
 
 ## API definitions
 
