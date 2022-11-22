@@ -170,11 +170,11 @@ It would reduce the coupling between components and enable better loading UX in 
 3. TELEPORTING – KERNEL
 - Loading screen and teleport analysis will be removed from Kernel. We would not rely anymore on the isLoadingScreenVisible() method in kernel to update the state of the LoadingScreen.
 
-3.  SIGN UP FLOW – KERNEL
+4.  SIGN UP FLOW – KERNEL
 - Add a message that determines if the Avatar Creation is necessary. Show the avatar creation flow or move directly to Teleport Home according to the necessity.
 - The method isRendererVisible() will become obsolote by implementing this message
 
-4. SIGN IN FLOW – RENDERER
+5. SIGN IN FLOW – RENDERER
 - The loading screen should start on by default, and act accordingly to the first kernel message.
 - The loading screen should listen to the state of AvatarCreation and T&C change. Once complete, it should call for a teleport to home position, which would follow the same flow as teleportation.
 
