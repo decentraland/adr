@@ -5,7 +5,7 @@ title: Technical Assessment for the new Friend Request
 authors:
   - sandrade-dcl
   - lorux0
-status: Draft
+status: Final
 type: RFC
 spdx-license: CC0-1.0
 redirect_from:
