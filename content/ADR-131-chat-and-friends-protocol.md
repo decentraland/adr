@@ -13,7 +13,7 @@ authors:
 
 # Abstract
 
-Most communications between the Explorer and Kernel, use a JSON based mechanism that we want to replace with RPC and a protocol.
+Most communications between the Renderer and Kernel, use a JSON based mechanism that we want to replace with RPC and a protocol.
 Chat and Friends features are using that mechanism and fixing or extending the functionality can be very hard to define and mantain.
 In this RFC, the interactions will be reviewed and a protocol for those features will be defined.
 
