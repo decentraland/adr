@@ -155,6 +155,7 @@ It would reduce the coupling between components and enable better loading UX in 
 - A feature flag will be created to have both systems coexisting during some time. Depending on the state of the flag, a plugin will be instantiated and the messages from LoadingBridge will be ignored.
 - Since all loading is controlled from LoadingBridge, ignoring the messages should be enough to stop using that path. It’s not necessary to destroy current components for the plugin to work.
 - In kernel side, new messages will be added, and this won’t be incompatible with the current flow.
+- Put under the feature flag the use of the activate and deactivate rendering messages
 
 2. TELEPORTING - RENDERER
 - Replace Loading Bridge, LoadingHUDController and LoadingFeedbackController. Combine them all intro a LoadingScreen plugin.
@@ -177,6 +178,10 @@ It would reduce the coupling between components and enable better loading UX in 
 5. SIGN IN FLOW – RENDERER
 - The loading screen should start on by default, and act accordingly to the first kernel message.
 - The loading screen should listen to the state of AvatarCreation and T&C change. Once complete, it should call for a teleport to home position, which would follow the same flow as teleportation.
+
+6. ACTIVATE/DEACTIVATE RENDERING LOGIC
+
+- The ActivateRendering() and DeactivateRendering() messages are going to be deprecated. They were original used to turn on/off the camera to allow faster loading. This can easily be handled by the new loading plugin.
 
 ## Competition
 
