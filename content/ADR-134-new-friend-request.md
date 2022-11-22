@@ -38,7 +38,11 @@ Due to the current architecture implemented in the backend side, the idea would 
 In terms of needed communications, we have identified the next main dependencies between Client and Backend:
 
 ### Send a Friend Request
-```sequence
+```mermaid
+sequenceDiagram
+  participant renderer
+  participant kernel
+  
 note left of renderer: the user send a friend\nrequest from the pop-up
 renderer->kernel: RequestFriendship(requestFriendshipPayload{messageId:'<unique-id>', userId:'0x...', messageBody='hello!'})
 note right of kernel: ask the server to create\nthe friend request.
@@ -74,7 +78,11 @@ requestFriendshipErrorPayload{
 ```
 
 ## Cancel a Friend Request
-```sequence
+```mermaid
+sequenceDiagram
+  participant renderer
+  participant kernel
+  
 note left of renderer: the user cancels a friend\nrequest from the list
 renderer->kernel: CancelFriendship(cancelFriendshipPayload{messageId:'<unique-id>', friendRequestId: '<any id>'})
 note right of kernel: ask the server to cancel\nthe friend request.
@@ -108,7 +116,11 @@ cancelFriendshipErrorPayload{
 ```
 
 ## Receive a Friend Request
-```sequence
+```mermaid
+sequenceDiagram
+  participant renderer
+  participant kernel
+  
 note left of renderer: during the session
 note right of kernel: an user send us a\nfriend request
 kernel-->renderer: AddUserProfilesToCatalog(addUserProfilesPayload)
@@ -118,7 +130,11 @@ note left of renderer: add a new entry in\nthe notifications panel
 ```
 
 ## Accept a Friend Request
-```sequence
+```mermaid
+sequenceDiagram
+  participant renderer
+  participant kernel
+  
 note left of renderer: the user accept a friend\nrequest from the pop-up
 renderer->kernel: AcceptFriendship(acceptFriendshipPayload{messageId:'<unique-id>', friendRequestId: '<any id>'})
 note right of kernel: ask the server to accept\nthe friend request.
@@ -157,7 +173,11 @@ acceptFriendshipErrorPayload{
 ```
 
 ## Reject a Friend Request
-```sequence
+```mermaid
+sequenceDiagram
+  participant renderer
+  participant kernel
+  
 note left of renderer: the user reject a friend\nrequest from the pop-up
 renderer->kernel: RejectFriendship(rejectFriendshipPayload{messageId:'<unique-id>', friendRequestId: '<any id>'})
 note right of kernel: ask the server to reject\nthe friend request.
@@ -192,7 +212,11 @@ rejectFriendshipErrorPayload{
 
 ## Get Friend Request list
 In this case we are modifying the payloads of the existing flow:
-```sequence
+```mermaid
+sequenceDiagram
+  participant renderer
+  participant kernel
+  
 renderer->kernel: GetFriendRequests(getFriendRequestsPayload{sentLimit:50, sentSkip:0, receivedLimit:50, receivedSkip:0})
 note right of kernel: request the first (50)\nsent/received requests\nto the server
 kernel-->renderer: AddUserProfilesToCatalog(addUserProfilesPayload)
