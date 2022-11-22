@@ -100,6 +100,6 @@ In the same direction, these features can be extracted in the future into a serv
 
 # Competition
 
---
+Do nothing and continue using the JSON implementation with the before mentioned issues to performance and maintainability.
 
 ---
