@@ -172,7 +172,7 @@ It would reduce the coupling between components and enable better loading UX in 
 
 4.  SIGN UP FLOW – KERNEL
 - Add a message that determines if the Avatar Creation is necessary. Show the avatar creation flow or move directly to Teleport Home according to the necessity.
-- The method isRendererVisible() will become obsolote by implementing this message
+- Remove the isRendererVisible() method. Its an overcomplicated method that only checks if the login has been completed. Replace for a listener that only waits for a login complete
 
 5. SIGN IN FLOW – RENDERER
 - The loading screen should start on by default, and act accordingly to the first kernel message.
