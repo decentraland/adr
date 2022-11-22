@@ -24,7 +24,7 @@ Also, JSON based messages deserialization are creating objects that then would b
 
 # Approach
 
-First of all, every feature flow should be identified in order to define the messages between Explorer and Kernel, then:
+First of all, every feature flow should be identified in order to define the messages between Renderer and Kernel, then:
 
 - Review messages that are not Request-Response based
 - Add chat and friends definitions to Decentraland Protocol (@dcl/protocol)
