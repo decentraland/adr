@@ -175,9 +175,9 @@ Besides these modifiers, we need to implement the following functionality.
 	- New users are teleported back to Genesis City after the wizard
 	- Remove the current tutorial for new users
 
-## Task breakdown for SDK
+## Changes for worlds-content-server
 
-This are the tasks that requires collaboration with the SDK team
+The [worlds-content-server](https://github.com/decentraland/worlds-content-server/) requires some changes to comply with this specification:
 
 - The world scene size is limited to 2x2
 - Access via decentraland.org/world/NAME
