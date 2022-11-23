@@ -155,7 +155,7 @@ To complete the Beta version for worlds, the following modifiers are required:
 - **Loading Screen Modifier (V1 task):** This are required functionalities that should be built on top of the current loading screen when accessing worlds. Requires coordination with the design team.
 	- A message of entering world should be added
 	- If a world is full (100 users), a warning message should appear (“The world you are trying to access is full. Please try again later”)
-	- Add an image url for the loading screen to the AboutResponse json
+	- Add an image url for the loading screen to the `AboutResponse` json.
 	- If an image url exists, set it as background
 
 - **Access World Modifier**
