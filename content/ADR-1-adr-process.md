@@ -182,7 +182,7 @@ Once the ADR is ready for the repository, the ADR editor will:
 - Merge the corresponding pull request
 - Send a message back to the ADR author with the next step.
 
-Many ADRs are written and maintained by developers with write access to the Ethereum codebase. The ADR editors monitor ADR changes, and correct any structure, grammar, spelling, or markup mistakes we see.
+Many ADRs are written and maintained by developers with write access to the Decentraland codebase. The ADR editors monitor ADR changes, and correct any structure, grammar, spelling, or markup mistakes we see.
 
 The editors don’t pass judgment on ADRs. We merely do the administrative & editorial part.
 
