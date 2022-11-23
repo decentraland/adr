@@ -139,42 +139,6 @@ Example:
 <img alt="Realms Plugin UML" src="resources/ADR-125/Realms_Plugin_UML.png"/>
 
 
-## Task breakdown for Explorer
-
-To complete the Beta version for worlds, the following modifiers are required:
-
-- **Skybox Modifier (V1 task):** Create a skybox modifier to allow the world creator to control its state.
-	- Skybox settings (time and dynamic toggle) will be unavailable while in world; they should be non-interactable.
-	- A warning message should be added in settings to explicit to the user that the skybox is being controller by the creator.
-	- A specific time should be added to the `AboutResponse.Configuration` to allow the creators to set the time of their World.
-	- Skybox should be set accordingly to the new variable mentioned above
-
-- **Realms Blocker Modifier:** Extra functionality should be added to the current green blockers modifier.
-	- Green blockers should appear 2 parcels away from the scene area
-
-- **Loading Screen Modifier (V1 task):** This are required functionalities that should be built on top of the current loading screen when accessing worlds. Requires coordination with the design team.
-	- A message of entering world should be added
-	- If a world is full (100 users), a warning message should appear (“The world you are trying to access is full. Please try again later”)
-	- Add an image url for the loading screen to the AboutResponse json
-	- If an image url exists, set it as background
-
-- **Access World Modifier**
-	- If user tries to go to an inexistent world, an empty world should be loaded
-	- A user should not be able to enter a world if it is full
-	- Players should be able to enter a world using /goto world. (Right now we are accessing using changerealm command)
-
-Besides these modifiers, we need to implement the following functionality. 
-
-- **Teleport**
-	- All teleports commands (goto random, crowd, coordinates, home) need to verify if we are on a DAO realm and if necessary change to one before completing the command. It's recommended to solve this on kernel directly.
-	- The map will show Genesis City. As the teleport commands, we need to check realm before teleporting through the teleport menu and change if necessary.
-
-- **Wizard**
-	- As a new player enters DCL, it will be taken to this new tutorial wizard.
-	- A world should never trigger the wizard.
-	- New users are teleported back to Genesis City after the wizard
-	- Remove the current tutorial for new users
-
 ## Changes for worlds-content-server
 
 The [worlds-content-server](https://github.com/decentraland/worlds-content-server/) requires some changes to comply with this specification:
