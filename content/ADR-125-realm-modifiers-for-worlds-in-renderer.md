@@ -11,7 +11,7 @@ authors:
 
 ## Abstract
 
-This document describes the approach used to implement realms modifier. These modifiers allow to modify the state and behaviour of the renderer depending on the realm that has been accessed. This approach allows to easily add or remove functionalities as they are required by the Worlds features.
+This document describes the approach used for implementing realms modifiers. These modifiers allow to modify the state and behavior of the renderer depending on the realm that has been accessed. The approach allows to easily add or remove functionalities as they are required by the Worlds features.
 
 
 ## Context, Reach & Prioritization
