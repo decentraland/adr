@@ -51,7 +51,7 @@ namespace DCLPlugins.RealmsPlugin
 
 - **Realms Blocker Modifier**
 
-Controls how the green blockers should be shown on each realm. If a realm is a Catalyst, or it has a value on Configurations.CityLoaderContentServer; then the green blockers will be shown.
+Controls how the green blockers should be shown on each realm. If a realm is a Catalyst or it has a value on `Configurations.CityLoaderContentServer` then the green blockers will be shown.
 
 - **Realms Minimap Modifier**
 
