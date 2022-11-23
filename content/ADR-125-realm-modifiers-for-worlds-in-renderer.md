@@ -183,7 +183,7 @@ The [worlds-content-server](https://github.com/decentraland/worlds-content-serve
 - Access via decentraland.org/world/NAME
 - A world will have a maximum of 100 players connected to it. Reaching the limit will prevent players from entering
 - Developers can deploy their Worlds on the Catalysts
-- World scenes are up to 15MB*Parcel
+- World scenes are up to 15MB / Parcel, with a hard limit of 300mb.
 
 
 
