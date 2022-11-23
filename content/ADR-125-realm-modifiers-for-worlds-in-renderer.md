@@ -55,7 +55,7 @@ Controls how the green blockers should be shown on each realm. If a realm is a C
 
 - **Realms Minimap Modifier**
 
-Controls the functionality associated to the minimap when entering a Realm. It determines if the minimap should be visible using the realmConfiguration.Configurations.Minimap.Enabled value. Also, it determines if the Jump To Home Button should be present. This button will appear on any given user world, and it will take the user back to the home location in the most populated catalyst. 
+Controls the functionality associated to the minimap when entering a Realm. It determines if the minimap should be visible using the `realmConfiguration.Configurations.Minimap.Enabled` value. Also, it determines if the Jump To Home Button should be present. This button will appear on any given user world, and it will take the user back to the home location in the most populated DAO Catalyst.
 When needed, this modifier will implement the change of the minimap image; as a user generated world will have the possibility to show its own minimap png.
 	
 
