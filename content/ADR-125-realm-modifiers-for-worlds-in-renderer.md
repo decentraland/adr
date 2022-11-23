@@ -31,7 +31,7 @@ To be able to modify the features necessary in each world, we are developing a R
 
 ### Realms Plugin
 
-The realms plugin is the entry point for the realms modifier. Its is created under the `explorer-realms_modifier_plugin` flag. It's the bridge which receives the 'AboutResponse' sent by kernel and distributes it among all implemented modifiers. By comparing the just accessed realms with the list of available catalysts, it determines if a realm is part of the DAO or a user created world. This variable is necessary for modifiers to execute certain functionaly. On the near future, we could add this bool to the 'AboutResponse' section, so this responsability relies complete on the data and not on a comparison.
+The realms plugin is the entry point for the realms modifier. It is created under the `explorer-realms_modifier_plugin` flag and acts as a bridge which receives the 'AboutResponse' sent by kernel and distributes it among all implemented modifiers. By comparing the just accessed realms with the list of available catalysts, it determines if a realm is part of the DAO or a user created world. This variable is necessary for modifiers to execute certain functionality. In the near future, we could add this bool to the 'AboutResponse' section, so this responsibility relies completely on the data and not on a comparison.
 
 ### Realms Modifiers Interface
 
