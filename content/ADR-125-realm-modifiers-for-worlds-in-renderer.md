@@ -166,7 +166,7 @@ To complete the Beta version for worlds, the following modifiers are required:
 Besides these modifiers, we need to implement the following functionality. 
 
 - **Teleport**
-	- All teleports commands (goto random, crowd, coordinates, home) need to verify if we are on a DAO realm and if necessary change to one before completing the command. Its recommended to solve this on kernel directly.
+	- All teleports commands (goto random, crowd, coordinates, home) need to verify if we are on a DAO realm and if necessary change to one before completing the command. It's recommended to solve this on kernel directly.
 	- The map will show Genesis City. As the teleport commands, we need to check realm before teleporting through the teleport menu and change if necessary.
 
 - **Wizard**
