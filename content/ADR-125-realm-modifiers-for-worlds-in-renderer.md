@@ -152,7 +152,7 @@ To complete the Beta version for worlds, the following modifiers are required:
 - **Realms Blocker Modifier:** Extra functionality should be added to the current green blockers modifier.
 	- Green blockers should appear 2 parcels away from the scene area
 
-- **Loading Screen Modifier (V1 task):** This are required functionalities that should be built on top of the current loading screen when accessing worlds. Requires coordination with the design team.
+- **Loading Screen Modifier (V1 task):** These are required functionalities that should be built on top of the current loading screen when accessing worlds. This requires coordination with the design team.
 	- A message of entering world should be added
 	- If a world is full (100 users), a warning message should appear (“The world you are trying to access is full. Please try again later”)
 	- Add an image url for the loading screen to the `AboutResponse` json.
