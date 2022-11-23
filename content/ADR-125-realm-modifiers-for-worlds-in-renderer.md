@@ -147,7 +147,7 @@ To complete the Beta version for worlds, the following modifiers are required:
 	- Skybox settings (time and dynamic toggle) will be unavailable while in world; they should be non-interactable.
 	- A warning message should be added in settings to explicit to the user that the skybox is being controller by the creator.
 	- A specific time should be added to the `AboutResponse.Configuration` to allow the creators to set the time of their World.
-	- Skybox should be set accordingly to the new variable mentioned above
+	- Skybox should be set accordingly to the new variable mentioned above.
 
 - **Realms Blocker Modifier:** Extra functionality should be added to the current green blockers modifier.
 	- Green blockers should appear 2 parcels away from the scene area
