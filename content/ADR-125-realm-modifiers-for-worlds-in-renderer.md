@@ -136,7 +136,7 @@ Example:
 
 ## Current Implementation 
 
-<img alt="Realms Plugin UML" src="resources/ADR-125/Realms_Plugin_UML.png"/>
+<img alt="Realms Plugin UML" src="public/resources/ADR-125/Realms_Plugin_UML.png"/>
 
 
 ## Task breakdown for Explorer
