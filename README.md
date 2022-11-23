@@ -5,6 +5,7 @@ title: Architecture Decision Records
 states:
 - Living
 - Final
+- Review
 - Draft
 - LastCall
 - Stagnant
@@ -29,6 +30,7 @@ flowchart TB
     Draft --> Withdrawn
     Idea --> Draft
 
+    Review <--> Living
     Draft --> Review
 
     Review <--> LastCall
