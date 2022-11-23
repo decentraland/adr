@@ -51,7 +51,7 @@ flowchart TB
     Idea --> Draft
 
     Draft --> Review
-
+    Review <--> Living
     Review <--> LastCall
     LastCall --> Final
 
