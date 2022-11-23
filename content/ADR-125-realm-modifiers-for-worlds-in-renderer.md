@@ -16,7 +16,7 @@ This document describes the approach used for implementing realms modifiers. The
 
 ## Context, Reach & Prioritization
 
-A new Worlds feature is being actively developed. A World is a developer generated realm, in which he/she will be able to take control of different features that had not been possible until now. Also, it allows a sandbox mode which will only run their own scene, giving a boost in performance.
+A new Worlds feature is being actively developed. A World is a developer-generated realm, in which he/she will be able to take control of different features that had not been possible until now. Also, it allows a sandbox mode which will only run their own scene, giving a boost in performance.
 
 In the first phase of this project, and as the main scope of the MVP, users who got, or just acquire a NAME, will have access to the public beta of Worlds. This will allow them to create a self-contained scene, with limited space and specifications, which can be deployed on catalyst's network content servers, free of charge for the duration of the beta period, not to exceed 12 months.
 
