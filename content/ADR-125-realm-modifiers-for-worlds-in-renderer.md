@@ -35,7 +35,7 @@ The realms plugin is the entry point for the realms modifier. It is created unde
 
 ### Realm Modifiers Interface
 
-Describes the behaviour necessesary for realms modifiers. Its current implementation requires to specify if we are on a DAO realm; since some behaviour still relies on this property
+Describes the behavior necessary for realm modifiers. Current implementation requires to specify if we are on a DAO realm; since some behavior still relies on this property.
 
 ```
 namespace DCLPlugins.RealmsPlugin
