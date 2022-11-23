@@ -159,7 +159,7 @@ To complete the Beta version for worlds, the following modifiers are required:
 	- If an image url exists, set it as background
 
 - **Access World Modifier**
-	- If user tries to go to an unexistent world, an empty world should be loaded
+	- If user tries to go to an inexistent world, an empty world should be loaded
 	- A user should not be able to enter a world if it is full
 	- Players should be able to enter a world using /goto world. (Right now we are accessing using changerealm command)
 
