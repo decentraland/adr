@@ -47,7 +47,7 @@ namespace DCLPlugins.RealmsPlugin
 }
 ```
 
- The current modifiers currently implemented area:
+ Modifiers currently implemented are:
 
 - **Realms Blocker Modifier**
 
