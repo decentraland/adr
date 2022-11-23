@@ -33,7 +33,7 @@ To be able to modify the features necessary in each world, we are developing a R
 
 The realms plugin is the entry point for the realms modifier. It is created under the `explorer-realms_modifier_plugin` flag and acts as a bridge which receives the 'AboutResponse' sent by kernel and distributes it among all implemented modifiers. By comparing the just accessed realms with the list of available catalysts, it determines if a realm is part of the DAO or a user created world. This variable is necessary for modifiers to execute certain functionality. In the near future, we could add this bool to the 'AboutResponse' section, so this responsibility relies completely on the data and not on a comparison.
 
-### Realms Modifiers Interface
+### Realm Modifiers Interface
 
 Describes the behaviour necessesary for realms modifiers. Its current implementation requires to specify if we are on a DAO realm; since some behaviour still relies on this property
 
