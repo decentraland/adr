@@ -25,7 +25,7 @@ Discoverability of content will be outside-in, as content creators will be able 
 
 ## Solution Space Exploration
 
-To be able to modify the features necessary in each world, we are developing a Realms Plugin which contains Realms Modifiers. Each of this modifiers will have the responsibility to alter DCL functionality by checking if we are entering a user-generated realm or a DAO realm. 
+To be able to modify the features necessary in each world, we are developing a Realms Plugin which contains Realms Modifiers. Each of these modifiers will have the responsibility to alter DCL functionality by checking if we are entering a developer-generated realm or a DAO realm. 
 
 ## Specification
 
