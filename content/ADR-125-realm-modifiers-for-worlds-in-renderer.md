@@ -143,7 +143,7 @@ Example:
 
 To complete the Beta version for worlds, the following modifiers are required:
 
-- **Skybox Modifier (V1 task):** Create a skybox modifier to allow the world creator control its state.
+- **Skybox Modifier (V1 task):** Create a skybox modifier to allow the world creator to control its state.
 	- Skybox settings (time and dynamic toggle) will be unavaible while in world; they should be non-interactable.
 	- A warning message should be added in settings to explicit to the user that the skybox is being controller by the creator
 	- A specific time should be added to the AboutResponse.Configuration to allow the creators set the time of their World
