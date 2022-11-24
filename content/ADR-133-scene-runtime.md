@@ -54,38 +54,41 @@ stateDiagram
     OnUpdate --> [*]
 ```
 
-### Exposed functions
+### Exposed functions and objects
 
-```ts
-// loadModule instantiates a remote module
-declare function loadModule(moduleName: string): Promise<ModuleDescriptor>
+The runtime for the SDK7 is compatible with [CommonJS](https://en.wikipedia.org/wiki/CommonJS)'s `require` to load RPC modules. This is so to enable a wide variety of bundlers to create compatible Decentraland scenes.
 
-// the callRpc function takes a rpcHandle from loadModule result and a
-// methodName from the same result, combined with a list of arguments
-// it returns a promise executed in the remote module.
-declare function callRpc(rpcHandle: string, methodName: string, args: any[]): Promise<ProxyModule>
-
-declare type MethodDescriptor = { name: string }
-declare type ModuleDescriptor = {
-  rpcHandle: string
-  methods: MethodDescriptor[]
-}
-
-// used to hook a callback to the main loop
-declare function onUpdate(callback: (deltaTimeSeconds: number) => Promise<void>): void
-```
-
-### Loading RPC modules in the scenes
-
-The scene runtime exposes two asynchronous functions `loadModule` and `callRpc`. Those are the key entrypoint to communicate the scenes with other modules like the renderer. The exposed modules are defined in the [protocol repository](https://github.com/decentraland/protocol/blob/main/proto/decentraland/kernel/apis/engine_api.proto).
+The exposed RPC modules are defined in the [protocol repository](https://github.com/decentraland/protocol/blob/main/proto/decentraland/kernel/apis/engine_api.proto).
 
 > TODO: define and document naming conventions about code generation for modules
 
+```ts
+// `require` instantiates a proxy to a RPC module. Every exposed function
+// of the module returns a promise.
+// require must fail immediately if the moduleName is invalid or unknown,
+// and it must return a Module or Proxy synchronously
+function require(moduleName: string): Module
+
+// Commonjs-compatible modules
+const exports: Object
+const module: {
+  readonly exports: typeof exports
+}
+
+// extra functions
+function fetch(requestInit: Request): Promise<Response>
+function fetch(url: string, requestInit: Request): Promise<Response>
+
+class WebSocket {}
+```
+
+> TODO: Document fetch and WebSocket adaptations for Decentraland Scenes
+
 ### Synchronizing scene's entities with the renderer
 
-The scenes synchronize with the renderer via the `EngineAPI.SendToRenderer` RPC using the CRDT protocol defined in [ADR-117](/rpc/ADR-117). The renderer will keep a local copy of all the entities and components required for rendering. Those components are in their majority serialized using protobuf as defined in [ADR-123](/rpc/ADR-123).
+The scenes synchronize with the renderer via the `EngineApi.crdtSendToRenderer` RPC using the CRDT protocol defined in [ADR-117](/adr/ADR-117). The renderer will keep a local copy of all the entities and components required for rendering. Those components are in their majority serialized using protobuf as defined in [ADR-123](/adr/ADR-123).
 
-The `EngineAPI.SendToRenderer` response includes a list of CRDT messages to be applied in the local scene, that is used to send back information from the renderer like the position of the player.
+The `EngineApi.crdtSendToRenderer` response includes a list of CRDT messages to be applied in the local scene, that is used to send information back from the renderer like the position of the player.
 
 ```mermaid
 sequenceDiagram
@@ -93,19 +96,17 @@ sequenceDiagram
   participant K as Runtime
   participant R as Renderer
 
-  S->>S: Load the code of the scene and executes it
+  S->>S: Load the code of the scene and execute it
 
-  S->>K: loadModule("EngineAPI")
+  S->>K: require("~system/EngineApi")
   activate K
   K-->>R: Create scene ID=1
-  K-->>S: rpcHandle+methods
+  K-->>S: EngineApi
   deactivate K
 
-  S-->S: Load initial state
-
-  loop GameLoop
-    S-->>S: update(deltaTme)
-    S->>R: SendToRenderer(stateChanges)
+  loop function onUpdate(deltaTime: number)
+    S-->>S: engine.update(deltaTime)
+    S->>R: crdtSendToRenderer(stateChanges)
     activate R
     R-->>R: Apply patches to the engine owned entities
     R-->>R: Execute queries
@@ -115,16 +116,38 @@ sequenceDiagram
   end
 ```
 
+### Runtime event handlers
+
+The scene can hook up to certain events by adding functions to the `module.exports` variable. The functions that can be registered are:
+
+- `onSceneLoaded(): Promise<void> | void` is called when the renderer signals the scene as "loaded and ready to run". The game-loop starts before this signal reaches the scene.
+- `onUpdate(deltaTime: number): Promise<void> | void` is called every frame. It is in charge of the scene itself to run the frame and send/receive changes to the renderer
+
+```ts
+// The following example only illustrates an hypothetic scenario,
+// since it is a low-level API and it shouldn't be used this way
+let rotation = 0
+export async function onUpdate(deltaTimeSeconds: number) {
+  const speed = 0.001
+  rotation += deltaTimeSeconds * speed
+  updateEntityRotation(rotation)
+  await sendUpdatesToRenderer()
+}
+```
+
+> 💡 Since the runtime is compatible with [CommonJS](https://en.wikipedia.org/wiki/CommonJS), the event handler functions can be exported as `export function ...` and skip the `module.exports = ...` for convenience.
+
 #### Pseudocode example of a scene
 
 ```typescript
-const engineApi = await loadModule("EngineAPI")
-async function sendToRenderer(crdtMessage: Uint8Array[]) {
-  await callRpc(engineApi.rpcHandle, "SendToRenderer", [{ data: crdtMessage }])
-}
+const engineApi = require("~system/EngineApi")
 
 // this is a lamport timestamp, required by the CRDT rules
 let timestamp = 0
+
+const position = Vector3.Zero()
+const scale = Vector3.One()
+const rotation = Quaternion.Identity()
 
 // entities are now numbers
 const entityId = 1234
@@ -138,26 +161,20 @@ const mesh = RendererMesh.serialize({ box: {} })
 
 // now we are sending the component messages from the LWW-ElementSet
 // this sets the transform & meshRenderer for the entity
-const messagesBackFromRenderer = await sendToRenderer([
+const messagesBackFromRenderer = await engineApi.crdtSendToRenderer([
   CRDT.PutMessage(entityId, transformId, transform, timestamp++),
   CRDT.PutMessage(entityId, rendererMeshId, mesh, timestamp++),
 ])
+
+module.exports.onUpdate = function(deltaTime: number) {
+  const transformId = 1
+  position.x += deltaTime
+  const transform = Transform.serialize({ position, rotation, scale })
+
+  // now we are sending the component messages from the LWW-ElementSet
+  // this sets the transform & meshRenderer for the entity
+  const messagesBackFromRenderer = await engineApi.crdtSendToRenderer([
+    CRDT.PutMessage(entityId, transformId, transform, timestamp++),
+  ])
+}
 ```
-
-### Hooking to the main loop
-
-Among the functions exposed to the scene runtime, a special function is exposed to register a callback for the main loop. This function must be called only once, to pass on a callback used to run the main loop.
-
-```ts
-// The following example only illustrates an hypothetic scenario,
-// since it is a low-level API and it shouldn't be used this way
-let rotation = 0
-onUpdate(async function (deltaTimeSeconds) {
-  const speed = 0.001
-  rotation += deltaTimeSeconds * speed
-  updateEntityRotation(rotation)
-  await sendUpdatesToRenderer()
-})
-```
-
-> TODO: explain how to hook to other runtime events
