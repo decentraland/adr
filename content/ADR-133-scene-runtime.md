@@ -96,7 +96,7 @@ sequenceDiagram
   participant K as Runtime
   participant R as Renderer
 
-  S->>S: Load the code of the scene and executes it
+  S->>S: Load the code of the scene and execute it
 
   S->>K: require("~system/EngineApi")
   activate K
