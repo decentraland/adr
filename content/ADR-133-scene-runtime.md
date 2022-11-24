@@ -86,7 +86,7 @@ class WebSocket {}
 
 ### Synchronizing scene's entities with the renderer
 
-The scenes synchronize with the renderer via the `EngineApi.crdtSendToRenderer` RPC using the CRDT protocol defined in [ADR-117](/rpc/ADR-117). The renderer will keep a local copy of all the entities and components required for rendering. Those components are in their majority serialized using protobuf as defined in [ADR-123](/rpc/ADR-123).
+The scenes synchronize with the renderer via the `EngineApi.crdtSendToRenderer` RPC using the CRDT protocol defined in [ADR-117](/adr/ADR-117). The renderer will keep a local copy of all the entities and components required for rendering. Those components are in their majority serialized using protobuf as defined in [ADR-123](/adr/ADR-123).
 
 The `EngineApi.crdtSendToRenderer` response includes a list of CRDT messages to be applied in the local scene, that is used to send information back from the renderer like the position of the player.
 
