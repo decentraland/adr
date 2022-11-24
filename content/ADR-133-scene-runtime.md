@@ -132,7 +132,7 @@ export async function onUpdate(deltaTimeSeconds: number) {
   rotation += deltaTimeSeconds * speed
   updateEntityRotation(rotation)
   await sendUpdatesToRenderer()
-})
+}
 ```
 
 > 💡 Since the runtime is compatible with [CommonJS](https://en.wikipedia.org/wiki/CommonJS), the event handler functions can be exported as `export function ...` and skip the `module.exports = ...` for convenience.
