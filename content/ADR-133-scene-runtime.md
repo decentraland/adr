@@ -56,7 +56,7 @@ stateDiagram
 
 ### Exposed functions and objects
 
-The runtime for the SDK7 is compatible with [CommonJS](https://en.wikipedia.org/wiki/CommonJS)'s require to load RPC modules. This is so to enable a wide variety of bundlers to create compatible Decentraland scenes.
+The runtime for the SDK7 is compatible with [CommonJS](https://en.wikipedia.org/wiki/CommonJS)'s `require` to load RPC modules. This is so to enable a wide variety of bundlers to create compatible Decentraland scenes.
 
 The exposed RPC modules are defined in the [protocol repository](https://github.com/decentraland/protocol/blob/main/proto/decentraland/kernel/apis/engine_api.proto).
 
