@@ -166,7 +166,7 @@ const messagesBackFromRenderer = await engineApi.crdtSendToRenderer([
   CRDT.PutMessage(entityId, rendererMeshId, mesh, timestamp++),
 ])
 
-export async function onUpdate(deltaTime: number) {
+module.exports.onUpdate = function(deltaTime: number) {
   const transformId = 1
   position.x += deltaTime
   const transform = Transform.serialize({ position, rotation, scale })
