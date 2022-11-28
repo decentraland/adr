@@ -14,7 +14,7 @@ redirect_from:
 ## Need
 
 A New Passport view is being developed by the Explorer Team.
-This view will require storing information in the profile entity and retrieving things as collectibles to be displayed, as well as being able to block, add as a friend or initiate a chat.
+This view requires storing some information in the profile entity and retrieving other data (such as collectibles) to be displayed. It also allows blocking users, adding a user as a friend or initiating a chat.
 
 ## Requirements
 The applicable requirements from the Catalyst point of view:
