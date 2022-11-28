@@ -13,7 +13,7 @@ redirect_from:
 
 ## Need
 
-A New Passport view is being developed by the Explorer.
+A New Passport view is being developed by the Explorer Team.
 This view will require storing information in the profile entity and retrieving things as collectibles to be displayed, as well as being able to block, add as a friend or initiate a chat.
 
 ## Requirements
