@@ -34,7 +34,7 @@ For the wearables and emotes there are two available endpoints `/wearables-by-ow
 
 1. Guest: Passport for guest users will show only name and description, there is nothing to do for guests from the Catalyst end.
 
-2. Social network links: This information is not currently available. It will be displayed in the profile under `social_links`.
+2. Social network links: This information is not currently available. It will be displayed in the profile under `socialLinks`.
 
 ## Performance
 To load a passport, 5 requests to a Catalyst (lambdas) need to be made:
