@@ -34,7 +34,7 @@ For the wearables and emotes there are two available endpoints `/wearables-by-ow
 5. Guest: Passport for guest users will show only name and description, there is nothing to do for guests from the Catalyst end.
 
 ## Performance
-To load a passport, first, there will be made 5 requests to a Catalyst (lambdas):
+To load a passport, 5 requests to a Catalyst (lambdas) need to be made:
 
 - `/profiles`
 - `/wearables-by-owner`
