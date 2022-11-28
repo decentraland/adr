@@ -4,7 +4,7 @@ date: 2022-11-28
 title: Social service authentication
 authors:
   - jmoguilevsky
-status: Idea
+status: Draft
 type: RFC
 spdx-license: CC0-1.0
 ---
