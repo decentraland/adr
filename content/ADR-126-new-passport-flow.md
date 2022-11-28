@@ -129,11 +129,11 @@ For the class defining Lands we will need:
 Considering the possibility of users owning thousands of wearables/emotes we should use pagination.
 Because even with paginations there might be too many wearables the idea is to show the dots representing pages only if there are less than 10 pages, above 10 pages the dots are not visible and the interaction can be done only with left and right arrows.
 
-### Profile card cahnges
+### Profile card changes
 
 The profile card will change from a graphical point of view.
 
-For the link functionality the format will be [text](link) or a plain link, those links will appear in the description and will be clickable. Plain links will be shown with a text corresponding to the link domain.
+For the link functionality the format will be `[text](link)` or a plain link, those links will appear in the description and will be clickable. Plain links will be shown with a text corresponding to the link domain.
 There won’t be any link validation because any time a link is clicked, a popup will make sure the user intends to move to that external link, showing the full URL.
 
 ### Guest view of the passport
