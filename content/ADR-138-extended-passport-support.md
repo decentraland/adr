@@ -44,7 +44,7 @@ To load a passport, 5 requests to a Catalyst (lambdas) need to be made:
 
 Once this information is obtained, to display wearables and emotes a few extra requests will be needed for each emote/wearable to download their image/thumbnail. This does not scale because some users have more than 1k NFTs. So the Explorer should implement a lazy loading mechanism (for image/thumbnail) as the user browses the collectibles.
 
-All except /profiles are expensive requests. Internally, from 2 to 5 they make queries to The Graph to check owned NFTs urns and then to the content server to get the definitions. Currently, 2 and 3 are not paginated, so making a query for a user that owns more than 1k wearables would be considerably heavy. Also, sometimes queries to The Graph are slow. So to improve this situation the endpoints from 2 to 5 could be paginated.
+All endpoints except `/profiles` are expensive requests. Internally, endpoints 2 to 5 make queries to TheGraph to check owned NFTs urns and then to the Content Server to get the definitions. Currently, endpoints 2 and 3 are not paginated, so making a query for a user that owns more than 1k wearables would be considerably heavy. Also, sometimes queries to TheGraph are slow. So to improve this situation the endpoints from 2 to 5 should be paginated.
 
 ## Endpoints details
 
