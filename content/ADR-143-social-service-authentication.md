@@ -19,6 +19,10 @@ background information and key insights.
 -->
 
 As part of the social service initiative, users will need to authenticate themselves to interact with other users and to access their information correctly.
+As part of the social service initiative users will need to be able to authenticate themselves to be able to interact with other users and be able to access their information correctly.
+This RFC explores how to leverage the current Matrix authentication system to reuse it as the authentication system for the social service. It's important to notice that this proposal doesn't imply changing the login method (via authchain) nor the authentication system (JWT token managed by synapse), only leverages it for the social service usage.
+In the future if we have our own authentication server built in-house or customized to our needs we might want to use it. 
+The proposed solution requires storing the tokens in a in-memory Cache, to be able to identify the user by the token used.
 
 ## Approach
 
