@@ -37,7 +37,7 @@ The realms plugin is the entry point for the realms modifier. It is created unde
 
 Describes the behavior necessary for realm modifiers. Current implementation requires to specify if we are on a DAO realm; since some behavior still relies on this property.
 
-```typescript
+```c#
 namespace DCLPlugins.RealmsPlugin
 {
     public interface IRealmsModifier : IDisposable
