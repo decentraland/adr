@@ -20,7 +20,7 @@ background information and key insights.
 
 As part of the social service initiative, users will need to authenticate themselves to interact with other users and to access their information correctly.
 As part of the social service initiative users will need to be able to authenticate themselves to be able to interact with other users and be able to access their information correctly.
-This RFC explores how to leverage the current Matrix authentication system to reuse it as the authentication system for the social service. It's important to notice that this proposal doesn't imply changing the login method (via authchain) nor the authentication system (JWT token managed by synapse), only leverages it for the social service usage.
+This RFC explores how to leverage the current Matrix authentication system to reuse it as the authentication system for the social service. It's important to notice that this proposal doesn't imply changing the login method (via authchain) nor the authentication system ([token](https://matrix.org/docs/spec/client_server/r0.6.1#get-matrix-client-r0-login) managed by synapse), only leverages it for the social service usage.
 In the future if we have our own authentication server built in-house or customized to our needs we might want to use it. 
 The proposed solution requires storing the tokens in a in-memory Cache, to be able to identify the user by the token used.
 
@@ -45,7 +45,7 @@ The logging-in system for the social service needs to solve three problems:
 
 The first two problems are already solved by the current chat solution (Matrix), so we propose to leverage the existing implementation for simplicity and velocity in development. Matrix will be used as an authentication system where users will log in against their service. Then, each endpoint will validate against Matrix that the user is still using a valid token.
 
-The service will have a distributed cache (without persistence) with user-to-token information, which will be used to obtain the user (once the token is validated) and to prevent hitting Matrix for every request.
+The social service will have a distributed cache (without persistence) with user-to-token information, which will be used to obtain the user (once the token is validated) and to prevent hitting Matrix for every request.
 
 The login flow will be the following:
 
@@ -102,4 +102,4 @@ demonstrate that the competition is clearly understood. Include the
 
 ### Implementing an authentication service
 
-This is a great of if we ever want to stop using Matrix. We would be in control of everything, allowing to build login features as we deem necessary. Although this brings a lot of flexibility on login features, the biggest problem of this option is the cost of implementing everything from scratch, which is not necessary due to the current requirements.
+This is a great option if we ever want to stop using Matrix. We would be in control of everything, allowing to build login features as we deem necessary. Although this brings a lot of flexibility on login features, the biggest problem of this option is the cost of implementing everything from scratch, which is not necessary due to the current requirements.
