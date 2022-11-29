@@ -112,7 +112,13 @@ Example:
   },
   "configurations": {
     "realmName": "catalyst-4",
-    "networkId": 1
+    "networkId": 1,
+    "minimap": { 
+       "enabled":false 
+    },
+    "skybox": {
+       "fixedHour":36000  
+    }
   },
   "comms": {
     "healthy": true,
@@ -133,6 +139,8 @@ Example:
   }
 }
 ```
+
+As an example of usage, `MinimapModifier.cs` looks for `Configurations.Minimap.Enabled` to determine if the minimap should be shown on that configuration.
 
 ## Current Implementation 
 
