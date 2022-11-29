@@ -142,14 +142,15 @@ classDiagram
    IRealmModifier <|-- RealmBlockerModifier
    IRealmModifier <|-- RealmMinimapModifier
    class RealmPlugin {
-      +List<IRealmModifier> realmModifiers
+      +List <IRealmModifier> realmModifiers
       +void SetRealmModifiers()
       +void RealmChanged(AboutResponse current, AboutResponse _)
     }
    class IRealmModifier {
         <<interface>>
+	+void OnEnteredRealm(bool isCatalyst, AboutResponse realmConfiguration)
    }
-
+```
 
 ## Changes for worlds-content-server
 
