@@ -205,15 +205,3 @@ returns
   "name2"
 ]
 ```
-## Estimate
-
-### MVP
-The requirements are not blocking to start the client-side development.
-
-Implement `/lands-by-owner` and `/names-by-owner` 
-
-### Performance Improvements
-
-- Add pagination to the existing endpoints
-- `/lands-by-owner` and `/names-by-owner` can be cached.
-- Push kernel/explorer to do thumbnails lazy loading
