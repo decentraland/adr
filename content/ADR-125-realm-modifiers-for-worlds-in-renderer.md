@@ -160,20 +160,6 @@ classDiagram
    }
 ```
 
-## Changes for worlds-content-server
-
-The [worlds-content-server](https://github.com/decentraland/worlds-content-server/) requires some changes to comply with this specification:
-
-- The world scene size is limited to 2x2
-- Access via decentraland.org/world/NAME
-- A world will have a maximum of 100 players connected to it. Reaching the limit will prevent players from entering
-- Developers can deploy their Worlds on the Catalysts
-- World scenes are up to 15MB / Parcel, with a hard limit of 300mb.
-
-
-
-
-
 ## RFC 2119 and RFC 8174
 
 > The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.
