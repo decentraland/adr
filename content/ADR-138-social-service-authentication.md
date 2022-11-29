@@ -18,7 +18,7 @@ decision, alternatives explored and a short summary of relevant
 background information and key insights.
 -->
 
-As part of the social service initiative users will need to be able to authenticate themselves to be able to interact with other users and be able to access their information correctly.
+As part of the social service initiative, users will need to authenticate themselves to interact with other users and to access their information correctly.
 
 ## Approach
 
@@ -33,15 +33,15 @@ understanding of the solution - it is up to the writer to decide.
 Further detail can be addressed to satisfy comments and increase clarity.
 -->
 
-The logging in system for the social needs to solve three problems:
+The logging-in system for the social service needs to solve three problems:
 
 1. Checking if the user is correctly authenticated (the token is valid)
 1. Identifying who the user is (which userId does the token belong to)
 1. Validating the user's permissions to perform a certain action (Authorization)
 
-The first two problems are already solved by the current chat solution (Matrix), so we propose to leverage the already existing implementation for simplicity and velocity in development. Matrix will be used as an authentication system, users will login against their service, then each endpoint will first validate against Matrix that the user is still using a valid token.
+The first two problems are already solved by the current chat solution (Matrix), so we propose to leverage the existing implementation for simplicity and velocity in development. Matrix will be used as an authentication system where users will log in against their service. Then, each endpoint will validate against Matrix that the user is still using a valid token.
 
-The service will have a distributed cache (without persistance) with user-to-token information which will be used both to obtain the user (once the token is validated) and to prevent hitting Matrix for every request.
+The service will have a distributed cache (without persistence) with user-to-token information, which will be used to obtain the user (once the token is validated) and to prevent hitting Matrix for every request.
 
 The login flow will be the following:
 
@@ -69,23 +69,23 @@ graph LR
     Matrix --> |User| Social-service
 ```
 
-In this second workflow the token life in the cache will be extended by what's defined in matrix, thus preventing the user from using an invalid token.
-If the token is expired and the user tries to use it again, the service will validate against Matrix, if it's still valid, the user will be obtained again and re-stored in the Cache.
+In this second workflow, the token life in the cache will be extended by what's defined in Matrix, thus preventing the user from using an invalid token.
+If the token is expired and the user tries to use it again, the service will validate against Matrix, and if it's still valid, the user will be obtained again and re-stored in the Cache.
 
 To validate the token against Matrix, an authenticated endpoint must be chosen. The endpoint needs to satisfy the following specifications:
 
 - No to low impact on the database
 - No to low usage from the client (to prevent overloading it even more)
-- Ideally tackled by a specific worker so in the case it's necessary it would be easier to scale up
+Ideally tackled by a specific worker, so in case it's necessary, it would be easier to scale up
 
-The endpoint that we have chosen is `_matrix/client/r0/pushrules/` but could change if we find one that suits better.
+The endpoint that we have chosen is `_matrix/client/r0/pushrules/`, but could change if we find one that suits better.
 
 ## Benefit
 
 This solution has two main benefits:
 
-1. There's no need to create a new authorization/authentication service nor system
-1. The solution is completely seamless for the user and doesn't imply no persistance of tokens from the social service side
+1. There's no need to create a new authorization/authentication service or system
+1. The solution is completely seamless for the user and doesn't imply the persistence of tokens from the social service side
 
 ## Competition
 
@@ -98,4 +98,4 @@ demonstrate that the competition is clearly understood. Include the
 
 ### Implementing an authentication service
 
-This is a great option for when we want to stop using Matrix, we would be in control of everything, allowing to build login features as we deem necessary. The biggest problem of this option is the cost
+This is a great of if we ever want to stop using Matrix. We would be in control of everything, allowing to build login features as we deem necessary. Although this brings a lot of flexibility on login features, the biggest problem of this option is the cost of implementing everything from scratch, which is not necessary due to the current requirements.
