@@ -112,7 +112,7 @@ Example:
     "scenesUrn": [
       "urn:decentraland:entity:bafkreifdgd7qccas3r2tywzgzo74mpr4i3vcq?baseUrl=https://worlds-content-server.decentraland.org/ipfs/"
     ],
-    "city_loader_content_server": ""
+    "cityLoaderContentServer": ""
   },
   "content": {
     "healthy": true,
@@ -124,6 +124,8 @@ Example:
   }
 }
 ```
+
+> Note: the about endpoint schema is defined at https://github.com/decentraland/protocol/blob/main/proto/decentraland/bff/http_endpoints.proto
 
 #### Explorer Client
 
