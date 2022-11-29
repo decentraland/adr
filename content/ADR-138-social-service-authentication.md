@@ -35,9 +35,9 @@ Further detail can be addressed to satisfy comments and increase clarity.
 
 The logging in system for the social needs to solve three problems:
 
-1. The user is correctly authenticated (the token is valid)
-1. Who the user is (which userId does the token belong to)
-1. Does the user have the correct permissions to perform a certain action (Authorization)
+1. Checking if the user is correctly authenticated (the token is valid)
+1. Identifying who the user is (which userId does the token belong to)
+1. Validating the user's permissions to perform a certain action (Authorization)
 
 The first two problems are already solved by the current chat solution (Matrix), so we propose to leverage the already existing implementation for simplicity and velocity in development. Matrix will be used as an authentication system, users will login against their service, then each endpoint will first validate against Matrix that the user is still using a valid token.
 
