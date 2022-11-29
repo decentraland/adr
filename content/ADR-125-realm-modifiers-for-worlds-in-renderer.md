@@ -136,7 +136,19 @@ Example:
 
 ## Current Implementation 
 
-<img alt="Realms Plugin UML" src="resources/ADR-125/Realms_Plugin_UML.png"/>
+```mermaid
+classDiagram
+   RealmPlugin <-- IRealmModifier
+   IRealmModifier <|-- RealmBlockerModifier
+   IRealmModifier <|-- RealmMinimapModifier
+   class RealmPlugin {
+      +List<IRealmModifier> realmModifiers
+      +void SetRealmModifiers()
+      +void RealmChanged(AboutResponse current, AboutResponse _)
+    }
+   class IRealmModifier {
+        <<interface>>
+   }
 
 
 ## Changes for worlds-content-server
