@@ -30,18 +30,18 @@ Create a BETA program where the technical feasibility of the project can be eval
 WARNINGS:
 
 - This stage is a Proof of Concept: do not build a production product on top of this or make this feature, as it is, a dependency on other product.
-- In order to go out form the BETA state and for this to scale, some restrictions may be needed besides owning a name as this can scale fast in terms of resources needed to run the preview server.
+- In order to go out from the BETA state and for this to scale, some restrictions may be needed besides owning a name, as this can scale fast in terms of resources needed to run the preview server.
 
 Scope of the BETA:
 
-- Open to users owning a Decentraland NAME
-- Only one scene per Decentraland NAME would be allowed
-- Scenes deployment to the preview server will have the same disk space limitations than the Content Servers hosted on the Catalyst network
-- Besides scene size and owning a NAME, no other validations will be made as this is just a preview
-- Explorer mini map won't be displayed
-- Explorer skybox light can be set up for the scene
-- Display a Jump to Genesis City button to leave the scene preview
-- Validated by hosting a scene with the new onboarding experience
+- Open to users owning a Decentraland NAME.
+- Only one scene per Decentraland NAME would be allowed.
+- Scenes deployment to the preview server will have the same disk space limitations than the Content Servers hosted on the Catalyst network.
+- Besides scene size and owning a NAME, no other validations will be made as this is just a preview.
+- Explorer mini map won't be displayed.
+- Explorer skybox light can be set up for the scene.
+- Display a Jump to Genesis City button to leave the scene preview.
+- Validated by hosting a scene with the new onboarding experience.
 
 #### The Solution
 
@@ -49,7 +49,7 @@ This implementation will allow content creators to deploy a scene in a preview s
 
 Some common language considerations to have in mind while reading the next sections:
 
-- A scene hosted outside the Genesis City is called a World, and will be identified by a [Decentraland NAME](https://builder.decentraland.org/names)
+- A scene hosted outside the Genesis City is called a World, and will be identified by a [Decentraland NAME](https://builder.decentraland.org/names) (e.g. `yourname.dcl.eth`).
 - When connected to Decentraland, you can only interact with users connected to the same **Realm**.
 - In this stage and context, a Realm is equivalent to a World
 
@@ -58,6 +58,19 @@ Some common language considerations to have in mind while reading the next secti
 From the Content Creators point of view, the experience will be very simple, only run the same deploy command but adding as a target the URL of the new preview server, e.g.
 
 `dcl deploy --target-content https://worlds-content-server.decentraland.org`
+
+In case the wallet has multiple NAMEs, the creator can specify under which NAME that deployment is to be made. In `scene.json` add a section like this:
+
+```json
+{
+  "worldConfiguration" : {
+    "dclName": "my-name.dcl.eth"
+  }
+}
+```
+
+> Of course, the NAME specified there needs to be owned by the wallet doing
+the deployment.
 
 The output of this command should contain a link that can be shared and used to jump in to the scene preview, e.g. `https://play.decentraland.org/?reaml=yourname.dcl.eth`
 
@@ -79,7 +92,7 @@ flowchart TD
 
 #### Realm
 
-In order to run, the Client needs to connect to a Realm. In this case, the Preview Content Server will act as Realm implementing the endpoint `/about` documented in [RFC-10](/rfc/RFC-10).
+In order to run, the Client needs to connect to a Realm. In this case, the Preview Content Server will act as Realm implementing the endpoint `/about` documented in [ADR-110](/adr/ADR-110).
 
 This way the Client will load:
 
