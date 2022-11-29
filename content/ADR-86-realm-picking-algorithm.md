@@ -50,6 +50,8 @@ There are a couple of requirements that are nice to have for the algorithm, name
 - Making it so it is easy to add/remove/tune the different rules considered
 - Adding the possibility of changing parameters of the algorithm in runtime
 
+
+This algorithm also checks that the Catalysts are healthy in order to send traffic, to check that they read the endpoint [/about](https://decentraland.github.io/catalyst-api-specs/#tag/Global/operation/getAboutCatalystInfo).
 ### Chain of Responsibility
 
 This algorithm is implemented as a [Chain of Responsibility](https://sourcemaking.com/design_patterns/chain_of_responsibility).
