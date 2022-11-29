@@ -72,7 +72,7 @@ returns
                 "email": "",
                 "ethAddress": "0xa87d168717538e86d71ac48baccaeb84162de602",
                 "version": 40,
-                "socialLinks": []
+                "socialLinks": ["https://github.com/username"]
                 "avatar": {
                     "bodyShape": "urn:decentraland:off-chain:base-avatars:BaseMale",
                     "wearables": [
