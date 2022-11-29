@@ -39,11 +39,11 @@ For the wearables and emotes there are two available endpoints `/wearables-by-ow
 ## Performance
 To load a passport, 5 requests to a Catalyst (lambdas) need to be made:
 
-- `lambdos/profiles`
-- `lambdos/wearables-by-owner`
-- `lambdos/emotes-by-owner`
-- `lambdos/lands-by-owner`
-- `lambdos/names-by-owner`
+1. `lambdos/profiles`
+1. `lambdos/wearables-by-owner`
+1. `lambdos/emotes-by-owner`
+1. `lambdos/lands-by-owner`
+1. `lambdos/names-by-owner`
 
 Once this information is obtained, to display wearables and emotes a few extra requests will be needed for each emote/wearable to download their image/thumbnail. This does not scale because some users have more than 1k NFTs. So the Explorer should implement a lazy loading mechanism (for image/thumbnail) as the user browses the collectibles.
 
