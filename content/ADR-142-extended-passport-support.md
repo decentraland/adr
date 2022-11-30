@@ -49,6 +49,15 @@ Once this information is obtained, to display wearables and emotes a few extra r
 
 All endpoints except `/profiles` are expensive requests. Internally, endpoints 2 to 5 make queries to TheGraph to check owned NFTs urns and then to the Content Server to get the definitions. Currently, endpoints 2 and 3 are not paginated, so making a query for a user that owns more than 1k wearables would be considerably heavy. Also, sometimes queries to TheGraph are slow. So to improve this situation the endpoints from 2 to 5 should be paginated.
 
+### Pagination
+
+The page number and size will be dynamic for every endpoint, received as query parameters. 
+
+- `page_size` will be 10 by default
+- `page_num` will be 1 by default
+
+Items displayed in each page will be ordered by the `updatedAt` field (representing ...), descending, tie-breaking by `id`.
+
 ## Endpoints details
 
 - ` POST lambdos/profiles` receives
@@ -159,7 +168,7 @@ returns
     }
 ]
 ```
-- `GET lambdos/wearables-by-owner/{address}` returns
+- `GET lambdos/wearables-by-owner/{address}?page_size={size}&page_num={num}` returns
 ```
 [
   {
@@ -173,7 +182,7 @@ returns
 ]
 ```
 
-- `GET lambdos/emotes-by-owner/{address}` returns
+- `GET lambdos/emotes-by-owner/{address}?page_size={size}&page_num={num}` returns
 
 ```
 [
@@ -188,7 +197,7 @@ returns
 ]
 ```
 
-- `GET lambdos/lands-by-owner/{address}` returns
+- `GET lambdos/lands-by-owner/{address}?page_size={size}&page_num={num}` returns
 
 ```
 [
@@ -197,7 +206,7 @@ returns
 ]
 ```
 
-- `GET lambdos/names-by-owner/{address}` returns
+- `GET lambdos/names-by-owner/{address}?page_size={size}&page_num={num}` returns
 
 ```
 [
