@@ -1,6 +1,6 @@
 ---
 layout: adr
-adr: 138
+adr: 145
 title: Pick Realm Algorithm V2
 date: 2022-11-28
 status: Draft
