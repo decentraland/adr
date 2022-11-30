@@ -32,18 +32,18 @@ The current implementation as described in [Realm Picking Algorithm ADR](/adr/AD
 
 ### Resources Link
 
-Expose publicly the resources availables of a Catalyst Node is a security risk, so the estimation of resources available should be done in the Catalyst (specifically in the BFF) and not in Kernel.
+Publicly exposing the Catalyst Node's available resources is a security risk, so their estimation should be done in the Catalyst (specifically in the BFF) and not in the Kernel.
 
-This way the BFF will levearege the usage of the field `accepting_users` in `/about` endpoint. 
+This way, the BFF will leverage the usage of the field `accepting_users` in the `/about` endpoint.
 
-The logic from the Kernel side will be very simple: it will filter out the catalysts that have that value in false.
+The logic from the Kernel side will be simple: it will filter out the catalysts having that value as false.
 
-From the other hand, the BFF will have a set of rules to calculate that value. The accepting users field will be false if:
+On the other hand, the BFF will have a set of rules to calculate that value. The accepting users' field will be false if:
 - The max amount of users for the server is reached
 - The CPU is at 90% or higher
 - The memory usage is at 90% or higher
 
 ### Catalyst Version Link
 
-Each Catalyst (BFF) exposes the version of Content and Lambdas that it's using. Kernel should read that field, compare them and prioritize the ones that have the greatest value.
+Each Catalyst (BFF) exposes the version of Content and Lambdas that it's using. The Kernel should read that field, compare them and prioritize the ones having the highest value.
 
