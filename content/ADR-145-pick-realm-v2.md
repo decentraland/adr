@@ -13,6 +13,8 @@ authors:
 
 ## Abstract
 
+This document describes the changes needed in the realm picking algorithm to take into account the resources of the computer and the catalyst version.
+
 The logic on the realm scoring algorithm should be improved to take into consideration more variables in order for a server to be more eligible. As with the current model, any added variable needs to be modifiable through Feature Flags so that they can be changed in case of need without a release or a reboot of the server.
 
 ## Context, Reach & Prioritization
