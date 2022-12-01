@@ -21,13 +21,13 @@ The logic on the realm scoring algorithm should be improved to take into conside
 
 Some aspects that should be considered:
 
-- Resources: if a server is with the CPU at 90%, don't add more load to that server, same for memory
-- Catalyst version: if the version of the node is behind the network, it should be less eligible
+- Resources: if a server has either CPU or memory at 90%, don't add more load to that server.
+- Catalyst version: if the version of the node is behind the network, it should be less eligible.
 
 
 ## Solution Space Exploration
 
-The current implementation as described in [Realm Picking Algorithm ADR](/adr/ADR-86) is expansible by adding new links. In this proposal two new links need to be added: resources and version, as the traffic will need to be prioritized to instances that have the latest version and more resources available.
+The current implementation (as described in [Realm Picking Algorithm ADR](/adr/ADR-86)) is expansible by adding new links. In this proposal two new links will be added: resources and version, so that the algorithm can prioritize sending traffic to instances that have the latest version and more resources available.
 
 
 ## Specification
@@ -40,7 +40,7 @@ This way, the BFF will leverage the usage of the field `accepting_users` in the 
 
 The logic from the Kernel side will be simple: it will filter out the catalysts having that value as false.
 
-On the other hand, the BFF will have a set of rules to calculate that value. The accepting users' field will be false if:
+On the other hand, the BFF will have a set of rules to calculate that value. The `accepting_users` field will be false if:
 - The max amount of users for the server is reached
 - The CPU is at 90% or higher
 - The memory usage is at 90% or higher
