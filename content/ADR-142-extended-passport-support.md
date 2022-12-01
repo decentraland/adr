@@ -56,7 +56,7 @@ The page number and size will be dynamic for every endpoint, received as query p
 - `page_size` will be 10 by default
 - `page_num` will be 1 by default
 
-Items displayed in each page will be ordered by the `updatedAt` field (representing ...), descending, tie-breaking by `id`.
+Items displayed in each page will be ordered descending by the `transferredAt` field of the `NFT` entity (representing the date in which the NFT was received, currently in development: https://github.com/decentraland/marketplace/issues/1092), tie-breaking by `id`.
 
 ## Endpoints details
 
