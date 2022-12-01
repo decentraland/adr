@@ -104,7 +104,7 @@ cancelFriendshipPayload {
 ```
 cancelFriendshipConfirmationPayload{
     messageId: string,
-    friendRequestId: string
+    friendRequest: friendRequestPayload
 }
 ```
 
@@ -217,19 +217,19 @@ sequenceDiagram
   participant renderer
   participant kernel
   
-renderer->kernel: GetFriendRequests(getFriendRequestsPayload{sentLimit:50, sentSkip:0, receivedLimit:50, receivedSkip:0})
+renderer->kernel: GetFriendRequestsV2(getFriendRequestsPayload{sentLimit:50, sentSkip:0, receivedLimit:50, receivedSkip:0})
 note right of kernel: request the first (50) sent/received requests to the server
 kernel-->renderer: AddUserProfilesToCatalog(addUserProfilesPayload)
 note left of renderer: needed to fill in the ui info later
-kernel-->renderer: AddFriendRequests(addFriendRequestsPayload)
+kernel-->renderer: AddFriendRequestsV2(addFriendRequestsPayload)
 kernel-->renderer: UpdateUserPresence(userPresencePayload)
 note left of renderer: show online/offline status of each request
 note right of kernel: register that th user seen requests with the current timestamp
 note left of renderer: the users clicks on "show more requests"
-renderer->kernel: GetFriendRequests(getFriendRequestsPayload{sentLimit:30, sentSkip:50, receivedLimit:30, receivedSkip:50})
+renderer->kernel: GetFriendRequestsV2(getFriendRequestsPayload{sentLimit:30, sentSkip:50, receivedLimit:30, receivedSkip:50})
 note right of kernel: requests the next 30 friend requests to server
 kernel-->renderer: AddUserProfilesToCatalog(addUserProfilesPayload)
-kernel-->renderer: AddFriendRequests(addFriendRequestsPayload)
+kernel-->renderer: AddFriendRequestsV2(addFriendRequestsPayload)
 kernel-->renderer: UpdateUserPresence(userPresencePayload)
 ```
 
