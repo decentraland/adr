@@ -95,10 +95,10 @@ _Pseudo Code_:
 
 ```typescript
 export function versionLink() {
-  const catalystsWithVersio: { realm: string, version: string } = peers.sortByVersion()
+  const catalystsWithVersion: { realm: string, version: string } = peers.sortByVersion()
   const versionBuckets: PriorityQueue<{ realm: string, version: string }[]> = groupByVersions(catalystsWithVersion)
   // This selects randomly between the candidates in the selected bucket 
-  // And choses the bucket with the same algorithm used for close peers
+  // And chooses the bucket with the same algorithm used for close peers
   return selectFirstByScore(context, score, definitiveDecisionThreshold)
 }
 ```
