@@ -27,12 +27,16 @@ Some aspects that should be considered:
 
 ## Solution Space Exploration
 
-The current implementation (as described in [Realm Picking Algorithm ADR](/adr/ADR-86)) is expansible by adding new links. In this proposal two new links will be added: resources and version, so that the algorithm can prioritize sending traffic to instances that have the latest version and more resources available.
+The current implementation (as described in [Realm Picking Algorithm ADR](/adr/ADR-86)) is expansible by adding new links. In this proposal a filter and a new link will be added: 
+- Accepting Users Filter: Will filter out if the amount of resources for that Catalyst is at limit.
+- Version Link: the algorithm will prioritize sending traffic to instances that have the latest version
 
 
 ## Specification
 
-### Resources Link
+### Accepting Users Filter
+
+_Description_:
 
 Publicly exposing the Catalyst Node's available resources is a security risk, so their estimation should be done in the Catalyst (specifically in the BFF) and not in the Kernel.
 
@@ -45,7 +49,56 @@ On the other hand, the BFF will have a set of rules to calculate that value. The
 - The CPU is at 90% or higher
 - The memory usage is at 90% or higher
 
+
+_Pseudo Code_:
+
+To filter out a new check will need to be added to:
+https://github.com/decentraland/kernel/blob/main/packages/shared/dao/index.ts#L69
+
+
+```typescript
+export function fetchCatalystStatus() {
+
+  if (currentChecks && result.accepting_users) {
+    ...
+  }
+
+  return undefined
+}
+```
+
+_Configuration_:
+
+This configuration will be at BFF (Catalyst) level
+
+```typescript
+export type AcceptingUsersConfig = {
+  config?: 
+          { maxAmountOfUsers: number;
+            maxCpu: number;
+            maxMemory: number;
+          }
+}
+```
+
+
 ### Catalyst Version Link
 
-Each Catalyst (BFF) exposes the version of Content and Lambdas that it's using. The Kernel should read that field, compare them and prioritize the ones having the highest value.
 
+_Description_:
+
+Each Catalyst (BFF) exposes the version of Content and Lambdas that it's using. The Kernel should read that field, compare them and prioritize the ones having the highest value.
+As Content Server and Lambdas share the same version for each Catalyst and they are using semver, there is always an unique way to sort the candidates.
+
+
+_Pseudo Code_:
+
+```typescript
+export function versionLink() {
+  const catalystsWithVersio: { realm: string, version: string } = peers.sortByVersion()
+  const versionBuckets: PriorityQueue<{ realm: string, version: string }[]> = groupByVersions(catalystsWithVersion)
+  // This selects randomly between the candidates in the selected bucket 
+  // And choses the bucket with the same algorithm used for close peers
+  return selectFirstByScore(context, score, definitiveDecisionThreshold)
+}
+```
