@@ -13,33 +13,33 @@ authors:
 
 # Abstract
 
-Most communications between the Renderer and Kernel, use a JSON based mechanism that we want to replace with RPC and a protocol.
-Chat and Friends features are using that mechanism and fixing or extending the functionality can be very hard to define and mantain.
-In this RFC, the interactions will be reviewed and a protocol for those features will be defined.
+Most communications between Renderer and Kernel use a JSON-based mechanism that we want to replace with RPC and a protocol.
+Chat and Friends features use that mechanism, and fixing or extending the functionality can be very hard to define and maintain.
+In this RFC, the interactions will be reviewed, and a protocol for those features will be defined.
 
 # Need
 
-Nowadays, communication flows are very hard to document, fix, extend or even mantain. Changing a single field in a message can break the hole feature or the user session.
-Also, JSON based messages deserialization are creating objects that then would be deleted by the Garbage Collector, affecting Explorer stability when there are a lot of them.
+Nowadays, communication flows are very hard to document, fix, extend, or even maintain. Changing a single field in a message can break the whole feature or the user session.
+Also, JSON-based message deserialization creates objects that then would be deleted by the Garbage Collector, affecting Explorer stability when there are plenty of them.
 
 # Approach
 
-First of all, every feature flow should be identified in order to define the messages between Renderer and Kernel, then:
+First of all, every feature flow should be identified to define the messages between Renderer and Kernel, then:
 
-- Review messages that are not Request-Response based
-- Add chat and friends definitions to Decentraland Protocol (@dcl/protocol)
-- Implement RPC Server on Kernel
-- Implement RPC Client on Renderer
+- Review messages that are not Request-Response based.
+- Add chat and friends definitions to Decentraland Protocol (@dcl/protocol).
+- Implement RPC Server on Kernel.
+- Implement RPC Client on Renderer.
 
 ## API definitions
 
-Worth noting that real time updates like chat messages or friend requests would be streamed, instead of using a request-response calls.
+It's worth noting that real-time updates like chat messages or friend requests would be streamed, instead of using a request-response call.
 
 Work in progress: once the APIs are well defined, message definitions should be added.
 
 ### Chat API
 
-Currently Kernel is initializing chat & friends when renderer is loaded, this behaviour can be changed, by adding a request for the initialization.
+Currently, Kernel is initializing chat & friends when the renderer is loaded. This behavior can be changed by adding an initialization request.
 
 ```protobuf
 service ChatAPIService {
@@ -82,6 +82,10 @@ service FriendsAPIService {
   // actions
   rpc MarkMessagesAsSeen(MarkMessagesAsSeenRequest) returns MarkMessagesAsSeenResponse {}
   rpc UpdateFriendshipStatus(UpdateFriendshipStatusRequest) returns UpdateFriendshipStatusResponse {}
+  rpc RequestFriendship(RequestFriendshipRequest) returns RequestFriendshipResponse {}
+  rpc CancelFriendship(CancelFriendshipRequest) returns CancelFriendshipResponse {}
+  rpc AcceptFriendship(AcceptFriendshipRequest) retruns AcceptFriendshipResponse {}
+  rpc RejectFriendship(RejectFriendshipRequest) returns RejectFriendshipResponse {}
 
   // queries
   rpc GetFriends(GetFriendsRequest) returns GetFriendsResponse {}
@@ -94,12 +98,12 @@ service FriendsAPIService {
 
 # Benefit
 
-De/serializing JSON can be very slow and waste a lot of time collecting the garbage. Using decentraland protocol and RPC would improve performance and mantainability.
-Also, developers would be talking in the same language and would not have to replicate definitions in both sides, making it reliable and secure.
+De/serializing JSON can be very slow and waste much time collecting the garbage. Using Decentraland protocol and RPC would improve performance and maintainability.
+Also, developers would be talking in the same language and would not have to replicate definitions on both sides, making it reliable and secure.
 In the same direction, these features can be extracted in the future into a service that would not run in the Kernel, simplifying code and improving performance.
 
 # Competition
 
-Do nothing and continue using the JSON implementation with the before mentioned issues to performance and maintainability.
+Do nothing and continue using the JSON implementation with the before-mentioned issues for performance and maintainability.
 
 ---
