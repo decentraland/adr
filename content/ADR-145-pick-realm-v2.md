@@ -60,7 +60,7 @@ https://github.com/decentraland/kernel/blob/main/packages/shared/dao/index.ts#L6
 export function fetchCatalystStatus() {
 
   if (currentChecks && result.accepting_users) {
-    ...
+    // ...
   }
 
   return undefined
