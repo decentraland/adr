@@ -51,7 +51,7 @@ flowchart TB
     Idea --> Draft
 
     Draft --> Review
-
+    Review <--> Living
     Review <--> LastCall
     LastCall --> Final
 
@@ -104,25 +104,25 @@ ADRs should be written in [markdown](https://github.com/adam-p/markdown-here/wik
 
 Each ADR must begin with an [RFC 822](https://www.ietf.org/rfc/rfc822.txt) style header preamble, preceded and followed by three hyphens (`---`). This header is also termed ["front matter" by Jekyll](https://jekyllrb.com/docs/front-matter/). The headers must appear in the following order.
 
-`adr`: *ADR number* (this is determined by the ADR editor)
+`adr`: _ADR number_ (this is determined by the ADR editor)
 
-`title`: *The ADR title is a few words, not a complete sentence*
+`title`: _The ADR title is a few words, not a complete sentence_
 
-`description`: *Description is one full (short) sentence*
+`description`: _Description is one full (short) sentence_
 
-`authors`: *The list of the author's GitHub username(s).*
+`authors`: _The list of the author's GitHub username(s)._
 
-`discussion`: *The url pointing to the official discussion thread*
+`discussion`: _The url pointing to the official discussion thread_
 
-`status`: *Draft, Review, Last Call, Final, Stagnant, Withdrawn, Living*
+`status`: _Draft, Review, Last Call, Final, Stagnant, Withdrawn, Living_
 
-`last-call-deadline`: *The date last call period ends on* (Optional field, only needed when status is `Last Call`)
+`last-call-deadline`: _The date last call period ends on_ (Optional field, only needed when status is `Last Call`)
 
-`type`: *One of `Standards Track`, `Meta`, or `ADR`*
+`type`: _One of `Standards Track`, `Meta`, or `ADR`_
 
-`date`: *Date the ADR was created on*
+`date`: _Date the ADR was created on_
 
-`withdrawal-reason`: *A sentence explaining why the ADR was withdrawn.* (Optional field, only needed when status is `Withdrawn`)
+`withdrawal-reason`: _A sentence explaining why the ADR was withdrawn._ (Optional field, only needed when status is `Withdrawn`)
 
 Headers that permit lists must separate elements with commas.
 
@@ -161,6 +161,30 @@ References to other ADRs should follow the format `ADR-N` where `N` is the ADR n
 ## Auxiliary Files
 
 Images, diagrams and auxiliary files should be included in a subdirectory of the `public/resources` folder for that ADR as follows: `public/resources/ADR-N` (where **N** is to be replaced with the ADR number). When linking to an image in the ADR public/resources, use absolute links such as `/resources/ADR-1/image.png`.
+
+## ADR Editors
+
+ADR Editors are defined in the [ADR Editors](https://github.com/orgs/decentraland/teams/adr-editors) GitHub team.
+
+## ADR Editors responsibilities
+
+For each new ADR that comes in, an editor does the following:
+
+- Read the ADR to check if it is ready: sound and complete. The ideas must make technical sense, even if they don’t seem likely to get to final status.
+- The title should accurately describe the content.
+- Check the ADR for language (spelling, grammar, sentence structure, etc.), markup (GitHub flavored Markdown), code style
+
+If the ADR isn’t ready, the editor will send it back to the author for revision, with specific instructions.
+
+Once the ADR is ready for the repository, the ADR editor will:
+
+- Assign an ADR number (generally the PR number, but the decision is with the editors)
+- Merge the corresponding pull request
+- Send a message back to the ADR author with the next step.
+
+Many ADRs are written and maintained by developers with write access to the Decentraland codebase. The ADR editors monitor ADR changes, and correct any structure, grammar, spelling, or markup mistakes they see.
+
+The editors don’t pass judgment on ADRs. They merely do the administrative & editorial part.
 
 ## Style Guide
 

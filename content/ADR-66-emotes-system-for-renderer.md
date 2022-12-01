@@ -2,20 +2,22 @@
 adr: 66
 date: 2022-04-07
 title: Emotes System for Renderer (Unity)
-status: Draft
+status: Living
 authors:
 - AjimenezDCL
 type: Standards Track
 spdx-license: CC0-1.0
 ---
 
-## Problem Statement
+## Abstract
 
-NFT emotes are arriving to Decentraland with a whole new set of requirements and challenges for the _Renderer_.
+NFT emotes are arriving to Decentraland with a whole new set of requirements and challenges. This documentation serves as a guide for an implementation that include the new features while following the principles and standards for the _Renderer_. 
+
+## Problem Statement
 
 Emotes are in the essence just _wearables_ with some extra data. The same UX expected from _wearables_ are now expected from emotes. They have representations, rarity, tags, you can sell or trade them...
 
-The client now longer will contain all the emotes embedded, most of them will live in the _ContentServer_ and this process must be invisble to the user.
+Renderer now longer will contain all the emotes embedded, most of them will live in the _ContentServer_ and this process must be invisible to the user.
 
 Additionally due to memory limitations, the users can now equip up to ten emotes. Any emote not equipped cannot be played.
 
