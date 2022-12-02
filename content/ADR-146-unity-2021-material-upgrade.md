@@ -33,7 +33,7 @@ All our Asset Bundles (by the time this ADR is written) are converted using Unit
 ## Upgrading materials from 2020 to 2021
 Unfortunately Unity is using the same class to serialize materials from Unity 2020 to Unity 2021, that means that we have no access to anything the new material doesnt provide. That makes finding stuff like the rendering target (Opaque, Alpha Test, Transparency) challenging because the new URP changed the way keywords are serialized. 
 
-Luckily the shader properties are still there, so we can gather them to try to find the correct setup for the material. Additionally  we optimizes the materials for the SRP Batcher to enhance performance, this optimizations give us some insight of the render target of the original material.
+Luckily the shader properties are still there, so we can gather them to try to find the correct setup for the material. Additionally we optimize the materials for the SRP Batcher to enhance performance, this optimizations give us some insight of the render target of the original material.
 
 ### Getting Render target through the SRP Batcher optimizations
 SRP Batcher itself is a whole new world that fall outside the scope of this ADR. The minimum we have to know about it is that optimizes draw calls by batching objects being rendered with the same shader variant. A common variant example is having `_ALPHATEST_ON` enabled or not to clip fragments that are invisible based on an alpha value. One of the optimizations we do is assume every opaque material is alpha tested and set the property `_CutOff` (the alpha value for clipping) to `0` in the cases we dont want to clip.
