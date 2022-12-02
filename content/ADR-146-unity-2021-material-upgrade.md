@@ -15,7 +15,7 @@ authors:
 An algorithm to manually upgrade materials packed in Asset Bundles made in Unity 2020 is required when using Unity 2021. This document will go into the details of the SRP Batcher optimizations and how to navigate the issues in URP serialization. 
 
 ## Problem
-All our Asset Bundles (by the time this ADR is written) are converted using Unity 2020 version. Although the Asset Bundles serialization between both versions have not changed the URP version has. That means we can reuse the asset bundles but not the materials without manually upgrading them.
+All our Asset Bundles (by the time this ADR is written) are converted using Unity 2020 version. Although the Asset Bundles serialization between both versions have not changed, the URP version has. That means we can reuse the asset bundles but not the materials without manually upgrading them.
 
 ## Glossary
 - AB (aka [Asset Bundle](https://docs.unity3d.com/Manual/AssetBundlesIntro.html): A proprietary format used by unity to store assets.
