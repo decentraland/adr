@@ -18,7 +18,7 @@ An algorithm to manually upgrade materials packed in Asset Bundles made in Unity
 All our Asset Bundles (by the time this ADR is written) are converted using Unity 2020 version. Although the Asset Bundles serialization between both versions have not changed, the URP version has. That means we can reuse the asset bundles but not the materials without manually upgrading them.
 
 ## Glossary
-- AB (aka [Asset Bundle](https://docs.unity3d.com/Manual/AssetBundlesIntro.html): A proprietary format used by unity to store assets.
+- AB (aka [Asset Bundle](https://docs.unity3d.com/Manual/AssetBundlesIntro.html)): A proprietary format used by unity to store assets.
 - [SRP Batcher](https://docs.unity3d.com/Manual/SRPBatcher.html): A draw call optimization based on reusing the same shader variant.
 - Shader Variant: A Shader with an specific set of keywords and defines.
 
