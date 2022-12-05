@@ -53,10 +53,20 @@ All endpoints except `/profiles` are expensive requests. Internally, endpoints 2
 
 The page number and size will be dynamic for every endpoint, received as query parameters. 
 
-- `page_size` will be 10 by default
-- `page_num` will be 1 by default
+- `pageSize: number` - Will be `10` by default
+- `pageNum: number`-  Will be `1` by default
 
 Items displayed in each page will be ordered descending by the `transferredAt` field of the `NFT` entity (representing the date in which the NFT was received, currently in development: https://github.com/decentraland/marketplace/issues/1092), tie-breaking by `id`.
+
+### Wearables
+
+The wearables are searched in 2 different collections: **ethereum** and **matic**. That involves doing 2 different queries to TheGraph.
+
+To be able to return a paginated and ordered response, both queries are made (both for `pageSize` items), the results are merged, sorted, and `pageSize` items are returned.
+
+When the next page is requested, the method needs a way to know how many wearables from each collection need to be skipped. One solution could be storing those wearables ids in memory for each different passport that is being requested, which is unfeasable.
+
+The final solution is to retrieve a token in the response which the client will provide in the next request. It will contain the last `transferredAt` returned and also the last `urn` (to catch a corner case when all the wearables have the same `transferredAt` date).
 
 ## Endpoints details
 
