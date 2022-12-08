@@ -29,8 +29,7 @@ Use the "blocked" field from profiles to see/report blocked users.
 1. Equipped wearables:
 Take the information from the profile. There are the equipped wearables, emotes and the current name.
 
-1. Items: wearables/emotes/names/lands:
-For the wearables and emotes there are two available endpoints `/wearables-by-owner` and `/emotes-by-owner` that can be used for that. It will be necessary to create `/names-by-owner` and `/lands-by-owner` endpoints with similar behavior.
+1. Items: wearables/emotes/names/lands: New endpoints will be created in [lambdos](https://github.com/decentraland/lambdos) for every type of item.
 
 1. Guest: Passport for guest users will show only name and description, there is nothing to do for guests from the Catalyst end.
 
@@ -40,10 +39,10 @@ For the wearables and emotes there are two available endpoints `/wearables-by-ow
 To load a passport, 5 requests to a Catalyst (lambdas) need to be made:
 
 1. `lambdos/profiles`
-1. `lambdos/wearables-by-owner`
-1. `lambdos/emotes-by-owner`
-1. `lambdos/lands-by-owner`
-1. `lambdos/names-by-owner`
+1. `lambdos/nfts/wearables/:address`
+1. `lambdos/nfts/emotes/:address`
+1. `lambdos/nfts/lands/:address`
+1. `lambdos/nfts/names/:address`
 
 Once this information is obtained, to display wearables and emotes a few extra requests will be needed for each emote/wearable to download their image/thumbnail. This does not scale because some users have more than 1k NFTs. So the Explorer should implement a lazy loading mechanism (for image/thumbnail) as the user browses the collectibles.
 
