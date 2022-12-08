@@ -161,7 +161,7 @@ acceptFriendshipPayload {
 ```
 acceptFriendshipConfirmationPayload{
     messageId: string,
-    friendRequestId: string
+    friendRequest: friendRequestPayload
 }
 ```
 
@@ -199,7 +199,7 @@ rejectFriendshipPayload {
 ```
 rejectFriendshipConfirmationPayload{
     messageId: string,
-    friendRequestId: string
+    friendRequest: friendRequestPayload
 }
 ```
 
