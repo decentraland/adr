@@ -52,8 +52,10 @@ All endpoints except `/profiles` are expensive requests. Internally, endpoints 2
 
 The page number and size will be dynamic for every endpoint, received as query parameters. 
 
-- `pageSize: number` - Will be `10` by default
-- `pageNum: number`-  Will be `1` by default
+- `pageSize: number`
+- `pageNum: number`
+
+**Pagination will be optional**: if any of this parameters is not present, the response won't be paginated. 
 
 Items displayed in each page will be ordered descending by the `transferredAt` field of the `NFT` entity (representing the date in which the NFT was received, currently in development: https://github.com/decentraland/marketplace/issues/1092), tie-breaking by `id`.
 
