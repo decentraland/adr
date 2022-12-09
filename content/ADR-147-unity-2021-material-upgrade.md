@@ -27,7 +27,7 @@ All our Asset Bundles (by the time this ADR is written) are converted using Unit
 - ❌ **Reconvert the world**: The idea is simple, use a Unity 2021 AB converter and redeploy all the ABs, assuming we could create a cron job that would spend a few days converting every scene in the world and every wearable to use the new version. Even with that, we'd need some new infrastructure on top of the systems such as:
   - Upgrading the AB converter: Not trivial, we need to solve some issues with multithreading first (the AB Converter is stuck in an older commit).
   - Versioning: The renderer must understand if it can consume an AB or is not prepared for its version.
-  - Content size: Duplicating the size of the whole world to allocate new versions of ABs is something we should do if nothing else work.
+  - Content size: Duplicating the size of the whole world to allocate new versions of ABs is something we should do if nothing else works.
 - ✔ **Manual upgrade**: Ideally we should be able to gather all the information from the material itself and create a new one with the properties well defined. 
 
 ## Upgrading materials from 2020 to 2021
@@ -61,7 +61,7 @@ That algorithm shows some overlapping in some extreme cases.
 - Transparent materials will always be in `render queue == 3000` by the algorithm (we don't do further optimization because we need clip space z sorting to render them properly).
 - Alpha Tested will always be in a `render queue >= 2600`. The only conflict is in the render queue 3000 (as we saw before, it's reserved for transparent materials). This case can occur if:
   - An alpha-tested material with a queue offset of 150 (`Cull Off`) is optimized at exactly 250 permutations (`2600 + 150 + 250 = 3000`). It's highly unlikely to have so many permutations, we can ignore this.
-  - An alpha-tested material with a queue offset of 300 (`Cull Front`) is optimized at exactly 100 permutations (`2600 + 300 + 100 = 3000`). That also goes way above our measurements in permutations, and in any case `Cull Front` is the least used cull setting.
+  - An alpha-tested material with a queue offset of 300 (`Cull Front`) is optimized at 100 permutations (`2600 + 300 + 100 = 3000`). That also goes way above our measurements in permutations, and in any case, `Cull Front` is the least used cull setting.
 
 So we can effectively use the render queue to spot the render target of the material!
 
