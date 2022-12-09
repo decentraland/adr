@@ -179,49 +179,65 @@ returns
     }
 ]
 ```
-- `GET lambdos/wearables-by-owner/{address}?page_size={size}&page_num={num}` returns
+- `GET lambdos/nfts/wearables/{address}?page_size={size}&page_num={num}` returns
 ```
-[
-  {
-    "urn": "urn:decentraland:ethereum:collections-v1:exclusive_masks:asian_fox",
-    "amount": 1
-  },
-  {
-    "urn": "urn:decentraland:matic:collections-v2:0x127f8dc3d7dd91c66dc96958df1f0edb14511f84:0",
-    "amount": 1
-  }
-]
-```
-
-- `GET lambdos/emotes-by-owner/{address}?page_size={size}&page_num={num}` returns
-
-```
-[
-    {
-        "urn": "urn:decentraland:matic:collections-v2:0x875146d1d26e91c80f25f5966a84b098d3db1fc8:1",
-        "amount": 1
-    },
-    {
-        "urn": "urn:decentraland:matic:collections-v2:0xa25c20f58ac447621a5f854067b857709cbd60eb:7",
-        "amount": 1
-    }
-]
+{
+    wearables: [
+        {
+            "urn": "urn:decentraland:ethereum:collections-v1:exclusive_masks:asian_fox",
+            "amount": 1
+        },
+        {
+            "urn": "urn:decentraland:matic:collections-v2:0x127f8dc3d7dd91c66dc96958df1f0edb14511f84:0",
+            "amount": 1
+        }
+    ],
+    pageNum: 1,
+    pageSize: 2
+}
 ```
 
-- `GET lambdos/lands-by-owner/{address}?page_size={size}&page_num={num}` returns
+- `GET lambdos/nfts/emotes/{address}?page_size={size}&page_num={num}` returns
 
 ```
-[
-  (66,66),
-  (66,67)
-]
+{
+    emotes: [
+        {
+            "urn": "urn:decentraland:matic:collections-v2:0x875146d1d26e91c80f25f5966a84b098d3db1fc8:1",
+            "amount": 1
+        },
+        {
+            "urn": "urn:decentraland:matic:collections-v2:0xa25c20f58ac447621a5f854067b857709cbd60eb:7",
+            "amount": 1
+        }
+    ],
+    pageNum: 1,
+    pageSize: 2
+}
 ```
 
-- `GET lambdos/names-by-owner/{address}?page_size={size}&page_num={num}` returns
+- `GET lambdos/nfts/lands/{address}?page_size={size}&page_num={num}` returns
 
 ```
-[
-  "name1",
-  "name2"
-]
+{
+    lands: [
+        (66,66),
+        (66,67)
+    ],
+    pageNum: 1,
+    pageSize: 2
+}
+```
+
+- `GET lambdos/nfts/names/{address}?page_size={size}&page_num={num}` returns
+
+```
+{
+    names: [
+        "name1",
+        "name2"
+    ],
+    pageNum: 1,
+    pageSize: 2
+}
 ```
