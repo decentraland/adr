@@ -3,7 +3,7 @@ layout: adr
 adr: 147
 title: Upgrade AB Materials to Unity 2021
 date: 2022-12-02
-status: Live
+status: Living
 type: RFC
 spdx-license: CC0-1.0
 slug: /adr/TEMPLATE
