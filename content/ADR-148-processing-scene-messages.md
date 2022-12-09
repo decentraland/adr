@@ -1,7 +1,7 @@
 ---
 layout: adr
 adr: 148
-title: Process scene messages
+title: Synchronization of CRDT messages between scenes and Renderer
 date: 2022-12-08
 status: Review
 type: Standards Track
