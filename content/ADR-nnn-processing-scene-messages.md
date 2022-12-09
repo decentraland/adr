@@ -1,15 +1,13 @@
 ---
 layout: adr
-adr: 0 # replace this number for the PR or ISSUE number
-title: Title of the ADR
-date: 2020-02-20
+adr: 0
+title: Process scene messages
+date: 2022-12-08
 status: Idea
-type: Standards Track | Meta | RFC # pick one of these
+type: Standards Track
 spdx-license: CC0-1.0
 authors:
-  - menduz # this is your github username
-# remove the following line! it exists to render the template nicely
-slug: /adr/TEMPLATE
+  - menduz
 ---
 
 ## Abstract
@@ -18,7 +16,7 @@ slug: /adr/TEMPLATE
 Abstract is a multi-sentence (short paragraph) technical summary. This should be a very terse and human-readable version of the document section. **Someone should be able to read only the abstract to get the gist of what this document is about in its current state.** Abstracts should be always up to date with the current state of the document.
 -->
 
-Abstract is a multi-sentence (short paragraph) technical summary. This should be a very terse and human-readable version of the document section. **Someone should be able to read only the abstract to get the gist of what this document is about in its current state.** Abstracts should be always up to date with the current state of the document.
+This document describes alternatives to synchronize scenes and renderers using the CRDT protocol. The document also presents the problem of dropped frames and frame-delay between the renderer and the scene. It describes the sequencing and locks of the scene loop and the render frame of the renderer to optimize interactivity. An implementation similar to "double buffering" is chosen.
 
 ## Context, Reach & Prioritization
 
@@ -30,12 +28,12 @@ Discuss and go into detail about the subject in question. Make sure you cover:
 - Vocabulary and key terms
 -->
 
-Discuss and go into detail about the subject in question. Make sure you cover:
+Decentraland scenes run in contexts isolated from the rendering engine (_renderer_ from now on), in a worst case scenario, in a different process only being able to communicate via messaging. Since scenes have an independent update loop (_game loop_ from now on) clear synchronization points need to be designed to reach consistent states between the renderer and the scene.
 
-- Why is this decision important
-- The urgency of the decision
-- Datapoints and related background information
-- Vocabulary and key terms
+The problem to solve has many dimensions:
+- Dropping frames
+- Input delay (amount of frames between the interaction and the effect)
+
 
 ## Solution Space Exploration
 
