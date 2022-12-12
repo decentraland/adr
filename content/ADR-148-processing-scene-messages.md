@@ -91,7 +91,7 @@ An extension to this optimization is that the **Renderer.Receive** can happen in
 
 #### Working with multiple scenes
 
-The scenes runtimes are RECOMMENDED to be independant and to run in parallel. It is also RECOMMENDED that the Renderer can process those updates concurrently.
+The scenes' runtimes are RECOMMENDED to be independent and to run in parallel. It is also RECOMMENDED that the Renderer can process those updates concurrently.
 
 There is one explicit synchronization point that implementers MUST consider: The renderer MUST NOT respond to the scene until all the messages of the previous frame were processed and the physics and camera position were calculated.
 
