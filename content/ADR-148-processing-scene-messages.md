@@ -50,7 +50,7 @@ This approach is the simplest to explain: A scene frame runs in the Scene, then 
 
 #### Implications
 
-- The scene will run at half the speed of the renderer in the best case sceneario, introducing Dropped frames.
+- The scene will run at half the speed of the renderer in the best-case scenario, introducing Dropped frames.
 - The renderer will maintain full speed in the rendering, but every other frame will be the same as the previous one.
 - If the scene's update reaches the renderer mid-frame, then two frames will be dropped for it.
 
