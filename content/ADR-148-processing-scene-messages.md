@@ -64,7 +64,7 @@ For the scene frame:
 - **Scene.Send**: Send all the updates to the renderer
 
 For the renderer frame:
-- **Renderer.Recieve**: Read all the messages from the scenes
+- **Renderer.Receive**: Read all the messages from the scenes
 - **Renderer.Update**: Update transforms, calculate physics, etc.
 - **Renderer.Render**: Batch GPU commands and send them to the GPU Process
 - **Renderer.Send**: Send all the updates to the scene
