@@ -70,7 +70,7 @@ For the renderer frame:
 - **Renderer.Send**: Send all the updates to the scene
 
 <figure>
-  <img src="/resources/ADR-148/Frame 3.svg" />
+  <img src="/resources/ADR-148/Frame 2.svg" />
 </figure>
 
 ### Proposed approach
