@@ -26,9 +26,9 @@ The intention of this document is:
 This initiative will require a cross team effort that will include the following teams:
 
 - Explorer: for the UI, UI functionalities and integration with Kernel.
-- dServices: for the creation of new functionalities required such as obtaining the info of the received and sent friend requests from backend to kernel (dates, profile pictures, mutual friends, etc.)…
+- dServices: for the creation of new functionalities required such as obtaining the info of the received and sent friend requests from backend to kernel (dates, profile pictures, mutual friends, etc.).
 
-More in detail the different responsibilities will be covered in the analysis of each part of the feature. A tag to the respective team will be placed next to each functionality.
+In more detail the different responsibilities will be covered in the analysis of each part of the feature. A tag to the respective team will be placed next to each functionality.
 
 ## Approach
 For this to work we need to synchronize the information between the Renderer, Kernel and Matrix servers.
@@ -157,7 +157,7 @@ note left of renderer: The user rejects a friend request from the pop-up.
 renderer->kernel: RejectFriendRequest(RejectFriendRequestPayload{ friendRequestId: '<id>'})
 note right of kernel: Ask the server to reject the friend request.
 kernel-->renderer: RejectFriendRequestReply({ message: { reply: RejectFriendRequestReplyOk | error: int }})
-note left of renderer: In case of success, remove the new entry from the RECEIVED requests list
+note left of renderer: In case of success, remove the new entry from the RECEIVED requests list.
 note left of renderer: In case of error, show the error.
 ```
 
@@ -168,7 +168,7 @@ RejectFriendRequestPayload {
 ```
 
 ```
-message RejectFriendRequestReplyOk {
+RejectFriendRequestReplyOk {
   FriendRequestInfo friend_request = 1;
 }
 ```
