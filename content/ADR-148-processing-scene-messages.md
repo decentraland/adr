@@ -99,7 +99,7 @@ It was considered for this design that a scene in the renderer can take several 
 
 If scenes are too far away, it MAY be possible that those will receive eventual updates because the closest scenes MAY consume most of the processing quota.
 
-This is so, to prioritize experiences where the user is participating, while keeping the world visible in the surroundings.
+This is to prioritize experiences where the user is participating while keeping the world visible in the surroundings.
 
 Update messages will arrive the Renderer via sockets or shared memory. It is RECOMMENDED that those operations are batched and executed while the GPU process is rendering the previous frame.
 
