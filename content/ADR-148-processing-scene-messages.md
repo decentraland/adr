@@ -101,7 +101,7 @@ If scenes are too far away, it MAY be possible that those will receive eventual 
 
 This is to prioritize experiences where the user is participating while keeping the world visible in the surroundings.
 
-Update messages will arrive the Renderer via sockets or shared memory. It is RECOMMENDED that those operations are batched and executed while the GPU process is rendering the previous frame.
+Update messages will arrive at the Renderer via sockets or shared memory. It is RECOMMENDED that those operations are batched and executed while the GPU process is rendering the previous frame.
 
 <figure>
   <img src="/resources/ADR-148/Frame 7.svg" />
