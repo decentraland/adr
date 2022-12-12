@@ -33,7 +33,7 @@ In more detail the different responsibilities will be covered in the analysis of
 ## Approach
 For this to work we need to synchronize the information between the Renderer, Kernel and Matrix servers.
 
-Due to the current architecture implemented in the backend side, the idea would be to use always Kernel as a bridge between the Renderer and the Matrix server. So any communication needed between both sides will be done through messages in Kernel↔Renderer.
+Due to the current architecture implemented in the backend side, the idea would be to use always Kernel as a bridge between the Renderer and the Matrix server. So any communication needed between both sides will be done through messages in Kernel↔Renderer and the messages exchange is defined by RPC calls.
 
 In terms of needed communications, we have identified the next main dependencies between Client and Backend:
 
