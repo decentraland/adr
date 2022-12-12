@@ -59,7 +59,7 @@ This approach is the simplest to explain: A scene frame runs in the Scene, then 
 To illustrate better what happens inside the scene frame and renderer frame, we will consider some stages for each of them:
 
 For the scene frame:
-- **Scene.Recieve**: Read all the messages from the renderer
+- **Scene.Receive**: Read all the messages from the renderer
 - **Scene.Update**: Execute scene logic, run systems, mutate state
 - **Scene.Send**: Send all the updates to the renderer
 
