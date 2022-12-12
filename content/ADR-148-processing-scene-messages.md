@@ -95,7 +95,7 @@ The scenes' runtimes are RECOMMENDED to be independent and to run in parallel. I
 
 There is one explicit synchronization point that implementers MUST consider: The renderer MUST NOT respond to the scene until all the messages of the previous frame were processed and the physics and camera position were calculated.
 
-It was considered for this design that a scene in the renderer can take several renderer frames to process all the queued messages. Implementers SHOULD process all the messages from scenes in order and MUST prioritize first "global scenes" and then scenes ordered by distance.
+It was considered for this design that a scene in the renderer could take several renderer frames to process all the queued messages. Implementers SHOULD process all messages in order and MUST prioritize first "global scenes" and then scenes ordered by distance.
 
 If scenes are too far away, it MAY be possible that those will receive eventual updates because the closest scenes MAY consume most of the processing quota.
 
