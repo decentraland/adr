@@ -16,7 +16,7 @@ authors:
 Abstract is a multi-sentence (short paragraph) technical summary. This should be a very terse and human-readable version of the document section. **Someone should be able to read only the abstract to get the gist of what this document is about in its current state.** Abstracts should be always up to date with the current state of the document.
 -->
 
-This document describes alternatives to synchronize scenes and renderers using the CRDT protocol. The document also presents the problem of dropped frames and frame-delay between the renderer and the scene. It describes the sequencing and locks of the scene loop and the render frame of the renderer to optimize interactivity. An implementation similar to "double buffering" is chosen.
+This document describes alternatives to synchronize scenes and renderers using the CRDT protocol. It also presents the problem of dropped frames and frame delay between the renderer and the scene. It describes the sequencing and locks of the scene loop and the render frame of the renderer to optimize interactivity. An implementation similar to "double buffering" is chosen.
 
 ## Context, Reach & Prioritization
 
