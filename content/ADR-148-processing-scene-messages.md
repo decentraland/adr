@@ -42,7 +42,7 @@ This document will enumerate the considered alternatives and the implications of
 
 ### Naive approach
 
-This approach is the simplest to explain: A scene frame runs in the Scene, then it sends the updates to the renderer. It waits for the response to run the next scene frame.
+This approach is the simplest to explain: A scene frame runs in the Scene, then sends the updates to the renderer. It waits for the response to run the next scene frame.
 
 <figure>
   <img src="/resources/ADR-148/Frame 1.svg" />
