@@ -66,7 +66,7 @@ SendFriendRequestReplyOk {
 ```
 
 ```
-message SendFriendRequestReply {
+SendFriendRequestReply {
   oneof message {
     SendFriendRequestReplyOk reply = 1;
     FriendshipErrorCode error = 2;
@@ -101,7 +101,7 @@ CancelFriendRequestReplyOk {
 ```
 
 ```
-message CancelFriendRequestReply {
+CancelFriendRequestReply {
   oneof message {
     CancelFriendRequestReplyOk reply = 1;
     FriendshipErrorCode error = 2;
@@ -174,7 +174,7 @@ message RejectFriendRequestReplyOk {
 ```
 
 ```
-message RejectFriendRequestReply {
+RejectFriendRequestReply {
   oneof message {
     RejectFriendRequestReplyOk reply = 1;
     FriendshipErrorCode error = 2;
