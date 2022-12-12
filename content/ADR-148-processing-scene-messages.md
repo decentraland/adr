@@ -28,7 +28,7 @@ Discuss and go into detail about the subject in question. Make sure you cover:
 - Vocabulary and key terms
 -->
 
-Decentraland scenes run in contexts isolated from the rendering engine (_renderer_ from now on), in a worst case scenario, in a different process only being able to communicate via messaging. Since scenes have an independent update loop (_scene frame_ from now on) clear synchronization points need to be designed to reach consistent states between the renderer and the scene.
+Decentraland scenes run in contexts isolated from the rendering engine (_renderer_ from now on), in a worst-case scenario, in a different process, only being able to communicate via messaging. Since scenes have an independent update loop (_scene frame_ from now on) clear synchronization points need to be designed to reach consistent states between the renderer and the scene.
 
 The context of synchronizing the scenes and the renderer is complex. Many dimensions participate in the analysis:
 - Dropping scene frames due to waits or locks
