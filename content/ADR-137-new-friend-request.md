@@ -182,6 +182,80 @@ RejectFriendRequestReply {
 }
 ```
 
+## Receive Friend Request
+```mermaid
+sequenceDiagram
+  participant renderer
+  participant kernel
+  
+note left of renderer: During the session.
+note right of kernel: An user sends us a friend request.
+kernel-->renderer: AddUserProfilesToCatalog(addUserProfilesPayload)
+kernel->renderer: ReceiveFriendRequest(RendererReceiveFriendRequestPayload{ friend_request: {...}} )
+note left of renderer: Create a new entry in the RECEIVED requests list.
+note left of renderer: Add a new entry in the notifications panel.
+```
+
+```
+RendererReceiveFriendRequestPayload {
+    FriendRequestInfo friend_request = 1;
+}
+```
+
+## Cancel Friend Request
+```mermaid
+sequenceDiagram
+  participant renderer
+  participant kernel
+  
+note left of renderer: During the session.
+note right of kernel: An user cancels us a friend request.
+kernel-->renderer: AddUserProfilesToCatalog(addUserProfilesPayload)
+kernel->renderer: CancelFriendRequest(RendererCancelFriendRequestPayload{ <'id'> } )
+```
+
+```
+RendererCancelFriendRequestPayload {
+    string user_id = 1;
+}
+```
+
+## Reject Friend Request
+```mermaid
+sequenceDiagram
+  participant renderer
+  participant kernel
+
+note left of renderer: During the session.
+note right of kernel: An user rejects us a friend request.
+kernel-->renderer: AddUserProfilesToCatalog(addUserProfilesPayload)
+kernel->renderer: RejectFriendRequest(RendererRejectFriendRequestPayload{ <'id'> } )
+```
+
+```
+RendererRejectFriendRequestPayload {
+    string user_id = 1;
+}
+```
+
+## Approve Friend Request
+```mermaid
+sequenceDiagram
+  participant renderer
+  participant kernel
+
+note left of renderer: During the session.
+note right of kernel: An user approves us a friend request.
+kernel-->renderer: AddUserProfilesToCatalog(addUserProfilesPayload)
+kernel->renderer: ApproveFriendRequest(RendererApproveFriendRequestPayload{ <'id'> } )
+```
+
+```
+RendererApproveFriendRequestPayload {
+    string user_id = 1;
+}
+```
+
 ## Get Friend Request List
 ```mermaid
 sequenceDiagram
