@@ -5,7 +5,7 @@ title: Technical Assessment for the new Friend Request
 authors:
   - sandrade-dcl
   - lorux0
-status: Final
+status: Review
 type: RFC
 spdx-license: CC0-1.0
 redirect_from:
@@ -28,12 +28,12 @@ This initiative will require a cross team effort that will include the following
 - Explorer: for the UI, UI functionalities and integration with Kernel.
 - dServices: for the creation of new functionalities required such as obtaining the info of the received and sent friend requests from backend to kernel (dates, profile pictures, mutual friends, etc.).
 
-In more detail the different responsibilities will be covered in the analysis of each part of the feature. A tag to the respective team will be placed next to each functionality.
+The different responsibilities will be covered in more detail in the analysis of each part of the feature. A tag to the respective team will be placed next to each functionality.
 
 ## Approach
 For this to work we need to synchronize the information between the Renderer, Kernel and Matrix servers.
 
-Due to the current architecture implemented in the backend side, the idea would be to use always Kernel as a bridge between the Renderer and the Matrix server. So any communication needed between both sides will be done through messages in Kernel↔Renderer and the messages exchange is defined by RPC calls.
+Due to the current architecture implemented in the backend side, the idea would be to use always Kernel as a bridge between the Renderer and the Matrix server. So any communication needed between both sides will be done through messages in Kernel↔Renderer and the message exchange is defined by RPC calls.
 
 In terms of needed communications, we have identified the next main dependencies between Client and Backend:
 
@@ -44,7 +44,7 @@ sequenceDiagram
   participant kernel
   
 note left of renderer: The user sends a friend request from the pop-up.
-renderer->kernel: GetFriendRequests(SendFriendRequestPayload{ userId:'0x...', messageBody='hello!' })
+renderer->kernel: SendFriendRequest(SendFriendRequestPayload{ userId:'0x...', messageBody='hello!' })
 note right of kernel: Ask the server to create the friend request.
 kernel-->renderer: AddUserProfilesToCatalog(addUserProfilesPayload)
 kernel-->renderer: SendFriendRequestReply({ message: { reply: SendFriendRequestReplyOk | error: int }})
@@ -183,7 +183,6 @@ RejectFriendRequestReply {
 ```
 
 ## Get Friend Request List
-In this case we are modifying the payloads of the existing flow:
 ```mermaid
 sequenceDiagram
   participant renderer
