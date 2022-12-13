@@ -41,11 +41,19 @@ That problem magnifies the "queue optimization" problem of the interpreter of me
 
 ### Impossible use cases
 
-> TODO: Static scenes
+## Static Scenes & Load Parcels
+Besides the limitation of the messages being sent, another limitation that we are facing was how the static scenes were implemented, and how bad they performed.
+No matter what kind of scene you have, for this scene to be able to work in Decentraland we need to download the game.js and eval that code to run the scene. Even if its only a static house with some trees, or even an empty road.
+With the new approach of CRDT's, we can deploy a file containing the relation between the entities and components (CRDT State), and download only that file with the models, instead of downloading the game.js and doing an eval of the code.
+This way we can load parcels at a distance, without the need of the code, and when you are getting closer to the scene start running the code.
 
-> TODO: Synchronization of state over network
-
-> TODO: Load parcels at a distance, then load the code. Shut down the code when moving away
+## Synchronization of state over network
+SDK6 had a real limitation when we talked about syncronizing components over network for two main reasons. One is the limitation about messages already describe above, and how bad they were implemented, and the other one is how you resolve conflicts if some component is being modified in multiple clients.
+All the scenes run locally in every client, so if you want to make a component to be syncronized over the wire, you need to implement a way to send those messages through the clients, and a way to solve conflicts if two clients modifies the same component. All the clients MUST see the same. So, how we solved this conflicts? CRDT's is the answer.
+A conflict-free replicated data type (CRDT) is a combination of algorithms that ensures two actors will reach the same conflict-free state after processing the same set of messages, regardless of the ordering. The main issue that CRDT tackles is the synchronization of state.
+The SDK7, and CRDT's implementation solves all this Out of the Box, so the content creator doesn't need to get rid of all this chaos.
+With CRDTs, we can ensure that a consistent state will be reached, no matter the order of the messages, as long as they arrive.
+The SDK7 will send and syncronize the components through the wire without conflicts in the background OOTB.
 
 > TODO: Edition mode
 
@@ -143,41 +151,29 @@ The decided implementation is a LWW-Element-Set. In which the keys to identify t
 
 ### Schema & Serialization
 
-> TODO: Replace with final wire message
+ProtocolBuffer is the selected serialization format for the EcsProtocol, the protocol should always be small enough to ensure that an efficient (cpu and memory-wise) encoder/decoder can be created. The `data` field is serialiazed with ProtocolBuffer, so with the combination of the entity_id and component_id we know how to serialize/deserialize the data.
+For the WireMessage we use a struct instead of protobuf.
 
-ProtocolBuffer is the selected serialization format for the EcsProtocol, the protocol should always be small enough to ensure that an efficient (cpu and memory-wise) encoder/decoder can be created. The `data` field of the message can be serialized in other more convenient formats.
+```ts
+// Multiple Component Operation messages concatenated as a Unit8Array.
+type WireMessage = Uint8Array[]
 
-```protobuf
-message WireMessage {
-    repeated ComponentOperation operations = 1;
-    repeated Query query = 2;
-    repeated Responses query_response = 3;
-}
-
-message ComponentOperation {
-    int32 message_type = 1;     // PUT_COMPONENT | DELETE_COMPONENT
-    int64 entity_id = 2;        // Entity number
-    int64 component_number = 3; // ClassIdentifier number for the component kind
-
+// The WireMessage is a chunk of ComponentOperation messages with the following struct
+type ComponentOperation = {
+    // Total Message Length
+    int32 message_length = 0;
+    // PUT_COMPONENT | DELETE_COMPONENT
+    int32 message_type = 1;
+    // Entity number
+    int64 entity_id = 2;
+    // Component identifier number for the component kind
+    int64 component_id = 3;
     // We use lamport timestamps to identify components and to track in which order
     // a client created them. The key for the lamport number is key=(entity_id,component_number)
     int64 timestamp = 4;
-
-    // @optional
-    // missing data means the component was deleted
+    // Uint8[] data of component.
     bytes data = 5;
 }
-
-//// deprecate
-message Query {
-    int32 message_type = 1; // QUERY
-    int64 query_type = 2; // RAYCAST | ...?
-    reserved 3;
-
-    // Serialized query
-    bytes data = 5;
-}
-
 ```
 
 #### Command Query Responsibility Segregation
@@ -203,29 +199,41 @@ sequenceDiagram
 At the end of the day, a CRDT implementation is dead-simple. At it's core it has a function that decides which message is going to be processed against the current state. The proposed solution looks like this:
 
 ```typescript
+type Entity = number
+type ComponentId = number
+type CRDTState = Map<Entity, Map<ComponentId, EntityComponentValue | null>>
 type EntityComponentValue = {
   // serialization of the component value
   data: Uint8Array
   // lamport timestamp
   timestamp: number
 }
-
-function sendUpdate(entityId, componentId, value) {
-  // ...
+const state: CRDTState = {
+  // 1: Entity Number
+  1: {
+    // 1052: Component Id => i.e. Transform ID
+    1052: { data: new Uint8Array(), timestamp: 0 }
+  }
 }
 
-function processUpdate(entityId, componentId, newValue) {
-  const currentValue = entities[entityId][componentId]
+function sendUpdate(entity, componentId, value) {
+  // return new message with the lamport timestamp and data updated
+  // so we can send it back to the transport
+}
+
+function processUpdate(entity, componentId, newValue) {
+  const currentValue: EntityComponentValue = state[entity][componentId]
   if (currentValue.timestamp > newValue.timestamp) {
     // discardMessage() and send newer state to the sender
     // keep our current value
-    sendUpdates(entityId, componentId, currentValue)
-  } else if (currentValue.data > newValue.data) {
+    sendUpdates(entity, componentId, currentValue)
+  } else if (!currentValue.data || currentValue.data > newValue.data) {
     // if lexicographically the currentValue is greater than the new
-    // value, send newer state to the sender. keep our current value
-    sendUpdates(entityId, componentId, currentValue)
+    // value, or the currentValue is null (deleted) send newer state to the sender.
+    // keep our current value
+    sendUpdates(entity, componentId, currentValue)
   } else {
-    entities[entityId][componentId] = newValue
+    state[entityId][componentId] = newValue
   }
 }
 ```
