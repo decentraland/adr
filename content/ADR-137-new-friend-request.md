@@ -182,7 +182,7 @@ RejectFriendRequestReply {
 }
 ```
 
-## Receive Friend Request
+## Received Friend Request (push notifications)
 ```mermaid
 sequenceDiagram
   participant renderer
@@ -202,7 +202,7 @@ RendererReceiveFriendRequestPayload {
 }
 ```
 
-## Cancel Friend Request
+## Canceled Friend Request (push notifications)
 ```mermaid
 sequenceDiagram
   participant renderer
@@ -220,7 +220,7 @@ RendererCancelFriendRequestPayload {
 }
 ```
 
-## Reject Friend Request
+## Rejected Friend Request (push notifications)
 ```mermaid
 sequenceDiagram
   participant renderer
@@ -238,7 +238,7 @@ RendererRejectFriendRequestPayload {
 }
 ```
 
-## Approve Friend Request
+## Approved Friend Request (push notifications)
 ```mermaid
 sequenceDiagram
   participant renderer
