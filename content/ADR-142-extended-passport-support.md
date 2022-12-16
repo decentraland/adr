@@ -67,7 +67,7 @@ To be able to return a paginated and ordered response, both queries are made (bo
 
 When the next page is requested, the method needs a way to know how many wearables from each collection need to be skipped. One solution could be storing those wearables ids in memory for each different passport that is being requested, which is unfeasable.
 
-The final solution is to retrieve a token in the response which the client will provide in the next request. It will contain the last `transferredAt` returned and also the last `urn` (to catch a corner case when all the wearables have the same `transferredAt` date).
+The final solution is to return a token in the response which the client will provide in the next request. It will contain the last `transferredAt` returned and also the last `urn` (to catch a corner case when all the wearables have the same `transferredAt` date).
 
 ## Endpoints details
 
