@@ -57,17 +57,15 @@ The page number and size will be dynamic for every endpoint, received as query p
 
 **Pagination will be optional**: if any of this parameters is not present, the response won't be paginated. 
 
-Items displayed in each page will be ordered descending by the `transferredAt` field of the `NFT` entity (representing the date in which the NFT was received, currently in development: https://github.com/decentraland/marketplace/issues/1092), tie-breaking by `id`.
+Items displayed in each page will be ordered descending by the `transferredAt` field of the `NFT` entity (representing the date in which the NFT was received, currently in development: https://github.com/decentraland/marketplace/issues/1092).
 
 ### Wearables
 
 The wearables are searched in 2 different collections: **ethereum** and **matic**. That involves doing 2 different queries to TheGraph.
 
-To be able to return a paginated and ordered response, both queries are made (both for `pageSize` items), the results are merged, sorted, and `pageSize` items are returned.
+To be able to return a paginated and sorted response, a full query is made for both, then that result is merged, sorted and stored in a LRU cache where the key is the address. Pages are served upon that stored data.
 
-When the next page is requested, the method needs a way to know how many wearables from each collection need to be skipped. One solution could be storing those wearables ids in memory for each different passport that is being requested, which is unfeasable.
-
-The final solution is to return a token in the response which the client will provide in the next request. It will contain the last `transferredAt` returned and also the last `urn` (to catch a corner case when all the wearables have the same `transferredAt` date).
+For the rest of the paginated endpoints, queries to TheGraph are being paginated.
 
 ## Endpoints details
 
