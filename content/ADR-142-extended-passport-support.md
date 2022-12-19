@@ -184,16 +184,18 @@ returns
 {
     wearables: [
         {
-            "urn": "urn:decentraland:ethereum:collections-v1:exclusive_masks:asian_fox",
-            "amount": 1
-        },
-        {
-            "urn": "urn:decentraland:matic:collections-v2:0x127f8dc3d7dd91c66dc96958df1f0edb14511f84:0",
-            "amount": 1
+            "urn": "urn:decentraland:matic:collections-v2:0xd30045dbcb5da210997607657faad758c10477df:0",
+            "id": "0xd30045dbcb5da210997607657faad758c10477df-20",
+            "image": "https://peer-lb.decentraland.org/lambdas/collections/contents/urn:decentraland:matic:collections-v2:0xd30045dbcb5da210997607657faad758c10477df:0/thumbnail",
+            "createdAt": "1640359710",
+            "name": "God Divine Sight",
+            "description": "AnimeMetaHouse Ocular Powers - Genesis",
+            "rarity": "legendary",
+            "price": "20000000000000000000"
         }
     ],
     pageNum: 1,
-    pageSize: 2
+    pageSize: 1
 }
 ```
 
@@ -203,16 +205,18 @@ returns
 {
     emotes: [
         {
-            "urn": "urn:decentraland:matic:collections-v2:0x875146d1d26e91c80f25f5966a84b098d3db1fc8:1",
-            "amount": 1
-        },
-        {
-            "urn": "urn:decentraland:matic:collections-v2:0xa25c20f58ac447621a5f854067b857709cbd60eb:7",
-            "amount": 1
+            "urn": "urn:decentraland:matic:collections-v2:0x016a61feb6377239e34425b82e5c4b367e52457f:3",
+            "id": "0x016a61feb6377239e34425b82e5c4b367e52457f-315936875005671560093754083051011296956685286201647333762932932609",
+            "image": "https://peer-lb.decentraland.org/lambdas/collections/contents/urn:decentraland:matic:collections-v2:0x016a61feb6377239e34425b82e5c4b367e52457f:3/thumbnail",
+            "createdAt": "1661362770",
+            "name": "The Critic",
+            "description": "Metaverse Art Week 2022 emote.",
+            "rarity": "rare",
+            "price": "0"
         }
     ],
     pageNum: 1,
-    pageSize: 2
+    pageSize: 1
 }
 ```
 
@@ -221,8 +225,24 @@ returns
 ```
 {
     lands: [
-        (66,66),
-        (66,67)
+       {
+            "name": "First Estate Block",
+            "contractAddress": "0x959e104e1a4db6317fa58f8295f586e1a978c297",
+            "category": "estate",
+            "description": "The first estate to be ever created in the Metaverse",
+            "price": "2000000000000000000000000",
+            "image": "https://api.decentraland.org/v1/estates/1/map.png"
+        },
+        {
+            "name": "HalfMoonLand",
+            "contractAddress": "0xf87e31492faf9a91b02ee0deaad50d51d56d5d4d",
+            "category": "parcel",
+            "x": "-69",
+            "y": "-21",
+            "description": "",
+            "price": "14512000000000000000000",
+            "image": "https://api.decentraland.org/v1/parcels/-69/-21/map.png"
+        }
     ],
     pageNum: 1,
     pageSize: 2
@@ -234,10 +254,13 @@ returns
 ```
 {
     names: [
-        "name1",
-        "name2"
+       {
+            "name": "DarthSith",
+            "contractAddress": "0x2a187453064356c898cae034eaed119e1663acb8",
+            "price": "62000000000000000000000"
+        }
     ],
     pageNum: 1,
-    pageSize: 2
+    pageSize: 1
 }
 ```
