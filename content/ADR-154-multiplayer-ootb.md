@@ -34,7 +34,7 @@ Discuss and go into detail about the subject in question. Make sure you cover:
 
 There are currently very few scenes where what one player does affects another. This results in very few truly social shared experiences. Mostly each player is in a single-player experience, watching other avatars walking around in their own separate dimension. This is confusing to new players, and severely limits what can be done with Decentraland as a social space. This is not just about making multiplayer games easier, the environment and its changes can be used a means for socializing, and can enhance every kind of experience.
 
-We believe few people create these kinds of experiences because it’s hard. Our SDK doesn’t offer any way to simplify the syncing of state between players. Content creators have to either set up a whole server themselves, or manually send messages and then interpret them with custom logic. This can also result in a buggy experience as messages could arrive out of order and different player’s chances can enter into conflict.
+We believe few people create these kinds of experiences because it's hard. The SDK doesn’t offer any way to simplify the syncing of state between players. Content creators have to either set up a whole server themselves, or manually send messages and then interpret them with custom logic. This can also result in a buggy experience as messages could arrive out of order and different player's chances can enter into conflict.
 
 ## Solution Space Exploration
 
