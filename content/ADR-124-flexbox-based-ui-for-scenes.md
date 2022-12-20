@@ -31,7 +31,7 @@ The renderer systems must ignore in the 3D camera every entity containing a `UiT
 
 For simplicity and speed, the `RootEntity` will be used as parent for all the `UiTransform` entities, this entity is the analogous of the `document.body` for webpages.
 
-The `RootEntity` will act as "root node" and will not accept a `UiTransform` component, its size will be equivalent to the full viewport of the Rendering engine. Enabling its children to occupy "100%" width and height, as well relative and absolute positioning in the corners.
+The `RootEntity` will act as "root node" and will not accept a `UiTransform` component, its size will be equivalent to the full viewport of the Rendering engine, enabling its children to occupy "100%" width and height, as well relative and absolute positioning in the corners.
 
 Given the difficulty of creating UIs with custom viewport and pixel density sizes present on the SDK6, the `UiTransform` will represent pixels scaled by the current pixel density of the device screen (`devicePixelRatio`). Meaning one screen pixel will be one UiTransform pixel on a pixel density of 1 (low DPI display) and it will be adjusted to the current configuration in high DPI displays like the ones present in modern laptops (e.g. retina display). This should not limit the capabilities of the SDK to create UIs that are reactive to the size of the screens, because percentages are available as units of measurement and the new `UiCanvasInformation` fills in the gaps of information. This behavior mimics the `devicePixelRatio` of web browsers, in which a pixel is always represented as a pixel in CSS, besides being adjusted to 2(device)pixels in a retina display (`devicePixelRatio=2`).
 
