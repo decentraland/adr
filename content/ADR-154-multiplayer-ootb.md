@@ -17,7 +17,7 @@ authors:
 Abstract is a multi-sentence (short paragraph) technical summary. This should be a very terse and human-readable version of the document section. **Someone should be able to read only the abstract to get the gist of what this document is about in its current state.** Abstracts should be always up to date with the current state of the document.
 -->
 
-The purpose of this feature is to ,ake it easier for content creators to build scenes where what one player changes is seen and shared by all other players there. This today is possible but very hard, and because of that very few creators explore those options.
+The purpose of this feature is to make it easier for content creators to build scenes where what one player changes is seen and shared by all other players there. This today is possible but very hard, and because of that very few creators explore those options.
 
 The exact details about how this feature is to be implemented are yet to be defined.
 
