@@ -255,7 +255,7 @@ message UiCanvasInformation {
   int32 width = 2;
   // informs about the height of the canvas
   int32 height = 3;
-  // informs the sdk about the interactable area. some implementations may change this area depending on the HUD that is being shown. this value may change at any time by the Renderer to create reactive UIs
+  // informs the sdk about the interactable area. Some implementations may change this area depending on the HUD that is being shown. This value may change at any time by the Renderer to create reactive UIs.
   Rect interactable_area = 4;
 }
 ```
