@@ -9,7 +9,6 @@ spdx-license: CC0-1.0
 authors:
   - nearnsahw # this is your github username
 # remove the following line! it exists to render the template nicely
-slug: /adr/multiplayer-out-of-the-box
 ---
 
 ## Abstract
