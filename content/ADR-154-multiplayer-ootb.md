@@ -42,7 +42,7 @@ We believe few people create these kinds of experiences because it's hard. The S
 Discuss the potential alternatives and their impact. What alternatives are being considered, their benefits, their costs (team resources, money, time frames), and mitigations for any drawbacks.
 -->
 
-The proposed solution involves allowing content creators to easily mark an entity or a component as synced. Once that’s done, if any properties change in a marked component or entity, these changes are shared with all other players who are sharing an island.
+The proposed solution involves allowing content creators to easily mark an entity or a component as synced. Once that's done, if any properties change in a marked component or entity, these changes are shared with all other players who are sharing an island.
 
 **The foundations are already built**
 
