@@ -31,18 +31,24 @@ The renderer systems must ignore in the 3D camera every entity containing a `UiT
 
 For simplicity and speed, the `RootEntity` will be used as parent for all the `UiTransform` entities, this entity is the analogous of the `document.body` for webpages.
 
-The `RootEntity` will act as "root node" and will not accept a `UiTransform` component, its size will be equivalent to the full viewport of the Rendering engine.
+The `RootEntity` will act as "root node" and will not accept a `UiTransform` component, its size will be equivalent to the full viewport of the Rendering engine, enabling its children to occupy "100%" width and height, as well relative and absolute positioning in the corners.
+
+Given the difficulty of creating UIs with custom viewport and pixel density sizes present on the SDK6, the `UiTransform` will represent pixels scaled by the current pixel density of the device screen (`devicePixelRatio`). Meaning one screen pixel will be one `UiTransform` pixel on a pixel density of 1 (low DPI display) and it will be adjusted to the current configuration in high DPI displays like the ones present in modern laptops (e.g. retina display). This should not limit the capabilities of the SDK to create UIs that are reactive to the size of the screens, because percentages are available as units of measurement and the new `UiCanvasInformation` fills in the gaps of information. This behavior mimics the `devicePixelRatio` of web browsers, in which a pixel is always represented as a pixel in CSS, besides being adjusted to 2(device)pixels in a retina display (`devicePixelRatio=2`).
+
+`UiCanvasInformation` serves a purpose of providing information to the secene for custom layouting based on `devicePixelRatio`, device orientation and canvas sizes are in exclusive charge of the implementation of the SDK libraries themselves. Removing any layouting responsibility from the renderer for the sake of keeping the semantics simple and backwards compatible. This will create an inversion of control in which the scene will decide everything in relation to the scene UI.
 
 The new UI system will also be separated in two types of components:
 
 - Layout components, to position things in the canvas:
   - `UiTransform`
-- Rendering components
+- Rendering components:
   - `UiBackground` to define a background color or image
   - `UiLabel` to render text
   - `UiInput` to create text inputs
   - `UiButton` to create buttons
   - Other components to be added.
+- Informational components:
+  - `UiCanvasInformation` will be added to the RootEntity of the scene by the renderer
 
 Rendering components may encapsulate logic for the renderer like styles for different states like Active or Hover, delegating the position and size of the component to the `UiTransform`
 
@@ -234,6 +240,23 @@ message PBUiTransform {
   float border_right = 76;
   reserved 77; // YGUnit border_bottom_unit = 77;
   float border_bottom = 78;
+}
+```
+
+## `UiCanvasInformation` component
+
+This component is added to the RootEntity of the scene by the renderer. It is REQUIRED that every renderer sends this component to the scene if the UI features are enabled.
+
+```protobuf
+message UiCanvasInformation {
+  // informs the scene about the resolution used for the UI rendering
+  float device_pixel_ratio = 1;
+  // informs about the width of the canvas
+  int32 width = 2;
+  // informs about the height of the canvas
+  int32 height = 3;
+  // informs the sdk about the interactable area. Some implementations may change this area depending on the HUD that is being shown. This value may change at any time by the Renderer to create reactive UIs.
+  Rect interactable_area = 4;
 }
 ```
 
