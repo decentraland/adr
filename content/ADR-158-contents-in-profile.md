@@ -1,0 +1,58 @@
+---
+layout: adr
+adr: 0 # replace this number for the PR or ISSUE number
+title: Title of the ADR
+date: 2020-02-20
+status: Idea, Draft # pick one of these
+type: Standards Track | Meta | RFC # pick one of these
+spdx-license: CC0-1.0
+authors:
+  - menduz # this is your github username
+# remove the following line! it exists to render the template nicely
+slug: /adr/TEMPLATE
+---
+
+## Abstract
+
+<!--
+Abstract is a multi-sentence (short paragraph) technical summary. This should be a very terse and human-readable version of the document section. **Someone should be able to read only the abstract to get the gist of what this document is about in its current state.** Abstracts should be always up to date with the current state of the document.
+-->
+
+Abstract is a multi-sentence (short paragraph) technical summary. This should be a very terse and human-readable version of the document section. **Someone should be able to read only the abstract to get the gist of what this document is about in its current state.** Abstracts should be always up to date with the current state of the document.
+
+## Context, Reach & Prioritization
+
+<!--
+Discuss and go into detail about the subject in question. Make sure you cover:
+- Why is this decision important
+- The urgency of the decision
+- Datapoints and related background information
+- Vocabulary and key terms
+-->
+
+Discuss and go into detail about the subject in question. Make sure you cover:
+
+- Why is this decision important
+- The urgency of the decision
+- Datapoints and related background information
+- Vocabulary and key terms
+
+## Solution Space Exploration
+
+<!--
+Discuss the potential alternatives and their impact. What alternatives are being considered, their benefits, their costs (team resources, money, time frames), and mitigations for any drawbacks.
+-->
+
+Discuss the potential alternatives and their impact. What alternatives are being considered, their benefits, their costs (team resources, money, time frames), and mitigations for any drawbacks.
+
+## Specification
+
+<!--
+The technical specification should describe the syntax and semantics of any new feature.
+-->
+
+The technical specification should describe the syntax and semantics of any new feature.
+
+## RFC 2119 and RFC 8174
+
+> The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.
