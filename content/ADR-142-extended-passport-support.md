@@ -61,7 +61,7 @@ Items displayed in each page will be ordered descending by the `transferredAt` f
 
 The wearables are searched in 2 different collections: **ethereum** and **matic**. That involves doing 2 different queries to TheGraph.
 
-To be able to return a paginated and sorted response, a full query is made for both, then that result is merged, sorted and stored in a LRU cache where the key is the address. Pages are served upon that stored data.
+To be able to return a paginated and sorted response, a full query is made for both, then that results are merged into a single one, then sorted and stored in a LRU cache where the key is the address. Paginated requests are resolved using the cached data.
 
 For the rest of the paginated endpoints, queries to TheGraph are being paginated.
 
