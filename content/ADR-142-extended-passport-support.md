@@ -9,6 +9,10 @@ type: RFC
 spdx-license: CC0-1.0
 ---
 
+## Abstract
+
+The Extended Passport view for Decentraland's Explorer requires storing and retrieving data from profiles to display NFT collectibles, blocking users, adding friends, and initiating chats. This document outlines the necessary requirements and performance considerations for the Catalyst, including the introduction of a user through the "description" field in profiles, the use of the "blocked" field to display blocked users, and the creation of new endpoints in lambdas for each type of item. The document also notes that the Explorer team should implement lazy loading and pagination to improve performance and scalability, as some users may have more than 1,000 NFTs. The document also provides details on the various endpoints that will be used to retrieve this data.
+
 ## Need
 
 A New Passport view is being developed by the Explorer Team.
