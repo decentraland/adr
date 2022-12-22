@@ -27,7 +27,7 @@ use the "blocked" field from profiles to see/report blocked users.
 1. Equipped wearables:
 take the information from the profile. There are the equipped wearables, emotes and DCL name.
 
-1. Items: wearables/emotes/names/lands: New endpoints will be created in [lambdos](https://github.com/decentraland/lambdos) for every type of item.
+1. Items: wearables/emotes/names/lands: new endpoints will be created in [lambdos](https://github.com/decentraland/lambdos) for each type of item.
 
 1. Guest: Passport for guest users will show only name and description, there is nothing to do for guests from the Catalyst end.
 
