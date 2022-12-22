@@ -59,7 +59,7 @@ The page number and size will be dynamic for every endpoint, received as query p
 
 **Pagination will be optional**: if any of this parameters is not present, the response won't be paginated. 
 
-Items displayed in each page will be ordered descending by the `transferredAt` field of the `NFT` entity (representing the date in which the NFT was received, currently in development: https://github.com/decentraland/marketplace/issues/1092).
+Items displayed in each page will be ordered descending by the `transferredAt` field of the `NFT` entity (representing the date in which the NFT was received).
 
 ### Wearables
 
