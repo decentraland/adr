@@ -184,18 +184,28 @@ returns
 {
     wearables: [
         {
-            "urn": "urn:decentraland:matic:collections-v2:0xd30045dbcb5da210997607657faad758c10477df:0",
-            "id": "0xd30045dbcb5da210997607657faad758c10477df-20",
-            "image": "https://peer-lb.decentraland.org/lambdas/collections/contents/urn:decentraland:matic:collections-v2:0xd30045dbcb5da210997607657faad758c10477df:0/thumbnail",
-            "createdAt": "1640359710",
-            "name": "God Divine Sight",
-            "description": "AnimeMetaHouse Ocular Powers - Genesis",
-            "rarity": "legendary",
-            "price": "20000000000000000000"
+            "urn": "urn:decentraland:matic:collections-v2:0x08d131cfa304c3b47f9c57f95e6c4e5548d25bb4:0",
+            "image": "https://peer-lb.decentraland.org/lambdas/collections/contents/urn:decentraland:matic:collections-v2:0x08d131cfa304c3b47f9c57f95e6c4e5548d25bb4:0/thumbnail",
+            "name": " Red Bottom Loafers + Gold Gun ",
+            "description": "Red Bottom Loafers + Gold Gun by The Gold Guy ",
+            "rarity": "mythic",
+            "individualData": [
+                {
+                    "id": "0x08d131cfa304c3b47f9c57f95e6c4e5548d25bb4-6",
+                    "createdAt": "1645221619",
+                    "price": "1000000000000000000000"
+                },
+                {
+                    "id": "0x08d131cfa304c3b47f9c57f95e6c4e5548d25bb4-7",
+                    "createdAt": "1645859372",
+                    "price": "2000000000000000000000"
+                }
+            ]
         }
     ],
     pageNum: 1,
-    pageSize: 1
+    pageSize: 1,
+    totalAmount: 1
 }
 ```
 
