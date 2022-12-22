@@ -34,24 +34,24 @@ stateDiagram
 
     CreateRuntime(Entity) --> FetchCode(Entity)
 
-    LoadRpcModules --> Eval(code)
-    GetInitialEntities --> LoadInitialState
+    RequireModules --> Eval(code)
+    GetInitialState --> .OnStart()
 
     state RuntimeSandbox {
       FetchCode(Entity) --> Eval(code)
 
-    LoadInitialState
-    Eval(code) --> LoadInitialState
+    .OnStart()
+    Eval(code) --> .OnStart()
 
-      LoadInitialState --> OnUpdate
+      .OnStart() --> .OnUpdate(dt)
 
 
       state MainLoop {
-        OnUpdate --> OnUpdate
+        .OnUpdate(dt) --> .OnUpdate(dt)
       }
     }
 
-    OnUpdate --> [*]
+    .OnUpdate(dt) --> [*]
 ```
 
 ### Exposed functions and objects
@@ -80,6 +80,8 @@ function fetch(requestInit: Request): Promise<Response>
 function fetch(url: string, requestInit: Request): Promise<Response>
 
 class WebSocket {}
+
+function setImmediate(fn: Function): void
 ```
 
 > TODO: Document fetch and WebSocket adaptations for Decentraland Scenes
@@ -120,7 +122,7 @@ sequenceDiagram
 
 The scene can hook up to certain events by adding functions to the `module.exports` variable. The functions that can be registered are:
 
-- `onSceneLoaded(): Promise<void> | void` is called when the renderer signals the scene as "loaded and ready to run". The game-loop starts before this signal reaches the scene.
+- `onStart(): Promise<void> | void` is the first function to be called in a scene. It is recommended that all side-effects related to the initialization of a scene are performed inside the `onStart` function.
 - `onUpdate(deltaTime: number): Promise<void> | void` is called every frame. It is in charge of the scene itself to run the frame and send/receive changes to the renderer
 
 ```ts
