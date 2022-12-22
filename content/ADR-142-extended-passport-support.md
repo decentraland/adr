@@ -25,7 +25,7 @@ use the "description" field from profiles to use in the "Intro" section.
 use the "blocked" field from profiles to see/report blocked users.
 
 1. Equipped wearables:
-Take the information from the profile. There are the equipped wearables, emotes and the current name.
+take the information from the profile. There are the equipped wearables, emotes and DCL name.
 
 1. Items: wearables/emotes/names/lands: New endpoints will be created in [lambdos](https://github.com/decentraland/lambdos) for every type of item.
 
