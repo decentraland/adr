@@ -7,8 +7,6 @@ authors:
 status: Draft
 type: RFC
 spdx-license: CC0-1.0
-redirect_from:
-  - /rfc/RFC-1
 ---
 
 ## Need
