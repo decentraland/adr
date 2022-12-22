@@ -54,12 +54,10 @@ All endpoints except `/profiles` are expensive requests. Internally, endpoints 2
 
 The page number and size will be dynamic for every endpoint, received as query parameters. 
 
-- `pageSize: number`
-- `pageNum: number`
+- `pageSize: number` (optional)
+- `pageNum: number` (optional)
 
 **Pagination will be optional**: if any of this parameters is not present, the response won't be paginated. 
-
-Items displayed in each page will be ordered descending by the `transferredAt` field of the `NFT` entity (representing the date in which the NFT was received).
 
 ### Wearables
 
@@ -68,6 +66,12 @@ The wearables are searched in 2 different collections: **ethereum** and **matic*
 To be able to return a paginated and sorted response, a full query is made for both, then that results are merged into a single one, then sorted and stored in a LRU cache where the key is the address. Paginated requests are resolved using the cached data.
 
 For the rest of the paginated endpoints, queries to TheGraph are being paginated.
+
+### Order
+
+Items displayed in each endpoint's response will be ordered descending by the `transferredAt` field of the `NFT` entity (representing the date in which the NFT was received).
+
+Wearables can also be ordered descending by the `rarity` field, adding `orderBy=rarity` to the query parameters.
 
 ## Endpoints details
 
