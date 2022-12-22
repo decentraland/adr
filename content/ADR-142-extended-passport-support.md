@@ -22,7 +22,7 @@ The applicable requirements from the Catalyst point of view:
 use the "description" field from profiles to use in the "Intro" section.
 
 1. Block/Unblock users:
-Use the "blocked" field from profiles to see/report blocked users.
+use the "blocked" field from profiles to see/report blocked users.
 
 1. Equipped wearables:
 Take the information from the profile. There are the equipped wearables, emotes and the current name.
