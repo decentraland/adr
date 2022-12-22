@@ -19,7 +19,7 @@ This view requires storing some information in the profile entity and retrieving
 The applicable requirements from the Catalyst point of view:
 
 1. Intro of a user:
-Use the "description" field from profiles to use in the "Intro" section.
+use the "description" field from profiles to use in the "Intro" section.
 
 1. Block/Unblock users:
 Use the "blocked" field from profiles to see/report blocked users.
