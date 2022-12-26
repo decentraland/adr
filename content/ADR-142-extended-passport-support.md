@@ -5,7 +5,7 @@ title: Technical Assessment for the Extended Passport
 authors:
   - manumena
 status: LastCall
-type: Standars Track
+type: Standards Track
 spdx-license: CC0-1.0
 layout: adr
 ---
