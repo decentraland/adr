@@ -4,9 +4,10 @@ date: 2022-11-25
 title: Technical Assessment for the Extended Passport
 authors:
   - manumena
-status: Draft
-type: RFC
+status: LastCall
+type: Standars Track
 spdx-license: CC0-1.0
+layout: adr
 ---
 
 ## Abstract
