@@ -1,7 +1,7 @@
 ---
 adr: 76
 date: 2022-04-04
-title: Enable searching entities by URN prefix
+title: Enable searching entities by URN Third Party Collections
 status: Living
 authors:
 - agusaldasoro
@@ -14,7 +14,7 @@ spdx-license: CC0-1.0
 
 ## Context and Problem Statement
 
-As part of the Third Party Project, the need of exposing all items of a collection appeared. The solution proposed solves a more generic approach of the problem: the ability to list all entities in Content Server which their pointers match the prefix given.
+As part of the Third Party Project, the need of exposing all items of a collection appeared. The solution proposed solves a more generic approach of the problem: the ability to list all entities in Content Server which their pointers are in the Third Party Collection.
 
 ## Considered options
 
@@ -27,9 +27,32 @@ The decision is to solve this at Content Server Level as the approach of the fil
 
 The creation of a [new endpoint in the Content Server](https://github.com/decentraland/catalyst-api-specs/pull/21):
 
-`GET /entities/currently-pointed/{urnPrefix}`
+#### REQUEST
 
-That returns a list with all active entityIds that point to at least one pointer with the urnPrefix.
+`GET /content/entities/active/collections/{collectionUrn}`
+
+#### RESPONSE
+
+```json
+[
+  {
+    "entityId": "bafkreidtudd3elgkwojklsfr7w4rrrnswcsnwexpchy4raqnvfwiid52mm",
+    "pointer": "urn:decentraland:matic:collections-thirdparty:woodies:0x134460d32fc66a6d84487c20dcd9fdcf92316017:0"
+  },
+  {
+    "entityId": "bafkreiendurkhozosr2np6vswta745jjnbvym65oiow5yqss4eed2oanuy",
+    "pointer": "urn:decentraland:matic:collections-thirdparty:woodies:0x134460d32fc66a6d84487c20dcd9fdcf92316017:1"
+  }
+]
+```
+
+That returns a list with all active entityIds whose urn are part of the `collectionUrn` given.
+
+The `collectionUrn` format must follow the one defined in [URN Repository](https://github.com/decentraland/urn-resolver#:~:text=supported%20on%20polygon-,decentraland%3A%7Bprotocol%7D%3Acollections%2Dthirdparty%3A%7BthirdPartyName%7D%3A%7BcollectionId%7D,-%3A%20Resolves%20the%20ethereum) which is: `decentraland:{protocol}:collections-thirdparty:{thirdPartyName}:{collectionId}:{itemId}`.
+
+This filter can be used at thirdPartyName, collectionId or itemId level. All of them will work returning all wearables in the content server for the third party, all wearables in the given collection and the wearable with the item ID respectively.
+
+No other format or filter will be allowed in this endpoint as that could lead to a performance degradation of the Content Server Database.
 
 Issue: [@catalyst#878](https://github.com/decentraland/catalyst/issues/878)
 
@@ -40,7 +63,7 @@ Modified the deployments of entities to update the row of the modified pointer t
 
 ## Status
 
-Accepted
+Done
 
 ## Consequences
 
