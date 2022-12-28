@@ -14,7 +14,7 @@ spdx-license: CC0-1.0
 
 ## Context and Problem Statement
 
-As part of the Third Party Project, the need of exposing all items of a collection appeared. The solution proposed solves a more generic approach of the problem: the ability to list all entities in Content Server which their pointers are in the Third Party Collection.
+The Third Party Project requires the ability to display all items in a collection. The proposed solution addresses this requirement by providing a way to list all entities in Content Server that have pointers that belong to the Third Party Collection.
 
 ## Considered options
 
@@ -46,7 +46,7 @@ The creation of a [new endpoint in the Content Server](https://github.com/decent
 ]
 ```
 
-That returns a list with all active entityIds whose urn are part of the `collectionUrn` given.
+That returns a list with all active `entityId`s whose urn are part of the `collectionUrn` given as a path param in the request.
 
 The `collectionUrn` format must follow the one defined in [URN Repository](https://github.com/decentraland/urn-resolver#:~:text=supported%20on%20polygon-,decentraland%3A%7Bprotocol%7D%3Acollections%2Dthirdparty%3A%7BthirdPartyName%7D%3A%7BcollectionId%7D,-%3A%20Resolves%20the%20ethereum) which is: `decentraland:{protocol}:collections-thirdparty:{thirdPartyName}:{collectionId}:{itemId}`.
 
