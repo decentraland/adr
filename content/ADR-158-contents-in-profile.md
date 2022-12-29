@@ -3,7 +3,7 @@ layout: adr
 adr: 158 
 title: Enforce contents field present in profile deployment
 date: 2022-12-22
-status: Review
+status: Final
 type: Standards Track
 spdx-license: CC0-1.0
 authors:
