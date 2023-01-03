@@ -14,15 +14,18 @@ authors:
 
 ## Abstract
 
-<!--
-Abstract is a multi-sentence (short paragraph) technical summary. This should be a very terse and human-readable version of the document section. **Someone should be able to read only the abstract to get the gist of what this document is about in its current state.** Abstracts should be always up to date with the current state of the document.
--->
+This document discusses the creation and use of ephemeral keys for signing
+service requests or operations on behalf of users in the Decentraland platform.
+It proposes the use of a set of permissions to be associated with the ephemeral key in order
+to ensure that it can only be used for specific types of requests (for e.g. 
+profile deployments).
 
-Abstract is a multi-sentence (short paragraph) technical summary. This should be
-a very terse and human-readable version of the document section. **Someone
-should be able to read only the abstract to get the gist of what this document
-is about in its current state.** Abstracts should be always up to date with the
-current state of the document.
+The document explores various options for specifying and reading these permissions,
+including using a structure similar to Amazon's AWS IAM service and using
+human-readable text that can also be machine-parsed. The goal of these measures
+is to ensure that ephemeral keys are used in a way that follows the principle of
+least privilege, and to allow users to sign keys that grant access only to the
+specific types of operations they wish to authorize.
 
 ## Context, Reach & Prioritization
 
