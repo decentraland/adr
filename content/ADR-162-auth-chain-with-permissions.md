@@ -220,8 +220,8 @@ await window.ethereum.request({
 
 And it generates a signature screen as follows (using Metamask):
 
-| ![1](../public/resources/ADR-162/img1.png) | ![2](../public/resources/ADR-162/img2.png) | ![3](../public/resources/ADR-162/img3.png) |
-|--------------------------------------------|--------------------------------------------|--------------------------------------------|
+| ![1](resources/ADR-162/img1.png) | ![2](resources/ADR-162/img2.png) | ![3](resources/ADR-162/img3.png) |
+|----------------------------------|----------------------------------|----------------------------------|
 
 ## Specification
 
