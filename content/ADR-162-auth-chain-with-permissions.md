@@ -16,16 +16,16 @@ authors:
 
 This document discusses the creation and use of ephemeral keys for signing
 service requests or operations on behalf of users in the Decentraland platform.
-It proposes the use of a set of permissions to be associated with the ephemeral key in order
-to ensure that it can only be used for specific types of requests (for e.g. 
-profile deployments).
+It proposes the use of a set of permissions to be associated with the ephemeral
+key in order to ensure that it can only be used for specific types of requests (
+for e.g. profile deployments).
 
-The document explores various options for specifying and reading these permissions,
-including using a structure similar to Amazon's AWS IAM service and using
-human-readable text that can also be machine-parsed. The goal of these measures
-is to ensure that ephemeral keys are used in a way that follows the principle of
-least privilege, and to allow users to sign keys that grant access only to the
-specific types of operations they wish to authorize.
+The document explores various options for specifying and reading these
+permissions, including using a structure similar to Amazon's AWS IAM service and
+using human-readable text that can also be machine-parsed. The goal of these
+measures is to ensure that ephemeral keys are used in a way that follows the
+principle of least privilege, and to allow users to sign keys that grant access
+only to the specific types of operations they wish to authorize.
 
 ## Context, Reach & Prioritization
 
@@ -58,20 +58,6 @@ user could sign the ephemeral key to only allow deployment of worlds under a
 certain name but not deployment of profiles nor scenes in the Catalyst network.
 
 ## Solution Space Exploration
-
-Current for deployment
-
-```
-AuthChain = [
-  {
-    SignerAddress
-  },
-  {
-    Payload,
-    SignatureOf(Payload, RealPk)
-  }
-]
-```
 
 ### Permission specification
 
@@ -123,11 +109,10 @@ able to parse the message signed by the user that contains the permission
 specification and be able to interpret it for allowing or disallowing the
 operation request accordingly.
 
-Here is a few options proposed for permission specification:
-
-Options 1 and 2 propose different payload options to be
-signed, based on [EIP-4361 Sign-In with Ethereum](https://eips.ethereum.
-org/EIPS/eip-4361).
+Here is a few options proposed for permission specification. Options 1 and 2
+propose different payload options to be
+signed, based
+on [EIP-4361 Sign-In with Ethereum](https://eips.ethereum.org/EIPS/eip-4361).
 
 Option 1: more yaml-like:
 
@@ -235,8 +220,8 @@ await window.ethereum.request({
 
 And it generates a signature screen as follows (using Metamask):
 
-| ![](resources/ADR-162/img1.png) | ![](resources/ADR-162/img2.png) | ![](resources/ADR-162/img3.png) |
-|---------------------------------|---------------------------------|---------------------------------|
+| ![1](../public/resources/ADR-162/img1.png) | ![2](../public/resources/ADR-162/img2.png) | ![3](../public/resources/ADR-162/img3.png) |
+|--------------------------------------------|--------------------------------------------|--------------------------------------------|
 
 ## Specification
 
