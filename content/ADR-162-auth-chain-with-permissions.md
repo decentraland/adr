@@ -31,8 +31,32 @@ only to the specific types of operations they wish to authorize.
 
 When signing in to Decentraland an ephemeral key is created and the user
 signs it using Metamask / WalletConnect / etc. That ephemeral key is
-then used by the Explorer to sign deployment requests on behalf of the user,
-for example for profile updates.
+then used by the Explorer to sign deployment of entities on behalf of the user,
+like for profile updates. For e.g.
+
+```json
+{
+  "version": "v3",
+  "localTimestamp": 1672836992842,
+  "authChain": [
+    {
+      "type": "SIGNER",
+      "payload": "0xed93e62f69c386617003ca0c8d78faca37a73912",
+      "signature": ""
+    },
+    {
+      "type": "ECDSA_EPHEMERAL",
+      "payload": "Decentraland Login\r\nEphemeral address: 0x9272b45a74942068e6Ebe3e326dc065F7C28e41d\r\nExpiration: 2023-01-09T09:11:13.802Z",
+      "signature": "0x827970db4cab26dd0b4743d4eff58c0e3401c400b50362421694b9d070ac624c7da889fa726c38429e8896c5de127666a33786d0c821aef2eea548029e7407eb1c"
+    },
+    {
+      "type": "ECDSA_SIGNED_ENTITY",
+      "payload": "bafkreigwzkkzrpkjugifokndlmvwsqfvpmoogthuol2zij67s7hj3flaxq",
+      "signature": "0x67f77d86e3e91459469110c2be16682d0c9ff57e402df6d0396033676d087f72334cbcc29972968311c5987660c58ac4d14876792c354bbd864e0302a6cce53f1c"
+    }
+  ]
+}
+```
 
 The ephemeral key has an expiration date and can be used for signing any
 kind of deployments on behalf of the user while the key is not expired. A
@@ -56,6 +80,29 @@ that the server that receives those requests can validate that the user granted
 access to the scopes required for the operation being requested. This way, the
 user could sign the ephemeral key to only allow deployment of worlds under a
 certain name but not deployment of profiles nor scenes in the Catalyst network.
+
+It is worth mentioning that this does not have any effect or implications on
+Auth Chains in which there is no ephemeral key, but rather the user signs the
+request directly. This is usually the case for scene deployments. For e.g.:
+
+```json
+{
+  "version": "v3",
+  "localTimestamp": 1669232361483,
+  "authChain": [
+    {
+      "type": "SIGNER",
+      "payload": "0xe2b6024873d218b2e83b462d3658d8d7c3f55a18",
+      "signature": ""
+    },
+    {
+      "type": "ECDSA_SIGNED_ENTITY",
+      "payload": "bafkreignljg5bvmzczke42gymktbraf7py7riwyclmbgzmwcyswxdgktju",
+      "signature": "0x82ccde2c7c6b300566c40fd6f3234876614564a6e13643e968fe4f69828a2fb41e8286fbf94ac92a19a5dfb96ff636a2d5e41406d5dfc200e76145cc4b0d96321c"
+    }
+  ]
+}
+```
 
 ## Solution Space Exploration
 
@@ -223,10 +270,31 @@ And it generates a signature screen as follows (using Metamask):
 | ![1](resources/ADR-162/img1.png) | ![2](resources/ADR-162/img2.png) | ![3](resources/ADR-162/img3.png) |
 |----------------------------------|----------------------------------|----------------------------------|
 
-## Specification
+### Backwards compatibility
 
-The idea for the creation of the payload to be signed comes from
-[EIP-4361 Sign-In with Ethereum](https://eips.ethereum.org/EIPS/eip-4361).
+In order to ensure that previously created Auth Chains continue to function
+correctly, it is important that the absence of permission specifications be
+treated as granting access to all operations. This means that if no permissions
+are specified, the Auth Chain should allow all operations to be performed.
+
+> Or alternatively, we could introduce a version number that can be used to
+> select the validation logic to be applied.
+
+### Permission checks
+
+The Auth Chain validation process should involve a method that returns an
+instance of a permission checker. This checker will be used by the service
+performing the checks to verify whether a particular operation is allowed on a
+specified resource. The checker will examine the permissions listed in the Auth
+Chain's permissions section and return a verdict indicating whether the
+operation is allowed or not based on the presence of allow or deny statements.
+
+### Signature validation
+
+Signature validation should not be affected at all. It should continue to
+work as before.
+
+## Specification
 
 <!--
 The technical specification should describe the syntax and semantics of ackaony 
