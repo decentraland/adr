@@ -48,7 +48,7 @@ Characteristics:
 - Components are imported from the files that defined them, using native TypeScript imports.
 - The tooling is able to traverse and analyze all the component definitions, extract their FQN and schema, in order to produce static information to render the editor UI and text (de)serializers.
 
-#### Calculating the component namber
+#### Calculating the component number
 
 For the rest of the document, we can assume that the component number will be derived using a hash of the FQN. The caveat is that the image of the function will be limited to `int32`, and that greatly increases the chances of collisions. This will mostly cover the **defining the component number** dimension, focusing the domain of the problem to how to define the FQN.
 
