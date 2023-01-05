@@ -31,7 +31,7 @@ And due to the imperative nature of the code, defining components (and their sch
 
 The solution space exploration will evaluate three big problems, **defining the component number**, **coding ergonomics** and **static reflection**.
 
-By **defining the component number**, the stability and speed of the internal protocols will be the key factor. Among with using third party libraries without component collisions.
+By **defining the component number**, the stability and speed of the internal protocols will be the main factor. Among using third-party libraries without component collisions.
 
 With **coding ergonomics**, how the developers _define_ and _use_ the components will be evaluated.
 
