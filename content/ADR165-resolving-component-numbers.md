@@ -137,7 +137,7 @@ export function loadAllComponents(workDir: string) {
     dependencies.filter(dep => resolveFile(dep, '/components.js'))
 
   // load current project
-  componentFilesToLoad.push(resolveFile(workDir, , '/components.js'))
+  componentFilesToLoad.push(resolveFile(workDir, '/components.js'))
 
   // reduce results
   const loadedComponents: ComponentDefinition[] = []
