@@ -12,7 +12,7 @@ authors:
 
 ## Abstract
 
-This RFC describes the non-functional problems to solve in relation to the component numbers of the SDK. It presents synchronization, usability and ergonomic problems behind the technical requirements for the performance. It presents alternatives as a jurney, to add context on the decisions. The document is still not conclusive.
+This RFC describes the non-functional issues to solve about the component numbers of the SDK. It presents synchronization, usability, and ergonomic problems behind the technical requirements for the performance. It extends alternatives as a journey to add context to the decisions. The document is still not conclusive.
 
 ## Context, Reach & Prioritization
 
