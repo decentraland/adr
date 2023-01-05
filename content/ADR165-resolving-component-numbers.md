@@ -22,7 +22,7 @@ But there is more than that, beyond the technical requirements, storing the stat
 
 As of the moment of writing this essay, components are identified by a user-defined number pointing to a schema. And that works perfectly for the use cases described in the first paragraph and from a technical perspective. But it is very short-sighted for the big non-functional requirements like enabling evolution, collaboration, and reusability/DRY:
 - Component numbers are defined by developers, in code
-- Third party providers (like physics libraries) may use the same component numbers, generating a conflict
+- Third-party providers (like physics libraries) may use the same component numbers, generating a conflict
 - There is no way to name components for a human-readable or diffable format, i.e. reading `188:[1,1,1],189:[1,1,1]` is not as good as `position:{x:1,y:1,z:1},scale:{x:1,y:1,z:1}`
 
 And due to the imperative nature of the code, defining components (and their schemas) makes it difficult to statically analyze the environment to extract information from it to create better tools. It would be highly beneficial to "analyze" a project to assess its components rather than "run" the code to extract its information.
