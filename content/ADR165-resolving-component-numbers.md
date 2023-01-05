@@ -35,7 +35,7 @@ By **defining the component number**, the stability and speed of the internal pr
 
 With **coding ergonomics**, how the developers _define_ and _use_ the components will be evaluated.
 
-And lastly, **static reflection** contemplates the ability of the approach to extract information from the raw assets of the project (and its libraries) to enable better creation tools and static representations of the scenes and composites.
+And lastly, **static reflection** contemplates the ability of the approach to extract information from the original assets of the project (and its libraries) to enable better creation tools and static representations of the scenes and composites.
 
 ### Ideal solution
 
