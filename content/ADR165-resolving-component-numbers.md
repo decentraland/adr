@@ -46,7 +46,7 @@ Characteristics:
 - The fully qualified name (FQN), defined as `package-name/route/to/component/Component` is used to derivate the deterministic component number.
 - Component numbers have no collisions. A Hash algorithm without collisions should be used to reduce the domain of the `Hash(FQN) -> integer`.
 - Components are imported from their files which defined them, using native TypeScript imports.
-- The tooling is able to traverse and analyze all the component definitions, extract their FQN and schema, in order to produce static information to render the editor UI and text (de)serializers.
+- The tooling is able to traverse and analyze all the component definitions, extract their FQN and schema, to produce static information to render the editor UI and text (de)serializers.
 
 #### Calculating the component number
 
