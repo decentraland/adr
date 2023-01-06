@@ -111,7 +111,11 @@ export { Velocity } from './components/Velocity'
 export { Acceleration } from './components/random-file'
 ```
 
-Third party components are imported directly from their libraries in the file that they are going to be used. `import { Rotator } from 'rotator-library/components'`.
+Third-party components are imported directly from their libraries in the file that they are going to be used.
+
+```ts
+import { Rotator } from 'rotator-library/components'
+```
 
 In this approach, no automatic convention is available to resolve their number or FQN, and thus the definition of the components themselves would need a manual FQN.
 
