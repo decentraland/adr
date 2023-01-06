@@ -68,7 +68,7 @@ function computeComponentNumber(fullyQualifiedName: string): number {
 
 Using a convention over configuration approach, components are defined in a well-known folder, using a constrained type to prevent imperative code and race conditions.
 
-All the components will be stored in the root folder "components", one per file. The FQN will be derived from the `packageName::FileName`, and the name of the component will be only defined by its filename.
+All the components will be stored as separate files in the root folder "components". The FQN will be derived from the `packageName::FileName`, and the component name will be only defined by its filename.
 
 Each file exports an `export default declareComponent(schema)` value, in order to be statically analyzed by simply importing the file with any JS runtime. The tooling also detects other side effects of importing the file to help/prevent the developers from tinting the component files with unrelated code.
 
