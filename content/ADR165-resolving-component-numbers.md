@@ -124,7 +124,7 @@ export const Velocity = declareComponent("my-scene::Velocity", {
 })
 ```
 
-This approach will also enable the tooling to load and run a variety of files to "as statically as possible" know their exposed components. Enabling components for internal usage being hidden from the editor or other tools.
+This approach will also enable the tooling to load and run diverse files to, as statically as possible, know their exposed components and the components used internally to be hidden from the editor or other tools.
 
 A naive component loader would look like this:
 
