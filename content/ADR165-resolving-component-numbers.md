@@ -21,7 +21,7 @@ Assuming a deterministic and compiled file (game.js) and a set of well-known ECS
 But there is more than that, beyond the technical requirements, storing the state in a human readable way is a fundamental use case of the whole product. In a way that can be shared with artists and developers to leverage their collaboration towards a beautiful and polished final experience. And a key element of iterating an experience (whether they use a text or WYSIWYG editor) is evolution of the assets, and that includes the data stored in the components of the entities.
 
 As of the moment of writing this essay, components are identified by a user-defined number pointing to a schema. And that works perfectly for the use cases described in the first paragraph and from a technical perspective. But it is very short-sighted for the big non-functional requirements like enabling evolution, collaboration, and reusability/DRY:
-- Component numbers are defined by developers, in code
+- Component numbers are defined in code by developers
 - Third-party providers (like physics libraries) may use the same component numbers, generating a conflict
 - There is no way to name components for a human-readable or diffable format, i.e. reading `188:[1,1,1],189:[1,1,1]` is not as good as `position:{x:1,y:1,z:1},scale:{x:1,y:1,z:1}`
 
