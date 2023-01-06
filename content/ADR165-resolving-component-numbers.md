@@ -103,7 +103,7 @@ This approach has many limitations and problems.
 
 ### Alternative 2
 
-Evolving the idea from the previous alternative, now all components are nominal, referenced by their name/symbol in typescript and exported as consts in a single file `./components.ts`. Enabling the tooling to only analyze one file like before, but removing entirely the code generation stage.
+The idea has evolved from the previous alternative by making all components nominal and referenced by their name/symbol in TypeScript. They are then exported as constants in a single file `./components.ts`, which allows the tooling to analyze only one file like before, but with the removal of the entire code generation stage.
 
 ```ts
 // components.ts
