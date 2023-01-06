@@ -70,7 +70,7 @@ Using a convention over configuration approach, components are defined in a well
 
 All the components will be stored as separate files in the root folder "components". The FQN will be derived from the `packageName::FileName`, and the component name will be only defined by its filename.
 
-Each file exports an `export default declareComponent(schema)` value, in order to be statically analyzed by simply importing the file with any JS runtime. The tooling also detects other side effects of importing the file to help/prevent the developers from tinting the component files with unrelated code.
+Each file exports an `export default declareComponent(schema)` value to be statically analyzed by simply importing the file with any JS runtime. The tooling also detects other side effects of importing the file to help/prevent the developers from tinting the component files with unrelated code.
 
 The resolution of FQN in the current _scene_ and its dependencies is deterministic by traversing the dependencies, detecting the convention, and then importing each component.
 
