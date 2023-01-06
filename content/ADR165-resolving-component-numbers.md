@@ -97,7 +97,7 @@ export const Acceleration =
 ```
 
 This approach has many limitations and problems.
-- Repeated component names are not possible, besides having non-repeated FQN. A `./components/Velocity` would collide with `physics-lib/Velocity`.
+- Repeated component names are not possible besides having non-repeated FQN. A `./components/Velocity` would collide with `physics-lib/Velocity`.
 - Generating code adds an extra step to the development flow, playing against the ergonomics of the static analyzers and tools like github's "go to reference", always requiring some external tool to fully interpret the code.
 - Adding convention over configuration reduces the flexibility of the code and limits emerging (and maybe better) implicit conventions between teams.
 
