@@ -72,7 +72,7 @@ All the components will be stored as separate files in the root folder "componen
 
 Each file exports an `export default declareComponent(schema)` value, in order to be statically analyzed by simply importing the file with any JS runtime. The tooling also detects other side effects of importing the file to help/prevent the developers from tinting the component files with unrelated code.
 
-The resolution of FQN of the current experience and its dependencies is deterministic by traversing the dependencies and detecting the convention, then importing each component.
+The resolution of FQN in the current _scene_ and its dependencies is deterministic by traversing the dependencies, detecting the convention, and then importing each component.
 
 In order for developers to use the components, the tooling generates a source file materializing all the components and adding a name to them. The generated code looks like this:
 
