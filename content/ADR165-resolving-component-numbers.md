@@ -66,7 +66,7 @@ function computeComponentNumber(fullyQualifiedName: string): number {
 
 ### Alternative 1
 
-Using a convention over configuration approach, components are defined in a well-known folder, using a constrained type to prevent imperative code and race conditions to happen.
+Using a convention over configuration approach, components are defined in a well-known folder, using a constrained type to prevent imperative code and race conditions.
 
 All the components will be stored in the root folder "components", one per file. The FQN will be derived from the `packageName::FileName`, and the name of the component will be only defined by its filename.
 
