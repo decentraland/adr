@@ -25,7 +25,7 @@ As of the moment of writing this essay, components are identified by a user-defi
 - Third-party providers (like physics libraries) may use the same component numbers, generating a conflict
 - There is no way to name components for a human-readable or diffable format, i.e. reading `188:[1,1,1],189:[1,1,1]` is not as good as `position:{x:1,y:1,z:1},scale:{x:1,y:1,z:1}`
 
-And due to the imperative nature of the code, defining components (and their schemas) makes it difficult to statically analyze the environment to extract information from it to create better tools. It would be highly beneficial to "analyze" a project to assess its components rather than "run" the code to extract its information.
+And due to the imperative code nature, defining components (and their schemas) makes it difficult to statically analyze the environment to extract information from it to create better tools. It would be highly beneficial to "analyze" a project to assess its components rather than "run" the code to extract its information.
 
 ## Solution space exploration
 
