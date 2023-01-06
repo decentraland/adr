@@ -74,7 +74,7 @@ Each file exports an `export default declareComponent(schema)` value to be stati
 
 The resolution of FQN in the current _scene_ and its dependencies is deterministic by traversing the dependencies, detecting the convention, and then importing each component.
 
-In order for developers to use the components, the tooling generates a source file materializing all the components and adding a name to them. The generated code looks like this:
+For developers to use the components, the tooling generates a source file materializing them with an added name. The generated code looks like this:
 
 ```ts
 // components.generated.ts
