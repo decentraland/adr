@@ -39,7 +39,7 @@ And lastly, **static reflection** contemplates the ability of the approach to ex
 
 ### Ideal solution
 
-The ideal solution is a _nominal_ collection of components, in which _names_ of components are used to identify the schemas.
+The ideal solution is a _nominal_ collection of components, in which their _names_ are used to identify the schemas.
 
 Characteristics:
 - Developers will never see the component number under normal circumstances.
