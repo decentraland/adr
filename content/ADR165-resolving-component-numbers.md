@@ -16,7 +16,7 @@ This RFC describes the non-functional issues to solve about the component number
 
 ## Context, Reach & Prioritization
 
-Assuming a deterministic and compiled file (`game.js`) and a set of well-known ECS components for rendering (Transform, Gltf, Material, MeshRenderer). It is easy to think about synchronizing either two instances of the `game.js#1` and `game.js#2` or to broadcast visual updates back-and-forth with a renderer. In this case, all components between all actors share a stable numeric identifier (component number) allowing ultra fast synchronization and CRDT semantics, which were hard technical requirements at the design stage.
+Assuming a deterministic and compiled file (game.js) and a set of well-known ECS components for rendering (Transform, Gltf, Material, MeshRenderer), it is easy to think about synchronizing either two instances of game.js#1 and game.js#2, or broadcasting visual updates back-and-forth with a renderer. In this case, all components between all actors share a stable numeric identifier (component number), allowing ultra-fast synchronization and CRDT semantics, which were hard technical requirements at the design stage.
 
 But there is more than that, beyond the technical requirements, storing the state in a human readable way is a fundamental use case of the whole product. In a way that can be shared with artists and developers to leverage their collaboration towards a beautiful and polished final experience. And a key element of iterating an experience (whether they use a text or WYSIWYG editor) is evolution of the assets, and that includes the data stored in the components of the entities.
 
