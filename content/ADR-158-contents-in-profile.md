@@ -3,7 +3,7 @@ layout: adr
 adr: 158 
 title: Enforce contents field present in profile deployment
 date: 2022-12-22
-status: Review
+status: Final
 type: Standards Track
 spdx-license: CC0-1.0
 authors:
@@ -28,7 +28,7 @@ Before activating this validation, all clients need to fix the way they are depl
 
 This new validation will take place starting from the date GMT: Tuesday, January 10, 2023 3:00:00 PM as documented in [ADR-51](/adr/ADR-51)
 
-`1673362800000 = 2023-01-10T15:00:00Z`
+`1674576000000 = 2023-01-24T15:00:00Z`
 
 ## RFC 2119 and RFC 8174
 
