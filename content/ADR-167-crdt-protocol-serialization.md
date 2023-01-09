@@ -11,7 +11,7 @@ authors:
 ---
 
 ## Abstract
-This ADR intents to modify ADR-117 serialization, while the ADR-166 intents to modify the ADR-117 CRDT specification.
+This ADR intends to modify ADR-117 serialization, while the ADR-166 aims to change the ADR-117 CRDT specification.
 
 ## Context, Reach & Prioritization
 
@@ -22,11 +22,11 @@ Discuss and go into detail about the subject in question. Make sure you cover:
 - Datapoints and related background information
 - Vocabulary and key terms
 -->
-After the entity aproach beside the ADR-166, the current serialization and a new operation has been changed.  
+After the entity approach, besides the ADR-166, the current serialization and a new operation have been changed.  
 
 
 ## Definition and serialization
-The protocol keeps planed, for fast serialization. In this way, the `c++` struct has to be understood as contiguos:
+The protocol keeps planned flat, for fast serialization. In this way, the `c++` struct has to be understood as contiguous:
 
 ```cpp
 enum class CrdtMessageType: uint32_t {
@@ -75,16 +75,16 @@ struct DeleteEntityMessageBody {
 ```
 
 The changes are: 
-- `entity` is now an union, but still 32bit number. 
-- `timestamp` is now 32bit number instead of 64bit
--  `data_length` is not longer in the `DeleteComponentMessage`
+- `entity` is now an union, but still a 32-bit number. 
+- `timestamp` is now a 32-bit number instead of 64-bit
+-  `data_length` is no longer in the `DeleteComponentMessage`
 
 ### Entity
-Dividing the 32 bit number into two 16 bit numbers: one for `entity-number` and one for `entity-version`. The `entity-version` will be the higher part, so the `entity-number` the lower part:
+Dividing the 32-bit number into two 16-bit numbers: one for `entity-number` and one for `entity-version`. The `entity-version` will be the higher part, so the `entity-number` the lower one:
 
 `[31..16][15..0] = [entity-version][entity-number]`
 
-The functions to compound or uncompound (in typescript):
+The functions to compound or decompound (in typescript):
 ```ts
 const MAX_U16 = 0xffff
 const MASK_UPPER_16_ON_32 = 0xff00
@@ -104,7 +104,7 @@ function toEntityId(
 }
 ```
 
-The limits are imposed by the range of the numbers. Each entity can have up to 65536 versions, and each scene can have up to 65536 simultaneously entities.
+The limits are imposed by the range of the numbers. Each entity can have up to 65536 versions and each scene can have up to 65536 simultaneous entities.
 
 
 ## RFC 2119 and RFC 8174
