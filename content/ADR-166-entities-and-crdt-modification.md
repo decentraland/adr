@@ -72,9 +72,9 @@ The only existing operation so far for CRDTs is `put(key, value, timestamp)`, wh
 
 The LWW rules would be maintained, but the `put` needs to add only one validation, which is:
 ```ts
-function put(key, ....) {
+function put(key, ...args) {
      if (key in deletedEntitySet) return
-     ....
+     // ... the rest of function
 }
 ```
 A `put` operation on an invalid key does not alter the state. 
