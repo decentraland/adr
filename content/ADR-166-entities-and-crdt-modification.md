@@ -9,6 +9,9 @@ authors:
   - leanmendoza
 ---
 
+## Abstract
+This ADR introduces the last definition of an Entity for SDK7 and also aims to change the ADR-117 CRDT specification adding a rule and a command.
+
 ## Context
 
 With the precedent of the ADRs (quote the adrs), the bases for the type of data and the basic rules of consensus between peers were defined. In the framework of the ECS system, the entity is a representative number within a data collection of a certain component and this number was established as a 32-bit positive integer. Up to now, no limit has been established (neither theoretical nor practical mention) on the number of supported entities, but it is inevitable to think that 2^32 of entities is an insane number.
