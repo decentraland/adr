@@ -1,7 +1,7 @@
 ---
-adr: 123
-title: CRDT Entity spaces
-date: 2022-05-09
+adr: 166
+title: Entity definition and deleted entities set for CRDT
+date: 2023-01-09
 status: Living
 type: Standards Track
 spdx-license: CC0-1.0
