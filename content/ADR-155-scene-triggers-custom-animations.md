@@ -65,7 +65,7 @@ This could be implemented via a component added to the player entity. It could b
 
 **Open questions**
 
-- Should the scene also be able to control the avatar locomotion animations?  For example, replace the default walk, run or jump animations for crawling, or skating or holding a gun, or whatever makes sense in the scene. Is this easy to achieve?
+- Should the scene also be able to control the avatar locomotion animations? For example, replace the default walk, run or jump animations with crawling, skating, holding a gun, or whatever makes sense in the scene. Is this easy to achieve?
 - Can scene custom animations also be able to spawn images or geometries? Like the hearts or the clap icons from default animations.
 
 ## RFC 2119 and RFC 8174
