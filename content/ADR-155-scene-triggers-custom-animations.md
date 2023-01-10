@@ -48,7 +48,7 @@ Discuss the potential alternatives and their impact. What alternatives are being
 The technical specification should describe the syntax and semantics of any new feature.
 -->
 
-It should be possible for content creators to upload files that include instructions for an avatar animation, following the same limitations as the files uploaded for NFT emotes. These animations however won’t be NFTs, they will be animations that the scene can trigger on any player who visits the scene.
+It should be possible for content creators to upload files that include instructions for an avatar animation, following the same limitations as the uploaded files for NFT emotes. These animations, however, won’t be NFTs but animations that the scene can trigger on any player visiting it.
 
 The scene can then trigger these animations on players whenever they make sense in the game’s mechanics. For example, Wondermine could play a “swing” animation whenever a player is mining a meteor, or the casinos could play a “show-cards” animation whenever the player plays their hand in a poker game. A fighting game could include animations for throwing punches, animations for receiving damage, and animations for dying.
 
