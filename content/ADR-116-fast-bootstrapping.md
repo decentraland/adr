@@ -36,7 +36,7 @@ But we want to continue improving that by solving the problem where for each res
 
 # Approach
 
-Leverage the snapshots mechanism by partitioning the snapshots by time range. The snapshot structure and how it is processed will remain the same. A catalyst will serve the content of all its active entities in multiple snapshots separated by its local deploy timestamp. Any time a snapshot is processed, a Catalyst remembers this and won't process it again anymore.
+Leverage the snapshots mechanism by partitioning the snapshots by time range. The snapshot structure and how it is processed will remain the same. A catalyst will serve the content of all its active entities in multiple snapshots separated by its entity timestamp. Any time a snapshot is processed, a Catalyst remembers this and won't process it again anymore.
 
 ### Snapshot generation
 
@@ -46,9 +46,11 @@ Instead of generating a complete snapshot every 6 hs, it will generate snapshots
   <img alt="Multiple snapshots" src="resources/RFC-16/multiple_snapshots.png"/>
 </figure>
 
+Given a time range _[t1, t2]_, a snapshot would contain "_all the entities with entityTimestamp within [t1,t2] that are **active at the generation time**_". The information associated to an entity in a snapshot are constant data across different Catalysts: _entityId, entityType, scene, pointers, authChain_ and _entityTimestamp_. This is really useful because it implies eventual convergence of the snapshot in different Catalysts. It is eventual because it depends on the _generation time_ of the snapshot.
+
 ### Snapshot process at bootstrap
 
-A Catalyst asks another for its snapshots, then it will process the same way it's done now, but will save in the database its hash. Next time a Catalyst sees this hash, it won't process it again.
+A Catalyst asks another one for its snapshots, then it will process it by deploying all the entities within it, but will save in the database its hash. Next time a Catalyst sees this hash, it won't process it again.
 
 This way we avoid reprocessing snapshots but two complexities arise:
 
@@ -87,8 +89,7 @@ There will be important performance improvements in the Catalyst bootstrap when 
 1. Reduce the catalyst downtime from ~30 min to less than 5 min.
 2. Reduce the network traffic of 1 GB per node to something way smaller.
 3. Process an active entity only one time.
-
-In addition, there will be performance improvements in the snapshots generation as it won't be necessary to regenerate the snapshot covering the whole timeline. It will be only needed for a short period of time.
+4. Don't generate a big snapshot file making an expensive db query call scanning a huge db table and making high i/o tasks writing the file each time a Catalyst is restarted.
 
 # Competition (alternatives)
 
@@ -98,3 +99,4 @@ In addition, there will be performance improvements in the snapshots generation 
 # Key Dependencies and Open Questions
 
 - How will the transition be where multiple Catalysts have a different behavior in `/snapshots`?
+  At the first iteration, the big snasphot will be still generated and served in the `/snapshot` endpoint. If a Catalyst fails to read the snapshots in `/snapshots` it'll make a fallback to the old `/snapshot` endpoint.
