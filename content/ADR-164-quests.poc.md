@@ -59,7 +59,7 @@ This UI may be developed using SDK and defining reusable UI components so every 
 
 Communication with the system, notifying events that happen in world, and receiving updates, so the Explorer is up to date.
 
-- Kernel should be responsible of receiving and notifiyng updates to Explorer.
+- Kernel should be responsible of receiving and notifying updates to Explorer.
 - Kernel should be able to receive requests from Explorer to start a quest and ask for it to the System.
 - Kernel should be able to notify in world events to the System, in order to make progress.
 
