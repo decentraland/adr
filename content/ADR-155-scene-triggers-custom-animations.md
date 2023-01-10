@@ -40,7 +40,7 @@ While playing alone, these customized animations can also bring a lot more fun i
 Discuss the potential alternatives and their impact. What alternatives are being considered, their benefits, their costs (team resources, money, time frames), and mitigations for any drawbacks.
 -->
 
-Discuss the potential alternatives and their impact. What alternatives are being considered, their benefits, their costs (team resources, money, time frames), and mitigations for any drawbacks.
+Discuss the potential alternatives, their impact, which ones are being considered, their benefits, their costs (team resources, money, time frames), and mitigations for any drawbacks.
 
 ## Specification
 
