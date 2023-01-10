@@ -56,7 +56,7 @@ As happens currently with all player animations, other players around seeing the
 
 As with the triggering of default animations today, the scene should include special permissions to allow it to trigger emotes on an avatar.
 
-Since the animations are downloaded together with the scene's content, there's a corner case that needs to be handled gracefully: Player A sees Player B far away, but has not downloaded the scene where Player B is standing. The scene triggers an animation on Player B, but Player A doesn't have that animation downloaded. In this scenario, it's acceptable for Player A to not see the animation, since Player A is also not seeing the scene that gives that animation context.
+Since the animations are downloaded together with the scene's content, there's a corner case that needs to be handled gracefully: Player A sees Player B far away but has not downloaded the scene where Player B is standing. The scene triggers an animation on Player B, but Player A doesn't have that animation downloaded. In this scenario, it's acceptable that Player A can't see the animation, as Player A is also not seeing the scene that gives that animation context.
 
 
 **Syntax and semantics**
