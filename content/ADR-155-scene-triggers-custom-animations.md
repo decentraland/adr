@@ -50,7 +50,7 @@ The technical specification should describe the syntax and semantics of any new 
 
 It should be possible for content creators to upload files that include instructions for an avatar animation, following the same limitations as the uploaded files for NFT emotes. These animations, however, won’t be NFTs but animations that the scene can trigger on any player visiting it.
 
-The scene can then trigger these animations on players whenever they make sense in the game’s mechanics. For example, Wondermine could play a “swing” animation whenever a player is mining a meteor, or the casinos could play a “show-cards” animation whenever the player plays their hand in a poker game. A fighting game could include animations for throwing punches, animations for receiving damage, and animations for dying.
+The scene can trigger these animations on players whenever they make sense in the game’s mechanics. For example, Wondermine could play a “swing” animation whenever a player is mining a meteor, or the casinos could play a “show-cards” animation whenever the player plays their hand in a poker game. A fighting game could include animations for throwing punches, animations for receiving damage, and animations for dying.
 
 As happens currently with all player animations, other players that are around see the animations, the scene creator doesn’t need to do anything extra for this to happen.
 
