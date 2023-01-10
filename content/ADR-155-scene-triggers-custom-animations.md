@@ -32,7 +32,7 @@ Discuss and go into detail about the subject in question. Make sure you cover:
 
 In most Decentraland experiences, you can see other players standing still even if they’re actively engaging with the scene, just standing motionless. This limits a lot of the social aspects of playing with others. It also makes you wonder if other players are even playing, if they’re not even at the keyboard, or if they’re just confused trying to understand the rules.
 
-While playing alone, these customized animations can also bring a lot more fun into a scene, by making our actions more lively and leaving less to our suspension of disbelief.
+While playing alone, these customized animations can also bring a lot more fun into a scene by making our actions more lively and leaving less to our suspension of disbelief.
 
 ## Solution Space Exploration
 
