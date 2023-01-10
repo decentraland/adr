@@ -51,7 +51,7 @@ Minimal UI for quest tracking and receive real-time notifications about the prog
 
 - Users should have a UI where to see the current quests (in progress) and the status. 
 - Users should be able to cancel/drop a quest.
-- Users should be able to discover quests in World. (NPC Givers)
+- Users should be able to discover public quests in World. (NPC Givers)
 
 This UI may be developed using SDK and defining reusable UI components so every Explorer implementation should not implement custom UIs.
 
