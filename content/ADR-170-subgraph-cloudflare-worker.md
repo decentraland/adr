@@ -48,7 +48,7 @@ The configured strategy, called `RandomAndFallback` will forward the query to a 
 
 ## Solution Space Exploration
 
-All Decentraland applications should start querying subgraphs trough the worker. Meaning that in order to use it, they should update the current endpoints they are using to the new one. The API is exactly the same, so queries remain the same.
+All Decentraland applications should start querying subgraphs through the worker. Meaning that in order to use it, they should update the current endpoints they are using to the new one. The API is exactly the same, so queries remain the same.
 
 The worker might not have all subgraphs configured. The following request can be used to get a list of all subgraphs that can be consumed with it.
 
