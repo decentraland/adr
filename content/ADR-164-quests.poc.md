@@ -47,7 +47,7 @@ Defining a valid graph, as it may require some conditions:
 
 ### Explorer
 
-Minimal UI for quest tracking and receive real-time notifications about the progress:
+Minimal global UI for quest tracking and receive real-time notifications about the progress:
 
 - Users should have a UI where to see the current quests (in progress) and the status. 
 - Users should be able to cancel/drop a quest.
