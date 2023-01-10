@@ -96,7 +96,7 @@ Users may ask for quests state and metrics, but completed Quests may be stored f
 
 - Start Quest
 
-There would be several ways to discovery a Quest. The user may be interested to start any of them. 
+There would be several ways to discover a Quest. The user may be interested to start any of them. 
 
 ```mermaid
 sequenceDiagram
