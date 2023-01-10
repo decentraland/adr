@@ -61,7 +61,7 @@ Since the animations are downloaded together with the scene's content, there's a
 
 **Syntax and semantics**
 
-This could be implemented via a component that is added to the player entity, which can be used to trigger animations either from the default list of animations, or from any animation file that is uploaded with the scene. 
+This could be implemented via a component added to the player entity. It could be used to trigger animations from the default list of them or any animation file uploaded with the scene. 
 
 **Open questions**
 
