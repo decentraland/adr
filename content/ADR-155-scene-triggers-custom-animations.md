@@ -18,7 +18,7 @@ slug: /adr/scene-triggers-custom-animations
 Abstract is a multi-sentence (short paragraph) technical summary. This should be a very terse and human-readable version of the document section. **Someone should be able to read only the abstract to get the gist of what this document is about in its current state.** Abstracts should be always up to date with the current state of the document.
 -->
 
-This is a proposal to add a feature to the SDK to allow scene creators to include custom avatar animations as part of a scene’s content, and to trigger these animations on players.  The scene wil then be able to use these whenever they make sense in a scene’s mechanics.
+This is a proposal to add a feature to the SDK to allow scene creators to include custom avatar animations as part of a scene’s content and to trigger these animations on players.  The scene will then be able to use these whenever they make sense in a scene’s mechanics.
 
 ## Context, Reach & Prioritization
 
