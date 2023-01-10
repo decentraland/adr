@@ -52,7 +52,7 @@ It should be possible for content creators to upload files that include instruct
 
 The scene can trigger these animations on players whenever they make sense in the game’s mechanics. For example, Wondermine could play a “swing” animation whenever a player is mining a meteor, or the casinos could play a “show-cards” animation whenever the player plays their hand in a poker game. A fighting game could include animations for throwing punches, animations for receiving damage, and animations for dying.
 
-As happens currently with all player animations, other players that are around see the animations, the scene creator doesn’t need to do anything extra for this to happen.
+As happens currently with all player animations, other players around seeing them; the scene creator doesn’t need to do anything extra for this to happen.
 
 As with the triggering of default animations today, the scene should include special permissions to allow it to trigger emotes on an avatar.
 
