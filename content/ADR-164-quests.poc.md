@@ -84,7 +84,7 @@ The Quests System will expose an API with convenient endpoints for Designers and
 
 It also will process all events received from Explorer/Kernel sessions and make progress to corresponding Quest instances.
 
-Users may ask for quests state and metrics, but completed Quests may be stored for a certain time if the system needs space or it may grow undefinetly.
+Users may ask for quests state and metrics, but completed Quests may be stored for a certain time if the system needs space or it may grow indefinitely.
 
 - The system should be able to process all events in parallel, in order to make progress in corresponding Quests.
 - The system should be able to accept connections and subscriptions to Quest instances.
