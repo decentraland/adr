@@ -46,7 +46,9 @@ Instead of generating a complete snapshot every 6 hs, it will generate snapshots
   <img alt="Multiple snapshots" src="resources/RFC-16/multiple_snapshots.png"/>
 </figure>
 
-Given a time range _[t1, t2]_, a snapshot would contain "_all the entities with entityTimestamp within [t1,t2] that are **active at the generation time**_". The information associated to an entity in a snapshot are constant data across different Catalysts: _entityId, entityType, scene, pointers, authChain_ and _entityTimestamp_. This is really useful because it implies eventual convergence of the snapshot in different Catalysts. It is eventual because it depends on the _generation time_ of the snapshot.
+All the Catalyst will have the same initial timestamp *__t~initial~__* from which they will generate the same time ranges for the snapshots: _[t~initial~, t~1~], [t~1~, t~2~], ...,[t~n-1~, t~n~]_.
+
+Given a time range *[t~1~, t~2~]*, a snapshot would contain "_all the entities with entityTimestamp within [t~1~,t~2~] that are **active at the generation time**_". The information associated to an entity in a snapshot are constant data across different Catalysts: _entityId, entityType, scene, pointers, authChain_ and _entityTimestamp_. This is really useful because it implies eventual convergence of the snapshot in different Catalysts. It is eventual because it depends on the _generation time_ of the snapshot.
 
 ### Snapshot process at bootstrap
 
