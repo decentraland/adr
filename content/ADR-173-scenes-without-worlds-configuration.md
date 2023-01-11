@@ -1,13 +1,12 @@
 ---
 layout: adr
-adr: XXX
+adr: 173
 title: Catalyst Network to reject scene deployments that contain worldConfiguration section
-date: 2022-12-08
+date: 2023-01-11
 status: Review
 type: Standards Track
 spdx-license: CC0-1.0
 authors:
-
 - marianogoldman
 
 ---
