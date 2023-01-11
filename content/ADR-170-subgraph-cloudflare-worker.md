@@ -12,7 +12,11 @@ authors:
 
 ## Abstract
 
-Using a [Cloudfare Worker](https://workers.cloudflare.com/) to make graphql queries to subgraphs hosted by different providers to increase reliability.
+The Decentraland ecosystem relies on making graphql queries to different subgraphs to obtain indexed data from the blockchain. However, the use of a single provider for these subgraphs, TheGraph's Hosted Service, has led to issues such as subgraphs becoming corrupt or lagging behind, affecting the overall ecosystem. To address these issues and prepare for the potential sunset of TheGraph's service, a new solution was proposed: the use of a Cloudflare Worker as a provider proxy.
+
+By using a worker, different strategies can be coded to pick a provider and handle errors accordingly, abstracting this logic from the application level into a single endpoint. This allows for greater reliability by using a random provider and fallback options if the initial provider fails.
+
+All Decentraland applications should begin querying subgraphs through the worker, with the API remaining the same for seamless integration.
 
 ## Context, Reach & Prioritization
 
