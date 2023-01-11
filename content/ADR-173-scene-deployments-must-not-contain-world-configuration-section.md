@@ -1,8 +1,7 @@
 ---
 layout: adr
 adr: 173
-title: Catalyst Network to reject scene deployments that contain
-worldConfiguration section
+title: Scene deployments must not contain worldConfiguration section
 date: 2023-01-11
 status: Review
 type: Standards Track
