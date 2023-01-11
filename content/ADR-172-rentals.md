@@ -72,7 +72,7 @@ The Rentals Smart Contract by itself might not be too easy to use, specially bec
 
 In order for the contract to be used successfully, a dapp to facilitate signing and server to handle this signatures will be required.
 
-The design of the contract does not require any existing protocol to be updated.
+The contract design does not require any existing protocol to be updated.
 
 
 ## Specification
