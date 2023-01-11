@@ -1,12 +1,14 @@
 ---
 layout: adr
 adr: 173
-title: Catalyst Network to reject scene deployments that contain worldConfiguration section
+title: Catalyst Network to reject scene deployments that contain
+worldConfiguration section
 date: 2023-01-11
 status: Review
 type: Standards Track
 spdx-license: CC0-1.0
 authors:
+
 - marianogoldman
 
 ---
@@ -23,8 +25,8 @@ Worlds Content Server.
 
 ## Context, Reach & Prioritization
 
-In order to deploy to Worlds Content Server it is mandatory to add a section
-like the following in `scene.json`.
+In order to deploy a scene to Worlds Content Server it is mandatory to add a
+section like the following in `scene.json`.
 
 ```json
 {
@@ -34,8 +36,10 @@ like the following in `scene.json`.
 }
 ```
 
-This contains metadata that is important at the time of deployment. In the
-Catalyst Network this information is completely ignored, and hence, unnecessary.
+This contains metadata that is important at the time of deployment. It may
+also contain other configuration, like skybox settings, comms transport to
+use, etc. None of these settings have any effect in the Catalyst Network, this
+information is completely ignored and may lead to confusion.
 
 In a regular flow while creating content, the developer could use Worlds as
 a preview service, and once the scene is polished and final he is ready to
@@ -43,8 +47,16 @@ deploy to the Catalyst network under some owned parcel(s). At this stage, that
 `scene.json` should have the `worldConfiguration` section removed, so that
 information between Worlds and Genesis City is kept where it belongs.
 
-## RFC 2119 and RFC 8174
+## Decisions
 
-> The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "
-> SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL"
-> in this document are to be interpreted as described in RFC 2119 and RFC 8174.
+A new validation is added to content validator so that the Catalysts reject
+deployments of scenes containing a `worldConfiguration` section.
+
+## Deadline
+
+    ADR173_DEADLINE: 2023-01-17T15:00:00Z
+    Unix Timestamp: 1673967600000
+
+## Consequences
+
+Entities that don't pass the validations will be rejected after the deadline.
