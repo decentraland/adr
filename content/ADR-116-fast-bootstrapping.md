@@ -36,7 +36,7 @@ But we want to continue improving that by solving the problem where for each res
 
 # Approach
 
-Leverage the snapshots mechanism by partitioning the snapshots by time range. The snapshot structure and how it is processed will remain the same. A catalyst will serve the content of all its active entities in multiple snapshots separated by its entity timestamp. Any time a snapshot is processed, a Catalyst remembers this and won't process it again anymore.
+Leverage the snapshots mechanism by partitioning the snapshots by time range. The snapshot structure and how it is processed will remain the same. A Catalyst will serve the content of all its active entities in multiple snapshots separated by its entity timestamp. Any time a snapshot is processed, a Catalyst remembers this and won't process it again anymore.
 
 ### Snapshot generation
 
