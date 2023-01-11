@@ -91,7 +91,7 @@ There will be important performance improvements in the Catalyst bootstrap when 
 1. Reduce the Catalyst downtime from ~30 min to less than 5 min.
 2. Reduce the network traffic of 1 GB per node to something way smaller.
 3. Process an active entity only once.
-4. Don't generate a big snapshot file making an expensive db query call scanning a huge db table and making high i/o tasks writing the file each time a Catalyst is restarted.
+4. Don't generate a big snapshot file making an expensive db query call that scans the huge db table and avoids making high I/O tasks writing the file each time a Catalyst is restarted.
 
 # Competition (alternatives)
 
