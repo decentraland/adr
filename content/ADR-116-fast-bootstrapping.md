@@ -101,4 +101,4 @@ There will be important performance improvements in the Catalyst bootstrap when 
 # Key Dependencies and Open Questions
 
 - How will the transition be where multiple Catalysts have a different behavior in `/snapshots`?
-  At the first iteration, the big snasphot will be still generated and served in the `/snapshot` endpoint. If a Catalyst fails to read the snapshots in `/snapshots` it'll make a fallback to the old `/snapshot` endpoint.
+  The first time the Fast Boostrapping code is run, the big snapshot will be still generated and served in the `/snapshot` endpoint. If a Catalyst fails to read the snapshots in `/snapshots` it'll make a fallback to the old `/snapshot` endpoint.
