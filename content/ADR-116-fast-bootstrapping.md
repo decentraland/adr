@@ -98,7 +98,7 @@ There will be important performance improvements in the Catalyst bootstrap when 
 - Do the same but separated by entity type.
 - Apply this mechanism only to profiles. The rest of the entities continue as full snapshots.
 
-# Key Dependencies and Open Questions
+# FAQ
 
 - How will the transition be where multiple Catalysts have a different behavior in `/snapshots`?
-  The first time the Fast Boostrapping code is run, the big snapshot will be still generated and served in the `/snapshot` endpoint. If a Catalyst fails to read the snapshots in `/snapshots` it'll make a fallback to the old `/snapshot` endpoint.
+  In the first version of the Fast Boostrapping code, the big snapshot will be still generated and served in the `/snapshot` endpoint. If a Catalyst fails to read the snapshots in `/snapshots` it'll make a fallback to the old `/snapshot` endpoint.
