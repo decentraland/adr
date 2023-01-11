@@ -8,9 +8,7 @@ status: Review
 type: Standards Track
 spdx-license: CC0-1.0
 authors:
-
-- marianogoldman
-
+  - marianogoldman
 ---
 
 ## Abstract
