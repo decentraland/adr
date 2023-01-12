@@ -22,7 +22,7 @@ the Worlds Content Server.
 
 ## Context, Reach & Prioritization
 
-In order to deploy a scene to Worlds Content Server it is mandatory to add a
+In order to deploy a scene to the Worlds Content Server it is mandatory to add a
 section like the following in `scene.json`.
 
 ```json
