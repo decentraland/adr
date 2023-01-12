@@ -41,7 +41,7 @@ information is completely ignored and may lead to confusion.
 In a regular flow while creating content, the developer could use Worlds as
 a preview service, and once the scene is polished and final he is ready to
 deploy to the Catalyst network under some owned parcel(s). At this stage, that
-`scene.json` should have the `worldConfiguration` section removed, so that
+`scene.json` should have the `worldConfiguration` property removed, so that the
 information between Worlds and Genesis City is kept where it belongs.
 
 ## Decisions
