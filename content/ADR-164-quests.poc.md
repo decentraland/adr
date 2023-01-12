@@ -16,11 +16,11 @@ The Quests System is an important feature that facilitates users to explore the 
 
 ## Context, Reach & Prioritization
 
-Users use to complain that when they enter the world and after a certain time, they don't know what to do, or where to go and feel lost. This problem impacts directly the retention of the users and the time quality of the first steps in the platform.
+Users usually to complain that when they enter the world and after a certain time, they don't know what to do, or where to go and feel lost. This problem impacts directly on user retention because of a possible bad first impressions on the platform.
 
-Having a Quests System can solve part of the problem, giving users a reason to stay and have a nice time. This feature would also allow content creators to be creative and increase engagement.
+Having a Quests System can solve part of the problem, giving users a reason to stay and have a nice time. This feature would also allow content creators to creatively increase engagement.
 
-The last sentence is important to remark on since it is one of the differences to any other Quest System you may know from video games, where the quests are defined by the owners or internal teams. In this case, there should be a focus on creating easy tools for quest designers.
+The last sentence is important to remark on since it makes it different to any other Quest System you may know from video games, where the quests are defined by the owners or internal teams. In this case, we're opening the doors to creators to design their own quests and to developers to create tools to improve quests ecosystem.
 
 On the other side, the system (backend) should be in charge of tracking and validating the progress and accepting new quest deployments.
 
@@ -33,13 +33,13 @@ For the sake of fast iteration and discovery, this document will explore the bou
 
 ## Solution Space Exploration
 
-The following sections will describe what would be necessary and alternatives for this Proof of Concept, where designers can submit quests, users experience them and the system expose some metrics. 
+The following sections will describe what would be necessary, including some alternatives, for a Proof of Concept where designers can submit quests and users can experience them while the system exposes some metrics. 
 
 ### Quest definition
 
 A Quest definition will include steps/tasks required for completion. It would be defined technically speaking as a graph, since it may have a non-linear complexity.
 
-Defining a valid graph, as it may require some conditions:
+Defining a valid quest definition in the form of a graph requires the following conditions:
 - it should have only one start node.
 - it should have at least one end node.  
 - it may have cycles but not endless loops.
@@ -47,20 +47,20 @@ Defining a valid graph, as it may require some conditions:
 
 ### Explorer
 
-Minimal global UI for quest tracking and receive real-time notifications about the progress:
+A minimal global UI for quest tracking and receiving real-time notifications about the progress requires the following:
 
 - Users should have a UI where to see the current quests (in progress) and the status. 
 - Users should be able to cancel/drop a quest.
 - Users should be able to discover public quests in World. (NPC Givers)
 
-This UI may be developed using SDK and defining reusable UI components so every Explorer implementation should not implement custom UIs.
+This UI may be developed using the SDK to build reusable UI components to be used in any Explorer implementation.
 
 ### Kernel
 
-Communication with the system, notifying events that happen in world, and receiving updates, so the Explorer is up to date.
-
-- Kernel should be responsible of receiving and notifying updates to Explorer.
-- Kernel should be able to receive requests from Explorer to start a quest and ask for it to the System.
+A communication channel with the system, built in the Kernel, notifying events that happen in world and receiving updates is required to keep the Explorer up to date.
+The responsibilities of this Kernel module are the following:
+- The Kernel should be responsible of receiving and notifying updates to the Explorer.
+- The Kernel should be able to receive requests from the Explorer to start a quest and ask for it to the System.
 - Kernel should be able to notify in world events to the System, in order to make progress.
 
 ### Actions
@@ -86,15 +86,16 @@ It also will process all events received from Explorer/Kernel sessions and make 
 
 Users may ask for quests state and metrics, but completed Quests may be stored for a certain time if the system needs space or it may grow indefinitely.
 
+The system will have the following requirements:
 - The system should be able to process all events in parallel, in order to make progress in corresponding Quests.
 - The system should be able to accept connections and subscriptions to Quest instances.
 - The system should be able to send updates to subscribed users.
 - The system should be able to respond to Quests state requests.
 - The system should expose metrics related to the Quests.
 
-### Workflows: Quest User
+### Workflows: User and quests interaction
 
-- Start Quest
+#### Start Quest
 
 There would be several ways to discover a Quest. The user may be interested to start any of them. 
 
@@ -108,7 +109,7 @@ sequenceDiagram
     end
 ```
 
-- Track Progress 
+#### Track Progress 
 
 Client should make progress by sending verified events
 ```mermaid
@@ -120,7 +121,7 @@ sequenceDiagram
     end
 ```
 
-- Real time updates
+#### Real time updates
 
 Once the API is defined, the system may expose different ways to query quest states, one of them is to use some long living channel (let's say WebSockets).
 
@@ -134,7 +135,7 @@ sequenceDiagram
 
 ### Workflows: Quest Designer 
 
-- Deploy new quest or modify existing quest
+##### Deploy new quest or modify existing quest
 
 When the quest definition is ready, the Quest Designer tool would be able to send the new or modified version to the Quest Server. The request should include the author signature.
 
@@ -145,9 +146,9 @@ sequenceDiagram
     Quest Server ->> Quest Designer: Send Quest submission response 
 ```
 
-- Retrieve quest stats
+#### Retrieve quest stats
 
-The quest author may be interested in the stats, how many users started, completed, and other information like starting and ending times.
+The quest author may be interested in their quest stats, how many users started or completed them and other information like starting and ending times.
 
 ```mermaid
 sequenceDiagram
@@ -157,12 +158,12 @@ sequenceDiagram
 
 ## Specification
 
-About the implementation and alternatives, each actor has some important decisions to explore.
+This section describes the technical details on how the Quests systems should be implemented. Each part of the quests system has alternatives to discuss and choose from.
 
 ### Communication between the System and Kernel
 
-In order to receive real time updates, there are two options to handle the communication:
-- Use a socket (peek any protocol like WebSocket, WebRTC, WebTransport, QUIC, etc) to keep posted on interested quests. 
+In order to receive real time updates to keep the user updated on the quests they're interested, there are two options to handle the communication:
+- Use a socket (peek any protocol like WebSocket, WebRTC, WebTransport, QUIC, etc).
 - Use a HTTP polling mechanism.
 
 ### Quest Model persistence
@@ -180,7 +181,7 @@ Also, the location of the persisted quests is important, for example:
 
 Designing a quest should be a good experience, without friction and intuitive.
 
-Asides from implementing a solution taking into account the possibility of visual edition and easy deployment, should also consider the accesibility of the interface i.e.:
+The solution should take into account the possibility of editing the quests visually, deployment them easily and having an easy to use and accessibile interface. To fulfill these requirements, the following can be done:
 - Create a hosted service where designers can access as a WebApp.
 - Provide executables or guidelines to run the application.
 
@@ -190,17 +191,17 @@ Authenticating designers may be required, so the alternatives are:
 
 ### Backend
 
-To provide a robust system, it should be scalable, easy to deploy and provide metrics.
+To provide a robust system, the services should be scalable, easy to deploy and provide metrics.
 
 Scalability must be thought from the beginning:
-- Horizontal scaling: should exist communication between instances.
+- Horizontal scaling: the services must be able to escale horizontally and communicate between their instances.
 - Vertical scaling: may consider the possibility of service redeployment without down-time.
 
-Easy to deploy:
+It should be easy to deploy:
 - CI/CD
 - Easy to follow and clear pipelines
 
-Observability:
+It should provide observability:
 - Instrument application to collect logs, traces and metrics
 - Domain related metrics
 - Performance metrics
