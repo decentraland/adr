@@ -13,7 +13,7 @@ redirect_from:
 
 # Abstract
 
-Every time a Catalyst is restarted, the content server processes a snapshot containing all the active entities ƒor each server. It reads all the entities in these snapshots and deploys the ones that it does not already have locally. This process takes up to ~half an hour. This document discusses and proposes solutions to improve this situation.
+Every time a Catalyst is restarted, the content server processes a snapshot containing all the active entities for each server. It reads all the entities in these snapshots and deploys the ones that it does not already have locally. This process takes up to ~half an hour. This mechanism is defined in the [ADR-52](/adr/ADR-52), please read the document for more context. This document discusses and proposes solutions to improve this situation.
 
 # Need
 
@@ -90,7 +90,7 @@ There will be important performance improvements in the Catalyst bootstrap when 
 
 1. Reduce the Catalyst downtime from ~30 min to less than 5 min.
 2. Reduce the network traffic of 1 GB per node to something way smaller.
-3. Process an active entity only once.
+3. Process an active entity from a snapshot only once.
 4. Don't generate a big snapshot file making an expensive db query call that scans the huge db table and avoids making high I/O tasks writing the file each time a Catalyst is restarted.
 
 # Competition (alternatives)
