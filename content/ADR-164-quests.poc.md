@@ -49,7 +49,7 @@ Defining a valid quest definition in the form of a graph requires the following 
 
 A minimal global UI for quest tracking and receiving real-time notifications about the progress requires the following:
 
-- Users should have a UI where to see the current quests (in progress) and the status. 
+- Users should have a UI where to see their current quests (in progress) with their status. 
 - Users should be able to cancel/drop a quest.
 - Users should be able to discover public quests in World. (NPC Givers)
 
