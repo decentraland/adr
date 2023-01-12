@@ -12,7 +12,7 @@ authors:
 
 ## Abstract
 
-Scene is the only entity type that can be deployed in two different
+A scene is the only entity type that can be deployed in two different
 services: the Catalyst Network and the Worlds Content Server.
 
 When deploying scenes to Catalyst Network a new validation will reject those
