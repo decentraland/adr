@@ -78,6 +78,11 @@ Build a tool/CLI to easily design Quests, without conflicting with existing defi
 
 Using the predefined actions, the designer should be able to create a Quest definition with steps and requirements. The output of a quest definition is a graph which will be persisted in a convenient form.
 
+#### Personas
+
+Content creator is the user who would be applicable to create, edit or delete quests. This user would typically manage scenes somehow in order to add logic associated with the quests to them, but this might not be a mandatory trait in the future.
+
+
 ### Backend
 
 The Quests System will expose an API with convenient endpoints for Designers and Users. 
@@ -92,6 +97,7 @@ The system will have the following requirements:
 - The system should be able to send updates to subscribed users.
 - The system should be able to respond to Quests state requests.
 - The system should expose metrics related to the Quests.
+- The system should have a whitelist of external services it can call, for instance: Rewards.
 
 ### Workflows: User and quests interaction
 
@@ -146,6 +152,10 @@ sequenceDiagram
     Quest Server ->> Quest Designer: Send Quest submission response 
 ```
 
+When a quest is modified, one of the following options should happen:
+- Accept some user progress loss when they already started it.
+- Treat the modified quest as a new one so every user that already started it should continue the 'old' version. 
+
 #### Retrieve quest stats
 
 The quest author may be interested in their quest stats, how many users started or completed them and other information like starting and ending times.
@@ -165,6 +175,8 @@ This section describes the technical details on how the Quests systems should be
 In order to receive real time updates to keep the user updated on the quests they're interested, there are two options to handle the communication:
 - Use a socket (peek any protocol like WebSocket, WebRTC, WebTransport, QUIC, etc).
 - Use a HTTP polling mechanism.
+
+Having a bidirectional stream connection would allow users to receive updates async.
 
 ### Quest Model persistence
 
@@ -205,6 +217,12 @@ It should provide observability:
 - Instrument application to collect logs, traces and metrics
 - Domain related metrics
 - Performance metrics
+
+#### Decentralization
+
+The system should be decentralized in one way or another:
+- Content: quest designers can have their own quests server.
+- Architecture: sync of the whole quests system across multiple instances.
 
 ## RFC 2119 and RFC 8174
 
