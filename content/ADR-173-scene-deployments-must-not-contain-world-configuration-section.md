@@ -15,7 +15,7 @@ authors:
 A scene is the only entity type that can be deployed in two different
 services: the Catalyst Network and the Worlds Content Server.
 
-When deploying scenes to Catalyst Network a new validation will reject those
+When deploying scenes to the Catalyst Network a new validation will reject those
 that have `worldConfiguration` section as it doesn't make sense in Genesis
 City and may lead to confusions with regard to the same scene deployed in
 Worlds Content Server.
