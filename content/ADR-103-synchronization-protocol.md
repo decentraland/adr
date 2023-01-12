@@ -46,7 +46,7 @@ The full mechanism of Content Sync is defined in [ADR-116](/adr/ADR-116) and [AD
 
 ### `GET /content/snapshots`
 
-This endpoint returns the hash ids of the files that contain all the active entities of the server. Each file contains all the deployments in a server for a specific time range. The timeranges of all the files don't overlap and together complete a timeline with all the changes from the beginning of Decentraland to one day before the present. Then, each file can be downloaded from the server and parsed to deploy the changes locally.
+This endpoint returns the hash ids of the files that contain all the active entities of the server. Each file contains all the deployments in a server for a specific time range. The timeranges of all the files don't overlap and together complete a timeline with all the changes in the server from the beginning of Decentraland to one day before the present. Then, each file can be downloaded from the server and parsed to deploy the changes locally.
 
 The format of the snapshots is a list of JSONs also known as [ndjson](http://ndjson.org/), so it can be read line by line and each of them can be parsed as a valid JSON.
 
