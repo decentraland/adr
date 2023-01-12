@@ -52,7 +52,7 @@ Given a time range *[t<sub>1</sub>, t<sub>2</sub>]*, a snapshot would contain "_
 
 ### Snapshot process at bootstrap
 
-A Catalyst asks the other Catalysts in the network for one for the snapshots, then it will process it by deploying all the entities within it, but will save in the database the snapshot hash. Next time a Catalyst sees these hashes, it won't process the same snapshot again.
+A Catalyst asks the other Catalysts in the network for one for the snapshots, then it will process it by deploying all the entities within it, but will save in the database the snapshot hash. Next time a Catalyst sees these hashes, it won't process the same snapshot again. Note: if one deployment of a snapshot fails, it is persisted as a failed deployment in the database, so the snapshot can be considered as processed. It'll be retried in the future.
 
 This way we avoid reprocessing snapshots but two complexities arise:
 
