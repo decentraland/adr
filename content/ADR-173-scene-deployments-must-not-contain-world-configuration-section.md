@@ -23,7 +23,7 @@ the Worlds Content Server.
 ## Context, Reach & Prioritization
 
 In order to deploy a scene to the Worlds Content Server it is mandatory to add a
-section like the following in `scene.json`.
+`worldConfiguration` property like the following in its `scene.json` file:
 
 ```json
 {
@@ -38,16 +38,16 @@ also contain other configuration, like skybox settings, comms transport to
 use, etc. None of these settings have any effect in the Catalyst Network, this
 information is completely ignored and may lead to confusion.
 
-In a regular flow while creating content, the developer could use Worlds as
-a preview service, and once the scene is polished and final he is ready to
-deploy to the Catalyst network under some owned parcel(s). At this stage, that
+In a regular content creation flow, the developer could use Worlds as
+a preview service, and once the scene is polished and finished he is ready to
+deploy to the Catalyst network under some owned parcel(s). At this stage, the
 `scene.json` should have the `worldConfiguration` property removed, so that the
-information between Worlds and Genesis City is kept where it belongs.
+information between Worlds and the Genesis City is kept where it belongs.
 
 ## Decisions
 
-A new validation is added to content validator so that the Catalysts reject
-deployments of scenes containing a `worldConfiguration` section.
+A new validation is added to content validator so that the Catalysts can reject
+deployments of scenes containing the `worldConfiguration` property.
 
 ## Deadline
 
