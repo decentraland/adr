@@ -42,18 +42,18 @@ That problem magnifies the "queue optimization" problem of the interpreter of me
 ### Impossible use cases
 
 ## Static Scenes & Load Parcels
-Besides the limitation of the messages being sent, another limitation that we are facing was how the static scenes were implemented, and how bad they performed.
-No matter what kind of scene you have, for this scene to be able to work in Decentraland we need to download the game.js and eval that code to run the scene. Even if its only a static house with some trees, or even an empty road.
-With the new approach of CRDT's, we can deploy a file containing the relation between the entities and components (CRDT State), and download only that file with the models, instead of downloading the game.js and doing an eval of the code.
+Besides the limitation of the messages being sent, another one we faced was how the static scenes were implemented and how badly they performed.
+No matter what kind of scene you have, for this scene to work in Decentraland, we need to download the game.js and eval that code to run it. Even though if it's only a static house with some trees or an empty road.
+With the new approach of CRDTs, we can deploy a file containing the relation between the entities and components (CRDT State) and download only that file with the models instead of downloading the game.js and doing an eval of the code.
 This way we can load parcels at a distance, without the need of the code, and when you are getting closer to the scene start running the code.
 
 ## Synchronization of state over network
-SDK6 had a real limitation when we talked about syncronizing components over network for two main reasons. One is the limitation about messages already describe above, and how bad they were implemented, and the other one is how you resolve conflicts if some component is being modified in multiple clients.
-All the scenes run locally in every client, so if you want to make a component to be syncronized over the wire, you need to implement a way to send those messages through the clients, and a way to solve conflicts if two clients modifies the same component. All the clients MUST see the same. So, how we solved this conflicts? CRDT's is the answer.
+SDK6 had a limitation when synchronizing components over the network for two reasons. The first was the limitation on messages and their poor implementation. The second was the resolution of conflicts when a component was modified on multiple clients.
+All scenes run locally on each client, so to synchronize a component over the network, you will need to implement a way to send messages between clients and resolve conflicts if two clients modify the same component. All clients MUST see the same thing. So, how did we solve these conflicts? CRDTs are the answer.
 A conflict-free replicated data type (CRDT) is a combination of algorithms that ensures two actors will reach the same conflict-free state after processing the same set of messages, regardless of the ordering. The main issue that CRDT tackles is the synchronization of state.
-The SDK7, and CRDT's implementation solves all this Out of the Box, so the content creator doesn't need to get rid of all this chaos.
-With CRDTs, we can ensure that a consistent state will be reached, no matter the order of the messages, as long as they arrive.
-The SDK7 will send and syncronize the components through the wire without conflicts in the background OOTB.
+SDK7 and CRDTs implementation solve these issues out of the box, so the content creators don't have to worry about them.
+With CRDTs, we can ensure a consistent state will be reached, regardless of the order of messages, as long as they arrive.
+SDK7 will send and synchronize components through the wire without conflicts in the background out of the box.
 
 > TODO: Edition mode
 
@@ -151,7 +151,7 @@ The decided implementation is a LWW-Element-Set. In which the keys to identify t
 
 ### Schema & Serialization
 
-ProtocolBuffer is the selected serialization format for the EcsProtocol, the protocol should always be small enough to ensure that an efficient (cpu and memory-wise) encoder/decoder can be created. The `data` field is serialiazed with ProtocolBuffer, so with the combination of the entity_id and component_id we know how to serialize/deserialize the data.
+ProtocolBuffer is the selected serialization format for the EcsProtocol. It should always be small enough to ensure that an efficient (CPU and memory-wise) encoder/decoder can be created. The `data` field is serialized with ProtocolBuffer, so combining the entity_id and component_id lets us know how to serialize/deserialize the data.
 For the WireMessage we use a struct instead of protobuf.
 
 ```ts
