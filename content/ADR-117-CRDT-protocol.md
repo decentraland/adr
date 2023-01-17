@@ -154,25 +154,25 @@ The decided implementation is a LWW-Element-Set. In which the keys to identify t
 ProtocolBuffer is the selected serialization format for the EcsProtocol. It should always be small enough to ensure that an efficient (CPU and memory-wise) encoder/decoder can be created. The `data` field is serialized with ProtocolBuffer, so combining the entity_id and component_id lets us know how to serialize/deserialize the data.
 For the WireMessage we use a struct instead of protobuf.
 
-```ts
+```
 // Multiple Component Operation messages concatenated as a Unit8Array.
 type WireMessage = Uint8Array[]
 
 // The WireMessage is a chunk of ComponentOperation messages with the following struct
-type ComponentOperation = {
-    // Total Message Length
-    int32 message_length = 0;
-    // PUT_COMPONENT | DELETE_COMPONENT
-    int32 message_type = 1;
-    // Entity number
-    int64 entity_id = 2;
-    // Component identifier number for the component kind
-    int64 component_id = 3;
-    // We use lamport timestamps to identify components and to track in which order
-    // a client created them. The key for the lamport number is key=(entity_id,component_number)
-    int64 timestamp = 4;
-    // Uint8[] data of component.
-    bytes data = 5;
+struct ComponentOperation {
+  // Total Message Length
+  int32 message_length;
+  // PUT_COMPONENT | DELETE_COMPONENT
+  int32 message_type;
+  // Entity number
+  int64 entity_id;
+  // Component identifier number for the component kind
+  int64 component_id;
+  // We use lamport timestamps to identify components and to track in which order
+  // a client created them. The key for the lamport number is key=(entity_id,component_number)
+  int64 timestamp;
+  // Uint8[] data of component.
+  bytes data;
 }
 ```
 
