@@ -13,7 +13,7 @@ redirect_from:
 
 # Abstract
 
-This document describes the minimum mandatory synchronization protocol between content servers. It does not specify any validations for the entitites, it rather focuses on the endpoints and information flows instead. For validations of entities refer to [ADR-51](/adr/ADR-51). An initial version of this document lives on the [ADR-52](/adr/ADR-52). This is a living document.
+This document describes the minimum mandatory synchronization protocol between content servers. It does not specify any validations for the entitites, it rather focuses on the endpoints and information flows instead. For validations of entities refer to [ADR-51](/adr/ADR-51). An initial version of this document lives on the [ADR-52](/adr/ADR-52) which was then upgraded to a new version described in the [ADR-116](/adr/ADR-116). This is a living document.
 
 # Introduction
 
@@ -38,7 +38,7 @@ So the workflow looks like this.
 
 It is important to re-iterate that before updating its own vision of the Metaverse, each node will validate the entity again (the auth chain, the hashes, everything). If the validation fails, then that change will be ignored. Besides cryptographic signatures and smart contracts, there are no trusted parties involved in the process.
 
-The full mechanism of Content Sync is defined in [ADR-52](/adr/ADR-52)
+The full mechanism of Content Sync is defined in [ADR-116](/adr/ADR-116) and [ADR-52](/adr/ADR-52).
 
 ## Which endpoints are used?
 
@@ -46,7 +46,7 @@ The full mechanism of Content Sync is defined in [ADR-52](/adr/ADR-52)
 
 ### `GET /content/snapshots`
 
-This endpoint returns the hash id of a file that contains all the active entities of the server. Then, the file can be downloaded from the server and parsed to deploy the changes locally.
+This endpoint returns the hash ids of the files that contain all the active entities of the server. Each file contains all the deployments in a server for a specific time range. The timeranges of all the files don't overlap and together complete a timeline with all the changes in the server from the beginning of Decentraland to one day before the present. Then, each file can be downloaded from the server and parsed to deploy the changes locally.
 
 The format of the snapshots is a list of JSONs also known as [ndjson](http://ndjson.org/), so it can be read line by line and each of them can be parsed as a valid JSON.
 
