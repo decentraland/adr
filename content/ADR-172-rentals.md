@@ -36,6 +36,25 @@ A user interested in renting Land can accept a Listing by calling the `acceptLis
 
 Successfully accepting any of these will start a Rental that will last as long as the Listing/Offer stipulated, MANA will be transferred from the tenant to the lessor, the rented Land will be transferred to the Rentals contract, and the tenant or any address determined by the tenant will be set as update operator of the Land to be able to deploy scenes.
 
+### What kind of assets can be rented using the Rentals contract?
+
+Despite being developed primarily for Decentraland Lands, any ERC721 that follows this [IERC721Rentable](https://github.com/decentraland/rentals-contract/blob/dbfc6a44b9a6882f6a6ccc4846c67307fd8d7980/contracts/interfaces/IERC721Rentable.sol) interface can be rented with this contract.
+
+This interface contains every method an [OpenZeppelin ERC721](https://docs.openzeppelin.com/contracts/2.x/api/token/erc721) contract has with some extra methods that can be found on Land contracts.
+
+From the whole set of ERC721 functions, the ones required are `balanceOf` and `safeTransferFrom` and `supportsInterface`.
+
+`balanceOf` is used to check if Rentals already has the asset and allow re-renting an asset without the need of transferring it again from the lessor. It is also used to verify an asset was not transferred through a `transferFrom` call to Rentals and prevent an incorrect use.
+
+`safeTransferFrom` is used when executing a rental. The Rentals contract will call this function on the target contract in order to transfer the asset from the lessor to itself and start a rental. This function can also be called directly by the owner of the asset to transfer it to the rentals contract and accept an offer without the need of approving it first.
+
+`supportsInterface` is used to check that the asset contract implements the `verifyFingerprint` function. If it does, it will call it to check that the provided fingerprint matches the current fingerprint of the asset and prevent tenants from renting something different than the expected. In the case of Estates, it prevents users from renting an Estate composed by a different amount of parcels.
+
+The whole idea of renting is allowing users to do something with the rented asset. With the case of Lands, tenants can choose the address that will have permissions to deploy scenes to it. To do so, when the rental is executed, the Rentals contract will call `setUpdateOperator` to give an address this role.
+
+`setManyLandUpdateOperator` Might not be required depending on the implementation. In the case of Estates, tenants can set update operators to individual parcels inside one.
+
+
 ### Why is the Land transferred to the Rentals contract?
 
 It is to limit what the original owner of the asset can do with the Land by transferring the ownership to the Rentals contract. The owner cannot interact directly with the asset anymore, so have to use a set of functions defined by the Rentals smart contract to do so.
