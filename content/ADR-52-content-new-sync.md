@@ -95,7 +95,7 @@ In pseudo code both implementations look similar. The key difference is to stop 
 
 The `/deployments` endpoint caused a very expensive query to the DB, depending on too many filters and conditions. Indexes were created and changed in the database, but it still caused very expensive queries.
 
-The new snapshots are generated with a certain frequency (currently set to 15 min, but anything up to 6hs sounds reasonable) with a full scan of the database which only filters that the `overwritten_by` field is `null`. This ensures that all active entities are retried. Then that data is stored in a file, so when requesting the `/snapshots` endpoint you receive the hash of the file with the information and no query to the database is done.
+The new snapshots are generated with a certain frequency (currently set to 15 min, but anything up to 6hs sounds reasonable) with a full scan of the database which only filters that the `overwritten_by` field is `null`. This ensures that all active entities are retrieved. Then that data is stored in a file, so when requesting the `/snapshots` endpoint you receive the hash of the file with the information and no query to the database is done.
 
 Then `/pointer-changes` retrieves all the deployments done in a period of time, this includes not-active entities too (those who have been overriden by a new deployment). So, the only historical data that may be lost is the data transferred when a Catalyst was down. This endpoint is stored in a separate db and the requests are optimized.
 
