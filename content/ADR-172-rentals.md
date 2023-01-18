@@ -22,7 +22,7 @@ Being able to rent your Land was something the community has been asking for a w
 
 However, unofficial protocols and off-chain solutions might not take into consideration the best security practices to protect users as well as Decentraland's most precious assets. That is why Decentraland has developed its protocol.
 
-### How it works?
+### How does it work?
 
 The [Rentals Smart Contract](https://etherscan.io/address/0x3a1469499d0be105d4f77045ca403a5f6dc2f3f5#code) allows users to accept Rental Listings and Offers. 
 
@@ -35,6 +35,37 @@ The Land owner can accept an Offer by calling the `acceptOffer` function or safe
 A user interested in renting Land can accept a Listing by calling the `acceptListing` function on the contract with the Listing data and signature.
 
 Successfully accepting any of these will start a Rental that will last as long as the Listing/Offer stipulated, MANA will be transferred from the tenant to the lessor, the rented Land will be transferred to the Rentals contract, and the tenant or any address determined by the tenant will be set as update operator of the Land to be able to deploy scenes.
+
+### What are Listings/Offers?
+
+Listings and Offers are data structures that contain the information required to execute a rental. 
+
+Their data is not stored on-chain, instead, it should be stored off-chain, along with the signature obtained by signing this data with the users wallet.
+
+Data has to be signed as explained in the [EIP712](https://eips.ethereum.org/EIPS/eip-712). You can see an example of how they can be signed by checking this [file](https://github.com/decentraland/rentals-contract/blob/dbfc6a44b9a6882f6a6ccc4846c67307fd8d7980/test/utils/rentals.ts) from the Rentals tests.
+
+Signing is required because the Rentals contract will then recover the signer's address from it to verify that the Listing or Offer was created legitimately. This means that users cannot create Listings or Offers in behalf of other accounts. There is a workaround for creating them on behalf of Smart Contract Accounts which can be studied [here](#can-smart-contract-accounts-sca-create-listings-or-offers).
+
+Listings are composed of the following information:
+
+- `address signer` - The address of the owner of the asset to be rented.
+- `address contractAddress` - The address of the to-be-rented asset's contract.
+- `uint256 tokenId` - The id of the asset.
+- `uint256 expiration` - The timestamp up to when the listing can be executed.
+- `uint256[3] indexes` - The indexes used for extra signature verification, learn more about it [here](#can-signatures-be-invalidated).
+- `uint256[] pricePerDay, maxDays, minDays` - The different options provided in the Listing that be selected by the user that accepts it. The price per day is how much MANA will be paid up front for each day the asset will be rented. max and minDays determine the range of days the asset can be rented for a given price.
+- `address target ` - The address of the account this Listing is targeted to. If the value is not the `address(0)` only the target can accept it.
+
+Offers are composed of the following information:
+
+- `address signer` - The address of the account interested in renting an asset.
+- `address contractAddress` - The address of the to-be-rented asset's contract.
+- `uint256 tokenId` - The id of the asset.
+- `uint256 expiration` - The timestamp up to when the listing can be executed.
+- `uint256[3] indexes` - The indexes used for extra signature verification, learn more about it [here](#can-signatures-be-invalidated).
+- `uint256 pricePerDay` - The amount of MANA the tenant is willing to pay upfront per rental day for the asset.
+- `uint256 rentalDays` - The amount of days the tenant wants to rent the asset.
+- `address operator` - The address that will be given update operator permissions over the asset. In the case of Land, it will be the account that has permissions to deploy scenes on it. If the operator is set as address(0) the `signer` will be given the update operator role.
 
 ### What kind of assets can be rented using the Rentals contract?
 
@@ -53,7 +84,6 @@ From the whole set of ERC721 functions, the ones required are `balanceOf` and `s
 The whole idea of renting is allowing users to do something with the rented asset. With the case of Lands, tenants can choose the address that will have permissions to deploy scenes to it. To do so, when the rental is executed, the Rentals contract will call `setUpdateOperator` to give an address this role.
 
 `setManyLandUpdateOperator` Might not be required depending on the implementation. In the case of Estates, tenants can set update operators to individual parcels inside one.
-
 
 ### Why is the Land transferred to the Rentals contract?
 
