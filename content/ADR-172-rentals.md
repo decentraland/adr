@@ -81,7 +81,7 @@ From the set of ERC721 functions, the ones required are `balanceOf` and `safeTra
 
 `supportsInterface` is used to check that the asset contract implements the `verifyFingerprint` function. If it does, it will call it to check that the provided fingerprint matches the current fingerprint of the asset and prevent tenants from renting something different than expected. In the case of Estates, it prevents users from renting an Estate composed of a different amount of parcels.
 
-The whole idea of renting is allowing users to do something with the rented asset. With the case of Lands, tenants can choose the address that will have permissions to deploy scenes to it. To do so, when the rental is executed, the Rentals contract will call `setUpdateOperator` to give this role to this address.
+The whole idea of renting is allowing users to do something with the rented asset. With the case of Lands, tenants can choose the address that will have permissions to deploy scenes to it. To do so, when the rental is executed, the Rentals contract will call `setUpdateOperator` to give this role to the address.
 
 `setManyLandUpdateOperator` Might not be required depending on the implementation. In the case of Estates, tenants can set update operators to individual parcels inside one.
 
