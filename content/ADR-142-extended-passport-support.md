@@ -190,6 +190,7 @@ returns
     wearables: [
         {
             "urn": "urn:decentraland:matic:collections-v2:0x08d131cfa304c3b47f9c57f95e6c4e5548d25bb4:0",
+            "contractAddress": "0x4cd15dcd96362cf85e19039c3c2d661e5e43145e",
             "image": "https://peer-lb.decentraland.org/lambdas/collections/contents/urn:decentraland:matic:collections-v2:0x08d131cfa304c3b47f9c57f95e6c4e5548d25bb4:0/thumbnail",
             "name": " Red Bottom Loafers + Gold Gun ",
             "description": "Red Bottom Loafers + Gold Gun by The Gold Guy ",
@@ -197,12 +198,14 @@ returns
             "individualData": [
                 {
                     "id": "0x08d131cfa304c3b47f9c57f95e6c4e5548d25bb4-6",
-                    "createdAt": "1645221619",
+                    "tokenId": "2316870416708258107354196609040749511015692098812080447594841505820",
+                    "transferredAt": "1643329940",
                     "price": "1000000000000000000000"
                 },
                 {
                     "id": "0x08d131cfa304c3b47f9c57f95e6c4e5548d25bb4-7",
-                    "createdAt": "1645859372",
+                    "tokenId": "2316870416708258107354196609040749511015692098812080447594841505820",
+                    "transferredAt": "1643329940",
                     "price": "2000000000000000000000"
                 }
             ]
@@ -222,6 +225,8 @@ returns
         {
             "urn": "urn:decentraland:matic:collections-v2:0x016a61feb6377239e34425b82e5c4b367e52457f:3",
             "id": "0x016a61feb6377239e34425b82e5c4b367e52457f-315936875005671560093754083051011296956685286201647333762932932609",
+            "contractAddress": "0x4cd15dcd96362cf85e19039c3c2d661e5e43145e",
+            "tokenId": "35",
             "image": "https://peer-lb.decentraland.org/lambdas/collections/contents/urn:decentraland:matic:collections-v2:0x016a61feb6377239e34425b82e5c4b367e52457f:3/thumbnail",
             "createdAt": "1661362770",
             "name": "The Critic",
@@ -243,6 +248,7 @@ returns
        {
             "name": "First Estate Block",
             "contractAddress": "0x959e104e1a4db6317fa58f8295f586e1a978c297",
+            "tokenId": "3084",
             "category": "estate",
             "description": "The first estate to be ever created in the Metaverse",
             "price": "2000000000000000000000000",
@@ -251,6 +257,7 @@ returns
         {
             "name": "HalfMoonLand",
             "contractAddress": "0xf87e31492faf9a91b02ee0deaad50d51d56d5d4d",
+            "tokenId": "207",
             "category": "parcel",
             "x": "-69",
             "y": "-21",
@@ -272,6 +279,7 @@ returns
        {
             "name": "DarthSith",
             "contractAddress": "0x2a187453064356c898cae034eaed119e1663acb8",
+            "tokenId": "51902908726686475638568304069332550334313854479498974325587989671351389468210",
             "price": "62000000000000000000000"
         }
     ],
