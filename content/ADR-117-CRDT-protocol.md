@@ -145,35 +145,92 @@ For more information on CRDTs, the following resources might be helpful:
 
 ## Specification
 
-The decided implementation is a LWW-Element-Set. In which the keys to identify the elements of the set is composed of `entityId+componentId` and the elements themselves are the serialized values of the components, that value serialization falls outside the scope of this ADR.
+The decided implementation is a LWW-Element-Set. In which the keys to identify the elements of the set is composed of `entityId+componentId` and the elements themselves are the serialized values of the components, that value serialization falls outside the scope of this ADR and it can be read [the ADR-123](https://adr.decentraland.org/adr/ADR-123).
 
-> TODO: Link to protobuf components ADR @leanmendoza
+### Entity definition
+
+As `entityId` MUST BE unequivocal ids, their space of numbers has to be bounded, to avoid leaks. With a limited set of numbers, we need to version them without limiting the capacity of creating/destroying a major number of entities. Number and version would compound the `entityId` enabling the unequivocal id, the version avoids leaking and old reference to old entities.
+With this, the proposed definition for the entity is:
+1. A 32-bit unsigned number
+2. The 16-bit most significant (highest part) is the `version`.
+3. The 16-bit less significant (lowest part) is the `number`.
+
+
+`[31..16][15..0] = [entity-version][entity-number]`
+
+The functions to compound or decompound (in typescript):
+```ts
+const MAX_U16 = 0xffff
+const MASK_UPPER_16_ON_32 = 0xff00
+
+function fromEntityId(entityId: number) {
+  return {
+    number: (entity & MAX_U16) >>> 0,
+    version: (((entity & MASK_UPPER_16_ON_32) >> 16) & MAX_U16) >>> 0
+  }
+}
+
+function toEntityId(
+  entityNumber: number,
+  entityVersion: number
+): Entity {
+  return ((entityNumber & MAX_U16) | ((entityVersion & MAX_U16) << 16)) >>> 0
+}
+```
+
+
+For specifying the old entities, a `Grow-only Set` is introduced with the operation `delete_entity(entityId)` which means a `add` to the mentioned G-Set. This operation automatically cleans the state in the LWW map, and if there is a query later for the given `entityId` the state is deduced (and not stored) as null, no matter the Lamport timestamp. As consequence, operations to LWW with `entityId` deleted (this means, which is `inside the G-set`) MUST BE ignored, resulting a null data for each component (again, not stored but deduced from `G-set`).
 
 ### Schema & Serialization
+A flat serialization for these `CrdtMessages` is chosen, this enables a fast solution in combination with Transform flat serialized, which is the most synched component candidate.
 
-ProtocolBuffer is the selected serialization format for the EcsProtocol. It should always be small enough to ensure that an efficient (CPU and memory-wise) encoder/decoder can be created. The `data` field is serialized with ProtocolBuffer, so combining the entity_id and component_id lets us know how to serialize/deserialize the data.
-For the WireMessage we use a struct instead of protobuf.
 
-```
-// Multiple Component Operation messages concatenated as a Unit8Array.
-type WireMessage = Uint8Array[]
+The `c++` struct hast to be understood as contiguous:
 
-// The WireMessage is a chunk of ComponentOperation messages with the following struct
-struct ComponentOperation {
-  // Total Message Length
-  int32 message_length;
-  // PUT_COMPONENT | DELETE_COMPONENT
-  int32 message_type;
-  // Entity number
-  int64 entity_id;
-  // Component identifier number for the component kind
-  int64 component_id;
-  // We use lamport timestamps to identify components and to track in which order
-  // a client created them. The key for the lamport number is key=(entity_id,component_number)
-  int64 timestamp;
-  // Uint8[] data of component.
-  bytes data;
+```cpp
+enum class CrdtMessageType: uint32_t {
+  PUT_COMPONENT = 1,
+  DELETE_COMPONENT = 2,
+  DELETE_ENTITY = 3
+};
+
+
+struct CrdtMessageHeader {
+  uint32_t length;
+  CrdtMessageType type;
+};
+
+union Entity {
+  uint32_t id;
+  struct {
+    uint16_t version;
+    uint16_t number;
+  } d;
 }
+
+struct PutComponentMessageBody {
+  // key
+  Entity entity;
+  uint32_t componentId;
+  // timestamp
+  uint32_t lamport_timestamp;
+
+  uint32_t data_length;
+
+  // ... bytes[] with data_length size
+};
+
+struct DeleteComponentMessageBody {
+  // key
+  Entity entity;
+  uint32_t componentId;
+  // timestamp
+  uint32_t lamport_timestamp;
+};
+
+struct DeleteEntityMessageBody {
+  Entity entity;
+};
 ```
 
 #### Command Query Responsibility Segregation
@@ -201,18 +258,21 @@ At the end of the day, a CRDT implementation is dead-simple. At it's core it has
 ```typescript
 type Entity = number
 type ComponentId = number
-type CRDTState = Map<Entity, Map<ComponentId, EntityComponentValue | null>>
+type CRDTState = Map<ComponentId, Map<Entity, EntityComponentValue | null>>
 type EntityComponentValue = {
   // serialization of the component value
   data: Uint8Array
   // lamport timestamp
   timestamp: number
 }
+
+const deletedEntitiesGrowOnlySet: Set<number> = new Set()
+
 const state: CRDTState = {
-  // 1: Entity Number
-  1: {
-    // 1052: Component Id => i.e. Transform ID
-    1052: { data: new Uint8Array(), timestamp: 0 }
+  // 1052: Component Id => i.e. Transform ID
+  1052: {
+    // 1: Entity Number
+    1: { data: new Uint8Array(), timestamp: 0 }
   }
 }
 
@@ -221,8 +281,14 @@ function sendUpdate(entity, componentId, value) {
   // so we can send it back to the transport
 }
 
-function processUpdate(entity, componentId, newValue) {
-  const currentValue: EntityComponentValue = state[entity][componentId]
+function processLwwUpdate(entity, componentId, newValue) {
+  // in a no-loss scenario, the deleted entity command will arrive in other peers soon
+  //  this means, we don't have to resend the update, this entity is just no longer valid
+  if (entity in deletedEntitiesGrowOnlySet) {
+    return
+  }
+
+  const currentValue: EntityComponentValue = state[componentId][entity]
   if (currentValue.timestamp > newValue.timestamp) {
     // discardMessage() and send newer state to the sender
     // keep our current value
@@ -235,6 +301,11 @@ function processUpdate(entity, componentId, newValue) {
   } else {
     state[entityId][componentId] = newValue
   }
+}
+
+function processDeleteEntity(entity) {
+  deletedEntitiesGrowOnlySet.add(entity)
+  cleanStateWithEntity(entity)
 }
 ```
 
