@@ -60,20 +60,6 @@ Only when `supportsInterface` returns that the asset contract implements this me
 
 This function is a workaround for setting update operators for parcels inside an Estate. Any other asset does not need to implement it (unless a similar requirement is needed).
 
-### How it works
-
-The [Rentals Smart Contract](https://etherscan.io/address/0x3a1469499d0be105d4f77045ca403a5f6dc2f3f5#code) allows users to accept Rental Listings and Offers. 
-
-These can be created off-chain by signing them with your wallet and storing the data and signature in a place consumable by an interested user.
-
-The benefit of using off-chain signatures is that users can create Listings and Offers without needing to pay for a transaction.
-
-The Land owner can accept an Offer by calling the `acceptOffer` function or safely transferring the Land to the Rentals contract with the offer data and signature. 
-
-A user interested in renting Land can accept a Listing by calling the `acceptListing` function on the contract with the Listing data and signature.
-
-Successfully accepting any of these will start a Rental that will last as long as the Listing/Offer stipulated, MANA will be transferred from the tenant to the lessor, the rented Land will be transferred to the Rentals contract, and the tenant or any address determined by the tenant will be set as update operator of the Land to be able to deploy scenes.
-
 ### What are Listings/Offers?
 
 Listings and Offers are data structures that contain the information required to execute a rental. 
@@ -104,6 +90,20 @@ Offers are composed of the following information:
 - `uint256 pricePerDay` - The amount of MANA the tenant is willing to pay upfront per rental day for the asset.
 - `uint256 rentalDays` - The amount of days the tenant wants to rent the asset.
 - `address operator` - The address that will be given update operator permissions over the asset. In the case of Land, it will be the account that has permissions to deploy scenes on it. If the operator is set as address(0) the `signer` will be given the update operator role.
+
+### How it works
+
+The [Rentals Smart Contract](https://etherscan.io/address/0x3a1469499d0be105d4f77045ca403a5f6dc2f3f5#code) allows users to accept Rental Listings and Offers. 
+
+These can be created off-chain by signing them with your wallet and storing the data and signature in a place consumable by an interested user.
+
+The benefit of using off-chain signatures is that users can create Listings and Offers without needing to pay for a transaction.
+
+The Land owner can accept an Offer by calling the `acceptOffer` function or safely transferring the Land to the Rentals contract with the offer data and signature. 
+
+A user interested in renting Land can accept a Listing by calling the `acceptListing` function on the contract with the Listing data and signature.
+
+Successfully accepting any of these will start a Rental that will last as long as the Listing/Offer stipulated, MANA will be transferred from the tenant to the lessor, the rented Land will be transferred to the Rentals contract, and the tenant or any address determined by the tenant will be set as update operator of the Land to be able to deploy scenes.
 
 ### Why is the Land transferred to the Rentals contract?
 
