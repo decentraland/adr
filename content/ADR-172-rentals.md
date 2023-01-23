@@ -60,36 +60,38 @@ Only when `supportsInterface` returns that the asset contract implements this me
 
 This function is a workaround for setting update operators for parcels inside an Estate. Any other asset does not need to implement it (unless a similar requirement is needed).
 
-### What are Listings/Offers?
+### Listings and Offers
 
-Listings and Offers are data structures that contain the information required to execute a rental. 
+Listings and Offers are data structures that contain the information required to execute a rental. A Listing is created by the owner of an asset that want to list an asset for rent given a set conditions. An Offer is created by any user that wants to rent a certain asset for a given set of conditions.
 
-Their data is not stored on-chain, instead, it should be stored off-chain, along with the signature obtained by signing this data with the users wallet.
+**Listing**
 
-Data has to be signed as explained in the [EIP712](https://eips.ethereum.org/EIPS/eip-712). You can see an example of how they can be signed by checking this [file](https://github.com/decentraland/rentals-contract/blob/dbfc6a44b9a6882f6a6ccc4846c67307fd8d7980/test/utils/rentals.ts) from the Rentals tests.
+- **address signer** - The address of the owner of the asset to be rented.
+- **address contractAddress** - The address of the to-be-rented asset's contract.
+- **uint256 tokenId** - The id of the asset.
+- **uint256 expiration** - The timestamp up to when the listing can be executed.
+- **uint256[3] indexes** - The indexes used for extra signature verification, learn more about it [here](#can-signatures-be-invalidated).
+- **uint256[] pricePerDay, maxDays, minDays** - The different options provided in the Listing that be selected by the user that accepts it. The price per day is how much MANA will be paid up front for each day the asset will be rented. max and minDays determine the range of days the asset can be rented for a given price.
+- **address target** - The address of the account this Listing is targeted to. If the value is not the `address(0)` only the target can accept it.
 
-Signing is required because the Rentals contract will then recover the signer's address from it to verify that the Listing or Offer was created legitimately. This means that users cannot create Listings or Offers in behalf of other accounts. There is a workaround for creating them on behalf of Smart Contract Accounts which can be studied [here](#can-smart-contract-accounts-sca-create-listings-or-offers).
+**Offer**
 
-Listings are composed of the following information:
+- **address signer** - The address of the account interested in renting an asset.
+- **address contractAddress** - The address of the to-be-rented asset's contract.
+- **uint256 tokenId** - The id of the asset.
+- **uint256 expiration** - The timestamp up to when the listing can be executed.
+- **uint256[3] indexes** - The indexes used for extra signature verification, learn more about it [here](#can-signatures-be-invalidated).
+- **uint256 pricePerDay** - The amount of MANA the tenant is willing to pay upfront per rental day for the asset.
+- **uint256 rentalDays** - The amount of days the tenant wants to rent the asset.
+- **address operator** - The address that will be given update operator permissions over the asset. In the case of Land, it will be the account that has permissions to deploy scenes on it. If the operator is set as address(0) the `signer` will be given the update operator role.
 
-- `address signer` - The address of the owner of the asset to be rented.
-- `address contractAddress` - The address of the to-be-rented asset's contract.
-- `uint256 tokenId` - The id of the asset.
-- `uint256 expiration` - The timestamp up to when the listing can be executed.
-- `uint256[3] indexes` - The indexes used for extra signature verification, learn more about it [here](#can-signatures-be-invalidated).
-- `uint256[] pricePerDay, maxDays, minDays` - The different options provided in the Listing that be selected by the user that accepts it. The price per day is how much MANA will be paid up front for each day the asset will be rented. max and minDays determine the range of days the asset can be rented for a given price.
-- `address target ` - The address of the account this Listing is targeted to. If the value is not the `address(0)` only the target can accept it.
+Listings and Offers are a fundamental part of being able to rent an asset, however, this kind of data does not need to be tracked on-chain for a rental to occur.
 
-Offers are composed of the following information:
+To prevent users from spending money on creating/updating/deleting them, they are handled off-chain by making use of [EIP712](https://eips.ethereum.org/EIPS/eip-712) for hashing and signing typed structured data. The data and its signature is then stored in a place where the consumer can access it and initiate a rent.
 
-- `address signer` - The address of the account interested in renting an asset.
-- `address contractAddress` - The address of the to-be-rented asset's contract.
-- `uint256 tokenId` - The id of the asset.
-- `uint256 expiration` - The timestamp up to when the listing can be executed.
-- `uint256[3] indexes` - The indexes used for extra signature verification, learn more about it [here](#can-signatures-be-invalidated).
-- `uint256 pricePerDay` - The amount of MANA the tenant is willing to pay upfront per rental day for the asset.
-- `uint256 rentalDays` - The amount of days the tenant wants to rent the asset.
-- `address operator` - The address that will be given update operator permissions over the asset. In the case of Land, it will be the account that has permissions to deploy scenes on it. If the operator is set as address(0) the `signer` will be given the update operator role.
+<img src="resources/ADR-172/diagram-1.png" alt="drawing" style="width:100%;"/>
+
+The diagram shows the flow of a lessor creating and signing a Listing that is then stored off-chain. The tenant fetches both to start a new a new rental.
 
 ### How it works
 
