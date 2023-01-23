@@ -3,7 +3,7 @@ layout: adr
 adr: 173
 title: Scene deployments must not contain worldConfiguration section
 date: 2023-01-11
-status: Review
+status: Living
 type: Standards Track
 spdx-license: CC0-1.0
 authors:
