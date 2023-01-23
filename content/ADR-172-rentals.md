@@ -22,7 +22,45 @@ Being able to rent your Land was something the community has been asking for a w
 
 However, unofficial protocols and off-chain solutions might not take into consideration the best security practices to protect users as well as Decentraland's most precious assets. That is why Decentraland has developed its protocol.
 
-### How does it work?
+### Supported Assets
+
+The [IERC721Rentable](https://github.com/decentraland/rentals-contract/blob/dbfc6a44b9a6882f6a6ccc4846c67307fd8d7980/contracts/interfaces/IERC721Rentable.sol) interface provides a glimpse of what kind of assets are compatible with the Rentals contract.
+
+The contract of the asset to be rented must be [ERC721](https://eips.ethereum.org/EIPS/eip-721) compliant. Moreover, it has to expose an extra function `setUpdateOperator(uint256 tokenId,address)`, like to the one found on the [LANDRegistry](https://etherscan.io/address/0x554bb6488ba955377359bed16b84ed0822679cdc#code) and [EstateRegistry](https://etherscan.io/address/0x1784ef41af86e97f8d28afe95b573a24aeda966e#code) contracts.
+
+The required methods are:
+
+**ownerOf**
+
+Checks if the asset has to be transferred to the Rentals contract after executing a Rental.
+
+Checks if the asset was transferred "unsafely" using the `ERC20.transferFrom` function to the Rentals contract.
+
+**safeTransferFrom**
+
+Transfer the asset from the original owner to the Rentals contracts when the rental is executed.
+
+Transfer the asset back to the original owner when they claim it back after the rental period is over.
+
+**supportsInterface**
+
+Checks that the asset's contract implements the `verifyFingerprint(uint256, bytes memory)` method.
+
+**setUpdateOperator** 
+
+Define the address that will be able to work on the asset when the rental is executed. In the case of Land for example, this method will determine the address that can deploy scenes to it.
+
+There are 2 extra functions that the Rentals contract *may* call from the rented asset but they depend on the implementation and might not be required like the previous ones.
+
+**verifyFingerprint** 
+
+Only when `supportsInterface` returns that the asset contract implements this method, it will be called. This method validates that composable assets, such as Estates, have not been modified before the rental is executed, preventing tenants from renting an asset different than expected.
+
+**setManyLandUpdateOperator**
+
+This function is a workaround for setting update operators for parcels inside an Estate. Any other asset does not need to implement it (unless a similar requirement is needed).
+
+### How it works
 
 The [Rentals Smart Contract](https://etherscan.io/address/0x3a1469499d0be105d4f77045ca403a5f6dc2f3f5#code) allows users to accept Rental Listings and Offers. 
 
