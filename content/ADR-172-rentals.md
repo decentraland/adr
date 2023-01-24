@@ -26,7 +26,7 @@ However, unofficial protocols and off-chain solutions might not take into consid
 
 The [IERC721Rentable](https://github.com/decentraland/rentals-contract/blob/dbfc6a44b9a6882f6a6ccc4846c67307fd8d7980/contracts/interfaces/IERC721Rentable.sol) interface provides a glimpse of what kind of assets are compatible with the Rentals contract.
 
-The contract of the asset to be rented must be [ERC721](https://eips.ethereum.org/EIPS/eip-721) compliant. Moreover, it has to expose an extra function `setUpdateOperator(uint256 tokenId,address)`, like to the one found on the [LANDRegistry](https://etherscan.io/address/0x554bb6488ba955377359bed16b84ed0822679cdc#code) and [EstateRegistry](https://etherscan.io/address/0x1784ef41af86e97f8d28afe95b573a24aeda966e#code) contracts.
+The contract of the asset to be rented must be [ERC721](https://eips.ethereum.org/EIPS/eip-721) compliant. Moreover, it has to expose an extra function `setUpdateOperator(uint256 tokenId,address)`, like the one found on the [LANDRegistry](https://etherscan.io/address/0x554bb6488ba955377359bed16b84ed0822679cdc#code) and [EstateRegistry](https://etherscan.io/address/0x1784ef41af86e97f8d28afe95b573a24aeda966e#code) contracts.
 
 The required methods are:
 
@@ -48,7 +48,7 @@ Checks that the asset's contract implements the `verifyFingerprint(uint256, byte
 
 **setUpdateOperator** 
 
-Define the address that will be able to work on the asset when the rental is executed. In the case of Land for example, this method will determine the address that can deploy scenes to it.
+Define the address that will be able to work on the asset when the rental is executed. In the case of Land, for example, this method will determine the address that can deploy scenes to it.
 
 There are 2 extra functions that the Rentals contract *may* call from the rented asset but they depend on the implementation and might not be required like the previous ones.
 
@@ -58,11 +58,11 @@ Only when `supportsInterface` returns that the asset contract implements this me
 
 **setManyLandUpdateOperator**
 
-This function is a workaround for setting update operators for parcels inside an Estate. Any other asset does not need to implement it (unless a similar requirement is needed).
+This function is a workaround for setting update operators for parcels inside an Estate. Any other asset does not need to implement (unless a similar requirement is needed).
 
 ### Listings and Offers
 
-Listings and Offers are data structures that contain the information required to execute a rental. A Listing is created by the owner of an asset that want to list an asset for rent given a set conditions. An Offer is created by any user that wants to rent a certain asset for a given set of conditions.
+Listings and Offers are data structures that contain the information required to execute a rental. A Listing is created by the owner of an asset that wants to list an asset for rent given a set of conditions. An Offer is created by any user that wants to rent a certain asset for a given set of conditions.
 
 **Listing**
 
@@ -71,7 +71,7 @@ Listings and Offers are data structures that contain the information required to
 - **uint256 tokenId** - The id of the asset.
 - **uint256 expiration** - The timestamp up to when the listing can be executed.
 - **uint256[3] indexes** - The indexes used for extra signature verification, learn more about it [here](#verification-indexes).
-- **uint256[] pricePerDay, maxDays, minDays** - The different options provided in the Listing that be selected by the user that accepts it. The price per day is how much MANA will be paid up front for each day the asset will be rented. max and minDays determine the range of days the asset can be rented for a given price.
+- **uint256[] pricePerDay, maxDays, minDays** - The different options provided in the Listing that be selected by the user that accepts it. The price per day is how much MANA will be paid upfront for each day the asset will be rented. max and minDays determine the range of days the asset can be rented for a given price.
 - **address target** - The address of the account this Listing is targeted to. If the value is not the `address(0)` only the target can accept it.
 
 **Offer**
@@ -82,12 +82,12 @@ Listings and Offers are data structures that contain the information required to
 - **uint256 expiration** - The timestamp up to when the listing can be executed.
 - **uint256[3] indexes** - The indexes used for extra signature verification, learn more about it [here](#verification-indexes).
 - **uint256 pricePerDay** - The amount of MANA the tenant is willing to pay upfront per rental day for the asset.
-- **uint256 rentalDays** - The amount of days the tenant wants to rent the asset.
-- **address operator** - The address that will be given update operator permissions over the asset. In the case of Land, it will be the account that has permissions to deploy scenes on it. If the operator is set as address(0) the `signer` will be given the update operator role.
+- **uint256 rentalDays** - The number of days the tenant wants to rent the asset.
+- **address operator** - The address that will be given update operator permissions over the asset. In the case of Land, it will be the account that has permission to deploy scenes on it. If the operator is set as address(0) the `signer` will be given the update operator role.
 
 Listings and Offers are a fundamental part of being able to rent an asset, however, this kind of data does not need to be tracked on-chain for a rental to occur.
 
-To prevent users from spending money on creating/updating/deleting them, they are handled off-chain by making use of [EIP712](https://eips.ethereum.org/EIPS/eip-712) for hashing and signing typed structured data. The data and its signature is then stored in a place where the consumer can access it and initiate a rent.
+To prevent users from spending money on creating/updating/deleting them, they are handled off-chain by making use of [EIP712](https://eips.ethereum.org/EIPS/eip-712) for hashing and signing typed structured data. The data and its signature are then stored in a place where the consumer can access it and initiate a rent.
 
 <img src="resources/ADR-172/diagram-1.png" alt="drawing" style="width:100%;"/>
 
@@ -101,11 +101,11 @@ Any of these indexes can be updated at any time to invalidate signatures. Each i
 
 **Contract Index**
 
-This index can be updated by the owner of the Rentals contract. Updating this index with `bumpContractIndex()` will invalidate all signatures created with the previous value. It is intended to be used in case there is a signature leak from the off-chain signature storage and protect users.
+This index can be updated by the owner of the Rentals contract. Updating this index with `bumpContractIndex()` will invalidate all signatures created with the previous value. It is intended to be used in case there is a signature leak from the off-chain signature storage to protect users.
 
 **Signer Index** 
 
-Each address has its own signer index. Updating this index with `bumpSignerIndex()` will update the index of the sender. This is helpful for users that have lost track of their signatures and want to invalidate them all at once.
+Each address has its signer index. Updating this index with `bumpSignerIndex()` will update the index of the sender. This is helpful for users that have lost track of their signatures and want to invalidate them all at once.
 
 **Asset Index**
 
@@ -113,7 +113,7 @@ Similar to the Signer Index, but for particular assets. Instead of invalidating 
 
 ### Signatures
 
-Executing a rental requires calling particular functions in the Rentals contract with a Listing/Offer and a the result of signing that data with a private key. The way the data has to be signed is determined by [EIP712](https://eips.ethereum.org/EIPS/eip-712)
+Executing a rental requires calling particular functions in the Rentals contract with a Listing/Offer and a signature obtained from that data using a private key. The way the data has to be signed is determined by [EIP712](https://eips.ethereum.org/EIPS/eip-712)
 
 Listings and Offers have a property `signer`. The value of this property has to match the recovered signer from the provided signature. If they don't match, it means that the signature is invalid and the rental transaction will revert.
 
@@ -123,7 +123,7 @@ Account A signs Listing with signer A ✅
 
 <img src="resources/ADR-172/diagram-2.png" alt="drawing" style="width:100%;"/>
 
-Smart Contract Accounts don't have private keys. This means that the account is unable to sign a Listing/Offer with its own address. If a user has a Smart Wallet with an asset they want to rent, it would be impossible to do so this way.
+Smart Contract Accounts don't have private keys. This means that the account is unable to sign a Listing/Offer. If a user has a Smart Wallet with an asset they want to rent, it would be impossible to do so this way.
 
 For cases like this, the Rentals contract detects if the provided signer is a Smart Contract Account that follows the [ERC1271](https://eips.ethereum.org/EIPS/eip-1271) standard. It calls the `isValidSignature` of the provided signer and delegates the validation. This way, an Externally Owned Account that has control over a Smart Contract Account such as Smart Wallets can create Listings/Offers in their name.
 
@@ -137,9 +137,9 @@ The first time an asset is rented, it is transferred from its original owner to 
 
 **Rental Ongoing**
 
-The tenant has the possibility to set its update operator as many times as desired. In the particular case of Estates, the tenant can set the update operators of internal parcels as well through the Rentals contract. The lessor is unable operate the asset in any way.
+The tenant can set its update operator as many times as desired. In the particular case of Estates, the tenant can set the update operators of internal parcels as well through the Rentals contract. The lessor is unable to operate the asset in any way.
 
-As long as the tenant and the lessor are the same, a new Listing/Offer can be accepted in order to extend the rent.
+As long as the tenant and the lessor are the same, a new Listing/Offer can be accepted to extend the rent.
 
 **Rental Finished**
 
@@ -153,9 +153,9 @@ The lessor can also create new Listings or accept new Offers for the asset witho
 
 ## Solution Space Exploration
 
-The Rentals Smart Contract by itself might not be too easy to use, specially because handling signatures is a complex thing.
+The Rentals Smart Contract by itself might not be too easy to use, especially because handling signatures is a complex thing.
 
-In order for the contract to be used successfully, a dapp to facilitate signing and server to handle this signatures will be required.
+For the contract to be used successfully, a dapp to facilitate signing and a server to handle these signatures will be required.
 
 The contract design does not require any existing protocol to be updated.
 
@@ -170,4 +170,4 @@ Rentals feature went live on the [Marketplace](https://market.decentraland.org) 
 
 ## RFC 2119 and RFC 8174
 
-> The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.
+> The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.
