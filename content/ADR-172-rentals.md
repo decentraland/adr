@@ -91,7 +91,7 @@ To prevent users from spending money on creating/updating/deleting them, they ar
 
 <img src="resources/ADR-172/diagram-1.png" alt="drawing" style="width:100%;"/>
 
-The diagram shows the flow of a lessor creating and signing a Listing that is then stored off-chain. The tenant fetches both to start a new a new rental.
+The diagram shows the flow of a lessor creating and signing a Listing that is then stored off-chain. The tenant fetches both to start a new rental.
 
 ### Verification Indexes
 
@@ -110,6 +110,26 @@ Each address has its own signer index. Updating this index with `bumpSignerIndex
 **Asset Index**
 
 Similar to the Signer Index, but for particular assets. Instead of invalidating all signatures created by an address, a user can call `bumpAssetIndex(address _contractAddress, uint256 _tokenId)` to invalidate all signatures created for a particular asset.
+
+### Signatures
+
+Executing a rental requires calling particular functions in the Rentals contract with a Listing/Offer and a the result of signing that data with a private key. The way the data has to be signed is determined by [EIP712](https://eips.ethereum.org/EIPS/eip-712)
+
+Listings and Offers have a property `signer`. The value of this property has to match the recovered signer from the provided signature. If they don't match, it means that the signature is invalid and the rental transaction will revert.
+
+Account A signs Listing with signer B ❌
+
+Account A signs Listing with signer A ✅
+
+<img src="resources/ADR-172/diagram-2.png" alt="drawing" style="width:100%;"/>
+
+Smart Contract Accounts don't have private keys. This means that the account is unable to sign a Listing/Offer with its own address. If a user has a Smart Wallet with an asset they want to rent, it would be impossible to do so this way.
+
+For cases like this, the Rentals contract detects if the provided signer is a Smart Contract Account that follows the [ERC1271](https://eips.ethereum.org/EIPS/eip-1271) standard. It calls the `isValidSignature` of the provided signer and delegates the validation. This way, an Externally Owned Account that has control over a Smart Contract Account such as Smart Wallets can create Listings/Offers in their name.
+
+EOA A signs Listing with signer B that is a Smart Wallet owned by A ✅
+
+<img src="resources/ADR-172/diagram-3.png" alt="drawing" style="width:100%;"/>
 
 ### How it works
 
