@@ -131,37 +131,25 @@ EOA A signs Listing with signer B that is a Smart Wallet owned by A ✅
 
 <img src="resources/ADR-172/diagram-3.png" alt="drawing" style="width:100%;"/>
 
-### How it works
+### Asset Lifecycle
 
-The [Rentals Smart Contract](https://etherscan.io/address/0x3a1469499d0be105d4f77045ca403a5f6dc2f3f5#code) allows users to accept Rental Listings and Offers. 
+The first time an asset is rented, it is transferred from its original owner to the Rentals contract. This transfer prevents the asset from being operated freely by the lessor while the rental is running. In this case, the contract acts as an escrow that makes sure that only a limited amount of actions can be performed on the asset that are only relevant to renting it.
 
-These can be created off-chain by signing them with your wallet and storing the data and signature in a place consumable by an interested user.
+**Rental Ongoing**
 
-The benefit of using off-chain signatures is that users can create Listings and Offers without needing to pay for a transaction.
+The tenant has the possibility to set its update operator as many times as desired. In the particular case of Estates, the tenant can set the update operators of internal parcels as well through the Rentals contract. The lessor is unable operate the asset in any way.
 
-The Land owner can accept an Offer by calling the `acceptOffer` function or safely transferring the Land to the Rentals contract with the offer data and signature. 
+As long as the tenant and the lessor are the same, a new Listing/Offer can be accepted in order to extend the rent.
 
-A user interested in renting Land can accept a Listing by calling the `acceptListing` function on the contract with the Listing data and signature.
+**Rental Finished**
 
-Successfully accepting any of these will start a Rental that will last as long as the Listing/Offer stipulated, MANA will be transferred from the tenant to the lessor, the rented Land will be transferred to the Rentals contract, and the tenant or any address determined by the tenant will be set as update operator of the Land to be able to deploy scenes.
+Once the rental ends, the lessor is the one that can do the previously mentioned actions while the tenant can't do them anymore.
 
-### Why is the Land transferred to the Rentals contract?
+The lessor also has the option to claim the asset back, causing it to be transferred back from the Rentals contract to its original owner. 
 
-It is to limit what the original owner of the asset can do with the Land by transferring the ownership to the Rentals contract. The owner cannot interact directly with the asset anymore, so have to use a set of functions defined by the Rentals smart contract to do so.
+The lessor can also create new Listings or accept new Offers for the asset without the need of claiming it back. This is called a re-rent. This saves some gas because an extra transaction is prevented.
 
-For example, Once a rental starts, the owner can't do anything until the rental period ends. In that case, they can `claim` the Land back, rent it again the same way as before,  or set a different update operator to overwrite the one set by the tenant and prevent its further use.
-
-### What happens when the rental ends?
-
-Nothing actively happens. Unless the owner changes something, the update operator defined by the tenant can still deploy scenes. The owner can claim the Land back, rent it again or change the update operator to prevent the tenant from using it.
-
-### Can Parcels inside a rented Estate be given individual update operator permissions?
-
-Yes.
-
-The Rentals contract exposes a function `setManyLandUpdateOperator` that can be called by the tenant (or the owner if the rental is over) to set the update operator of Parcels inside an Estate.
-
-This is also helpful because when the Estate is transferred for rental, internal Parcel permissions are not reset, so the tenant might need to call this function to prevent older tenants from overriding new deployments.
+<img src="resources/ADR-172/diagram-4.png" alt="drawing" style="width:100%;"/>
 
 ## Solution Space Exploration
 
