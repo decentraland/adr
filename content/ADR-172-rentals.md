@@ -163,16 +163,6 @@ The Rentals contract exposes a function `setManyLandUpdateOperator` that can be 
 
 This is also helpful because when the Estate is transferred for rental, internal Parcel permissions are not reset, so the tenant might need to call this function to prevent older tenants from overriding new deployments.
 
-### Can [Smart Contract Accounts (SCA)](https://ethereum.org/en/developers/docs/accounts/#contract-accounts) create Listings or Offers?
-
-Only [Externally Owned Accounts (EOA)](https://ethereum.org/en/developers/docs/accounts/#externally-owned-accounts-and-key-pairs) can sign messages with their private keys, meaning that only an EOA can sign Listings and/or Offers. 
-
-However, there is a workaround for an SCA to create Listings and Offers by implementing [ERC1271](https://eips.ethereum.org/EIPS/eip-1271).
-
-By doing so, an EOA can create the signature with the SCA address as `signer` and the Rentals contract will call the `isValidSignature` method of the SCA to validate that the signature was created by an authorized EOA.
-
-This is useful for the cases in which a SCA has a Land and the owner or owners of that account do not want to transfer it to their accounts in order to rent it. One of the owners will sign the Listing and/or Offer with the SCA as `signer` and it will be valid (always depending on how ERC1271 is implemented on the SCA).
-
 ## Solution Space Exploration
 
 The Rentals Smart Contract by itself might not be too easy to use, specially because handling signatures is a complex thing.
