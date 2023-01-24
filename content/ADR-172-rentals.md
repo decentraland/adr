@@ -70,7 +70,7 @@ Listings and Offers are data structures that contain the information required to
 - **address contractAddress** - The address of the to-be-rented asset's contract.
 - **uint256 tokenId** - The id of the asset.
 - **uint256 expiration** - The timestamp up to when the listing can be executed.
-- **uint256[3] indexes** - The indexes used for extra signature verification, learn more about it [here](#can-signatures-be-invalidated).
+- **uint256[3] indexes** - The indexes used for extra signature verification, learn more about it [here](#verification-indexes).
 - **uint256[] pricePerDay, maxDays, minDays** - The different options provided in the Listing that be selected by the user that accepts it. The price per day is how much MANA will be paid up front for each day the asset will be rented. max and minDays determine the range of days the asset can be rented for a given price.
 - **address target** - The address of the account this Listing is targeted to. If the value is not the `address(0)` only the target can accept it.
 
@@ -80,7 +80,7 @@ Listings and Offers are data structures that contain the information required to
 - **address contractAddress** - The address of the to-be-rented asset's contract.
 - **uint256 tokenId** - The id of the asset.
 - **uint256 expiration** - The timestamp up to when the listing can be executed.
-- **uint256[3] indexes** - The indexes used for extra signature verification, learn more about it [here](#can-signatures-be-invalidated).
+- **uint256[3] indexes** - The indexes used for extra signature verification, learn more about it [here](#verification-indexes).
 - **uint256 pricePerDay** - The amount of MANA the tenant is willing to pay upfront per rental day for the asset.
 - **uint256 rentalDays** - The amount of days the tenant wants to rent the asset.
 - **address operator** - The address that will be given update operator permissions over the asset. In the case of Land, it will be the account that has permissions to deploy scenes on it. If the operator is set as address(0) the `signer` will be given the update operator role.
@@ -92,6 +92,24 @@ To prevent users from spending money on creating/updating/deleting them, they ar
 <img src="resources/ADR-172/diagram-1.png" alt="drawing" style="width:100%;"/>
 
 The diagram shows the flow of a lessor creating and signing a Listing that is then stored off-chain. The tenant fetches both to start a new a new rental.
+
+### Verification Indexes
+
+Listings and Offers have an `indexes` property that is an array composed of 3 integers. Each one of these integers represents a verification index that the Rentals contract will use to verify that the Listing/Offer is still valid. 
+
+Any of these indexes can be updated at any time to invalidate signatures. Each index is updated differently and is in charge of invalidating signatures in different ways.
+
+**Contract Index**
+
+This index can be updated by the owner of the Rentals contract. Updating this index with `bumpContractIndex()` will invalidate all signatures created with the previous value. It is intended to be used in case there is a signature leak from the off-chain signature storage and protect users.
+
+**Signer Index** 
+
+Each address has its own signer index. Updating this index with `bumpSignerIndex()` will update the index of the sender. This is helpful for users that have lost track of their signatures and want to invalidate them all at once.
+
+**Asset Index**
+
+Similar to the Signer Index, but for particular assets. Instead of invalidating all signatures created by an address, a user can call `bumpAssetIndex(address _contractAddress, uint256 _tokenId)` to invalidate all signatures created for a particular asset.
 
 ### How it works
 
@@ -116,18 +134,6 @@ For example, Once a rental starts, the owner can't do anything until the rental 
 ### What happens when the rental ends?
 
 Nothing actively happens. Unless the owner changes something, the update operator defined by the tenant can still deploy scenes. The owner can claim the Land back, rent it again or change the update operator to prevent the tenant from using it.
-
-### Can signatures be invalidated?
-
-A mechanism to do so was added to the Rentals contract as a safety measure.
-
-Listings and Offers are signed with a parameter with three different numbers called `indexes` to check if it is still valid. 
-
-Contract Index: It can be increased by the owner of the Rentals contract to invalidate all signatures.
-
-Signer Index: Can be increased to invalidate all signatures created by the user.
-
-Asset Index: Can be increased to invalidate all signatures created by the user for a certain Land.
 
 ### Can Parcels inside a rented Estate be given individual update operator permissions?
 
