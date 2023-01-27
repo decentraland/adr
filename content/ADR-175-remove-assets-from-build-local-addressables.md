@@ -1,7 +1,7 @@
 ---
 layout: adr
 adr: 175
-title: Remove assets from Renderer's build
+title: Remove assets from Renderer's build. Addressables Integration
 date: 2023-01-16
 status: Review
 type: ADR
