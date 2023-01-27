@@ -79,7 +79,7 @@ The CI/CD of this repository is going to be bound to internal and production rel
 
 - The Unity executable will be run by a native JS virtual machine (i.e. NodeJS) to run the scenes and some parts of the kernel. This will be done via a shell command, and this means two processes will be running by this stage. The JS project will communicate with the Unity process using IPC (Exact definition TBD) or FFI linking. In the future there will be different executables generated for each of the desktop platforms (win, mac, linux).
 
-- A Desktop Unity project containing the renderer’s package and specific platform components (i.e. sign in/sign up screens, terms of service, desktop ethereum provider, any communication glue for the Native JS Project)
+- A Desktop Unity project containing the renderer’s package and specific platform components (i.e. sign-in/sign-up screens, terms of service, desktop Ethereum provider, and any communication glue for the Native JS Project)
 
 - On the Native JS Project, a thin TS layer with the `unity-interface` desktop implementation and all the code that is directly related with the desktop renderer will be included. This implementation will have the specifics of the IPC communication needed.
 
