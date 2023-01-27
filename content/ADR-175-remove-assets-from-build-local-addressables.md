@@ -60,6 +60,10 @@ We are going to distribute assets in "Addressable Asset Groups" according to the
 
 Check [Unity guidelines](https://docs.unity3d.com/Packages/com.unity.addressables@1.21/manual/AddressableAssetsDevelopmentCycle.html#organizing-addressable-assets) for additional information.
 
+#### Asset Bundle CRC	
+At the moment we don't have any sensitive data that requires integrity check. Moreover, for bigger files it will cause noticeable overhead on loading.
+So for the groups we will disable it.
+
 ### Resources handling
 We are going to exclude Scenes and Resources from Addressables Catalog:
    - We don't plan to migrate "Resources"' API to the corresponding one of "Addressables"
