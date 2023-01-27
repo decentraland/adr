@@ -28,7 +28,9 @@ It's an additional abstraction layer over the Asset Bundles System but it's not 
 ### Strategy
 In the first iteration we are going to use the "Local" mode only:
   - the default addressables profile is suitable for this purpose, we don't have to introduce our own
-<img alt="image" src="https://user-images.githubusercontent.com/118179774/214870799-4fe1b14c-9b17-4485-8958-5ed11eeafdd1.png">
+<figure>
+  <img src="/resources/ADR-175/AddressableProfiles.png" />
+</figure>
 
   - the remote section of the profile we are going to ignore
   - the local section refers to building and loading assets from the "Streaming Assets" directory
@@ -49,7 +51,9 @@ Depending on the specific case, we will use all possible ways to load assets:
 ### [Groups configuration](https://docs.unity3d.com/Packages/com.unity.addressables@1.21/manual/GroupSettings.html)
 Group settings determine how the assets in a group are treated in content builds.
 
-![image](https://user-images.githubusercontent.com/118179774/214874324-6bb9b942-dd00-4a65-bee4-213e1f4c4125.png)
+<figure>
+  <img src="/resources/ADR-175/GroupsConfiguration.png" />
+</figure>
 
 We are going to distribute assets in "Addressable Asset Groups" according to the following rules:
    - "Essentials" corresponds to the assets that are mandatory for the application to function (e.g. Skybox) and can't be excluded
@@ -69,7 +73,9 @@ We are going to exclude Scenes and Resources from Addressables Catalog:
    - We don't plan to migrate "Resources"' API to the corresponding one of "Addressables"
    - We plan to migrate assets currently added to "Resources" to "Addressables" with a proper distribution over time
 
-![image](https://user-images.githubusercontent.com/118179774/214880545-4ecec0c7-6c50-4a57-97dc-946305719ae7.png)
+<figure>
+  <img src="/resources/ADR-175/ResourceHandling.png" />
+</figure>
 
 ### Addressables Caching
 "Addressables" uses right the same "Caching" system that "Asset Bundles" does. It works out of the box for all the supported platforms. It is possible to disable caching per group, but in our case we will not be doing it.
@@ -94,7 +100,9 @@ Simulate Groups mode will help us simulate load strategies and tweak our content
 
 We have to launch the analysis and fix the issues before pushing Addressables to prevent duplicates and unnecessary implicit references. 
 
-<img alt="image" src="https://user-images.githubusercontent.com/118179774/215037501-46764cb9-6059-45c9-b37d-e2c4571356e1.png">
+<figure>
+  <img src="/resources/ADR-175/AddressablesValidation.png" />
+</figure>
 
 
 ### CI/CD
