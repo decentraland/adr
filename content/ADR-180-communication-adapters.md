@@ -21,7 +21,7 @@ This document lists and describes the official communication protocols available
 ## Glossary
 
 - **Communications transport** underlying technology and/or underlying transport protocol in which the Decentraland explorers implement an adapter
-- **Communications adapter** piece of code or object that connect the internal state of the explorer with an specific transport
+- **Communications adapter** piece of code or object that connects the internal state of the explorer with a specific transport
 - **Realm** [set of configurations](/adr/ADR-110) for an [explorer](/adr/ADR-102)
 
 ## Solution Space Exploration
