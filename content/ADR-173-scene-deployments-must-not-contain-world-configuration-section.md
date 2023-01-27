@@ -19,7 +19,7 @@ the Worlds Content Server.
 
 ## Context, Reach & Prioritization
 
-In order to deploy a scene to the Worlds Content Server it is mandatory to add a `worldConfiguration` property like the following in its `scene.json` file:
+In order to deploy a scene to the Worlds Content Server, it is mandatory to add a `worldConfiguration` property like the following in its `scene.json` file:
 
 ```json
 {
