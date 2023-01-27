@@ -36,7 +36,7 @@ a preview service, and once the scene is polished and finished, he is ready to d
 
 ## Decisions
 
-A new validation is added to content validator so that the Catalysts can reject deployments of scenes containing the `worldConfiguration` property.
+A new validation is added to the content validator so that the Catalysts can reject deployments of scenes containing the `worldConfiguration` property.
 
 ## Deadline
 
