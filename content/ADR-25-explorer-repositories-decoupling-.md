@@ -67,7 +67,7 @@ The CI/CD of this repository is going to output internal and production releases
 
 - The typescript project contains a thin layer with the `unity-interface` and all the code that is directly related to the browser renderer (GIFs, mouse events wrapper, audio, video, etc).
 
-- An independent Unity project contains the Renderer Package, the web specific entry point (InitialScene + Main + etc) and any web specific components that may be needed.
+- An independent Unity project contains the Renderer Package, the web-specific entry point (InitialScene + Main + etc), and any web-specific components that may be needed.
 
 ![resources/ADR-25-explorer-repositories-decoupling/image-2.svg](resources/ADR-25-explorer-repositories-decoupling/image-2.svg)
 
