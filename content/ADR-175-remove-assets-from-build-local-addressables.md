@@ -4,7 +4,7 @@ adr: 175
 title: Remove assets from Renderer's build. Addressables Integration
 date: 2023-01-16
 status: Review
-type: ADR
+type: Standards Track
 spdx-license: CC0-1.0
 authors:
   - ajimenezDCL
