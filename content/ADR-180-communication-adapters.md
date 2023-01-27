@@ -79,7 +79,7 @@ Here is the list of officially supported protocols
 
 #### `signed-login` verifications
 
-The signed-login exists as part of a "handshake" mechanism to enable authenticated log-ins and access control to different communication services like Livekit.
+The signed login exists as part of a "handshake" mechanism to enable authenticated log-ins and access control to different communication services like Livekit.
 
 The verifications of the [signed fetch](/adr/ADR-44) must look for the following properties: `intent`, `signer`, and `isGuest`.
 
