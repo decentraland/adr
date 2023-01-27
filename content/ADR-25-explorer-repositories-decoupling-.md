@@ -77,7 +77,7 @@ Contains all the components to run a desktop version of Decentraland.
 
 The CI/CD of this repository is going to be bound to internal and production releases that will be served from a link in the download section of our landing pages (TBD).
 
-- The Unity executable will be run by a native JS virtual machine (i.e. NodeJS) to run the scenes and some parts of the kernel. This will be done via a shell command, and this means two processes will be running by this stage. The JS project will communicate with the Unity process using IPC (Exact definition TBD) or FFI linking. In the future there will be different executables generated for each of the desktop platforms (win, mac, linux).
+- The Unity executable will be run by a native JS virtual machine (i.e. NodeJS) to run the scenes and some parts of the kernel. This will be done via a shell command, which means two processes will be running at this stage. The JS project will communicate with the Unity process using IPC (Exact definition TBD) or FFI linking. In the future, different executables will be generated for each desktop platform (win, mac, Linux).
 
 - A Desktop Unity project containing the renderer’s package and specific platform components (i.e. sign-in/sign-up screens, terms of service, desktop Ethereum provider, and any communication glue for the Native JS Project)
 
