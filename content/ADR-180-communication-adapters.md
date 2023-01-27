@@ -73,7 +73,7 @@ Here is the list of officially supported protocols
 
 - `offline` will create an empty adapter. This protocol is used to test without communications servers and by some single-player experiences like the onboarding tutorial. The parameters for the offline protocol are implementation dependent.
 - `simulator` will create different simulation conditions to evaluate performance and use cases. The parameters for the offline protocol are implementation dependent.
-- `ws-room` will create a WebSocket transport, using the wire protocol and semantics defined in [ADR-105](/adr/ADR-105). The parameter is the absolute URL to be connected to, including the hostname. If no protocol is defined in the url, `wss://` will be prepended.
+- `ws-room` will create a WebSocket transport, using the wire protocol and semantics defined in [ADR-105](/adr/ADR-105). The parameter is the absolute URL to be connected to, including the hostname. If no protocol is defined in the URL, `wss://` will be prepended.
 - `livekit` will create a LiveKit transport. The parameter is the absolute URL to be connected to, including the hostname and the livekit token if needed. It is mandatory to specify the `wss://` protocol as part of the URL.
 - `signed-login` performs a signed-fetch as defined in [ADR-44](/adr/ADR-44). It is used to authenticate the user BEFORE sending the final connection string. The connection string comes as part of the responsein the `fixedAdapter` JSON field. In case of an error or access denied, a `message` can be sent to the user to provide more information about the reason of the denyed access.
 
