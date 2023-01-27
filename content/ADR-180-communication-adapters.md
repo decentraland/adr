@@ -55,7 +55,7 @@ livekit:wss://livekit.decentral.io?access_token=abc1223123
 
 ## Specification
 
-The realms will provide the ways to get a connection string for our session, with that connection string a communications adapter must be created, which will use a communications transport under the hood.
+The realms will provide ways to get a connection string for our session. A communications adapter must be created with that connection string, which will use a communications transport under the hood.
 
 All communications adapters must implement the semantics defined in [ADR-104](/adr/ADR-104). Some adapters, like livekit, may take advantage of their underlying implementations to set up Voice chat.
 
