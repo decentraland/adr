@@ -29,7 +29,7 @@ In order to deploy a scene to the Worlds Content Server, it is mandatory to add 
 }
 ```
 
-This contains metadata that is important at the time of deployment. It may also contain other configuration, like skybox settings, communications transport to use, etc. None of these settings have any effect in the Catalyst Network, this information is completely ignored and may lead to confusion.
+This contains metadata that is important at the time of deployment. It may also include other configurations, like skybox settings, communications transport to use, etc. None of these settings affect the Catalyst Network. This information is completely ignored and may lead to confusion.
 
 In a regular content creation flow, the developer could use Worlds as
 a preview service, and once the scene is polished and finished he is ready to deploy to the Catalyst network under some owned parcel(s). At this stage, the `scene.json` should have the `worldConfiguration` property removed, so that the information between Worlds and the Genesis City is kept where it belongs.
