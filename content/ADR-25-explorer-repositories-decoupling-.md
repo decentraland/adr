@@ -63,7 +63,7 @@ The CI/CD of this repository is going to output internal and production releases
 
 - Contains React and the entry point that instantiates Renderer and Kernel.
 
-- The typescript project will also be responsible for creating the ethereum provider and passing it as a parameter to Kernel.
+- The typescript project will also be responsible for creating the Ethereum provider and passing it as a parameter to Kernel.
 
 - The typescript project contains a thin layer with the `unity-interface` and all the code that is directly related with the browser renderer (GIFs, mouse events wrapper, audio, video, etc).
 
