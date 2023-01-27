@@ -15,7 +15,7 @@ We are planning to support desktop clients along with the web implementation, an
 
 When aiming for different platforms we face new development streamlines and independent release lifecycles. Also, code duplication should be minimized.
 
-With those constraints in mind, this document proposes the initial steps towards a project reorganization that fulfill those needs.
+With those constraints in mind, this document proposes the initial steps toward a project reorganization that fulfills those needs.
 
 ## Need
 
