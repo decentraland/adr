@@ -32,7 +32,7 @@ In the first iteration we are going to use the "Local" mode only:
 
   - the remote section of the profile we are going to ignore
   - the local section refers to building and loading assets from the "Streaming Assets" directory
-  - on WebGL "Streaming Assets" are hosted in the same storage where the main binary (wasm) is located, and, thus, are loaded via "Web Request". To be able to use the "Local" configuration, the "Streaming Assets" folder path has to be specified in the config section of "index.ts". This will give the necessary url needed for Unity to complete the  corresponding "Web Request".
+  - on WebGL "Streaming Assets" are hosted in the same storage where the main binary (wasm) is located, and, thus, are loaded via "Web Request". To be able to use the "Local" configuration, the "Streaming Assets" folder path has to be specified in the config section of `index.ts`. This will give the necessary url needed for Unity to complete the corresponding "Web Request".
   - on Standalone "Streaming Assets" is a directory alongside a main binary, and, thus, are loaded by reading from disk
 
 ### Retrocompatibility and Versioning
@@ -98,7 +98,7 @@ We have to launch the analysis and fix the issues before pushing Addressables to
 
 
 ### CI/CD
-On every build iteration, the addressables get rebuilt and dropped in the "Streaming Assets" folder as per the "Local" configuration. The get built by using the AddressableAssetSettings.BuildPlayerContent() in the BuildCommand.cs. 
+On every build iteration, the addressables get rebuilt and dropped in the "Streaming Assets" folder as per the "Local" configuration. They get built by using the `AddressableAssetSettings.BuildPlayerContent()` in the `BuildCommand.cs`. 
 After the build process, those addressables files get copied into a new "Streaming Assets" directory which should be delivered as an artifact within the same package. 
 
 
