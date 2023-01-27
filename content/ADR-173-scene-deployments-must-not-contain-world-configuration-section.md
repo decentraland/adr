@@ -14,7 +14,7 @@ authors:
 
 A scene is the only entity type that can be deployed in two different services: the Catalyst Network and the Worlds Content Server.
 
-When deploying scenes to the Catalyst Network a new validation will reject those that have the `worldConfiguration` property defined in their `scene.json` file as it doesn't make sense in the Genesis City and may lead to confusions with regard to the same scene deployed in
+When deploying scenes to the Catalyst Network, a new validation will reject those that have the `worldConfiguration` property defined in their `scene.json` file as it doesn't make sense in the Genesis City and may lead to confusion about the same scene deployed in
 the Worlds Content Server.
 
 ## Context, Reach & Prioritization
