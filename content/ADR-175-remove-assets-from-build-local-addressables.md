@@ -15,11 +15,15 @@ authors:
 This document describes an approach on how to make the reference's client lightweight by streaming the currently embedded assets. 
 
 ## Problem
-Every nice UI, sound effect, particle or material we add to the renderer increases its size. This directly impact loading times or caching since the client's size will go above the max allowed for it (applied to WebGL, check [the PoC](https://github.com/2fd/poc-browser-cache) for details) . The idea is to pack textures, audio files and other assets, and stream them in runtime. 
+Every nice UI, sound effect, particle or material we add to the renderer increases its size. This directly impact loading times or caching since the client's size will go above the max allowed for it (applied to WebGL, check [the PoC](https://github.com/2fd/poc-browser-cache) for details). The idea is to pack textures, audio files and other assets, and stream them in runtime. 
 
 ## Solution
 ### Pack the Assets
-Similar to what we are doing with scene assets, we can pack everything into one or multiple (to always be under the cache size limit) asset packs to be consumed by the client. This solution should be part of a different system than the one used for scene asset.
+Similar to what we are doing with scene assets, we can pack everything into one or multiple (to always be under the cache size limit) asset packs to be consumed by the client. This solution should be part of a different system than the one used for scene asset. Reasons why we can't reuse the system include, but are not limited to:
+   - The existing system is legacy both from the runtime and distribution sides (it is based on "Asset Bundles"). Some parts require special attention such as refactoring, and some do not, but we are not going to base the new system on the legacy foundation, neither we are going to address the old issues immediately
+   - The system is designed for user-generated content
+   - It's designed for a different lifecycle: assets are dynamically released and loaded based on the currently active scenes and other usages. This is redundant for the current purpose, at least for the current iteration
+   - It provides mechanisms for loading and handling unprocessed content whereas the system under consideration is dedicated to compiled assets
 
 ### [Addressables](https://docs.unity3d.com/Packages/com.unity.addressables@1.21/manual/index.html)
 The Addressables system provides tools and scripts to organize and package content for an application and an API to load and release assets at runtime.
