@@ -15,7 +15,7 @@ authors:
 This document describes an approach on how to make the reference's client lightweight by streaming the currently embedded assets. 
 
 ## Problem
-Every nice UI, sound effect, particle or material we add to the renderer increases its size. This directly impact loading times or caching since the client's size will go above the max allowed for it. The idea is to pack textures, audio files and other assets, and stream them in runtime. 
+Every nice UI, sound effect, particle or material we add to the renderer increases its size. This directly impact loading times or caching since the client's size will go above the max allowed for it (applied to WebGL, check [the PoC](https://github.com/2fd/poc-browser-cache) for details) . The idea is to pack textures, audio files and other assets, and stream them in runtime. 
 
 ## Solution
 ### Pack the Assets
