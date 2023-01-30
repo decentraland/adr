@@ -51,8 +51,9 @@ Depending on the specific case, we will use all possible ways to load assets:
   - [Label](https://docs.unity3d.com/Packages/com.unity.addressables@1.21/manual/Labels.html) (to load a list of similar assets)
   - Address (to load an asset by the hardcoded string)
      - By default, the address is a path to the file
-     
-     <img alt="image" src="https://user-images.githubusercontent.com/118179774/215510258-593279ba-7019-45f0-816e-69e1b0745a2c.png">
+<figure>
+  <img src="/resources/ADR-175/AddressableAddress.png" />
+</figure>
 
      - It is desirable to shorten the address and adjust it according to the directories and groups structure. The exact rules of the former will be elaborated on in the production pipeline
   - GUID (to load an asset by "Asset Reference")
