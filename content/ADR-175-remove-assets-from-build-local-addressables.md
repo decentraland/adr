@@ -81,8 +81,13 @@ We are going to exclude Scenes and Resources from Addressables Catalog:
 "Addressables" uses right the same "Caching" system that "Asset Bundles" does. It works out of the box for all the supported platforms. It is possible to disable caching per group, but in our case we will not be doing it.
 
 ### Asset Reference
-We are going to utilize ["AssetReference"](https://docs.unity3d.com/Packages/com.unity.addressables@1.21/manual/AssetReferences.html) and "AssetLabelReference" instead of "SerializeField" to properly reference Assets that should be a part of an Addressable without creating a strong reference to them.
-Proper use cases and distribution of such assets in groups will be defined according to the feature production pipeline with performance in mind.
+We are going to utilize ["AssetReference"](https://docs.unity3d.com/Packages/com.unity.addressables@1.21/manual/AssetReferences.html) and "AssetLabelReference" instead of "SerializeField" to properly reference Assets that should be a part of a separate Addressable without creating a strong reference to them.
+
+We can think of several use cases:
+   - Optional references that are loaded on demand in conditional branches, and, thus, should not be present in memory all the time
+   - Avoiding the case of referencing the same assets by strong references (that are included in the build) and including them in the Addressable/Asset Bundle in order to prevent duplication
+
+Real use cases and distribution of such assets in groups will be refined and defined according to the feature production pipeline with performance in mind.
 
 ### Addressables Disposal
 Currently, we don't have a robust mechanism for cleaning up memory from assets. We are not going to introduce it this time either. Thus, we will keep all the Addressables loaded in memory. Considering it's the "Local" mode only, it's not gonna be a problem.
