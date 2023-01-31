@@ -81,7 +81,7 @@ The CI/CD of this repository is going to be bound to internal and production rel
 
 - A Desktop Unity project containing the renderer’s package and specific platform components (i.e. sign-in/sign-up screens, terms of service, desktop Ethereum provider, and any communication glue for the Native JS Project)
 
-- On the Native JS Project, a thin TS layer with the `unity-interface` desktop implementation and all the code that is directly related with the desktop renderer will be included. This implementation will have the specifics of the IPC communication needed.
+- On the Native JS Project, a thin TS layer with the `unity-interface` desktop implementation and all the code that is directly related to the desktop renderer will be included. This implementation will have the specifics of the IPC communication needed.
 
 ![resources/ADR-25-explorer-repositories-decoupling/image-3.svg](resources/ADR-25-explorer-repositories-decoupling/image-3.svg)
 
