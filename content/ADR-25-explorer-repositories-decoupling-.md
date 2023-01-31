@@ -97,7 +97,7 @@ The CI/CD of this repository is going to be bound to internal and production rel
 
 ## Benefit
 
-This approach decouples the kernel repository from any business logic tied to the web browsers, moving that part directly to the web shell repository. It not only enables better testing tools (NodeJS) but it also makes the code more portable, following the objective of reusing parts of the `kernel` in the desktop distribution.
+This approach decouples the kernel repository from any business logic tied to the web browsers, moving that part directly to the web shell repository. It not only enables better testing tools (NodeJS) but also makes the code more portable, following the objective of reusing parts of the `kernel` in the desktop distribution.
 
 Unity build now has an independent release cycle making the CI and iteration cycle faster. It also enables us to scale the project using modules that can be reused by many implementations of Decentraland.
 
