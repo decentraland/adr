@@ -28,7 +28,7 @@ This document lists and describes the official communication protocols available
 
 Decentraland explorers connect to different communications transports via connection strings, URL-like identifiers containing all the information needed to select the technology and establish the connection to the target network.
 
-The basic structure of a connection string is defined with the following BNF
+The basic structure of a connection string is defined with the following BNF:
 
 ```bnf
 PROTOCOL          := !':' [A-Za-z][A-Za-z0-9-]+
