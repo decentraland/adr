@@ -109,7 +109,7 @@ app.post("/authenticate-comms", dcl.express(), (req: Request & dcl.DecentralandS
 })
 
 function validateMetadata(metadata: Record<string, any>) {
-  if (metadata.signer !== "dcl:explorer" || metadata.signer !== "dcl:explorer:comms-handshake") {
+  if (metadata.signer !== "dcl:explorer" || metadata.intent !== "dcl:explorer:comms-handshake") {
     // this validation prevents signedFetch from the SDK to be used
     // to authenticate users into comms
     return false
