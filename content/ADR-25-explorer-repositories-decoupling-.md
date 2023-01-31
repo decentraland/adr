@@ -93,7 +93,7 @@ The CI/CD of this repository is going to be bound to internal and production rel
 
 - After a checkpoint (TBD) start using the new build in decentraland/explorer synchronize changes and delete unity files from the original repository.
 
-- After stable release, repeat the same process to separate website and kernel.
+- After stable release, repeat the same process to separate the website and kernel.
 
 ## Benefit
 
