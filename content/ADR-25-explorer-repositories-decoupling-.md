@@ -91,7 +91,7 @@ The CI/CD of this repository is going to be bound to internal and production rel
 
 - In isolation, work on the decentraland/renderer repository to make CI work and expose interfaces to be used by the kernel in the future.
 
-- After a checkpoint (TBD) start using the new build in decentraland/explorer synchronize changes and delete unity files from the original repository.
+- After a checkpoint (TBD) start using the new build in decentraland/explorer, synchronize changes and delete unity files from the original repository.
 
 - After stable release, repeat the same process to separate the website and kernel.
 
