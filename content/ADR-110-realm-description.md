@@ -134,6 +134,6 @@ There are several possible comms configs:
     }
     ```
 
-    This means the client will connect to the provided adapter, there is no clustering process involved.
+    This means the client will connect to the provided adapter, there is no clustering process involved. The available adapters can be found at [ADR-180](/adr/ADR-180)
 
   - Clustering. If no `fixedAdapter` is provided, this means the client will negotiate through the BFF to join a cluster. For details about this check [ADR-70](adr/ADR-70)
