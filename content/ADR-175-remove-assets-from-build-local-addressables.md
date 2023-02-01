@@ -27,7 +27,7 @@ Similar to what we are doing with scene assets, we can pack everything into one 
 
 ### [Addressables](https://docs.unity3d.com/Packages/com.unity.addressables@1.21/manual/index.html)
 The Addressables system provides tools and scripts to organize and package content for an application and an API to load and release assets at runtime.
-It's an additional abstraction layer over the Asset Bundles System but it's not limited to this. "Addressables" gives the flexibility to adjust where to host assets and provides mechanisms for dependency resolution, reference counting, simulation, validation, and diagnostics out of the box.
+It's an additional abstraction layer over the Asset Bundles System, but it's not limited to this. "Addressables" gives the flexibility to adjust where to host assets and provides mechanisms for dependency resolution, reference counting, simulation, validation, and diagnostics out of the box.
 
 ### Strategy
 In the first iteration we are going to use the "Local" mode only:
