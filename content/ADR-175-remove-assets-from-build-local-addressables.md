@@ -105,7 +105,7 @@ Currently, we don't have a robust mechanism for cleaning up memory from assets. 
 ### Simulation
 We will use "Simulate Groups" mode for loading Addressables in the Editor. It will help us detect and investigate problems earlier. We will prefer it over "Asset Database" false mode.
 
-Simulate Groups mode (BuildScriptVirtualMode) analyzes content for layout and dependencies without creating asset bundles. Assets load from the asset database through the ResourceManager, as if they were loaded through bundles. To see when bundles load or unload during game play, view the asset usage in the Addressables Event Viewer window (Window > Asset Management > Addressables > Event Viewer).
+Simulate Groups mode (BuildScriptVirtualMode) analyzes content for layout and dependencies without creating asset bundles. Assets load from the asset database through the ResourceManager, as if they were loaded through bundles. To see when bundles load or unload during gameplay, view the asset usage in the Addressables Event Viewer window (Window > Asset Management > Addressables > Event Viewer).
 
 Simulate Groups mode will help us simulate load strategies and tweak our content groups to find the right balance for a production release.
 
