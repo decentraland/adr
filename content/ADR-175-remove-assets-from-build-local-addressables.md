@@ -23,7 +23,7 @@ Similar to what we are doing with scene assets, we can pack everything into one 
    - The existing system is legacy both from the runtime and distribution sides (it is based on "Asset Bundles"). Some parts require special attention such as refactoring, and some do not, but we are not going to base the new system on the legacy foundation, neither we are going to address the old issues immediately
    - The system is designed for user-generated content
    - It's designed for a different lifecycle: assets are dynamically released and loaded based on the currently active scenes and other usages. This is redundant for the current purpose, at least for the current iteration
-   - It provides mechanisms for loading and handling unprocessed content whereas the system under consideration is dedicated to compiled assets
+   - It provides mechanisms for loading and handling unprocessed content, whereas the system under consideration is dedicated to compiled assets
 
 ### [Addressables](https://docs.unity3d.com/Packages/com.unity.addressables@1.21/manual/index.html)
 The Addressables system provides tools and scripts to organize and package content for an application and an API to load and release assets at runtime.
