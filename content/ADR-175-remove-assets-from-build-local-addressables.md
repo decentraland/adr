@@ -31,7 +31,7 @@ It's an additional abstraction layer over the Asset Bundles System, but it's not
 
 ### Strategy
 In the first iteration, we are going to use the "Local" mode only:
-  - the default addressables profile is suitable for this purpose, we don't have to introduce our own
+  - the default addressables profile is suitable for this purpose, so we don't have to introduce our own
 <figure>
   <img src="/resources/ADR-175/AddressableProfiles.png" />
 </figure>
