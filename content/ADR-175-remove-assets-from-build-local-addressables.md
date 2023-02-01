@@ -30,7 +30,7 @@ The Addressables system provides tools and scripts to organize and package conte
 It's an additional abstraction layer over the Asset Bundles System, but it's not limited to this. "Addressables" gives the flexibility to adjust where to host assets and provides mechanisms for dependency resolution, reference counting, simulation, validation, and diagnostics out of the box.
 
 ### Strategy
-In the first iteration we are going to use the "Local" mode only:
+In the first iteration, we are going to use the "Local" mode only:
   - the default addressables profile is suitable for this purpose, we don't have to introduce our own
 <figure>
   <img src="/resources/ADR-175/AddressableProfiles.png" />
