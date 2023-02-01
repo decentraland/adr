@@ -42,9 +42,9 @@ In the first iteration, we are going to use the "Local" mode only:
   - on Standalone "Streaming Assets" is a directory alongside a main binary, and, thus, are loaded by reading from disk
 
 ### Retrocompatibility and Versioning
-Currently the renderer is a self-contained experience; and as for "Local" Addressables no dedicated versioning is required:
-  - on WebGL "Streaming Assets" are a part of the npm package
-  - on Standalone "Streaming Assets" are distributed within the same archive
+Currently, the renderer is a self-contained experience; and as for "Local" Addressables, no dedicated versioning is required:
+  - on WebGL, "Streaming Assets" are a part of the npm package
+  - on Standalone, "Streaming Assets" are distributed within the same archive
 
 ### Addressables loading
 Depending on the specific case, we will use all possible ways to load assets:
@@ -67,20 +67,20 @@ Group settings determine how the assets in a group are treated in content builds
 
 We are going to distribute assets in "Addressable Asset Groups" according to the following rules:
    - "Essentials" corresponds to the assets that are mandatory for the application to function (e.g. Skybox) and can't be excluded
-   - Other assets according to the logical designation (e.g. "Fonts") and usage (e.g. "Window XXX Resources") fall into different groups; without them the application can function
-   - Assets packed together/separately according to the required loading way: any combination of "Include Addresses in Catalog", "Include GUIDs in Catalog" and "Include Labels in Catalog". Thus, we will reduce the size of Catalog.
+   - Other assets according to the logical designation (e.g. "Fonts") and usage (e.g. "Window XXX Resources") fall into different groups; without them, the application can function
+   - Assets packed together/separately according to the required loading way: any combination of "Include Addresses in Catalog", "Include GUIDs in Catalog", and "Include Labels in Catalog". Thus, we will reduce the size of the Catalog.
    - Bundle Mode "Pack Together by Label" will be used to differentiate between platforms (WebGL, Standalone) within the same logical group to exclude unused assets (and the related overhead) if needed
    - We may come up with additional rules for our convenience
 
 Check [Unity guidelines](https://docs.unity3d.com/Packages/com.unity.addressables@1.21/manual/AddressableAssetsDevelopmentCycle.html#organizing-addressable-assets) for additional information.
 
 #### Asset Bundle CRC	
-At the moment we don't have any sensitive data that requires integrity check. Moreover, for bigger files it will cause noticeable overhead on loading.
-So for the groups we will disable it.
+At the moment, we don't have any sensitive data that requires an integrity check. Moreover, for bigger files, it will cause noticeable overhead on loading.
+So for the groups, we will disable it.
 
 ### Resources handling
 We are going to exclude Scenes and Resources from Addressables Catalog:
-   - We don't plan to migrate "Resources"' API to the corresponding one of "Addressables"
+   - We don't plan to migrate the "Resources"' API to the corresponding one of "Addressables"
    - We plan to migrate assets currently added to "Resources" to "Addressables" with a proper distribution over time
 
 <figure>
@@ -88,7 +88,7 @@ We are going to exclude Scenes and Resources from Addressables Catalog:
 </figure>
 
 ### Addressables Caching
-"Addressables" uses right the same "Caching" system that "Asset Bundles" does. It works out of the box for all the supported platforms. It is possible to disable caching per group, but in our case we will not be doing it.
+"Addressables" uses right the same "Caching" system that "Asset Bundles" does. It works out of the box for all the supported platforms. Even though it is possible to disable caching per group, we will not do it.
 
 ### Asset Reference
 We are going to utilize ["AssetReference"](https://docs.unity3d.com/Packages/com.unity.addressables@1.21/manual/AssetReferences.html) and "AssetLabelReference" instead of "SerializeField" to properly reference Assets that should be a part of a separate Addressable without creating a strong reference to them.
@@ -100,17 +100,17 @@ We can think of several use cases:
 Real use cases and distribution of such assets in groups will be refined and defined according to the feature production pipeline with performance in mind.
 
 ### Addressables Disposal
-Currently, we don't have a robust mechanism for cleaning up memory from assets. We are not going to introduce it this time either. Thus, we will keep all the Addressables loaded in memory. Considering it's the "Local" mode only, it's not gonna be a problem.
+Currently, we don't have a robust mechanism for cleaning up memory from assets. We are not going to introduce it this time either. Thus, we will keep all the Addressables loaded in memory. Considering it's only the "Local" mode, it's not gonna be a problem.
 
 ### Simulation
-We will use "Simulate Groups" mode for loading Addressables in the Editor. It will help us detect and investigate problems earlier. We will prefer it over "Asset Database" false mode.
+We will use the "Simulate Groups" mode for loading Addressables in the Editor. It will help us detect and investigate problems earlier. We will prefer it over the "Asset Database" false mode.
 
 Simulate Groups mode (BuildScriptVirtualMode) analyzes content for layout and dependencies without creating asset bundles. Assets load from the asset database through the ResourceManager, as if they were loaded through bundles. To see when bundles load or unload during gameplay, view the asset usage in the Addressables Event Viewer window (Window > Asset Management > Addressables > Event Viewer).
 
 Simulate Groups mode will help us simulate load strategies and tweak our content groups to find the right balance for a production release.
 
 ### Addressables Validation
-"Addressables" inherits an issue of assets duplication from the Asset Bundles System. Unity [thoroughly described the problem and the way of its resolution](https://docs.unity3d.com/Packages/com.unity.addressables@1.21/manual/ManagingAssets.html#asset-and-assetbundle-dependencies).
+"Addressables" inherits an issue of assets duplication from the Asset Bundles System. Unity [thoroughly described the problem and its resolution](https://docs.unity3d.com/Packages/com.unity.addressables@1.21/manual/ManagingAssets.html#asset-and-assetbundle-dependencies).
 "Addressables" provides the ["Analyze Tool"](https://docs.unity3d.com/Packages/com.unity.addressables@1.21/manual/AnalyzeTool.html) and several built-in presets to help detect and/or mitigate such issues.
 
 We have to launch the analysis and fix the issues before pushing Addressables to prevent duplicates and unnecessary implicit references. 
