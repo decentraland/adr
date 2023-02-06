@@ -32,7 +32,7 @@ As the platform and the protocol are growing, a few initiatives like the possibi
 
 The next approach was to track only *x,y* positions, but since a scene can grow, shrink, and change shape, this could result in misleading behavior for our users when, suddenly, a position they were already keeping track is not the scene they were following.
 
-Instead of the previously mentioned, we will assign a virtual UUID to each new deployment and use a set of rules detailed in the following section to determine if this new deployment corresponds to the same place or to a new one, in which case a new virtual ID will be assigned
+Instead of the previously mentioned approach, we will assign a virtual UUID to each new deployment and use a set of rules detailed in the following section to determine if this new deployment corresponds to the same place or to a new one, in which case a new virtual ID will be assigned.
 
 ## Specification
 
