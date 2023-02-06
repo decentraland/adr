@@ -16,7 +16,7 @@ authors:
 Abstract is a multi-sentence (short paragraph) technical summary. This should be a very terse and human-readable version of the document section. **Someone should be able to read only the abstract to get the gist of what this document is about in its current state.** Abstracts should be always up to date with the current state of the document.
 -->
 
-This document describe how a Places is defined and when a new Place is created and replace and existing one.
+This document describes how the ID (which is an UUID) of a Place is defined and the semantics to keep or replace it if the deployments of its parcels change. In many conditions deployments of new parcels won't modify the ID of the Place, other conditions are enumerated.
 
 ## Context
 
