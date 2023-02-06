@@ -41,7 +41,7 @@ A Place is defined as a scene occupying a set of positions, each new deploy on a
 When a new deployment replaced an already existing scene it will keep the same virtual UUID if [the scene metadata](https://docs.decentraland.org/creator/development-guide/scene-metadata/#scene-parcels) meets one of the following criteria:
 
 - the new scene parcels contains every parcel in the previous scene
-- the new scene base parcel is the same that the previous scene
+- the new scene base parcel is the same as the previous one
 
 ### Case 1: new scene occupying the exact same number parcels
 
