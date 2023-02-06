@@ -75,7 +75,7 @@ When a new deployment replaced an already existing scene it will keep the same v
       <img alt="move+same-base" src="/resources/ADR-186/move+same-base.png" width="300" hight="300" />
     </td>
     <td style="vertical-align: middle">
-      ✅ The new scene gets the <strong>same UUID</strong> if doesn't occupy the same parcel
+      ✅ The new scene gets the <strong>same UUID</strong> if it doesn't occupy the same parcel
       but preserves the same base parcel
     </td>
   </tr>
