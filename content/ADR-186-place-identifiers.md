@@ -36,7 +36,7 @@ Instead of the previously mentioned approach, we will assign a virtual UUID to e
 
 ## Specification
 
-A Place is defined as an scene occupying a set of positions, each new deploy on an empty set of lands will receive a new virtual UUID.
+A Place is defined as a scene occupying a set of positions, each new deploy on an empty set of lands will receive a new virtual UUID.
 
 When a new deployment replaced an already existing scene it will keep the same virtual UUID if [the scene metadata](https://docs.decentraland.org/creator/development-guide/scene-metadata/#scene-parcels) meets one of the following criteria:
 
