@@ -116,7 +116,7 @@ When a new deployment replaced an already existing scene it will keep the same v
       <img alt="grow+base" src="/resources/ADR-186/grow+base.png" width="300" hight="300" />
     </td>
     <td style="vertical-align: middle">
-      ✅ The new scene gets the <strong>same UUID</strong> if occupy all previous parcels +
+      ✅ The new scene gets the <strong>same UUID</strong> if it occupies all previous parcels +
       any additional one, even if it has a different base parcel
     </td>
   </tr>
