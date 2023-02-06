@@ -84,7 +84,7 @@ When a new deployment replaced an already existing scene it will keep the same v
       <img alt="re-shape" src="/resources/ADR-186/re-shape.png" width="300" hight="300" />
     </td>
     <td style="vertical-align: middle">
-      ✅ The new scene gets the <strong>same UUID</strong> if doesn't occupy the same parcel
+      ✅ The new scene gets the <strong>same UUID</strong> if it doesn't occupy the same parcel
       but preserves the same base parcel
     </td>
   </tr>
