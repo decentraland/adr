@@ -28,7 +28,7 @@ Discuss and go into detail about the subject in question. Make sure you cover:
 - Vocabulary and key terms
 -->
 
-As the platform and the protocol is growing, a few initiatives like the possibility to save, rank and recommend scenes are becoming essential tools to potent the social interaction and discoverability in Decentraland. But, each new scene deploy generates a new ID in the catalyst which would reset every that the scene could collect on each deployment.
+As the platform and the protocol are growing, a few initiatives like the possibility to save, rank and recommend scenes are becoming essential tools to strengthen the social interaction and discoverability in Decentraland. But, each new scene deployed has a new entity id in the Catalyst Network, which would reset every time that the scene could collect on each deployment.
 
 The next approach was to track only *x,y* positions, but since a scene can grow, shrink, and change shape, this could result in misleading behavior for our users when, suddenly, a position they were already keeping track is not the scene they were following.
 
