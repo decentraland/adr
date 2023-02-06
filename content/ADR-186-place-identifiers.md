@@ -50,7 +50,7 @@ When a new deployment replaced an already existing scene it will keep the same v
     <td style="vertical-align: middle">
       <img alt="deploy" src="/resources/ADR-186/deploy.png" width="300" hight="300" />
     </td>
-    <td style="vertical-align: middle">✅ The new scene gets the <strong>same UUID</strong> if occupy the same parcel</td>
+    <td style="vertical-align: middle">✅ The new scene gets the <strong>same UUID</strong> if it occupies the same parcel</td>
   </tr>
   <tr>
     <td style="vertical-align: middle">
