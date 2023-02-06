@@ -7,7 +7,7 @@ status: Draft
 type: Standards Track
 spdx-license: CC0-1.0
 authors:
-  - frami (2fd)
+  - 2fd
 ---
 
 ## Abstract
