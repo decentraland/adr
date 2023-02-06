@@ -46,31 +46,134 @@ When a new deployment replaced an already existing scene it will keep the same v
 ### Case 1: new scene occupying the exact same number parcels
 
 <table>
-<tr><td><img alt="deploy" src="/resources/ADR-186/deploy.png" width="400" hight="400" /></td><td>✅ The new scene gets the **same UUID** if occupy the same parcel  </td></tr>
-<tr><td><img alt="deploy+base" src="/resources/ADR-186/deploy+base.png" width="400" hight="400" /></td><td>✅ The new scene gets the **same UUID** if occupy the same parcel, even if it has a different base parcel </td></tr>
-<tr><td><img alt="move" src="/resources/ADR-186/move.png" width="400" hight="400" /></td><td>❌ The new scene gets a **new UUID** if doesn't occupy the same parcels and same base parcel </td></tr>
-<tr><td><img alt="move+same-base" src="/resources/ADR-186/move+same-base.png" width="400" hight="400" /></td><td>✅ The new scene gets the **same UUID** if doesn't occupy the same parcel but preserves the same base parcel </td></tr>
-<tr><td><img alt="re-shape" src="/resources/ADR-186/re-shape.png" width="400" hight="400" /></td><td>✅ The new scene gets the **same UUID** if doesn't occupy the same parcel but preserves the same base parcel </td></tr>
-<tr><td><img alt="re-shape+base" src="/resources/ADR-186/re-shape+base.png" width="400" hight="400" /></td><td>❌ The new scene gets a **new UUID** if doesn't occupy the same parcels and same base parcel </td></tr>
+  <tr>
+    <td style="vertical-align: middle">
+      <img alt="deploy" src="/resources/ADR-186/deploy.png" width="300" hight="300" />
+    </td>
+    <td style="vertical-align: middle">✅ The new scene gets the **same UUID** if occupy the same parcel</td>
+  </tr>
+  <tr>
+    <td style="vertical-align: middle">
+      <img alt="deploy+base" src="/resources/ADR-186/deploy+base.png" width="300" hight="300" />
+    </td>
+    <td style="vertical-align: middle">
+      ✅ The new scene gets the **same UUID** if occupy the same parcel, even if
+      it has a different base parcel
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: middle">
+      <img alt="move" src="/resources/ADR-186/move.png" width="300" hight="300" />
+    </td>
+    <td style="vertical-align: middle">
+      ❌ The new scene gets a **new UUID** if doesn't occupy the same parcels
+      and same base parcel
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: middle">
+      <img alt="move+same-base" src="/resources/ADR-186/move+same-base.png" width="300" hight="300" />
+    </td>
+    <td style="vertical-align: middle">
+      ✅ The new scene gets the **same UUID** if doesn't occupy the same parcel
+      but preserves the same base parcel
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: middle">
+      <img alt="re-shape" src="/resources/ADR-186/re-shape.png" width="300" hight="300" />
+    </td>
+    <td style="vertical-align: middle">
+      ✅ The new scene gets the **same UUID** if doesn't occupy the same parcel
+      but preserves the same base parcel
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: middle">
+      <img alt="re-shape+base" src="/resources/ADR-186/re-shape+base.png" width="300" hight="300" />
+    </td>
+    <td style="vertical-align: middle">
+      ❌ The new scene gets a **new UUID** if doesn't occupy the same parcels
+      and same base parcel
+    </td>
+  </tr>
 </table>
 
 ### Case 2: Scene growing on the number of parcels
 
 <table>
-<tr><td><img alt="grow" src="/resources/ADR-186/grow.png" width="400" hight="400" /></td><td>✅ The new scene gets the **same UUID** if occupy all previous parcels + any additional one </td></tr>
-<tr><td><img alt="grow+base" src="/resources/ADR-186/grow+base.png" width="400" hight="400" /></td><td>✅ The new scene gets the **same UUID** if occupy all previous parcels + any additional one, even if it has a different base parcel</td></tr>
-<tr><td><img alt="grow+move+base" src="/resources/ADR-186/grow+move+base.png" width="400" hight="400" /></td><td>✅ The new scene gets the **same UUID** if it has same base parcel</td></tr>
-<tr><td><img alt="grow+move" src="/resources/ADR-186/grow+move.png" width="400" hight="400" /></td><td>❌ The new scene gets a **new UUID** if it doesn't occupy all previous parcels and has different base parcel</td></tr>
+  <tr>
+    <td style="vertical-align: middle">
+      <img alt="grow" src="/resources/ADR-186/grow.png" width="300" hight="300" />
+    </td>
+    <td style="vertical-align: middle">
+      ✅ The new scene gets the **same UUID** if occupy all previous parcels +
+      any additional one
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: middle">
+      <img alt="grow+base" src="/resources/ADR-186/grow+base.png" width="300" hight="300" />
+    </td>
+    <td style="vertical-align: middle">
+      ✅ The new scene gets the **same UUID** if occupy all previous parcels +
+      any additional one, even if it has a different base parcel
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: middle">
+      <img alt="grow+move+base" src="/resources/ADR-186/grow+move+base.png" width="300" hight="300" />
+    </td>
+    <td style="vertical-align: middle">✅ The new scene gets the **same UUID** if it has same base parcel</td>
+  </tr>
+  <tr>
+    <td style="vertical-align: middle">
+      <img alt="grow+move" src="/resources/ADR-186/grow+move.png" width="300" hight="300" />
+    </td>
+    <td style="vertical-align: middle">
+      ❌ The new scene gets a **new UUID** if it doesn't occupy all previous
+      parcels and has different base parcel
+    </td>
+  </tr>
 </table>
 
 ### Case 3: Scene shrinking on the number of parcels
 
 <table>
-<tr><td> <img alt="shrink" src="/resources/ADR-186/shrink.png" width="400" hight="400" /></td><td>✅ The new scene gets the **same UUID** if it has the same base parcel  </td></tr>
-<tr><td> <img alt="shrink+base" src="/resources/ADR-186/shrink+base.png" width="400" hight="400" /></td><td>❌ The new scene gets a **new UUID** if it has a different base parcel </td></tr>
-<tr><td> <img alt="shrink+move" src="/resources/ADR-186/shrink+move.png" width="400" hight="400" /></td><td>❌ The new scene gets a **new UUID** if it has a different base parcel  </td></tr>
-<tr><td> <img alt="shrink+move+base" src="/resources/ADR-186/shrink+move+base.png" width="400" hight="400" /></td><td>✅ The new scene gets the **same UUID** if it has the same base parcel </td></tr>
+  <tr>
+    <td style="vertical-align: middle">
+      <img alt="shrink" src="/resources/ADR-186/shrink.png" width="300" hight="300" />
+    </td>
+    <td style="vertical-align: middle">
+      ✅ The new scene gets the **same UUID** if it has the same base parcel
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: middle">
+      <img alt="shrink+base" src="/resources/ADR-186/shrink+base.png" width="300" hight="300" />
+    </td>
+    <td style="vertical-align: middle">
+      ❌ The new scene gets a **new UUID** if it has a different base parcel
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: middle">
+      <img alt="shrink+move" src="/resources/ADR-186/shrink+move.png" width="300" hight="300" />
+    </td>
+    <td style="vertical-align: middle">
+      ❌ The new scene gets a **new UUID** if it has a different base parcel
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: middle">
+      <img alt="shrink+move+base" src="/resources/ADR-186/shrink+move+base.png" width="300" hight="300" />
+    </td>
+    <td style="vertical-align: middle">
+      ✅ The new scene gets the **same UUID** if it has the same base parcel
+    </td>
+  </tr>
 </table>
+
 
 
 <!--
