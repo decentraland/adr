@@ -7,7 +7,7 @@ status: Draft
 type: ADR
 spdx-license: CC0-1.0
 authors:
-  - @davidejensen
+  - davidejensen
 ---
 
 ## Abstract
