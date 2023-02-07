@@ -3,7 +3,7 @@ layout: adr
 adr: 148
 title: Synchronization of CRDT messages between scenes and Renderer
 date: 2022-12-08
-status: Review
+status: Living
 type: Standards Track
 spdx-license: CC0-1.0
 authors:
