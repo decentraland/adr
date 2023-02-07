@@ -4,7 +4,7 @@ adr: 188
 title: Favorite Places
 date: 2023-02-07
 status: Draft
-type: ADR
+type: Standards Track
 spdx-license: CC0-1.0
 authors:
   - davidejensen
