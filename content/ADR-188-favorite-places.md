@@ -82,32 +82,32 @@ With the current functionalities provided by the Places website it is not possib
 In the initial iteration it has been discussed where to store the favorite list, the two options were storing them in the user profile or storing them in Places, the following PROs and CONs made us lean towards the Places option:
 
 Storing favorite in the user profile:
-  PROs
-  - Easily readable in unity renderer
-  - Simple to obtain favorites of other players
-  - Decentralised approach
-  - Favorites can be imported in places without user interaction
-  CONs
-  - requires updates on the profile schema
-  - requires to implement the profile update on web
-  - requires to track every catalyst update to calculate stats and trends
-  - explorer can’t suggest places based on the favorites of your friends
-  - scenes can read it but not update it
-  - an update request from different apps can erase a favorites accidentally
-  - limited by the max size of a profile
-  - not paginated
+  - PROs
+    * Easily readable in unity renderer
+    * Simple to obtain favorites of other players
+    * Decentralised approach
+    * Favorites can be imported in places without user interaction
+  - CONs
+    * requires updates on the profile schema
+    * requires to implement the profile update on web
+    * requires to track every catalyst update to calculate stats and trends
+    * explorer can’t suggest places based on the favorites of your friends
+    * scenes can read it but not update it
+    * an update request from different apps can erase a favorites accidentally
+    * limited by the max size of a profile
+    * not paginated
 Storing favorites in places
-  PROs
-  - no limit on the amount of favorites
-  - api already paginated
-  - can be accessed and updated with code in the scene
-  - can calculate stats just looking at the database (place with the most favorites, last favorites, favorites trends)
-  - can suggest favorites places of your friends
-  - can eventually move all favorites from one position to other in case the scene move to another parcel
-  CONs
-  - is a single point of failure
-  - requires a new integration in the unity side to request this data (it just a signed fetch)
-  - favorites can’t be imported into the profile, it requires user interaction to do it
+  - PROs
+    * no limit on the amount of favorites
+    * api already paginated
+    * can be accessed and updated with code in the scene
+    * can calculate stats just looking at the database (place with the most favorites, last favorites, favorites trends)
+    * can suggest favorites places of your friends
+    * can eventually move all favorites from one position to other in case the scene move to another parcel
+  - CONs
+    * is a single point of failure
+    * requires a new integration in the unity side to request this data (it just a signed fetch)
+    * favorites can’t be imported into the profile, it requires user interaction to do it
 
 In addition, because currently unity-renderer doesn't communicate directly with the Places API, it has been thought that the missing endpoints will be contacted with the old kernel request system, in order to avoid blocking the development of this new functionality until the authentication system and request handling is transferred to the unity renderer.
 
