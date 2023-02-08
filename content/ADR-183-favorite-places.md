@@ -21,13 +21,14 @@ This document describes an approach on how to integrate the new Favorite Places 
 
 ## Problem
 
-To enhance the discoverability of the different Decentraland places, there is the need of adding a favorite mechanism. This will allow user to store and retrieve easily a set of their best loved places.
-To integrate this changes at multiple levels are required, from the visual representation in the explorer, to the backend structure that will allow the saving and retrieving of a user favorites.
+To enhance the discoverability of the different Decentraland places, there is the need of adding a favorite mechanism. This will allow users to store and retrieve easily a set of their best loved places.
+To integrate this, changes at multiple levels are required, from the visual representation in the explorer, to the backend structure that will allow the saving and retrieving of a user favorites.
 
 Following a list of the expected functionalities:
 
-- Users can add a place to their favorite from the explore menu
+- Users can add or remove a place to their favorite from the explore menu
 - Users can navigate to a new tab listing all the places they added to favorites
+
 In a future iteration it will be possible to favorite places from the minimap HUD and also from the map parcel info pop-up, currently not possible due to technical limitations of the renderer map handling and Places API restriction to curated places.
 More in the limitations section.
 
@@ -41,10 +42,10 @@ After an initial discussion about whether to store favorites in the user profile
 
 The Places API will provide the required informations through:
 
-- An endpoint to obtain the paginated list of favorites.
-- An endpoint to add a new favorite for the current user (already available)
-- An endpoint to remove a favorite for the current user (already available)
-In additon a change will be required in the current places data structure in order to show the favorite information in the explore places list with a boolean. (already provided by the places API, but requires changes in browser-interface and unity-renderer)
+- An endpoint to obtain the paginated list of favorites
+- An endpoint to add a new favorite for the current user
+- An endpoint to remove a favorite for the current user
+In addition a change will be required in the current places data structure in order to show the favorite information in the explore places list with a boolean. (already provided by the places API, but requires changes in browser-interface and unity-renderer)
 
 ### Data structure
 
