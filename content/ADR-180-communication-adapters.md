@@ -3,7 +3,7 @@ layout: adr
 adr: 180
 title: Communication protocols
 date: 2023-01-26
-status: Draft # pick one of these
+status: Living # pick one of these
 type: Standards Track
 spdx-license: CC0-1.0
 authors:

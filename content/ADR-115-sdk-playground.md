@@ -2,7 +2,7 @@
 adr: 115
 date: 2022-11-01
 title: SDK Playground
-status: Draft
+status: Living
 authors:
   - nearnshaw
 type: RFC
