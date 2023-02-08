@@ -42,9 +42,9 @@ After an initial discussion about whether to store favorites in the user profile
 The Places API will provide the required informations through:
 
 - An endpoint to obtain the (paginated if we decide for a big maximum amount) list of favorites.
-- An endpoint to add a new favorite for the current user
-- An endpoint to remove a favorite for the current user
-In additon a change will be required in the current places data structure in order to show the favorite information in the explore places list with a boolean.
+- An endpoint to add a new favorite for the current user (already available)
+- An endpoint to remove a favorite for the current user (already available)
+In additon a change will be required in the current places data structure in order to show the favorite information in the explore places list with a boolean. (already provided by the places API, but requires changes in browser-interface and unity-renderer)
 
 ### Data structure
 
