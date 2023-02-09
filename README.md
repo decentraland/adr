@@ -19,7 +19,7 @@ ADR stands for _Architecture Decision Record_. An ADR is a design document provi
 
 ## How do ADRs work?
 
-Read [the ADR explaining the rationale](/adr/ADR-1) for a detailed explaination.
+Read [the ADR explaining the rationale](/content/ADR-1-adr-process.md) for a detailed explaination.
 
 ### ADR Process
 

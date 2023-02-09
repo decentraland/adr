@@ -2,7 +2,7 @@
 adr: 114
 date: 2022-10-17
 title: P2P adapter with routing
-status: Draft
+status: Withdrawn
 authors:
   - hugoArregui
   - agusAldasoro
@@ -324,7 +324,7 @@ type Packet = {
 Each time a package needs to be sent, then the peer will create it using its own paths as routing table and will make the network to obey that flow.
 
 ```typescript
-{ 
+{
   source: 'peer1';
   target: [ ['peer2', 'peer3'] ];
 }

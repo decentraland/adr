@@ -4,7 +4,7 @@ date: 2022-09-21
 title: Specific optimizers for explorer assets
 authors:
   - menduz
-status: Draft
+status: Living 
 type: RFC
 spdx-license: CC0-1.0
 redirect_from:
