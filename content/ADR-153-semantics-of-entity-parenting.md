@@ -1,7 +1,7 @@
 ---
 layout: adr
 adr: 153
-title: Semantics of entity parenting with ECS-compatible semantics
+title: Entity parenting with ECS-compatible semantics
 date: 2022-12-14
 status: Living
 type: Standards Track

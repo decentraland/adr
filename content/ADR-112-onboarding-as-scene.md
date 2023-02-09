@@ -4,7 +4,7 @@ date: 2022-10-05
 title: Onboarding experience as Portable Experience
 authors:
   - menduz
-status: Draft
+status: Living
 type: Standards Track
 spdx-license: CC0-1.0
 redirect_from:

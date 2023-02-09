@@ -1,9 +1,9 @@
 ---
 layout: adr
-adr: 165 # replace this number for the PR or ISSUE number
+adr: 165
 title: Resolving component numbers for the scripting of the SDK
 date: 2023-01-04
-status: Draft
+status: Living
 type: RFC # pick one of these
 spdx-license: CC0-1.0
 authors:
