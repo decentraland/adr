@@ -53,6 +53,7 @@ There are two approaches:
 <!--
 The technical specification should describe the syntax and semantics of any new feature.
 -->
+The new flow for a friendship will be the following:
 
 ```mermaid
 sequenceDiagram
@@ -68,3 +69,8 @@ sequenceDiagram
     Social service -->>+ User 1: New FriendshipId: roomId
     Social service -->>+ User 2: New FriendshipId: roomId
 ```
+
+This implies that rooms in Matrix will not be created until the friendship is established. This does not make the opposite true, if the friendship ends the room won't be destroyed (to prevent the history from being lost).
+
+Now, when a user logs in to decentraland, the friendship requests will also be obtained from the social service instead of the matrix sdk.
+
