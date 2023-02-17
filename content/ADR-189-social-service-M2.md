@@ -77,17 +77,15 @@ sequenceDiagram
     Social service ->>+ Matrix: Login
     Matrix -->>- Social service: bearer token
     Social service -->>- User 1: bearer token
-    User 1 ->>+ Social service: Connect (token)
+    User 1 ->>+ Social service: Connect via Websocket (token)
     Social service ->> User 1: Friends
     Social service ->> User 1: Friend Requests
     loop  Connection messages examples
     User 1 ->> Social service: Friend event (ACCEPT, DELETE, etc.)
-    User 1 ->> Social service: Update position
     Social service ->> User 1: Friend event (ACCEPT, DELETE, etc.)
-    Social service ->> User 1: Friend X new position
     end
-    User 1 ->> Social service: Disconnect
-    Social service ->>- User 1: Disconnect
+    User 1 ->> Social service: Disconnect WebSocket
+    Social service ->>- User 1: Disconnect WebSocket
 ```
 
 ## Implementation
@@ -122,10 +120,10 @@ sequenceDiagram
 sequenceDiagram
     participant Renderer
     participant Browser interface
-    participant Social client
+    participant C# Social client
 
-    Renderer ->>+ Social client: Get friends
-    Social client -->>- Renderer: Friends list
+    Renderer ->>+ C# Social client: Get friends
+    C# Social client -->>- Renderer: Friends list
     Renderer ->>+ Browser interface: Get missing profiles
     Browser interface -->>- Renderer: Profiles[]
     Renderer ->> Renderer: Store profiles in catalog
