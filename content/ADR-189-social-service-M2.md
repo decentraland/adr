@@ -120,7 +120,6 @@ sequenceDiagram
 sequenceDiagram
     participant Renderer
     participant Browser interface
-    participant C# Social client
 
     Renderer ->>+ C# Social client: Get friends
     C# Social client -->>- Renderer: Friends list
