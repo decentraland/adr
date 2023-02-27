@@ -13,7 +13,7 @@ authors:
 
 ## Abstract
 
-The goal of this milestone is to stop leveraging Matrix to handle friend requests amongst users. To do this the service will need to replace not only save the friendship interactions but will also need to have some mechanism to be able to notify in real time of the interactions to online users.
+The goal of this milestone is to stop leveraging Matrix to handle friend requests amongst users. To achieve this, the service will need to not only save the friendship interactions but also have a mechanism to notify online users in real-time of the interactions.
 
 ## Context, Reach & Prioritization
 
@@ -65,7 +65,7 @@ This new flow implies that rooms in Matrix will not be created until the friends
 
 Now, when a user logs in to decentraland, the friendship requests will also be obtained from the social service instead of the matrix sdk.
 
-First, the client will need to log in via HTTP, then establish a connection with the server, once correctly established, the server will then send two messages one with the current friends and another with the pending friend requests.
+First, the client will need to log in via HTTP. Then, establish a connection with the server. Once correctly established, the server will then send two messages: one with the current friends and another with the pending friend requests.
 
 ```mermaid
 sequenceDiagram
@@ -92,9 +92,9 @@ sequenceDiagram
 
 ### Unity Renderer changes
 
-Given that Browser-interface is going to be slowly migrated into unity's codebase, the implementation of this feature will be done directly on unity's side too. Since this feature includes friends and friend requests, all of the code needed to handle friends and friendship requests will also be moved to unity, decoupling the dependency on Browser-interface. Still, channels, presence, and messaging will stay on the Browser interface side, but within time they will also be migrated to unity and will be able to leverage the new communication system.
+Given that Browser Interface is going to be slowly migrated into Unity's codebase, the implementation of this feature will also be done directly on Unity's side. To reduce the dependency on Browser Interface, the code responsible for handling friends and friend requests will be moved to Unity as part of this feature's implementation. However, channels, presence, and messaging will remain on the Browser Interface side for now. Over time, these features will also be migrated to Unity and will be able to take advantage of the new communication system
 
-To prevent migrating all the code into unity-renderer's code and adding a lot of logic, this ADR proposes to add a new library in C# that will handle the logic around friendships and modify the logic in unity renderer to become more of an orchestrator of events.
+To prevent migrating all of the code into Unity Renderer's code and adding a lot of logic, this ADR proposes adding a new C# library to handle the logic around friendships. The logic in Unity Renderer would be adjusted to focus on event orchestration rather than handling all of the logic directly.
 
 An example of a difference between the current implementation and the proposal is the following:
 
@@ -133,11 +133,11 @@ In this example, there are two main responsibilities of the flow:
 1. Obtaining the friendships list
 1. Storing the profiles in the catalog (to be able to render those friends)
 
-It can be seen that in the first example it's the browser interface's responsibility to know what profiles are missing and then send them to unity, making the browser interface the information orchestrator, in this new approach, Renderer is the orchestrator.
+In the first example, it is the Browser Interface's responsibility to identify which profiles are missing and then send this information to Unity. This makes the Browser Interface the information orchestrator. In the new approach, Unity Renderer would take on this role of information orchestration. 
 
 ### Browser interface changes
 
-This new structure will also imply changes on the browser interface side. First, all of the friendship logic will be deleted, maintaining only the necessary state so that the channels and messaging code can still function without any bugs. What will be deleted are the interactions with Unity around storing the friendships, friendship requests, and the logic for fetching profile information before sending the friends.
+This new structure will also require changes on the Browser Interface side. First, all of the friendship logic will be deleted, except for the necessary state to ensure that channels and messaging code continue to function without any issues. This will involve deleting the interactions with Unity around storing the friendships, friendship requests, and the logic for fetching profile information before sending the friends.
 
 The biggest impact on the Browser interface side will be in the Friends sagas, in the functions `refreshFriends`, and `handleIncomingFriendshipUpdateStatus`, and all the logic for the client configuration will be migrated to the new implementation on the renderer's side.
 
