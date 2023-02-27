@@ -25,7 +25,7 @@ Currently, all friendship events are being stored in both Matrix and the Social 
 - Be able to apply friend request policies (i.e. prevent spamming, max amount of friends, blocking, etc.)
 - Extend the friendship API to know the pending friend requests a user has
 
-Also, this new approach will need to be able to notify the users in real-time about the new friendship events, to do this a communication system will need to be established between the client and the server either (the technical specification of this system will be explored later).
+Also, this new approach will need to be able to notify the users in real-time about the new friendship events. A new communication system will be needed to established to connect the client and the server (the technical specification of this system will be explored later).
 
 ## Solution Space Exploration
 
@@ -33,12 +33,12 @@ There are two main approaches:
 
 ### Websocket / Long polling
 
-Websocket inherently comes with the benefit of establishing a bidirectional connection, enabling more features for the future (i.e. presence). Another big plus of using WebSocket is that the client can leverage protobuff and RPC for communication between the server and the client.
+WebSocket inherently comes with the benefit of establishing a bidirectional connection, enabling more features for the future (i.e. presence). Another big plus of using WebSocket is that the client can leverage protobuf and RPC for communication between the server and the client.
 On the other hand, Websocket + RPC implies that the Social server will need to be the first implementation of RPC-rust which is not yet a production-tested product.
 
 ### Server-Sent Event (SSE)
 
-This solution doesn't imply a constant connection between the server and the client and allows the existence of a notification system, it's cheap for the server and the client. The biggest problem with this solution is that there isn't an existent transport in unity for SSE, and in the future when presence is implemented there might need to be a big refactor and a replacement of the technology.
+This solution doesn't require a constant connection between the server and the client and allows the existence of a notification system, it's cheap for the server and the client. The biggest problem with this solution is that there isn't an existing transport in Unity for SSE, and in the future, when presence is implemented, there might need to be a big refactor and a replacement of the technology.
 
 ## Specification
 
@@ -63,7 +63,7 @@ sequenceDiagram
 
 This new flow implies that rooms in Matrix will not be created until the friendship is established. This does not make the opposite true, if the friendship ends the room won't be destroyed (to prevent the history from being lost).
 
-Now, when a user logs in to decentraland, the friendship requests will also be obtained from the social service instead of the matrix sdk.
+Now, when a user logs in to Decentraland, the friendship requests will also be obtained from the Social service instead of the matrix sdk.
 
 First, the client will need to log in via HTTP. Then, establish a connection with the server. Once correctly established, the server will then send two messages: one with the current friends and another with the pending friend requests.
 
@@ -82,17 +82,17 @@ sequenceDiagram
     Social service ->> User 1: Friend Requests
     loop  Connection messages examples
     User 1 ->> Social service: Friend event (ACCEPT, DELETE, etc.)
-    Social service ->> User 1: Friend event (ACCEPT, DELETE, etc.)
+    Social service -->> User 1: Friend event (ACCEPT, DELETE, etc.)
     end
     User 1 ->> Social service: Disconnect WebSocket
-    Social service ->>- User 1: Disconnect WebSocket
+    Social service -->>- User 1: Disconnect WebSocket
 ```
 
 ## Implementation
 
 ### Unity Renderer changes
 
-Given that Browser Interface is going to be slowly migrated into Unity's codebase, the implementation of this feature will also be done directly on Unity's side. To reduce the dependency on Browser Interface, the code responsible for handling friends and friend requests will be moved to Unity as part of this feature's implementation. However, channels, presence, and messaging will remain on the Browser Interface side for now. Over time, these features will also be migrated to Unity and will be able to take advantage of the new communication system
+Given that Browser Interface is going to be slowly migrated into Unity's codebase, the implementation of this feature will also be done directly on Unity's side. To reduce the dependency on Browser Interface, the code responsible for handling friends and friend requests will be moved to Unity as part of this feature's implementation. However, channels, presence, and messaging will remain on the Browser Interface side for now. Over time, these features will also be migrated to Unity and will be able to take advantage of the new communication system.
 
 To prevent migrating all of the code into Unity Renderer's code and adding a lot of logic, this ADR proposes adding a new C# library to handle the logic around friendships. The logic in Unity Renderer would be adjusted to focus on event orchestration rather than handling all of the logic directly.
 
