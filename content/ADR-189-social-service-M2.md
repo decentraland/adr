@@ -1,7 +1,7 @@
 ---
 layout: adr
 adr: 189
-title: Social service M2
+title: Social Service M2
 date: 2023-02-08
 status: Draft # pick one of these
 type: RFC # pick one of these
@@ -13,11 +13,12 @@ authors:
 
 ## Abstract
 
-The goal of this milestone is to stop leveraging Matrix to handle friend requests amongst users. To achieve this, the service will need to not only save the friendship interactions but also have a mechanism to notify online users in real-time of the interactions.
+A document that compares two possible solutions to stop leveraging Matrix to handle friend requests amongst users. To achieve this, the service will need to not only save the friendship interactions but also have a mechanism to notify online users in real-time of the interactions.
+The chosen mechanism will be WebSockets.
 
 ## Context, Reach & Prioritization
 
-Currently, all friendship events are being stored in both Matrix and the Social service, to avoid this duplication of information this RFC proposes to start handling friendship requests directly on the Social service and stop storing the information in Matrix. The benefits of this proposal include:
+Currently, all friendship events are being stored in both Matrix and the Social Service, to avoid this duplication of information this RFC proposes to start handling friendship requests directly on the Social Service and stop storing the information in Matrix. The benefits of this proposal include:
 
 - Downscale the load on Matrix
   - The friendships events (Request, Accept, Delete, etc.)
@@ -31,10 +32,10 @@ Also, this new approach will need to be able to notify the users in real-time ab
 
 There are two main approaches:
 
-### Websocket / Long polling
+### WebSocket / Long polling
 
 WebSocket inherently comes with the benefit of establishing a bidirectional connection, enabling more features for the future (i.e. presence). Another big plus of using WebSocket is that the client can leverage protobuf and RPC for communication between the server and the client.
-On the other hand, Websocket + RPC implies that the Social server will need to be the first implementation of RPC-rust which is not yet a production-tested product.
+On the other hand, WebSocket + RPC implies that the Social server will need to be the first implementation of Rust-RPC which is not yet a production-tested product.
 
 ### Server-Sent Event (SSE)
 
@@ -42,7 +43,7 @@ This solution doesn't require a constant connection between the server and the c
 
 ## Specification
 
-Due to the benefits explained over the SSE solution, Websocket is the solution that will be further explored in this document.
+Due to the benefits explained over the SSE solution, WebSocket is the solution that will be further explored in this document.
 
 The new flow for a friendship will be the following:
 
@@ -50,42 +51,42 @@ The new flow for a friendship will be the following:
 sequenceDiagram
     participant User 1
     participant User 2
-    participant Social service
+    participant Social Service
     participant Matrix
 
-    User 1 ->> Social service: Add friend (new friend request)
-    Social service ->>  User 2: New request from user 1
-    User 2 ->> Social service: Accept friendship
-    Social service ->> Matrix: create room
-    Social service -->>+ User 1: New FriendshipId: roomId
-    Social service -->>+ User 2: New FriendshipId: roomId
+    User 1 ->> Social Service: Add friend (new friend request)
+    Social Service ->>  User 2: New request from user 1
+    User 2 ->> Social Service: Accept friendship
+    Social Service ->> Matrix: create room
+    Social Service -->>+ User 1: New FriendshipId: roomId
+    Social Service -->>+ User 2: New FriendshipId: roomId
 ```
 
 This new flow implies that rooms in Matrix will not be created until the friendship is established. This does not make the opposite true, if the friendship ends the room won't be destroyed (to prevent the history from being lost).
 
-Now, when a user logs in to Decentraland, the friendship requests will also be obtained from the Social service instead of the matrix sdk.
+Now, when a user logs in to Decentraland, the friendship requests will also be obtained from the Social Service instead of the Matrix SDK.
 
 First, the client will need to log in via HTTP. Then, establish a connection with the server. Once correctly established, the server will then send two messages: one with the current friends and another with the pending friend requests.
 
 ```mermaid
 sequenceDiagram
     participant User 1
-    participant Social service
+    participant Social Service
     participant Matrix
 
-    User 1 ->>+ Social service: Login
-    Social service ->>+ Matrix: Login
-    Matrix -->>- Social service: bearer token
-    Social service -->>- User 1: bearer token
-    User 1 ->>+ Social service: Connect via Websocket (token)
-    Social service ->> User 1: Friends
-    Social service ->> User 1: Friend Requests
+    User 1 ->>+ Social Service: Login
+    Social Service ->>+ Matrix: Login
+    Matrix -->>- Social Service: bearer token
+    Social Service -->>- User 1: bearer token
+    User 1 ->>+ Social Service: Connect via WebSocket (token)
+    Social Service ->> User 1: Friends
+    Social Service ->> User 1: Friend Requests
     loop  Connection messages examples
-    User 1 ->> Social service: Friend event (ACCEPT, DELETE, etc.)
-    Social service -->> User 1: Friend event (ACCEPT, DELETE, etc.)
+    User 1 ->> Social Service: Friend event (ACCEPT, DELETE, etc.)
+    Social Service -->> User 1: Friend event (ACCEPT, DELETE, etc.)
     end
-    User 1 ->> Social service: Disconnect WebSocket
-    Social service -->>- User 1: Disconnect WebSocket
+    User 1 ->> Social Service: Disconnect WebSocket
+    Social Service -->>- User 1: Disconnect WebSocket
 ```
 
 ## Implementation
@@ -103,15 +104,15 @@ An example of a difference between the current implementation and the proposal i
 ```mermaid
 sequenceDiagram
     participant Renderer
-    participant Browser interface
-    participant Matrix client
+    participant Browser Interface
+    participant Matrix Client
 
-    Renderer ->>+ Browser interface: Get friends
-    Browser interface ->> Matrix client: Get friends
-    Matrix client -->> Browser interface: friends ids []
-    Browser interface ->> Browser interface: Calculate missing profiles
-    Browser interface ->> Renderer: Add profiles to catalog(Profiles [])
-    Browser interface -->>- Renderer: Friends []
+    Renderer ->>+ Browser Interface: Get friends
+    Browser Interface ->> Matrix Client: Get friends
+    Matrix Client -->> Browser Interface: friends ids []
+    Browser Interface ->> Browser Interface: Calculate missing profiles
+    Browser Interface ->> Renderer: Add profiles to catalog(Profiles [])
+    Browser Interface -->>- Renderer: Friends []
 ```
 
 #### Proposal:
@@ -119,12 +120,12 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     participant Renderer
-    participant Browser interface
+    participant Browser Interface
 
     Renderer ->>+ C# Social client: Get friends
     C# Social client -->>- Renderer: Friends list
-    Renderer ->>+ Browser interface: Get missing profiles
-    Browser interface -->>- Renderer: Profiles[]
+    Renderer ->>+ Browser Interface: Get missing profiles
+    Browser Interface -->>- Renderer: Profiles[]
     Renderer ->> Renderer: Store profiles in catalog
 ```
 
@@ -135,11 +136,11 @@ In this example, there are two main responsibilities of the flow:
 
 In the first example, it is the Browser Interface's responsibility to identify which profiles are missing and then send this information to Unity. This makes the Browser Interface the information orchestrator. In the new approach, Unity Renderer would take on this role of information orchestration. 
 
-### Browser interface changes
+### Browser Interface changes
 
 This new structure will also require changes on the Browser Interface side. First, all of the friendship logic will be deleted, except for the necessary state to ensure that channels and messaging code continue to function without any issues. This will involve deleting the interactions with Unity around storing the friendships, friendship requests, and the logic for fetching profile information before sending the friends.
 
-The biggest impact on the Browser interface side will be in the Friends sagas, in the functions `refreshFriends`, and `handleIncomingFriendshipUpdateStatus`, and all the logic for the client configuration will be migrated to the new implementation on the renderer's side.
+The biggest impact on the Browser Interface side will be in the Friends sagas, in the functions `refreshFriends`, and `handleIncomingFriendshipUpdateStatus`, and all the logic for the client configuration will be migrated to the new implementation on the renderer's side.
 
 ## Risk analysis
 
@@ -159,7 +160,7 @@ Priority (optional) — This is either an independent ranking or the product of 
 
 | Description of risk                                                                | Probability of occurrence                       | Severity | Mitigation                                                                                                                                                                    | Loss Size                                                                                                                                                   | Risk Exposure | Priority |
 | ---------------------------------------------------------------------------------- | ----------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | -------- |
-| Rust-RPC can’t handle the expected load                                            | Low                                             | High     | Invest time in developing the framework to make it more performant                                                                                                            | If this problem gets to prod, users might be impacted by not receiving all expected messages. Or in the worst case, take down the social service altogether | Medium        | 1        |
-| Rust RPC has internal bugs                                                         | Medium                                          | High     | Invest time in developing the framework to reduce bugs                                                                                                                        | If this problem gets to prod, users might be impacted by not receiving all expected messages. Or in the worst case, take down the social service altogether | High          | 1        |
+| Rust-RPC can’t handle the expected load                                            | Low                                             | High     | Invest time in developing the framework to make it more performant                                                                                                            | If this problem gets to prod, users might be impacted by not receiving all expected messages. Or in the worst case, take down the Social Service altogether | Medium        | 1        |
+| Rust-RPC has internal bugs                                                         | Medium                                          | High     | Invest time in developing the framework to reduce bugs                                                                                                                        | If this problem gets to prod, users might be impacted by not receiving all expected messages. Or in the worst case, take down the Social Service altogether | High          | 1        |
 | Difficulties integrating the new C# library into Unity-renderer                    | Medium (first-time something like this is done) | Low      | Invest more in development time and involvement from the Unity team                                                                                                           | This has no impact on the user. But can have a big impact on delaying the project                                                                           | Low           | 2        |
 | Unkown internal dependency on Browser-interface around the Friends sagas/selectors | Medium/Low                                      | High     | Depending on the type of dependency, this can either imply more migration to C#, or a refactor internally in Browser-interface that can have a big impact in development time | This can be mitigated with a good testing plan, to prevent missing an existing use case.                                                                    | Low           | 2        |
