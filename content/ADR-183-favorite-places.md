@@ -54,11 +54,11 @@ To facilitate the addition of the feature when handling favorites we should use 
 ```
 type Place = {
   Realm: {
-	   serverName: string
-     layer: string
-	   usersCount: int
-	   maxUsers: int
-	   userParcels: Vector2Int[]
+  	serverName: string
+    	layer: string
+	usersCount: int
+	maxUsers: int
+	userParcels: Vector2Int[]
   }
 
   id: string
