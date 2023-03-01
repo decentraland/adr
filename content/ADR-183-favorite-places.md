@@ -36,7 +36,7 @@ More in the limitations section.
 
 ### Data storing
 
-After an initial discussion about whether to store favorites in the user profile or in Places, we are more incline to store everything in Places, more informations about the decision journey at the end.
+After an initial discussion about whether to store favorites in the user profile or in Places, we are more inclined to store everything in Places, more information about the decision journey at the end.
 
 ### Favorite retrieval
 
