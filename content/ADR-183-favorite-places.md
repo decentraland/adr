@@ -40,7 +40,7 @@ After an initial discussion about whether to store favorites in the user profile
 
 ### Favorite retrieval
 
-The Places API will provide the required informations through:
+The Places API will provide the required information through:
 
 - An endpoint to obtain the paginated list of favorites
 - An endpoint to add a new favorite for the current user
