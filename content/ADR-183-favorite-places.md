@@ -12,7 +12,7 @@ authors:
 
 ## Abstract
 
-This document describes an approach on how to integrate the new Favorite Places functionality in Decentraland.
+The document describes the need for a favorite mechanism to enhance the discoverability of different Decentraland places, which requires changes at multiple levels, from the visual representation to the backend structure.
 
 ## Glossary
 
