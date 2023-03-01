@@ -45,7 +45,7 @@ The Places API will provide the required information through:
 - An endpoint to obtain the paginated list of favorites
 - An endpoint to add a new favorite for the current user
 - An endpoint to remove a favorite for the current user
-In addition a change will be required in the current places data structure in order to show the favorite information in the explore places list with a boolean. (already provided by the places API, but requires changes in browser-interface and unity-renderer)
+In addition a change will be required in the current places data structure in order to show the favorite information in the explore places list with a boolean (already provided by the places API, but requires changes in browser-interface and unity-renderer).
 
 ### Data structure
 
