@@ -52,26 +52,27 @@ In addition a change will be required in the current places data structure in or
 To facilitate the addition of the feature when handling favorites we should use the same data structure currently used for Places, with the boolean addition previously mentioned:
 
 ```
-public class Realm
-{
-	public string serverName;
-	public string layer;
-	public int usersCount;
-	public int maxUsers;
-	public Vector2Int[] userParcels;
-}
+type Place = {
+  Realm: {
+	   serverName: string
+     layer: string
+	   usersCount: int
+	   maxUsers: int
+	   userParcels: Vector2Int[]
+  }
 
-public string id;
-public string name;
-public string creator;
-public string description;
-public string thumbnail;
-public Vector2Int baseCoords;
-public Vector2Int[] parcels;
-public int usersTotalCount;
-public bool isPOI;
-public Realm[] realms;
-public bool isFavorite;
+  id: string
+  name: string
+  creator: string
+  description: string
+  thumbnail: string
+  baseCoords: Vector2Int
+  parcels: Vector2Int[]
+  usersTotalCount: int
+  isPOI: bool
+  realms: Realm[]
+  isFavorite: bool
+}
 ```
 
 ## Current limitations
