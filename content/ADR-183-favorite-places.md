@@ -110,7 +110,7 @@ Storing favorites in places
     * requires a new integration in the unity side to request this data (it just a signed fetch)
     * favorites can’t be imported into the profile, it requires user interaction to do it
 
-In addition, because currently unity-renderer doesn't communicate directly with the Places API, it has been thought that the missing endpoints will be contacted with the old kernel request system, in order to avoid blocking the development of this new functionality until the authentication system and request handling is transferred to the unity renderer.
+In addition, because currently unity-renderer doesn't communicate directly with the Places API, a structure to ask the browser-interface to sign requests will be integrated. Leaving to the future the possibility of signing requests directly from the renderer.
 
 ## RFC 2119 and RFC 8174
 
