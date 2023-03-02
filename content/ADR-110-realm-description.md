@@ -23,7 +23,7 @@ A `realm` is a set of services needed for the client to work: current there is c
 
 ### Usage
 
-Realms are used by the Explorer [ADR-102](/adr/ADR-102) to setup and configure each browsing session.
+Realms are used by the Explorer [ADR-102](/adr/ADR-102) to set up and configure each browsing session.
 
 Canonically, a realm can be selected by executing the `/changerealm <baseUrl>` command in the chat.
 
@@ -36,7 +36,7 @@ Other mechanisms may be available to resolve realm baseUrl out of a string, like
 
 ## /about
 
-This endpoint must return the well-known schema defined [in the protocol repository](https://github.com/decentraland/protocol/blob/main/bff/http-endpoints.proto):
+This endpoint must return the well-known schema defined [in the protocol repository](https://github.com/decentraland/protocol/blob/main/proto/decentraland/bff/http_endpoints.proto):
 
 ```typescript
 type About = {
@@ -151,7 +151,7 @@ Example https://worlds-content-server.decentraland.org/world/menduz.dcl.eth/abou
 
 ## Health property
 
-`healthy: boolean` is used to inform whether the realm is in healthy state, the endpoint must return a http status 200, otherwise it should return 503. This way just by checking the response http status, a client looking for a realm to connect may decide to connect or not to the realm.
+`healthy: boolean` is used to inform whether the realm is in a healthy state, the endpoint must return an HTTP status of 200, otherwise it should return 503. This way just by checking the response HTTP status, a client looking for a realm to connect may decide whether to join or not the realm.
 
 The `healthy` field in the root of the structure) will be true only if all the referenced services are `healthy`.
 
@@ -163,9 +163,9 @@ The `healthy` field in the root of the structure) will be true only if all the r
 
 Describes explorer-specific configurations.
 
-- `realmName?: string` is used to set a human readable name for the realm
+- `realmName?: string` is used to set a human-readable name for the realm
 - `networkId?: uint` defines the EVM network id in which this realm is configured, defaults to `1`
-- `globalScenesUrn?: string[]` declares which global scenes should be loaded by default on the realm. This is used to show custom "in-world" UIs or to enable cross-scene mechanics.
+- `globalScenesUrn?: string[]` declares which global scenes should be loaded by default on the realm. This is used for showing custom "in-world" UIs or for enabling cross-scene mechanics.
 - `scenesUrn?: string[]` declares the list of scenes to be loaded. This feature enables World realms [ADR-111](/adr/ADR-111)
 - `minimap?: {enabled: boolean, dataImage: string, estateImage: string}` configures the minimap of the explorer
 - `skybox?: {fixedHour: float}` configures the skybox hour
@@ -177,7 +177,7 @@ Describes the communications services parameters and connection information.
 
 When `protocol: "v3"` is currently the only valid and implemented version of comms.
 
-- When `fixedAdapter` is provided, it means the client will connect to the provided adapter, there is no clustering process involved. The available adapters can be found at [ADR-180](/adr/ADR-180)
+- Providing `fixedAdapter` means the client will connect to the given adapter, and no clustering process is involved. The available adapters can be found at [ADR-180](/adr/ADR-180)
 
   ```json
   {
@@ -189,7 +189,7 @@ When `protocol: "v3"` is currently the only valid and implemented version of com
   }
   ```
 
-- If no `fixedAdapter` is provided, this means the client will negotiate through the BFF to join a cluster. For details about this check [ADR-70](adr/ADR-70)
+- If no `fixedAdapter` is provided, the client will negotiate through the BFF to join a cluster. For details about this check [ADR-70](adr/ADR-70)
 
 <details>
 <summary><code>protocol: v2</code> was deprecated. Expand this view to see an example</summary>
