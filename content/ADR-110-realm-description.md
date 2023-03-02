@@ -21,9 +21,22 @@ This document defines the protocol to describe a realm.
 
 A `realm` is a set of services needed for the client to work: current there is comms, content and lambdas. A valid realm is pointed by a URL defining `/about` endpoint in the proper format, which describes the realm and its status.
 
+### Usage
+
+Realms are used by the Explorer [ADR-102](/adr/ADR-102) to setup and configure each browsing session.
+
+Canonically, a realm can be selected by executing the `/changerealm <baseUrl>` command in the chat.
+
+Examples:
+
+- `/changerealm peer.decentraland.org`
+- `/changerealm https://worlds-content-server.decentraland.org/world/menduz.dcl.eth`
+
+Other mechanisms may be available to resolve realm baseUrl out of a string, like the ENS resolution defined at [ADR-144](/ard/ADR-144)
+
 ## /about
 
-This endpoint should return a well-known schema defined [in the protocol repository](https://github.com/decentraland/protocol/blob/main/bff/http-endpoints.proto):
+This endpoint must return the well-known schema defined [in the protocol repository](https://github.com/decentraland/protocol/blob/main/bff/http-endpoints.proto):
 
 ```typescript
 type About = {
