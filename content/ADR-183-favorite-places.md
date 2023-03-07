@@ -51,7 +51,7 @@ In addition a change will be required in the current places data structure in or
 
 To facilitate the addition of the feature when handling favorites we should use the same data structure currently used for Places, with the boolean addition previously mentioned:
 
-```
+```ts
 type Place = {
   Realm: {
   	serverName: string
