@@ -12,7 +12,7 @@ authors:
 
 ## Abstract
 
-The document describes the need for a favorite mechanism to enhance the discoverability of different Decentraland places, which requires changes at multiple levels, from the visual representation to the backend structure.
+The document describes the need for a "favorite places management" mechanism to enhance the discoverability of different Decentraland scenes and worlds, it requires changes at multiple levels, from the visual representation in the Explorer to the backend services. The state of the document defines the storage place of the favorites as the "Places" server. The decision discards storing the favorites in the user profile.
 
 ## Glossary
 
