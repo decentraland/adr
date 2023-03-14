@@ -64,10 +64,10 @@ And since matrix operations are multiplications, in the cases where there is no 
 
 ```typescript
 Transform.Identity = {
-  scale = Vector3(1,1,1)
-  position = Vector3(0,0,0)
-  rotation = Quaternion(0,0,0,1) // Identity
-  parent = ROOT_ENTITY
+  scale: Vector3(1,1,1),
+  position: Vector3(0,0,0),
+  rotation: Quaternion(0,0,0,1), // Identity
+  parent: ROOT_ENTITY // 0
 }
 ```
 
