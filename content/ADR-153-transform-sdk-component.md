@@ -30,16 +30,16 @@ parameters:
 The Transform component is serialized using a plain-old C struct due to the amount of times it needs to be serialized and deserialized, it uses a fixed memory layout, represented as `TransformComponent` in the following snippet:
 
 ```c++
-struct vec3 {
+struct Vector3 {
   float x, y, z;
 }
-struct cuaternion {
+struct Quaternion {
   float x, y, z, w;
 }
 struct TransformComponent {
-  vec3 position;
-  cuaternion rotation;
-  vec3 scale;
+  Vector3 position;
+  Quaternion rotation;
+  Vector3 scale;
   unsigned int parentEntityId;
 }
 ```
