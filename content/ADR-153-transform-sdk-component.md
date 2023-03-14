@@ -12,7 +12,7 @@ authors:
 
 ## Abstract
 
-This document describes the transform component for the SDK, it is used to spatially place things in the world, including the rotation, scaling, positioning and parenting. The semantics of this component also derive the coordinate system of Decentraland explorers. Transform operations are -as in any of the protocol's CRDT- commutative and idempotent operations.
+This document describes the transform component for the SDK, it is used to spatially place things in the world, including the rotation, scaling, positioning and parenting. The semantics of this component also derive the coordinate system of Decentraland explorers. Transform operations are -_as in any of the protocol's CRDT_- commutative and idempotent operations.
 
 ## Component description
 
@@ -32,10 +32,10 @@ The Transform component is serialized using a plain-old C struct due to the amou
 ```c++
 struct Vector3 {
   float x, y, z;
-}
+};
 struct Quaternion {
   float x, y, z, w;
-}
+};
 struct TransformComponent {
   Vector3 position;
   Quaternion rotation;
@@ -46,21 +46,21 @@ struct TransformComponent {
 
 All fields are encoded in little-endian.
 
-## Semantics of parenting
+## Semantics
 
-The parenting of entities is a complex problem because in an ECS approach, entities are stored in a flat structure, and trees are a synthetic construct for positioning purposes only. The decision is that when an entity in the middle of a branch is removed, all its children will be re-parented to the root entity.
+In any rendering engine, to project the three-dimensional points on a two-dimensional screen, matrix calculations are used. A good summary "one phrase summary" of the following section would be "the TransformComponent is used to calculate the world matrix of each entity". To do so, it takes into consideration the parent of the entitites, because scenes in the Decentraland Protocol are as expected, a hierarchy of entities. But parenting of entities is a complex problem because in an ECS approach, entities are stored in a flat structure, and trees are a synthetic construct for positioning purposes only.
 
-One of the complexities is that rendering engines usually require a tree-like structure to calculate all the world matrices. Due to the commutative nature of the CRDT messages, there may be scenarios in which, during a window of time, the reflected state of the messages contain cycles.
+One of the complexities is that rendering engines usually require a tree-like structure to calculate all the world matrices. Due to the commutative nature of the CRDT messages, there may be scenarios in which, during a window of time, the reflected state of the messages contain cycles in the parenting hierarchy.
 
-The suggested implementation path is to move the entities to the root level of the scene while there are parenting cycles. Always prioritizing the best possible performance for the best case scenario (state without cycles). If the scenes are well programmed, after processing all CRDT messages the scene should converge towards a cycle-less DAG starting on the root entity.
+The RECOMMENDED implementation path is to move the entities to the root level of the scene while there are parenting cycles. Always prioritizing the best possible performance for the best case scenario (state without cycles). If the scenes are well programmed, after processing all CRDT messages the scene should converge towards a cycle-less DAG starting on the root entity.
 
 To elaborate on the parenting process, we must first introduce how vertex projection works on 3D engines. It is all based on matrix calculations. Starting from an identity matrix, we can translate, scale or rotate the matrix by multiplying the same matrix by a rotated identity or rotated scale matrix, as many times as needed.
 
-The process of calculating the world matrix, allows us to change the reference system for each entity. And it is performed by multiplying the parent entity's world matrix by our current world matrix.
+The process of calculating the world matrix, allows us to change the reference system for each entity. And it is performed by multiplying the parent entity's world matrix by the current entity's world matrix.
 
-Matrix operations are multiplications, but matrix multiplication are not commutative operations `(a*b*c) != (c*b*a)`, meaning we need to process from the root entity downwards, using pre-order.
+Matrix operations are multiplications, and matrix multiplication are not commutative operations `(a*b) != (b*a)`. This forces every rendering engine to process and traverse the entire tree of the entities from the root entity downwards, using preorder.
 
-And since matrix operations are multiplications, in the cases where there is no Transform component, we must assume _identity_ matrix. Which can be derived from the values
+And since matrix operations are multiplications, in the cases where there is no Transform component, we must assume _identity_ matrix. Otherwise it would render every position in the `0,0,0` coordinates. The Identity values for the TransformComponent are defined as follow:
 
 ```typescript
 Transform.Identity = {
@@ -68,6 +68,13 @@ Transform.Identity = {
   position: Vector3(0,0,0),
   rotation: Quaternion(0,0,0,1), // Identity
   parent: ROOT_ENTITY // 0
+}
+// yields
+Matrix4x4.Identity = [
+  [1, 0, 0, 0],
+  [0, 1, 0, 0],
+  [0, 0, 1, 0],
+  [0, 0, 0, 1]
 }
 ```
 
