@@ -166,14 +166,14 @@ The functions to compound or decompound (in typescript):
 const MAX_U16 = 0xffff
 const MASK_UPPER_16_ON_32 = 0xff00
 
-function fromEntityId(entityId: number) {
+function fromEntityId(entityId: u32) {
   return {
     number: (entity & MAX_U16) >>> 0,
     version: (((entity & MASK_UPPER_16_ON_32) >> 16) & MAX_U16) >>> 0,
   }
 }
 
-function toEntityId(entityNumber: number, entityVersion: number): Entity {
+function toEntityId(entityNumber: u16, entityVersion: u16): Entity {
   return ((entityNumber & MAX_U16) | ((entityVersion & MAX_U16) << 16)) >>> 0
 }
 ```
@@ -188,9 +188,10 @@ The `c++` struct hast to be understood as contiguous:
 
 ```cpp
 enum class CrdtMessageType: uint32_t {
-  PUT_COMPONENT = 1,
-  DELETE_COMPONENT = 2,
-  DELETE_ENTITY = 3
+  PUT_COMPONENT = 1,    // LWW-element-set
+  DELETE_COMPONENT = 2, // LWW-element-set
+  DELETE_ENTITY = 3,
+  APPEND_COMPONENT = 4  // GrowOnly-Value-Set
 };
 
 
@@ -208,6 +209,19 @@ union Entity {
 }
 
 struct PutComponentMessageBody {
+  // key
+  Entity entity;
+  uint32_t componentId;
+  // timestamp
+  uint32_t lamport_timestamp;
+
+  uint32_t data_length;
+
+  // ... bytes[] with data_length size
+};
+
+
+struct AppendComponentMessageBody {
   // key
   Entity entity;
   uint32_t componentId;
@@ -250,7 +264,7 @@ sequenceDiagram
   S->>S: RaycastSystemUpdate()\nRaycast(xyz).Resolve(RaycastResultComponent(xyz))
 ```
 
-#### Synchronization rules
+#### Synchronization rules for LWW-element-set
 
 At the end of the day, a CRDT implementation is dead-simple. At it's core it has a function that decides which message is going to be processed against the current state. The proposed solution looks like this:
 
@@ -279,9 +293,8 @@ type CrdtDeleteMessage = {
 
 const deletedEntitiesGrowOnlySet: Set<number> = new Set()
 
-function sendUpdate(entity, componentId, value, timestamp) {
-  // return new message with the lamport timestamp and data updated
-  // so we can send it back to the transport
+function sendUpdate(entity, componentId, value?, timestamp) {
+  // sends a corrective CRDT message
 }
 
 function processLwwUpdate(message: CrdtPutMessage | CrdtDeleteMessage) {
@@ -309,7 +322,7 @@ function processLwwUpdate(message: CrdtPutMessage | CrdtDeleteMessage) {
   switch (whatToDo) {
     case CrdtStateCompare.StateUpdatedData:
     case CrdtStateCompare.StateUpdatedTimestamp: {
-      // change accepted
+      // change accepted locally
       component.timestamps.set(message.entityId, message.timestamp)
       if (message.data) {
         component.data.set(message.entityId, message.data) // put
@@ -319,15 +332,10 @@ function processLwwUpdate(message: CrdtPutMessage | CrdtDeleteMessage) {
     }
     case CrdtStateCompare.StateOutdatedTimestamp:
     case CrdtStateCompare.StateOutdatedData: {
-      // send the corrective message
+      // send the corrective CRDT message, do not accept the change
       const actualData = component.data.get(message.entityId)
       const actualTimestamp = component.timestamps.get(message.entityId)
-      sendUpdate(
-        message.entityId,
-        message.componentId,
-        actualData,
-        actualTimestamp
-      )
+      sendUpdate(message.entityId, message.componentId, actualData, actualTimestamp)
     }
   }
 }
@@ -343,9 +351,11 @@ function compareData(left: Uint8Array, right: Uint8Array) {
   if (left === null && right !== null) return -1
   if (left !== null && right === null) return 1
 
+  // then short circuit by data size
   if (left.byteLength > right.byteLength) return 1
   if (left.byteLength < right.byteLength) return -1
 
+  // lastly compare lexicographically
   let res: number
   for (let i = 0; i < a.byteLength; i++) {
     res = a[i] - b[i]
@@ -372,32 +382,27 @@ function crdtRuleForCurrentState(
 
   // Outdated Message. Resend our state message through the wire.
   if (currentTimestamp > timestamp) {
-    // console.log('2', currentTimestamp, timestamp)
     return CrdtStateCompare.StateOutdatedTimestamp
   }
 
+  const haveLocalData = component.data.has(entityId)
+
   // Deletes are idempotent
-  if (message.type instanceof CrdtDeleteMessage && !data.has(entityId)) {
+  if (message.type instanceof CrdtDeleteMessage && !haveLocalData) {
     return CrdtStateCompare.NoChanges
   }
 
-  let currentDataGreater = 0
+  const localData = component.data.get(engityId)
+  const dataCompareResult = dataCompare(localData, message.data)
 
-  if (component.data.has(entityId)) {
-    const localData = component.data.get(engityId)
-    currentDataGreater = dataCompare(localData, message.data || null)
-  } else {
-    currentDataGreater = dataCompare(null, message.data)
-  }
-
-  if (currentDataGreater === 0) {
+  if (dataCompareResult === 0) {
     // Same data, same timestamp.
     return CrdtStateCompare.NoChanges
-  } else if (currentDataGreater > 0) {
-    // Current data is greater
+  } else if (dataCompareResult > 0) {
+    // Local data wins over incoming
     return CrdtStateCompare.StateOutdatedData
   } else {
-    // Curent data is lower
+    // Incoming data wins over local
     return CrdtStateCompare.StateUpdatedData
   }
 }
@@ -407,6 +412,91 @@ function processDeleteEntity(entity) {
   removeAllComponentsFromEntity(entity)
   deleteEntity(entity)
 }
+```
+
+#### Synchronization rules for GrowOnly-Value-Set components
+
+GrowOnly-Value-Set components are used to send notifications from and to different actors of the CRDT system. An example of this are the "input commands" sent from the renderer to the scene. Even though the name says GrowOnly-Value-Set, there is no initial rule of synchronization, that means every component starts as an empty set. And thanks to this property, each actor of the system can "clean up" old values from the set. For that purpose, a "timestamp" field is suggested in the value.
+
+Thanks to the inherited properties of the Set, there are no conflict resolution rules for the GrowOnly-Value-Set, since duplicated elements are considered only once (idempotent) and order is not important (commutative).
+
+```typescript
+type Entity = number
+type ComponentId = number
+type Components = Map<ComponentId, ComponentStorage>
+
+type ComponentStorage = {
+  data: Map<Entity, Set<Uint8Array>> // serialization of the component value
+  timestamps: Map<Entity, number> // lamport timestamps
+}
+
+// simplified CRDT wire messages
+type CrdtAppendMessage = {
+  componentId: number
+  entityId: number
+  data: Uint8Array
+  timestamp: numver
+}
+
+const deletedEntitiesGrowOnlySet: Set<number> = new Set()
+
+function processAppendUpdate(message: CrdtAppendMessage) {
+  // if an entities is deleted, it is safe to ignore any update
+  if (deletedEntitiesGrowOnlySet.has(entity)) {
+    return
+  }
+
+  // first look for the component's internal storage
+  const component: ComponentStorage = components.get(message.componentId)
+
+  // Add the appended message to the list of received values
+  // this pseudocode is simplified, assuming the set will check for
+  // duplicates by value and not by reference
+  component.data.get(message.entityId).add(message.data)
+
+  // optionally, cleanup old messages to not grow in memory indefinitely
+  cleanupOldMessages(component)
+}
+
+function processDeleteEntity(entity) {
+  deletedEntitiesGrowOnlySet.add(entity)
+  removeAllComponentsFromEntity(entity)
+  deleteEntity(entity)
+}
+```
+
+#### Special notes for "Deleted entities" GrowOnlySet
+
+Even though the DeletedEntities behaves like a GrowOnlySet, due to the fact that it can store up to 4BN values, the implementation can be optimized as a LWW-Element-Set thanks to:
+
+- The entityVersion corresponds to a single entityNumber
+- The entityVersion is a monotonic number, ensuring all the values lesser than the current are already deleted
+
+In practice the following two CRDT have the same result, and the storage of the first can grow up to `u32.MAX * sizeof(EntityID)`, and the storage of the second is up to `u16.MAX * sizeof(EntityVersion)`.
+
+```
+GrowOnlySet "deleted entities":
+  data: Set<EntityID>
+  operation add(entityId: EntityID): void {
+    data.add(entityId)
+  }
+  operation has(entityId: EntityID): boolean {
+    return data.has(entityId)
+  }
+```
+
+```
+LWW-Element-Set "deleted entities":
+  data: Map<EntityNumber, EntityVersion>
+  operation add(entityId: EntityID): void {
+    // store the greatest deleted version for each entityNumber
+    if (data.get(entityId.entityNumber) < entityId.entityVersion)
+      data.set(entityId, entityId.entityVersion)
+  }
+  operation has(entityId): boolean {
+    // return true if the deleted version is greater or equal the
+    return data.get(entityId.entityNumber) >= entityId.entityVersion
+  }
 ```
 
 ## RFC 2119 and RFC 8174
