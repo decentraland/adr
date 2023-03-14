@@ -66,7 +66,8 @@ message PBRaycast {
   // the RaycastQueryType behavior
   RaycastQueryType query_type = 7;
 
-  // Indicates the renderer to perform the raycast on every scene tick (ADR-148), otherwise it will be performed only once
+  // Indicates the renderer to perform the raycast on every scene tick (ADR-148),
+  // otherwise it will be performed only once
   bool continuous = 8;
 
   // Collision mask, by default all bits are 1 (0xFFFF_FFFF)
@@ -109,7 +110,8 @@ message RaycastHit {
   uint32 entity_id = 7;
 }
 
-// RaycastQueryType indicates whether the ray should stop on the first collition, or continue.
+// RaycastQueryType indicates whether the ray should stop on the first collition,
+// or continue until the max_distance is reached
 enum RaycastQueryType {
   RQT_HIT_FIRST = 0;
   RQT_QUERY_ALL = 1;
@@ -156,12 +158,12 @@ if (raycast.globalDirection) {
 
 ### How much times a raycast is executed?
 
-That depends entirely on the `bool continuous` property. If set to `true`, the raycast must execute on every scene tick. Otherwise, the raycast must execute within the scene tick they were added.
+That depends entirely on the `bool continuous` property. If set to `true`, the raycast MUST execute on every scene tick. Otherwise, the raycast MUST execute within the scene tick they were added.
 
-In an ideal scenario in which all messages and raycast are processed within the time window/quota defined in ADR-148, the scenes will receive the raycast result on the next update loop of the ECS. Enabling immediate-mode raycasts like the follwing example:
+In an ideal scenario in which all messages and raycast are processed within the time window/quota defined in (ADR-148)[/adr/ADR-148], the scenes will receive the raycast result on the next update loop of the ECS. Enabling immediate-mode raycasts like the follwing example:
 
 ```typescript
-function system() {
+function laserDamageSystem() {
   for (const [entity, _turret] of engine.entitiesWith(LaserTurret)) {
     const result = raycast(entity, Vector3.Forward())
     if (result?.hits.length) {
@@ -185,11 +187,22 @@ function raycast(entity: Entity, direction: Vector3) {
 
 ### Usage of the `timestamp` property
 
-The timestamp property is a correlation number, only defined by the scene. The renderer must copy the value of the `timestamp` from the Raycast component to the RaycastResult component.
+The timestamp property is a correlation number, only defined by the scene. The renderer MUST copy the value of the `timestamp` from the Raycast component to the RaycastResult component.
 
 ### Performance considerations
 
 Having multiple continuous raycasts in a scene may have a big performance penalty. As a scene developer, it is RECOMMENDED to keep this number at minimum. As a renderer implementator, the compute of raycasts MUST count towards the execution quota of each scene to prevent a non-optimized scene from affecting the overall quality of the experience.
+
+### Filtering collision layers
+
+The `collision_mask` parameter enables the scene creator to hit different layers of elements, whereas the colliders, avatars, visible meshes, UI elements, etc. The flags for this mask are defined in the `ColliderLayer` enum, owned by the `MeshRenderer` component.
+
+### Kinds of raycasts
+
+There are two kinds of Raycasts, defined by the `RaycastQueryType` enum:
+
+- `QUERY_ALL` MUST include all the hitted elements within the `max_distance` parameter.
+- `HIT_FIRST` MUST include the first hitted element, being the first the closest one to the origin point. This is also bound to the `max_distance` parameter filter.
 
 ## RFC 2119 and RFC 8174
 
