@@ -343,16 +343,19 @@ function compareData(left: Uint8Array, right: Uint8Array) {
   if (left === null && right !== null) return -1
   if (left !== null && right === null) return 1
 
+  if (left.byteLength > right.byteLength) return 1
+  if (left.byteLength < right.byteLength) return -1
+
   let res: number
-  const n = Math.min(b.byteLength, a.byteLength)
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i < a.byteLength; i++) {
     res = a[i] - b[i]
     if (res !== 0) {
       return res > 0 ? 1 : -1
     }
   }
-  res = a.byteLength - b.byteLength
-  return res > 0 ? 1 : res < 0 ? -1 : 0
+
+  // equal content
+  return 0
 }
 
 function crdtRuleForCurrentState(
