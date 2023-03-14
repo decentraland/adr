@@ -16,7 +16,7 @@ This document describes the transform component for the SDK, it is used to spati
 
 ## Component description
 
-The transform component is used to calculate the world matrix of each entity in the world. To do so, it provides information about the position, scale parent entity and rotation quaternion.
+The TransformComponent is one of the available ways to instruct the rendering engine about how to place, rotate and scale any element in the 3D space. It enables the users to provide the three mentioned components plus the parent entity, enabling the creation of a hierarchy. Within this hierarchy, the reference system is transformed to assume the zero of coordinates, scale and rotation as instructed by the parent's Transform component. We call this "local coordinate system".
 
 ## Serialization
 
@@ -48,7 +48,7 @@ All fields are encoded in little-endian.
 
 ## Semantics
 
-In any rendering engine, to project the three-dimensional points on a two-dimensional screen, matrix calculations are used. A good summary "one phrase summary" of the following section would be "_the TransformComponent is used to calculate the world matrix of each entity_". To do so, it takes into consideration the parent of the entitites, because scenes in the Decentraland Protocol are a hierarchy of entities. But parenting of entities is a complex for an ECS-based engine, becayse entities are stored in a flat structure, and trees are a synthetic construct for positioning purposes only.
+In any rendering engine, to project the three-dimensional points on a two-dimensional screen, matrix transformations are used. It is first required to calculate the "world matrix" of an entity. Then that matrix is used to calculate all the local positions of each vertex. And then those vertex positions are projected to the screen coordinates using a "view matrix" and the "projection matrix". We will focus now in the first one, the "world matrix". To calculate it, all the components of the vectorial TransformComponent are used, taking into consideration the parent entity's "world matrix". But parenting of entities is a complex for an ECS-based engine, becayse entities are stored in a flat structure, and trees are a synthetic construct for positioning purposes only.
 
 One of the complexities is that rendering engines usually require a acyclic tree-like structure to calculate all the world matrices. Due to the commutative nature of the CRDT messages, there may be scenarios in which, during a window of time, the reflected state of the messages contain cycles in the parenting hierarchy.
 
