@@ -48,9 +48,9 @@ All fields are encoded in little-endian.
 
 ## Semantics
 
-In any rendering engine, to project the three-dimensional points on a two-dimensional screen, matrix calculations are used. A good summary "one phrase summary" of the following section would be "the TransformComponent is used to calculate the world matrix of each entity". To do so, it takes into consideration the parent of the entitites, because scenes in the Decentraland Protocol are as expected, a hierarchy of entities. But parenting of entities is a complex problem because in an ECS approach, entities are stored in a flat structure, and trees are a synthetic construct for positioning purposes only.
+In any rendering engine, to project the three-dimensional points on a two-dimensional screen, matrix calculations are used. A good summary "one phrase summary" of the following section would be "_the TransformComponent is used to calculate the world matrix of each entity_". To do so, it takes into consideration the parent of the entitites, because scenes in the Decentraland Protocol are a hierarchy of entities. But parenting of entities is a complex for an ECS-based engine, becayse entities are stored in a flat structure, and trees are a synthetic construct for positioning purposes only.
 
-One of the complexities is that rendering engines usually require a tree-like structure to calculate all the world matrices. Due to the commutative nature of the CRDT messages, there may be scenarios in which, during a window of time, the reflected state of the messages contain cycles in the parenting hierarchy.
+One of the complexities is that rendering engines usually require a acyclic tree-like structure to calculate all the world matrices. Due to the commutative nature of the CRDT messages, there may be scenarios in which, during a window of time, the reflected state of the messages contain cycles in the parenting hierarchy.
 
 The RECOMMENDED implementation path is to move the entities to the root level of the scene while there are parenting cycles. Always prioritizing the best possible performance for the best case scenario (state without cycles). If the scenes are well programmed, after processing all CRDT messages the scene should converge towards a cycle-less DAG starting on the root entity.
 
