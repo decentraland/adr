@@ -50,11 +50,11 @@ All fields are encoded in little-endian.
 
 The parenting of entities is a complex problem because in an ECS approach, entities are stored in a flat structure, and trees are a synthetic construct for positioning purposes only. The decision is that when an entity in the middle of a branch is removed, all its children will be re-parented to the root entity.
 
-One of the complexities is that rendering engines usually require a tree-like structure to calculate all the world matrixes. Due to the commutative nature of the CRDT messages, there may be scenarios in which during a window of time the reflected state of the messages contain cycles.
+One of the complexities is that rendering engines usually require a tree-like structure to calculate all the world matrices. Due to the commutative nature of the CRDT messages, there may be scenarios in which, during a window of time, the reflected state of the messages contain cycles.
 
 The suggested implementation path is to move the entities to the root level of the scene while there are parenting cycles. Always prioritizing the best possible performance for the best case scenario (state without cycles). If the scenes are well programmed, after processing all CRDT messages the scene should converge towards a cycle-less DAG starting on the root entity.
 
-To ellaborate on the parenting process, we must first introduce how vertex projection works on 3D engines. It is all based on matrix calculations. Starting from an identity matrix, we can translate, scale or rotate the matrix by multiplying the same matrix by a rotated identity or rotated scale matrix, as many times as needed.
+To elaborate on the parenting process, we must first introduce how vertex projection works on 3D engines. It is all based on matrix calculations. Starting from an identity matrix, we can translate, scale or rotate the matrix by multiplying the same matrix by a rotated identity or rotated scale matrix, as many times as needed.
 
 The process of calculating the world matrix, allows us to change the reference system for each entity. And it is performed by multiplying the parent entity's world matrix by our current world matrix.
 
@@ -83,7 +83,7 @@ From this reasoning, we get a set of rules:
 #### When an entity A is added to an entity B but the engine does not know about entity B
 
 - The engine MUST assume that the entity B is valid, even though "it doesn't exist" because no component is registered to it.
-- The assumption for the `Transform` component of the entity B is that the entity have a `Transform.Identity` component.
+- The assumption for the `Transform` component of the entity B is that the entity has a `Transform.Identity` component.
 
 #### When the engine is made aware of the real Transform component of entity B
 
