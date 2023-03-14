@@ -316,7 +316,6 @@ function processLwwUpdate(message: CrdtPutMessage | CrdtDeleteMessage) {
       } else {
         component.data.remove(message.entityId) // delete
       }
-      // here we may hook to real engine components
     }
     case CrdtStateCompare.StateOutdatedTimestamp:
     case CrdtStateCompare.StateOutdatedData: {
