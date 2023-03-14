@@ -293,10 +293,6 @@ type CrdtDeleteMessage = {
 
 const deletedEntitiesGrowOnlySet: Set<number> = new Set()
 
-function sendUpdate(entity, componentId, value?, timestamp) {
-  // sends a corrective CRDT message
-}
-
 function processLwwUpdate(message: CrdtPutMessage | CrdtDeleteMessage) {
   // if an entities is deleted, it is safe to ignore any update
   if (deletedEntitiesGrowOnlySet.has(entity)) {
@@ -324,18 +320,22 @@ function processLwwUpdate(message: CrdtPutMessage | CrdtDeleteMessage) {
     case CrdtStateCompare.StateUpdatedTimestamp: {
       // change accepted locally
       component.timestamps.set(message.entityId, message.timestamp)
-      if (message.data) {
-        component.data.set(message.entityId, message.data) // put
-      } else {
-        component.data.remove(message.entityId) // delete
+      if (message instanceof CrdtPutMessage) {
+        component.data.set(message.entityId, message.data)
+      } else if (message instanceof CrdtDeleteMessage) {
+        component.data.remove(message.entityId)
       }
     }
     case CrdtStateCompare.StateOutdatedTimestamp:
     case CrdtStateCompare.StateOutdatedData: {
-      // send the corrective CRDT message, do not accept the change
-      const actualData = component.data.get(message.entityId)
-      const actualTimestamp = component.timestamps.get(message.entityId)
-      sendUpdate(message.entityId, message.componentId, actualData, actualTimestamp)
+      // do not accept the change, send the corrective Put or Delete CRDT message based on the local state
+      const timestamp = component.timestamps.get(message.entityId)
+      if (component.data.has(message.entityId)) {
+        const data = component.data.get(message.entityId)
+        sendPutUpdate(message.entityId, message.componentId, data, timestamp)
+      } else {
+        sendDeleteUpdate(message.entityId, message.componentId, timestamp)
+      }
     }
   }
 }
@@ -407,6 +407,15 @@ function crdtRuleForCurrentState(
   }
 }
 
+function sendPutUpdate(entity, componentId, value, timestamp) {
+  // sends a corrective CRDT message with a PUT operation
+}
+
+function sendDeleteUpdate(entity, componentId, value, timestamp) {
+  // sends a corrective CRDT message with a DELETE operation
+}
+
+// this function is called upon receiving a DELETE_ENTITY message
 function processDeleteEntity(entity) {
   deletedEntitiesGrowOnlySet.add(entity)
   removeAllComponentsFromEntity(entity)
