@@ -63,19 +63,20 @@ Matrix operations are multiplications, and matrix multiplication are not commuta
 And since matrix operations are multiplications, in the cases where there is no Transform component, we must assume _identity_ matrix. Otherwise it would render every position in the `0,0,0` coordinates. The Identity values for the TransformComponent are defined as follow:
 
 ```typescript
+// the identity transform
 Transform.Identity = {
   scale: Vector3(1,1,1),
   position: Vector3(0,0,0),
   rotation: Quaternion(0,0,0,1), // Identity
   parent: ROOT_ENTITY // 0
 }
-// yields
+// yields an identity matrix
 Matrix4x4.Identity = [
   [1, 0, 0, 0],
   [0, 1, 0, 0],
   [0, 0, 1, 0],
   [0, 0, 0, 1]
-}
+]
 ```
 
 To perform all the calculations consistently, the protocol requires a left-hand coordinate system with the parameters `UP=vec3(0,1,0)` and `FORWARD=vec3(0,0,1)`.
