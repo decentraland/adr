@@ -46,7 +46,7 @@ message PBRaycast {
   uint32 timestamp = 1;
 
   // How much to offset the starting point of the ray, relative to the
-  // entity's transform. This field is
+  // entity's transform.
   optional Vector3 origin_offset = 2;
 
   oneof direction {
@@ -97,7 +97,7 @@ message RaycastHit {
   // Direction vector of the ray in global coordinates
   Vector3 direction = 3;
 
-  // Entry vector of the ray into the collision mesh (in global coordinates)
+  // Normal of the hit surface in global coordinates
   Vector3 normal_hit = 4;
 
   // Distance between the ray origin and the hit position, in virtual meters
