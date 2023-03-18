@@ -134,26 +134,32 @@ The origin point and global direction are calculated as follow:
 
 ```typescript
 // first calculate the global origin of the raycast
-const globalOrigin = entity.worldMatrix.multiply(vec4(raycast.originOffset.xyz, 1))
+const originOffset = raycast.originOffset ?? Vector3.Zero()
+
+const globalOrigin = Vector3.TransformCoordinatesToRef(
+  new Vector3(originOffset.x, originOffset.y, originOffset.z),
+  entity.getWorldMatrix(),
+  ray.origin
+)
 
 // and then calculate the global direction, relative to the
 let globalDirection = Vector3.Forward()
-if (raycast.globalDirection) {
-  // this is the simplest one, for example Vector3.Down() to evaluate if
-  // there is a floor and how far it is. No matter the local rotation, tilt or yaw
-  globalDirection = raycast.globalDirection
-} else if (raycast.localDirection) {
+if (raycast.localDirection) {
   // then localDirection, is used to detect collisions in a path
   // i.e. Vector3.Forward(), it takes into consideration the rotation of
   // the entity to perform the raycast in local coordinates
 
-  const globalTarget = entity.worldMatrix.multiply(vec4(raycast.localDirection.xyz, 1)) as Vector3
-  globalDirection = globalTarget.subtract(globalOrigin)
+  globalDirection = Vector3.TransformNormal(raycast.localDirection, entity.getWorldMatrix())
+} else if (raycast.globalDirection) {
+  // this is the simplest one, for example Vector3.Down() to evaluate if
+  // there is a floor and how far it is. No matter the local rotation, tilt or yaw
+  globalDirection = raycast.globalDirection
 } else if (raycast.globalTarget) {
   // this one is to make it easy to point towards a pin-pointed element
   // in global space, like a fixed tower
-  globalDirection = raycast.globalTarget.subtract(globalOrigin)
+  globalDirection = Vector3.subtract(raycast.globalTarget, globalOrigin)
 }
+globalDirection.normalizeInPlace()
 ```
 
 ### How much times a raycast is executed?
