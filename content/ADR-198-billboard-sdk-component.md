@@ -52,6 +52,8 @@ The Billboard component influences an entity's rotation so that it faces the cam
 
 To isolate the X Y and Z components of the rotation, the RECOMMENDED approach is to convert the rotation Quaternion to euler angles, and then replace by 0 the angles that are left out the billboard.
 
+Even though the components can have any combination, due to mathematical stability of the solution only the Y YX and YXZ combinations should be handled at the moment by the renderer. Other combinations SHOULD fallback to the default billboard mode: YXZ. This definition can be revisited in the future.
+
 ```typescript
 function calculateWorldMatrixOfEntity(entity) {
   const worldMatrix = Matrix().Identity()
@@ -74,7 +76,7 @@ function calculateWorldMatrixOfEntity(entity) {
     const rotMatrix = Matrix.LookAtLH(directionVector, Vector3.Zero(), camera.upVector).invert()
     const rotation = Quaternion.FromRotationMatrix(rotMatrix)
 
-    if ((billboardMode & BillboardMode.BM_ALL) !== BillboardMode.BM_ALL) {
+    if (isValidBillboardCombination(billboardMode)) {
       const eulerAngles = rotation.toEulerAngles()
 
       if ((billboardMode & BillboardMode.BM_X) == 0) {
@@ -103,6 +105,14 @@ function calculateWorldMatrixOfEntity(entity) {
   }
 
   // ... finish world matrix calculations ...
+}
+
+function isValidBillboardCombination(billboardMode: BillboardMode) {
+  return (
+    billboardMode == BillboardMode.BM_Y ||
+    billboardMode == (BillboardMode.BM_Y | BillboardMode.BM_X) ||
+    billboardMode == BillboardMode.BM_ALL
+  )
 }
 ```
 
