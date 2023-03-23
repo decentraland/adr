@@ -14,7 +14,7 @@ authors:
 
 <!-- Human readable description of the component, what does it fix and how it affects the entities or the systems from an SDK user point of view -->
 
-The billboard component is used to alter the rotation component of the transformation "world matrix" of each entity. It is commonly used with 3D texts to make sure they are always facing the camera. Any of the three angles of the camera can be used or in any combination.
+The Billboard component enables developers to ensure entities with 3D text or other elements always face the camera, by adjusting the entity's rotation based on the camera's position. This can be applied to any of the three euler angles, or any combination of them.
 
 ## Serialization
 
@@ -48,52 +48,72 @@ enum BillboardMode {
 
 ## Semantics
 
-The effect of the billboard component over the camera is applied by replacing the "rotation" component of the "world matrix" of the entity by a rotation with Z forward pointing to the camera. The intended result can be reasoned as a mirror of the rotations of the camera. We get this effect by inverting the rotation matrix of the view matrix, removing the scale and translation components.
+The Billboard component influences an entity's rotation so that it faces the camera, ensuring its visibility from the camera's perspective. This is achieved by modifying the entity's "world matrix" rotation component, creating a Z-forward rotation that points towards the camera.
 
 To isolate the X Y and Z components of the rotation, the RECOMMENDED approach is to convert the rotation Quaternion to euler angles, and then replace by 0 the angles that are left out the billboard.
 
+Even though the components can have any combination, due to mathematical stability of the solution only the NONE, Y, YX and YXZ combinations should be handled at the moment by the renderer. Other combinations SHOULD fallback to the default billboard mode: YXZ. This definition can be revisited in the future.
+
 ```typescript
-function calculateWorldMatrix(entity) {
+function calculateWorldMatrixOfEntity(entity) {
   const worldMatrix = Matrix().Identity()
 
   // ... world matrix calculations ...
 
   if (entity.hasBillboard) {
-    // Save translation
-    const storedTranslation = new Vector3()
-    worldMatrix.getTranslationToRef(storedTranslation)
+    // save translation and scaling components of the world matrix calculated by the 3D engine
+    const position = Vector3.Zero()
+    const scale = Vector3.One()
+    worldMatrix.decompose(scale, undefined, position)
 
-    // And then cancel camera rotation
-    const viewMatrx = camera.getViewMatrix().clone()
-    viewMatrx.setTranslationFromFloats(0, 0, 0)
-    const invertedMatrix = viewMatrx.invert()
+    // compute the global position of the world matrix
+    const entityGlobalPosition = Vector3.TransformCoordinates(Vector3.Zero(), worldMatrix)
 
-    // apply the new rotation
-    const eulerAngles = invertedMatrix.extractRotationQuaternion().toEuler()
+    // get the direction vector from the camera to the entity position
+    const directionVector = camera.globalPosition.subtract(entityGlobalPosition)
 
-    if ((entity.billboardMode & BillboardMode.BM_X) !== BillboardMode.BM_X) {
-      eulerAngles.x = 0
+    // calculate the LookAt matrix from the direction vector towards zero
+    const rotMatrix = Matrix.LookAtLH(directionVector, Vector3.Zero(), camera.upVector).invert()
+    const rotation = Quaternion.FromRotationMatrix(rotMatrix)
+
+    if (isValidBillboardCombination(billboardMode)) {
+      const eulerAngles = rotation.toEulerAngles()
+
+      if ((billboardMode & BillboardMode.BM_X) == 0) {
+        eulerAngles.x = 0
+      }
+
+      if ((billboardMode & BillboardMode.BM_Y) == 0) {
+        eulerAngles.y = 0
+      }
+
+      if ((billboardMode & BillboardMode.BM_Z) == 0) {
+        eulerAngles.z = 0
+      }
+
+      Matrix.RotationYawPitchRollToRef(eulerAngles.y, eulerAngles.x, eulerAngles.z, rotMatrix)
     }
 
-    if ((entity.billboardMode & BillboardMode.BM_Y) !== BillboardMode.BM_Y) {
-      eulerAngles.y = 0
-    }
+    // restore the scale to a blank scaling matrix
+    const scalingMatrix = Matrix.Scaling(scale.x, scale.y, scale.z)
 
-    if ((entity.billboardMode & BillboardMode.BM_Z) !== BillboardMode.BM_Z) {
-      eulerAngles.z = 0
-    }
+    // apply the scale to the rotation matrix, into _worldMatrix
+    scalingMatrix.multiplyToRef(rotMatrix, worldMatrix)
 
-    Matrix.RotationYawPitchRollToRef(eulerAngles.y, eulerAngles.x, eulerAngles.z, invertedMatrix)
-    worldMatrix.setTranslationFromFloats(0, 0, 0)
-    worldMatrix.multiplyInPlace(invertedMatrix)
-
-    // Restore translation
-    worldMatrix.setTranslation(storedTranslation)
-  } else {
-    // apply entity.transform.rotation to the worldMatrix
+    // finally restore the translation into _worldMatrix
+    worldMatrix.setTranslation(position)
   }
 
   // ... finish world matrix calculations ...
+}
+
+function isValidBillboardCombination(billboardMode: BillboardMode) {
+  return (
+    billboardMode == BillboardMode.BM_NONE ||
+    billboardMode == BillboardMode.BM_Y ||
+    billboardMode == (BillboardMode.BM_Y | BillboardMode.BM_X) ||
+    billboardMode == BillboardMode.BM_ALL
+  )
 }
 ```
 
