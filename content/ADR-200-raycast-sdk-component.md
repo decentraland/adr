@@ -1,7 +1,7 @@
 ---
 layout: adr
 adr: 200
-title: Raycast SDK Component
+title: Raycasting Component for SDK
 date: 2023-03-14
 status: Draft # pick one of these
 type: Standards Track
@@ -18,9 +18,15 @@ authors:
 
 <!-- Human readable description of the component, what does it fix and how it affects the entities or the systems from an SDK user point of view -->
 
-The Raycast component allows scenes to request raycasting from the game engine. The results will be available in a RaycastResult component set later on the same Entity.
+The Raycasting component enables scenes to request raycasting from the game engine. The resulting data will be available in a RaycastResult component associated with the same Entity.
 
-Since this specification requires two components, both are defined in the same document.
+### Raycast Component
+
+The Raycast component initiates the raycasting process by specifying parameters such as origin, direction, and query type. It is attached to the Entity initiating the raycast.
+
+### RaycastResult Component
+
+The RaycastResult component stores the results of the raycasting process, including information about the ray and the intersections with meshes. It is attached to the Entity that initiated the raycast after the raycasting is completed.
 
 ## Serialization
 
@@ -58,6 +64,9 @@ message PBRaycast {
 
     // Target coordinates of the raycast, in global coordinates
     Vector3 global_target = 5;
+
+    // Target entity
+    uint32 target_entity = 5;
   }
 
   // Maximum length of the ray
@@ -120,7 +129,7 @@ enum RaycastQueryType {
 
 ## Semantics
 
-A Raycast is a spatial query that utilizes a _ray vector_ with an `origin` and `direction` to fetch the colliding meshes.
+A raycast is a spatial query that uses a _ray vector_ with an `origin` and `direction` to identify intersecting meshes.
 
 How Raycasts work will be left outside of this specification since these are well-known tools in 3D engines.
 
@@ -133,23 +142,22 @@ That implies that raycast MUST be executed after the "world matrix" of the entit
 The origin point and global direction are calculated as follow:
 
 ```typescript
-// first calculate the global origin of the raycast
-const originOffset = raycast.originOffset ?? Vector3.Zero()
+// Returns a new Vector3 set with the result of the transformation by the given matrix of the given vector.
+declare function TransformCoordinates(position: Vector3, matrix: Matrix): Vector3
+// Returns a new Vector3 set with the result of the normal transformation by the given matrix of the given vector.
+declare function TransformNormal(normal: Vector3, matrix: Matrix): Vector3
 
-const globalOrigin = Vector3.TransformCoordinatesToRef(
-  new Vector3(originOffset.x, originOffset.y, originOffset.z),
-  entity.getWorldMatrix(),
-  ray.origin
-)
+// first calculate the origin of the ray in global coordinates
+const globalOrigin = TransformCoordinates(raycast.originOffset ?? Vector3.Zero(), entity.getWorldMatrix())
 
-// and then calculate the global direction, relative to the
+// and then calculate the global direction in global coordinates
 let globalDirection = Vector3.Forward()
 if (raycast.localDirection) {
   // then localDirection, is used to detect collisions in a path
   // i.e. Vector3.Forward(), it takes into consideration the rotation of
   // the entity to perform the raycast in local coordinates
 
-  globalDirection = Vector3.TransformNormal(raycast.localDirection, entity.getWorldMatrix())
+  globalDirection = TransformNormal(raycast.localDirection, entity.getWorldMatrix())
 } else if (raycast.globalDirection) {
   // this is the simplest one, for example Vector3.Down() to evaluate if
   // there is a floor and how far it is. No matter the local rotation, tilt or yaw
@@ -158,7 +166,14 @@ if (raycast.localDirection) {
   // this one is to make it easy to point towards a pin-pointed element
   // in global space, like a fixed tower
   globalDirection = Vector3.subtract(raycast.globalTarget, globalOrigin)
+} else if (raycast.targetEntity) {
+  // this one is to make it easy to point towards another entity in space.
+  // i.e. pointing one laser emitter to a receiver and detect if a user
+  // collides the laser
+  const globalTarget = getGlobalPosition(raycast.targetEntity)
+  globalDirection = Vector3.subtract(globalTarget, globalOrigin)
 }
+
 globalDirection.normalizeInPlace()
 ```
 
@@ -197,18 +212,28 @@ The timestamp property is a correlation number, only defined by the scene. The r
 
 ### Performance considerations
 
-Having multiple continuous raycasts in a scene may have a big performance penalty. As a scene developer, it is RECOMMENDED to keep this number at minimum. As a renderer implementator, the compute of raycasts MUST count towards the execution quota of each scene to prevent a non-optimized scene from affecting the overall quality of the experience.
+Having multiple continuous raycasts in a scene can significantly impact performance. As a scene developer, it is RECOMMENDED to minimize the number of continuous raycasts. Renderer implementations MUST count the computation of raycasts towards the execution quota of each scene to prevent non-optimized scenes from negatively affecting the overall experience.
 
 ### Filtering collision layers
 
-The `collision_mask` parameter enables the scene creator to hit different layers of elements, whereas the colliders, avatars, visible meshes, UI elements, etc. The flags for this mask are defined in the `ColliderLayer` enum, owned by the `MeshRenderer` component.
+The `collision_mask` parameter allows scene creators to target different layers of elements, including colliders, avatars, visible meshes, UI elements, and more. The flags for this mask are defined in the `ColliderLayer` enum, which is part of the `MeshRenderer` component. It is RECOMMENDED that scene creators carefully select the least amount of flags for each raycast to prevent a performance penalty on the engine.
 
 ### Kinds of raycasts
 
-There are two kinds of Raycasts, defined by the `RaycastQueryType` enum:
+There are three types of raycasts, as defined by the `RaycastQueryType` enum:
 
-- `QUERY_ALL` MUST include all the hitted elements within the `max_distance` parameter.
-- `HIT_FIRST` MUST include the first hitted element, being the first the closest one to the origin point. This is also bound to the `max_distance` parameter filter.
+- `QUERY_ALL`: This type MUST include all intersected elements within the specified `max_distance` parameter.
+- `HIT_FIRST`: This type MUST include the first intersected element, which is the closest one to the origin point. It is also subject to the `max_distance` parameter filter.
+- `NONE`: This type will not intersect any mesh on the renderer, it will provide an empty result with the final position of the ray and its calculated global direction.
+
+## Use Cases
+
+The Raycasting component can be used in various scenarios within a scene, such as:
+
+- Collision detection: Determine if an object or character is about to collide with another object in the scene.
+- Distance calculation: Measure the distance between two points or objects in the scene.
+- Line of sight: Determine if a character has a clear line of sight to another character or object in the scene.
+- Pathfinding: Assist with navigation and pathfinding for characters or objects in the scene.
 
 ## RFC 2119 and RFC 8174
 
