@@ -216,7 +216,7 @@ Having multiple continuous raycasts in a scene can significantly impact performa
 
 ### Filtering collision layers
 
-The `collision_mask` parameter allows scene creators to target different layers of elements, including colliders, avatars, visible meshes, UI elements, and more. The flags for this mask are defined in the `ColliderLayer` enum, which is part of the `MeshRenderer` component. It is RECOMMENDED that scene creators carefully select the least amount of flags for each raycast to prevent a performance penalty on the engine.
+The `collision_mask` parameter allows scene creators to target different layers of elements, including colliders, avatars, visible meshes, UI elements, and more. The flags for this mask are defined in the `ColliderLayer` enum, which is part of the `MeshCollider` component. It is RECOMMENDED that scene creators carefully select the least amount of flags for each raycast to prevent a performance penalty on the engine.
 
 ### Kinds of raycasts
 
