@@ -68,7 +68,7 @@ type AdapterDisconnectedEvent = {
 }
 
 // PEER_DISCONNECTED
-type AdapterDisconnectedEvent = {
+type PeerDisconnectedEvent = {
   // The ethereum address of the disconnected peer
   address: string
 }
