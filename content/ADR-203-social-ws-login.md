@@ -22,7 +22,7 @@ authors:
 
 This document contains the analysis of different solutions for authenticating a client and managing the token required for accessing the FriendshipsService. Each solution will be evaluated based on its pros and cons, including aspects such as scalability, security, and complexity.
 
-This is an exhaustive analysis for the Authentication section of [Social Service M2](/adr/ADR-189).
+This is an exhaustive analysis of the Authentication section of [Social Service M2](/adr/ADR-189).
 
 ## Context, Reach & Prioritization
 
@@ -58,8 +58,8 @@ service FriendshipsService {
 - The information is stored in memory, which may be a replication of what is in Redis.
 - [dcl-rpc](https://github.com/decentraland/rpc-rust) needs to be expanded to allow connection identification and specific information storage. Currently, a global context is stored for the entire service, but a way to identify the client (there is no IP address or socket, only user_id) needs to be found. Additionally, `dcl-rpc` currently does not expose the connection because it is abstracted.
 - Client-side logic is more complex, as it must ensure that the first message sent is the login message.
-- As the service has a state, then it makes more complex to scale horizontally, as a new login is required when reconnecting with another node, even using the same token.
-- Websockets support automatic reconnection, in this case if the server restarts and loses the memory state and reconnects to the user, then the login information will be lost.
+- As the service has a state, then it makes it more complex to scale horizontally, as a new login is required when reconnecting with another node, even using the same token.
+- Websockets support automatic reconnection, in this case, if the server restarts and loses the memory state and reconnects to the user, then the login information will be lost.
 
 ### Solution 1.b: the login message is sent by the Server
 
