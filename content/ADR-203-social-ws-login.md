@@ -8,14 +8,12 @@ status: Draft
 type: RFC
 spdx-license: CC0-1.0
 authors:
-
-- Julieta11
-- agusaldasoro
-- lauti7
-- guidota
-- 2fd
-- kuruk-mm
-
+  - Julieta11
+  - agusaldasoro
+  - lauti7
+  - guidota
+  - 2fd
+  - kuruk-mm
 ---
 
 ## Abstract
