@@ -49,8 +49,8 @@ service FriendshipsService {
 
 #### Solution 1: Advantages
 
-- Takes advantage of the existing state and connection.
-- Saves sending the token in the payload for each message, avoiding the need to fetch it from Redis.
+- Takes advantage of the existing state and connection (establishes a relation one to one from connection to user, anyway this have some drawbacks explained in the disadvantages section).
+- Saves sending the token in the payload for each message (only a few bytes), avoiding the need to fetch it from Redis.
 - If a new connection with the same token/user_id arrives, the previous connection can be closed. This is a simple way to avoid DoS.
 
 #### Solution 1: Disadvantages
@@ -58,7 +58,8 @@ service FriendshipsService {
 - The information is stored in memory, which may be a replication of what is in Redis.
 - [dcl-rpc](https://github.com/decentraland/rpc-rust) needs to be expanded to allow connection identification and specific information storage. Currently, a global context is stored for the entire service, but a way to identify the client (there is no IP address or socket, only user_id) needs to be found. Additionally, `dcl-rpc` currently does not expose the connection because it is abstracted.
 - Client-side logic is more complex, as it must ensure that the first message sent is the login message.
-- Does not scale horizontally, as a new login is required when reconnecting with another node, even using the same token.
+- As the service has a state, then it makes more complex to scale horizontally, as a new login is required when reconnecting with another node, even using the same token.
+- Websockets support automatic reconnection, in this case if the server restarts and loses the memory state and reconnects to the user, then the login information will be lost.
 
 ### Solution 1.b: the login message is sent by the Server
 
@@ -85,9 +86,9 @@ service FriendshipsService {
 
 #### Solution 2: Disadvantages
 
-- The token must be sent with each message, even when the connection is persistent.
+- The token must be sent with each message, even when the connection is persistent. Anyway, the definition of the proto is a stream, so the message will be sent once and open to hear new updated.
 - The message signature in the `.proto` file is modified to receive the token as a parameter, making messages incompatible with Solution 1 if migration is desired.
-- If multiple tokens for different users arrive on the same connection or multiple connections for the same user exist, it becomes more difficult to handle DoS attacks since connections cannot be rejected if they are for the same user.
+- If multiple tokens for different users arrive on the same connection or multiple connections for the same user exist, it becomes more difficult to handle DoS attacks (with the same token and different IP) since connections cannot be rejected if they are for the same user.
 - Validation of token against Synapse or Redis is required for each received message.
 
 ### Solution 3: Hybrid Model
