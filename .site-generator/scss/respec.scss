@@ -1882,3 +1882,9 @@ pre > code {
   left: 0;
   bottom: 0;
 }
+
+todo {
+  background:hsla(40, 100%, 50%, 0.95);
+  font-style: oblique;
+  text-transform: capitalize;
+}

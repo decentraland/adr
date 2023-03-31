@@ -16,7 +16,7 @@ redirect_from:
 
 # Abstract
 
-This document describes the minimum protocol for WebSocket/TCP based protocols.
+This document describes the minimum protocol for WebSocket/TCP based protocols. A reference implementation of this protocol can be found at [decentraland/ws-room-service](https://github.com/decentraland/ws-room-service/)
 
 ## Wire protocol
 

@@ -1,7 +1,7 @@
 ---
 adr: 104
 date: 2022-09-14
-title: Comms protocol for explorers
+title: Communications protocol for explorers
 authors:
   - agusaldasoro
   - hugoarregui
