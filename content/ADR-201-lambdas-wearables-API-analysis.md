@@ -1,7 +1,7 @@
 ---
 layout: adr
 adr: 201
-title: Title of the ADR
+title: Lambdas Wearables API Analysis
 date: 2020-04-03
 status: Idea
 type: RFC
