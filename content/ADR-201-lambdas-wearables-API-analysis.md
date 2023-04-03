@@ -30,7 +30,7 @@ The API allows three query parameters:
 
 #### Transform: Wearables from the content-server to the Client
 
-1. First the wearable data from the content-server is retrieved with this [schema](https://github.com/decentraland/schemas/blob/main/src/platform/entity.ts#L28-L37):
+1. First the wearable data from the content-server is retrieved with this [schema](https://github.com/decentraland/schemas/blob/main/src/platform/entity.ts#L28-L37).
 2. Then only the `metadata` of type [Wearable](https://github.com/decentraland/schemas/blob/main/src/platform/item/wearable/wearable.ts#L18-L26) is returned to the client, but a small transform is applied: the contents are extended with full url.
 
 ![Entity](/resources/ADR-201/entity-transform.png)
