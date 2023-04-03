@@ -33,10 +33,7 @@ The API allows three query parameters:
 1. First the wearable data from the content-server is retrieved with this [schema](https://github.com/decentraland/schemas/blob/main/src/platform/entity.ts#L28-L37):
 2. Then only the `metadata` of type [Wearable](https://github.com/decentraland/schemas/blob/main/src/platform/item/wearable/wearable.ts#L18-L26) is returned to the client, but a small transform is applied: the contents are extended with full url.
 
-| Entity from the Content-Server | Entity mapped for the response |
-| :---: | :---: |
-| ![Entity](/resources/ADR-201/entiy_from_content-server.png) | ![Mapped-Entity](/resources/ADR-201/entity_mapped_to_metadata.png) |
-
+![Entity-transform](/public/resources/ADR-201/entity-transform.png)
 
 ### Explorer use cases of the API
 The API has many funcionalites, but the Explorer doesn't use all of them. After reviewing the `unity-renderer` repository, two use cases were recognized (check with Explorer Team): 
