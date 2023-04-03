@@ -4,7 +4,7 @@ adr: 201
 title: Title of the ADR
 date: 2020-04-03
 status: Idea
-type: Standards Track | Meta | RFC # pick one of these
+type: RFC
 spdx-license: CC0-1.0
 authors:
   - pedrotambo
