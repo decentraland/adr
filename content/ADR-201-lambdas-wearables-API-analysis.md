@@ -3,7 +3,7 @@ layout: adr
 adr: 201
 title: Lambdas Wearables API Analysis
 date: 2020-04-03
-status: Idea
+status: Draft
 type: RFC
 spdx-license: CC0-1.0
 authors:
