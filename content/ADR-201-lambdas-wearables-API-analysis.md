@@ -50,7 +50,7 @@ Instead of having a single API supporting multiple funcionalities, a new API sch
 
   It receives in the POST request body a list of wanted ids and it returns the wearables for that urns.
 
-- `GET /wearables/collections/:collectionId` (pageable)
+- `GET /wearables/collections/:collectionId` (paginated)
   
   It receives a collectionId and it returns the wearables within that collection.
 
