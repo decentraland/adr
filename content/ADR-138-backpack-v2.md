@@ -141,6 +141,11 @@ Adding it to the profiles would add an additional data transfer for each request
 
 We need to discuss as a team what is the best approach.
 
+Regarding to the outfit image previews, they can be generated in the client when saving the outfit.
+There is no need to store the images in the catalysts.
+
+We may encounter the need of checking that the wearables in the outfit are valid for the current user. (What happens if the user does not have the wearable anymore?)
+
 ## Equip/save wearables
 
 We though about several alternatives to avoid performance issues by saving the profile every time you equip an item:
