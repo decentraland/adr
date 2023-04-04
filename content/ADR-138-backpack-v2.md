@@ -141,6 +141,17 @@ Adding it to the profiles would add an additional data transfer for each request
 
 We need to discuss as a team what is the best approach.
 
+## Equip/save wearables
+
+We though about several alternatives to avoid performance issues by saving the profile every time you equip an item:
+
+1. Equip all the items and only when the backpack is closed, make the request to save the profile.
+2. The profile will be updated/saved in intervals of 20 seconds (to be defined) or whenever the user closes the backpack.
+3. Save the profile when the user equips a wearable.
+
+Saving the profile would mean that the nearby users will be able to see the changes as soon as possible.
+We should discuss what would be the best option taking in consideration the user experience and performance.
+
 ## Emotes pagination
 
 We will need to refactor the current emotes catalog, the same way on how we did on wearables catalog, so its supports pagination.
