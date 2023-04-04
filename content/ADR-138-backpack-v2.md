@@ -134,6 +134,8 @@ The wearables must be from each category, avoiding conflicts with hides and repl
 
 ### Outfits
 
+![image](https://user-images.githubusercontent.com/64659061/229866578-4a39e202-03d8-407c-907b-aaf5509f21eb.png)
+
 The outfit information should be stored in the catalyst because we need to support multi-platform.
 
 On the other hand, we should avoid storing it in profiles since it is information that only each individual user needs and does not need to be shared with other users.
@@ -148,6 +150,8 @@ We may encounter the need of checking that the wearables in the outfit are valid
 
 ## Equip/save wearables
 
+![image](https://user-images.githubusercontent.com/64659061/229867289-dafd7612-c4bd-4d71-a1a0-e02746290187.png)
+
 We though about several alternatives to avoid performance issues by saving the profile every time you equip an item:
 
 1. Equip all the items and only when the backpack is closed, make the request to save the profile.
@@ -158,6 +162,8 @@ Saving the profile would mean that the nearby users will be able to see the chan
 We should discuss what would be the best option taking in consideration the user experience and performance.
 
 ## Emotes pagination
+
+![image](https://user-images.githubusercontent.com/64659061/229866787-de1aa022-edee-4bea-b1f1-c138b1f5da82.png)
 
 We will need to refactor the current emotes catalog, the same way on how we did on wearables catalog, so its supports pagination.
 We will also reduce kernel responsibilities, moving all (or most) of the emote handling in the renderer.
