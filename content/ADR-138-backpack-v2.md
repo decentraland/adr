@@ -64,16 +64,29 @@ In order to be able to do it, we will need to add a new parameter to the existin
 - **Owned Emotes**: `/lambdas/users/:userId/emotes?includeDefinitions=true&textFilter=:anyText`
 - **Third Party Wearables by collection**: `/lambdas/users/:userId/third-party-wearables/:collectionId&includeDefinitions&textFilter=:anyText`
 
+### Filter wearables by category
+The user will be able to filter the wearables by category. 
+
+![image](https://user-images.githubusercontent.com/64659061/229797308-983f7ef8-df3c-4f2c-a528-50fae4cb7b7d.png)
+
+In order to be able to do it, we will need to add a new parameter to some of the existing endpoints that will be used to specify the category and return the list of wearables that match with that category. The new parameter will be called `category` and will be a string that will accept any value.
+
+#### Endpoints affected:
+- **Owned Wearables**: `/lambdas/users/:userId/wearables?includeDefinitions=true&category=:categoryText`
+- **Third Party Wearables by collection**: `/lambdas/users/:userId/third-party-wearables/:collectionId&includeDefinitions&category=:categoryText`
+
 ### Sort wearables
-The user will be able to sort the wearables by different criteria: **newest/oldest**, **rarest/less rare** or **name A-Z/name Z-A**. In order to be able to do it, we will need to add a new parameter to the existing endpoints that will be used to specify the sorting criteria. The new parameter will be called `sort` and will be a string that will accept the following values:
+The user will be able to sort the wearables by different criteria: **newest/oldest**, **rarest/less rare** or **name A-Z/name Z-A**.
+
+![image](https://user-images.githubusercontent.com/64659061/229763267-0bbfc68a-0066-46d3-9d50-bd8addcc508f.png)
+
+In order to be able to do it, we will need to add a new parameter to the existing endpoints that will be used to specify the sorting criteria. The new parameter will be called `sort` and will be a string that will accept the following values:
 - `newest` (this should be the default sorting criteria)
 - `oldest`
 - `rarest`
 - `less_rare`
 - `name_a_z`
 - `name_z_a`
-
-![image](https://user-images.githubusercontent.com/64659061/229763267-0bbfc68a-0066-46d3-9d50-bd8addcc508f.png)
 
 #### Endpoints affected:
 - **Owned Wearables**: `/lambdas/users/:userId/wearables?includeDefinitions=true&sort=:sortingCriteria`
