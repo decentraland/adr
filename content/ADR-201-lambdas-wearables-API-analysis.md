@@ -24,13 +24,13 @@ First, a review of the functionalities of the API will be covered. The API, base
 #### Request filters
 The API allows three query parameters:
 
-- `wearableIds`: A list of wearable URNs that the client requests. Just ask the content-server for them and apply the transform. However, in some cases, when a large number of wearables are requested, the resulting URL string can exceed the maximum length allowed.
+- `wearableIds`: A list of wearable URNs that the client requests. Just ask the Content Server for them and apply the transform. However, in some cases, when a large number of wearables are requested, the resulting URL string can exceed the maximum length allowed.
 - `collectionIds`: A list of collection URNs that the client requests. When a `collectionId` is "off-chain" (base-avatars only), it requests the wearables directly to the Content Server. If a `collectionId` is "on-chain" (collections v1 and v2), it runs queries on The Graph using the wearable URNs from that collection, and then it fetches them from the Content Server. No third-party collections are included. Note: for the base-avatars collection it has a fixed list in a file listing all the urns.
 - `textSearch`: A string value that is used to query The Graph. On-chain wearables have a metadata field called "searchText" that can have anything that is used for filtering. In some cases it has useful information but in other cases it has no meaningful info.
 
-#### Transform: Wearables from the content-server to the Client
+#### Transform: Wearables from the Content Server to the Client
 
-1. First the wearable data from the content-server is retrieved with this [schema](https://github.com/decentraland/schemas/blob/main/src/platform/entity.ts#L28-L37).
+1. First the wearable data from the Content Server is retrieved with this [schema](https://github.com/decentraland/schemas/blob/main/src/platform/entity.ts#L28-L37).
 2. Then only the `metadata` of type [Wearable](https://github.com/decentraland/schemas/blob/main/src/platform/item/wearable/wearable.ts#L18-L26) is returned to the client, but a small transform is applied: the contents are extended with full url.
 
 ![Entity](/resources/ADR-201/entity-transform.png)
@@ -46,7 +46,7 @@ The API has many funcionalites, but the Explorer doesn't use all of them. After 
 ### Potential Solution 1: Redesign and Implement only used functionalities in Lamb2
 
 Instead of having a single API supporting multiple functionalities, a new API schema is proposed only for the two use cases needed by the explorer:
-- `POST /wearables { body: { ids: string[]}}`
+- `POST /wearables { ids: string[]}`
 
   It receives in the POST request body a list of wanted ids and it returns the wearables for that urns.
 
@@ -54,7 +54,7 @@ Instead of having a single API supporting multiple functionalities, a new API sc
   
   It receives a collectionId and it returns the wearables within that collection.
 
-- Research if the functionality of searching wearables by `textSearch` is used in some other service and implement `POST /wearables/search { body: { textSearch: string }}`
+- Research if the functionality of searching wearables by `textSearch` is used in some other service and implement `POST /wearables/search { textSearch: string }`
 
 
 ### Potential Solution 2: Explorer directly hits the Content Server
