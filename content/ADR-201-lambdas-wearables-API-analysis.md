@@ -45,7 +45,7 @@ The API has many funcionalites, but the Explorer doesn't use all of them. After 
 
 ### Potential Solution 1: Redesign and Implement only used functionalities in Lamb2
 
-Instead of having a single API supporting multiple funcionalities, a new API schema is proposed only for the two use cases needed by the explorer:
+Instead of having a single API supporting multiple functionalities, a new API schema is proposed only for the two use cases needed by the explorer:
 - `POST /wearables { body: { ids: string[]}}`
 
   It receives in the POST request body a list of wanted ids and it returns the wearables for that urns.
