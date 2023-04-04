@@ -60,7 +60,7 @@ Instead of having a single API supporting multiple funcionalities, a new API sch
 ### Potential Solution 2: Explorer directly hits the Content-Server
 
 Are these functionalities worthy enough to have a handrail between the Explorer and Content-Server through Lambdas?
-- For the use case 1, request all the ids to the Content Server and use it as it is.
+- For the use case 1, request all the ids to the Content Server and use them as-is.
 - For the use case 2, have a fixed list of base-avatars ids (what currently Lambdas has) and request them to the Content Server.
 
 This solution reduces traffic to Lambdas server and reduces the overall request time for the Explorer.
