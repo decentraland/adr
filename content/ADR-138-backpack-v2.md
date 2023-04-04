@@ -131,3 +131,6 @@ In order to be able to do it, we will need to create a new endpoint that will re
 The wearables must be from each category, avoiding conflicts with hides and replaces whenever possible.
 
 - **Random list of wearables**: `/lambdas/users/:userId/random-wearables`
+
+## Outfits
+The information of the outfits should be stored in the catalysts because we need cross-platform support. On another hand we should avoid storing it in the profile because this information is only needed by its own user and it's not needed to share to other users.
