@@ -37,7 +37,7 @@ The API allows three query parameters:
 
 ### Explorer use cases of the API
 The API has many funcionalites, but the Explorer doesn't use all of them. After reviewing the `unity-renderer` repository, two use cases were recognized (check with Explorer Team): 
-1. `wearableIds`: The Explorer request multiple wearables by URN. It reads from the user profiles the wearables that the user is wearing and request them. Note that the user can wear wearables from different collections.
+1. `wearableIds`: The Explorer requests multiple wearables by URN. From the user profiles it reads the wearables that the user is wearing and request them. Note that the user can wear wearables from different collections.
 2. `collectionIds='urn:decentraland:off-chain:base-avatars'`: It uses the API functionality of requesting items from a collection but **always** for the base-avatar one. It should be because it is always needed for configuring the backpack were the base avatars are always available.
 
 
