@@ -18,7 +18,7 @@ The Explorer uses the Lambdas API `/collections/wearables` to get Wearables. Thi
 
 During the last MVFW, bad performance of some APIs was reported. Among those APIs, there was the Lambdas endpoint `GET /collections/wearables`.
 
-### API Funcionality
+### API Functionality
 First, a review of the functionalities of the API will be covered. The API, based on the request filters, gets the wearables from the content server, applies a small transform and returns the result to the client.
 
 #### Request filters
