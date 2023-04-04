@@ -12,7 +12,7 @@ authors:
 
 ## Abstract
 
-The Explorer uses the Lambdas API `/collections/wearables` to get Wearables. This API sometimes has bad performance, it has an ill design and the handrail between the Explorer and the Content-Server through Lambdas might not be necessary. In this document we review the functionalities of this API and analize solutions to this problems. 
+The Explorer uses the Lambdas API `/collections/wearables` to get Wearables. This API sometimes has bad performance, it has an ill design and the handrail between the Explorer and the Content Server through Lambdas might not be necessary. In this document we review the functionalities of this API and analyze solutions to these problems. 
 
 ## Context, Reach & Prioritization
 
