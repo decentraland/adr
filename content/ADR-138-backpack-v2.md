@@ -42,18 +42,31 @@ We currently have several lambdas endpoints (compatible with pagination) that ar
 
 We're going to need to modify some of these endpoints in order to make them compatible with the new requirements. The following is a description of each one of the new requirements and how they will affect the current endpoints:
 
-### Possibility of including the base wearables in the owned wearables lambdas
-In order to give the user the possibility of seeing and manage both type of wearables (base and owned) together in the backpack, we will be able to include the base wearables as part of the result returned by the owned wearables endpoint instead of having to request them separately.
+### Possibility of including the collection id in the owned wearables lambdas
+In order to give the user the possibility of seeing and manage any type of wearables, base, owned, third party together in the backpack, we will be able to include them as part of the result returned by the owned wearables endpoint instead of having to request them separately.
+
+![image](https://user-images.githubusercontent.com/64659061/229766671-009331d0-b6db-42db-89c2-9b6d76249dcb.png)
+![image](https://user-images.githubusercontent.com/64659061/229814201-e2518fb9-336d-4adb-b113-f1e803d97607.png)
+
+In order to be able to do it, we will need to add a new parameter to the existing Owned Wearables endpoint that will be used to specify the collection ids, either Decentraland, 'urn:decentraland:off-chain:base-avatars' or any third party collection, and return the list of wearables that match with that collections. The new parameter will be called `collectionId` and will be a string that will accept any value.
+We should be able to specify more than one collection id separated by commas.
+
+#### Endpoints affected:
+- **Owned Wearables**: `/lambdas/users/:userId/wearables?includeDefinitions=true&collectionId=:collectionId1,:collectionId2...`
+
+### Possibility of including the collection id in the owned emotes lambdas
+In order to give the user the possibility of seeing and manage any type of emotes, base, owned, together in the backpack, we will be able to include them as part of the result returned by the owned emotes endpoint instead of having to request them separately.
 
 ![image](https://user-images.githubusercontent.com/64659061/229766671-009331d0-b6db-42db-89c2-9b6d76249dcb.png)
 
-In order to be able to do it, we will need to add a new parameter to the existing Owned Wearables endpoint that will be used to specify if the base wearables should be also included in the results or not. The new parameter will be called `includeBaseWearables` and will be a boolean.
+In order to be able to do it, we will need to add a new parameter to the existing Owned Emotes endpoint that will be used to specify the collection ids, either Decentraland or base, and return the list of emotes that match with that collections. The new parameter will be called `collectionId` and will be a string that will accept any value.
+We should be able to specify more than one collection id separated by commas.
 
 #### Endpoints affected:
-- **Owned Wearables**: `/lambdas/users/:userId/wearables?includeDefinitions=true&includeBaseWearables=true`
+- **Owned Emotes**: `/lambdas/users/:userId/emotes?includeDefinitions=true&collectionId=:collectionId1,:collectionId2...`
 
-### Filter wearables by text
-The user will be able to filter the wearables by text.
+### Filter wearables/emotes by text
+The user will be able to filter the wearables/emotes by text.
 
 ![image](https://user-images.githubusercontent.com/64659061/229763852-181a0afb-1b34-486b-9df0-1fb249e71e87.png)
 
@@ -62,7 +75,6 @@ In order to be able to do it, we will need to add a new parameter to the existin
 #### Endpoints affected:
 - **Owned Wearables**: `/lambdas/users/:userId/wearables?includeDefinitions=true&textFilter=:anyText`
 - **Owned Emotes**: `/lambdas/users/:userId/emotes?includeDefinitions=true&textFilter=:anyText`
-- **Third Party Wearables by collection**: `/lambdas/users/:userId/third-party-wearables/:collectionId&includeDefinitions&textFilter=:anyText`
 
 ### Filter wearables by category
 The user will be able to filter the wearables by category. 
@@ -73,10 +85,9 @@ In order to be able to do it, we will need to add a new parameter to some of the
 
 #### Endpoints affected:
 - **Owned Wearables**: `/lambdas/users/:userId/wearables?includeDefinitions=true&category=:categoryText`
-- **Third Party Wearables by collection**: `/lambdas/users/:userId/third-party-wearables/:collectionId&includeDefinitions&category=:categoryText`
 
-### Sort wearables
-The user will be able to sort the wearables by different criteria: **newest/oldest**, **rarest/less rare** or **name A-Z/name Z-A**.
+### Sort wearables/emotes
+The user will be able to sort the wearables/emotes by different criteria: **newest/oldest**, **rarest/less rare** or **name A-Z/name Z-A**.
 
 ![image](https://user-images.githubusercontent.com/64659061/229763267-0bbfc68a-0066-46d3-9d50-bd8addcc508f.png)
 
@@ -91,12 +102,11 @@ In order to be able to do it, we will need to add a new parameter to the existin
 #### Endpoints affected:
 - **Owned Wearables**: `/lambdas/users/:userId/wearables?includeDefinitions=true&sort=:sortingCriteria`
 - **Owned Emotes**: `/lambdas/users/:userId/emotes?includeDefinitions=true&sort=:sortingCriteria`
-- **Third Party Wearables by collection**: `/lambdas/users/:userId/third-party-wearables/:collectionId&includeDefinitions&sort=:sortingCriteria`
 
-### Get wearable details (NEW ENDPOINT)
+### Get wearable market details (NEW ENDPOINT)
 The user will be able to click on a wearable and open a modal with some details as:
-- **Creator**: Name and image of the creator of the wearable.
-- **Collection**: Name and image of the collection where the wearable belongs to.
+- **Creator (optional)**: Name and image of the creator of the wearable.
+- **Collection (optional)**: Name and image of the collection where the wearable belongs to.
 - **Network**: Network where the wearable is deployed.
 - **Contract address**: Address of the contract where the wearable is deployed.
 - **Latest sales**: List of the latest sales of the wearable. It would be a list of the following information:
@@ -105,17 +115,19 @@ The user will be able to click on a wearable and open a modal with some details 
   - **Type**: Type of the transaction (Transfered or Minted).
   - **When**: Date of the transaction.
   - **Price**: Price of the transaction.
-- **Amount**: Minted number + total amount of NFTs of this wearable.
+- **Minting number and total scarcity (optional)**: Minted number + total amount of NFTs of this wearable.
 
 ![image](https://user-images.githubusercontent.com/64659061/229763478-9fdadddd-4137-431a-8df4-49fbc30f5f95.png)
 
 In order to be able to do it, we will need to create a new endpoint that will return the details of a specific wearable:
-- **Wearable details**: `/lambdas/wearables/:wearableId`
+- **Wearable details**: `/lambdas/wearables/:wearableId/market-details`
 
 ### Get a random list of equipped wearables (NEW ENDPOINT)
 The user will be able to click on a [RANDOMIZE] button and equip a random list of wearables on his avatar.
 
 ![image](https://user-images.githubusercontent.com/64659061/229765018-95715b20-d55a-4296-b795-fe0d7f5b95e4.png)
 
-In order to be able to do it, we will need to create a new endpoint that will return a random list of wearable ids from the owned wearables of the user:
+In order to be able to do it, we will need to create a new endpoint that will return a random list of wearable ids from the owned wearables of the user.
+The wearables must be from each category, avoiding conflicts with hides and replaces whenever possible.
+
 - **Random list of wearables**: `/lambdas/users/:userId/random-wearables`
