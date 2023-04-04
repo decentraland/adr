@@ -24,7 +24,7 @@ First, a review of the functionalities of the API will be covered. The API, base
 #### Request filters
 The API allows three query parameters:
 
-- `wearableIds`: A list of wearable URNs that the client requests. Just ask for them to the content server and apply the transform. Sometimes many wearables are requested that the url string exceeds the maximum allowed.
+- `wearableIds`: A list of wearable URNs that the client requests. Just ask the content-server for them and apply the transform. However, in some cases, when a large number of wearables are requested, the resulting URL string can exceed the maximum length allowed.
 - `collectionIds`: A list of collection URNs that the client requests. When a `collectionId` is "off-chain" (base-avatars only), it requests the wearables directly to the Content Server. If a `collectionId` is "on-chain" (collections v1 and v2), it runs queries on The Graph using the wearable URNs from that collection, and then it fetches them from the Content Server. No third-party collections are included. Note: for the base-avatars collection it has a fixed list in a file listing all the urns.
 - `textSearch`: A string value that is used to query The Graph. On-chain wearables have a metadata field called "searchText" that can have anything that is used for filtering. In some cases it has useful information but in other cases it has no meaningful info.
 
