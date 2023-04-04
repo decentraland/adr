@@ -132,8 +132,24 @@ The wearables must be from each category, avoiding conflicts with hides and repl
 
 - **Random list of wearables**: `/lambdas/users/:userId/random-wearables`
 
-## Outfits
+### Outfits
+
 The outfit information should be stored in the catalyst because we need to support multi-platform.
 
 On the other hand, we should avoid storing it in profiles since it is information that only each individual user needs and does not need to be shared with other users.
 Adding it to the profiles would add an additional data transfer for each request unnecessarily.
+
+We need to discuss as a team what is the best approach.
+
+## Emotes pagination
+
+We will need to refactor the current emotes catalog, the same way on how we did on wearables catalog, so its supports pagination.
+We will also reduce kernel responsibilities, moving all (or most) of the emote handling in the renderer.
+No need backend support.
+Open ticket: [#4429](https://github.com/decentraland/unity-renderer/issues/4429)
+
+## BackpackEditorV2
+
+In Unity we are going to implement a new UI for the backpack v2 requirements, including all the components needed.
+
+We will keep retro-compatibility with the old one, including the UI, service calls and dependencies.
