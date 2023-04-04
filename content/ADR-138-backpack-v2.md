@@ -133,4 +133,7 @@ The wearables must be from each category, avoiding conflicts with hides and repl
 - **Random list of wearables**: `/lambdas/users/:userId/random-wearables`
 
 ## Outfits
-The information of the outfits should be stored in the catalysts because we need cross-platform support. On another hand we should avoid storing it in the profile because this information is only needed by its own user and it's not needed to share to other users.
+The outfit information should be stored in the catalyst because we need to support multi-platform.
+
+On the other hand, we should avoid storing it in profiles since it is information that only each individual user needs and does not need to be shared with other users.
+Adding it to the profiles would add an additional data transfer for each request unnecessarily.
