@@ -57,7 +57,7 @@ Instead of having a single API supporting multiple funcionalities, a new API sch
 - Research if the functionality of searching wearables by `textSearch` is used in some other service and implement `POST /wearables/search { body: { textSearch: string }}`
 
 
-### Potential Solution 2: Explorer directly hits the Content-Server
+### Potential Solution 2: Explorer directly hits the Content Server
 
 Are these functionalities worthy enough to have a handrail between the Explorer and Content Server through Lambdas?
 - For the use case 1, request all the ids to the Content Server and use them as-is.
