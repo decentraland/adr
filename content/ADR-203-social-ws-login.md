@@ -4,7 +4,7 @@ layout: adr
 adr: 203
 title: Authentication Mechanism for Friendship WebSocket Service
 date: 2023-03-31
-status: Draft
+status: Review
 type: RFC
 spdx-license: CC0-1.0
 authors:
