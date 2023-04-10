@@ -31,7 +31,7 @@ According to the proposed format, a content-addressable URN for Decentraland wou
 - `entity`: The Namespace Specific String (NSS) denoting the type of content being addressed. In this case, it represents an entity within Decentraland.
 - `<IPFS_CIDv1>`: The unique content identifier, using the CIDv1 format from the InterPlanetary File System (IPFS).
 - `?=dcl`: Indicating the content's association with Decentraland. This strict component starts with `?=` to comply with q-component of the RFC 8141. It MUST be present if any other query parameter is present. If none are, it can be omitted.
-- `&baseUrl=https://content.server/content`: An optional query component specifying the base URL of the content server hosting the asset. If none is provided, the implementation will fall-back to a content server of the catalyst network.
+- `&baseUrl=https://content.server/content`: An optional query component specifying the base URL of the content server hosting the asset. If none is provided, the implementation will fall-back to a content server of the Catalyst network.
 
 The adoption of this URN format offers the following advantages:
 
