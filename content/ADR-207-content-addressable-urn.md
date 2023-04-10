@@ -23,7 +23,6 @@ Decentraland requires a standard way to address content hosted on distributed sy
 `urn:decentraland:entity:<IPFS_CIDv1>?=dcl&baseUrl=https://content.server/content`
 
 This format complies with RFC 8141 and allows the Decentraland ecosystem to reference content in a uniform, flexible, and extensible manner.
-Format
 
 According to the proposed format, a content-addressable URN for Decentraland would have the following structure:
 
