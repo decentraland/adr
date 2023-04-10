@@ -12,7 +12,7 @@ authors:
 
 ## Abstract
 
-The Explorer uses the Lambdas API `/collections/wearables` to get wearables. This API sometimes has bad performance, it has an ill design and the handrail between the Explorer and the Content Server through Lambdas might not be necessary. In this document we review the functionalities of this API and analyze solutions to these problems. 
+The Explorer uses the Lambdas API `/collections/wearables` to get wearables. This API sometimes has bad performance (high response time with spikes of ~30s), it has an ill design and the handrail between the Explorer and the Content Server through Lambdas might not be necessary. In this document we review the functionalities of this API and analyze solutions to these problems.
 
 ## Context, Reach & Prioritization
 
@@ -38,7 +38,7 @@ The API allows three query parameters:
 ### Explorer use cases of the API
 The API has many funcionalites, but the Explorer doesn't use all of them. After reviewing the `unity-renderer` repository, two use cases were recognized (check with Explorer Team): 
 1. `wearableIds`: The Explorer requests multiple wearables by URN. From the user profiles it reads the wearables that the user is wearing and request them. Note that the user can wear wearables from different collections.
-2. `collectionIds='urn:decentraland:off-chain:base-avatars'`: It uses the API functionality of requesting items from a collection but **always** for the base-avatar one. It should be because it is always needed for configuring the backpack were the base avatars are always available.
+2. `collectionIds='urn:decentraland:off-chain:base-avatars'`: It uses the API functionality of requesting items from a collection but **always** for the base-avatar one. It should be because it is always needed for configuring the backpack where the base avatars are always available.
 
 
 ## Solution Space Exploration
