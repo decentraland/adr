@@ -68,7 +68,7 @@ Following the ECS pattern, the current implemented solution for SDK7 scenes reli
 - An [ECS Scene Bounds Checker system](https://github.com/decentraland/unity-renderer/blob/88d73d42e42fd2990c81614c22947c1887b0df28/unity-renderer/Assets/DCLPlugins/ECS7/Systems/SceneBoundsCheckerSystem/ECSSceneBoundsCheckerSystem.cs)
 - An [internal ECS Component](https://github.com/decentraland/unity-renderer/blob/88d73d42e42fd2990c81614c22947c1887b0df28/unity-renderer/Assets/DCLPlugins/ECS7/InternalECSComponents/Interfaces/InternalECSComponentModels.cs#L78~L87) to track the SBC relevant data on the relevant entities, that is attached when relevant components are attached to an entity.
 
-The Scene Bounds Checker (SBC) System runs through every entity with the `InternalSceneBoundsCheck` component and if that component's data has changed since the last check then the system evaluates either the entity's world position or its mesh bounds (if it has any visual component) against the scene bounds.
+The Scene Bounds Checker (SBC) System runs its `Update()` on [every 'LateUpdate' cycle](https://github.com/decentraland/unity-renderer/blob/88d73d42e42fd2990c81614c22947c1887b0df28/unity-renderer/Assets/DCLPlugins/ECS7/Systems/ECSSystemsController.cs#L112) and iterates through every entity with the `InternalSceneBoundsCheck` component and if that component's data has changed since the last check then the system evaluates either the entity's world position or its mesh bounds (if it has any visual component) against the scene bounds.
 
 If the entity changes its out-of-bounds state then it's affected by the system:
 - Is out of scene bounds: the relevant components are disabled (production) or the visual components are covered by a red wireframe (preview mode)  
