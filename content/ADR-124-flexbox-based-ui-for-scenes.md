@@ -62,7 +62,7 @@ Since entities and components can be mapped 1-1 with a DOM-like tree. The new SD
 
 The implementation heavily relies on react-reconciler to mutate the ECS entities in the scene runtime in a way that changes can be broadcasted automatically by the CRDT protocol ([ADR-117](/adr/ADR-117)).
 
-To not overload all scenes, react is bundled for Decentraland in a new package `@dcl/react-ecs` ([GitHub repo](https://github.com/decentraland/js-sdk-toolchain/tree/c9822af9da632ef2e1ae4ba4c97745e7ac0cc332/packages/%40dcl/react-ecs))
+To not overload all scenes, react is bundled for Decentraland in a new package `@dcl/react-ecs` ([GitHub repo](https://github.com/decentraland/js-sdk-toolchain/tree/main/packages/@dcl/react-ecs))
 
 ### Parenting and ordering UI elements
 

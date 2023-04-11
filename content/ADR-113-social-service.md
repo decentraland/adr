@@ -4,7 +4,7 @@ date: 2022-10-06
 title: Social service
 authors:
   - jmoguilevsky
-status: Review
+status: Living
 type: RFC
 spdx-license: CC0-1.0
 redirect_from:
