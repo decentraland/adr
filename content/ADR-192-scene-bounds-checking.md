@@ -34,7 +34,7 @@ Some examples of these kind of irregular-shaped scenes are:
 ## Solutions explored with no success
 ### Discarding out-of-bounds pixels in Shader
 
-A proposed solution to inform the shader currently used to render all meshes in-world about every rendered mesh's scene world bound limits and discard the pixes that get outside those limits.
+A proposed solution to inform the shader currently used to render all meshes in-world about every rendered mesh's scene world bound limits and discard the pixels that get outside those limits.
 Since that would only affect visual components, non-visual components (e.g. AudioSource component) would be handled with localized checks.
 
 A POC was implemented successfully but the final results showed degraded performance due to having to disable other rendering optimizations (draw call optimizations, SRP Batcher) to enable the shader approach, this was documented at https://github.com/decentraland/unity-renderer/issues/3494#issuecomment-1331867872 .
@@ -46,19 +46,7 @@ A proposed solution for having 1 trigger collider for every parcel and a collide
 A couple of POCs were implemented successfully, but having to use MeshColliders to deal with "irregular-shaped" scenes (e.g. "L-shaped" scenes) degraded performance a lot and the approach proved to be unusable, this was documented at https://github.com/decentraland/unity-renderer/issues/2433 .
 
 ## Current solution implementation
-### SDK7 Scene Bounds Checker
-
-Following the ECS pattern, the current implemented solution for SDK7 scenes relies on having:
-- An [ECS Scene Bounds Checker system](https://github.com/decentraland/unity-renderer/blob/88d73d42e42fd2990c81614c22947c1887b0df28/unity-renderer/Assets/DCLPlugins/ECS7/Systems/SceneBoundsCheckerSystem/ECSSceneBoundsCheckerSystem.cs)
-- An [internal ECS Component](https://github.com/decentraland/unity-renderer/blob/88d73d42e42fd2990c81614c22947c1887b0df28/unity-renderer/Assets/DCLPlugins/ECS7/InternalECSComponents/Interfaces/InternalECSComponentModels.cs#L78~L87) to track the SBC relevant data on the relevant entities, that is attached when relevant components are attached to an entity.
-
-The Scene Bounds Checker (SBC) System runs through every entity with the `InternalSceneBoundsCheck` component and if that component's data has changed since the last check then the system evaluates either the entity's world position or its mesh bounds (if it has any visual component) against the scene bounds.
-
-If the entity changes its out-of-bounds state then it's affected by the system:
-- Is out of scene bounds: the relevant components are disabled (production) or the visual components are covered by a red wireframe (preview mode)  
-- Is inside scene bounds: the relevant components are enabled (production) or the visual components red wireframe is removed (preview mode)
-
-Specific implementation details can be found in its implementation Pull Request description: https://github.com/decentraland/unity-renderer/pull/3965
+explorer version: [1.0.98702-20230404101340.commit-ffe898a](https://github.com/decentraland/unity-renderer/pull/4838)
 
 ### SDK6 Scene Boundaries Checker
 
@@ -73,6 +61,20 @@ If the entity changes its out-of-bounds state then it's affected by the system:
 This implementation has a CPU Throttling optimization to avoid running the SBC too frequently.
 
 More implementation details can be found at markdown document in the unity-renderer repo docs: https://github.com/decentraland/unity-renderer/blob/88d73d42e42fd2990c81614c22947c1887b0df28/docs/scene-boundaries-checking.md
+
+### SDK7 Scene Bounds Checker
+
+Following the ECS pattern, the current implemented solution for SDK7 scenes relies on having:
+- An [ECS Scene Bounds Checker system](https://github.com/decentraland/unity-renderer/blob/88d73d42e42fd2990c81614c22947c1887b0df28/unity-renderer/Assets/DCLPlugins/ECS7/Systems/SceneBoundsCheckerSystem/ECSSceneBoundsCheckerSystem.cs)
+- An [internal ECS Component](https://github.com/decentraland/unity-renderer/blob/88d73d42e42fd2990c81614c22947c1887b0df28/unity-renderer/Assets/DCLPlugins/ECS7/InternalECSComponents/Interfaces/InternalECSComponentModels.cs#L78~L87) to track the SBC relevant data on the relevant entities, that is attached when relevant components are attached to an entity.
+
+The Scene Bounds Checker (SBC) System runs through every entity with the `InternalSceneBoundsCheck` component and if that component's data has changed since the last check then the system evaluates either the entity's world position or its mesh bounds (if it has any visual component) against the scene bounds.
+
+If the entity changes its out-of-bounds state then it's affected by the system:
+- Is out of scene bounds: the relevant components are disabled (production) or the visual components are covered by a red wireframe (preview mode)  
+- Is inside scene bounds: the relevant components are enabled (production) or the visual components red wireframe is removed (preview mode)
+
+Specific implementation details can be found in its implementation Pull Request description: https://github.com/decentraland/unity-renderer/pull/3965
 
 ### Common optimization for SDK6 & SDK7: Outer Bounds Check
 
