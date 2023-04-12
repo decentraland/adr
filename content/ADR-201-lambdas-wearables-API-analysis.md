@@ -45,13 +45,13 @@ The API has many funcionalites, but the Explorer doesn't use all of them. After 
 
 ### Solution: Explorer directly hits the Content Server
 
-Are these functionalities (concatenate strings) currently worthy enough to have a handrail between the Explorer and Content Server through Lambdas?
+Are these functionalities (strings concatenation mostly) currently worthy enough to have a handrail between the Explorer and Content Server through Lambdas?
 
 The Content Server provides the API `POST /entities/active { pointers: string[], ids: string[] }` for requesting multiples entities (that was not available at the time of the Lambdas API creation). The returned entities won't have the transform currently provided by Lambdas, so the Explorer will have to concatenate the Content Server url to the hashes of the contents.
 - For the use case 1, request all the wearable urns to the Content Server using this API and use them as-is.
 - For the use case 2, have a fixed list of base-avatars ids (what currently Lambdas has) and request them to the Content Server or use new endpoint `GET entities/active/collections/urn:decentraland:off-chain:base-avatars` to get all the base-avatars and cache them.
 
-## Benefits of this solution
+#### Benefits of this solution
 - Reduces traffic to Lambdas server.
 - Reduces overall request time for the Explorer.
 - Helps identify which specific functionality is having performance degradation.
