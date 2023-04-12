@@ -43,7 +43,22 @@ The API has many funcionalites, but the Explorer doesn't use all of them. After 
 
 ## Solution Space Exploration
 
-### Potential Solution 1: Redesign and Implement only used functionalities in Lamb2
+### Solution: Explorer directly hits the Content Server
+
+Are these functionalities (concatenate strings) currently worthy enough to have a handrail between the Explorer and Content Server through Lambdas?
+
+The Content Server provides the API `POST /entities/active { pointers: string[], ids: string[] }` for requesting multiples entities (that was not available at the time of the Lambdas API creation). The returned entities won't have the transform currently provided by Lambdas, so the Explorer will have to concatenate the Content Server url to the hashes of the contents.
+- For the use case 1, request all the wearable urns to the Content Server using this API and use them as-is.
+- For the use case 2, have a fixed list of base-avatars ids (what currently Lambdas has) and request them to the Content Server or use new endpoint `GET entities/active/collections/urn:decentraland:off-chain:base-avatars` to get all the base-avatars and cache them.
+
+## Benefits of this solution
+- Reduces traffic to Lambdas server.
+- Reduces overall request time for the Explorer.
+- Helps identify which specific functionality is having performance degradation.
+- Improves API maintainability and debugging.
+- Enables the possibility of reducing Lambdas endpoints in order to enhance Decentraland protocol robusticity.
+
+### Alternative Solution: Redesign and Implement only used functionalities in Lamb2
 
 Instead of having a single API supporting multiple functionalities, a new API schema is proposed only for the two use cases needed by the explorer:
 - `POST /wearables { ids: string[]}`
@@ -57,13 +72,6 @@ Instead of having a single API supporting multiple functionalities, a new API sc
 - Research if the functionality of searching wearables by `textSearch` is used in some other service and implement `POST /wearables/search { textSearch: string }`
 
 
-### Potential Solution 2: Explorer directly hits the Content Server
-
-Are these functionalities worthy enough to have a handrail between the Explorer and Content Server through Lambdas?
-- For the use case 1, request all the ids to the Content Server and use them as-is.
-- For the use case 2, have a fixed list of base-avatars ids (what currently Lambdas has) and request them to the Content Server.
-
-This solution reduces traffic to Lambdas server and reduces the overall request time for the Explorer.
 
 
 ## RFC 2119 and RFC 8174
