@@ -63,7 +63,7 @@ The Content Server provides the API `POST /entities/active { pointers: string[],
 Instead of having a single API supporting multiple functionalities, only two different APIs are proposed for each of the two use cases needed by the explorer:
 - `POST /wearables { ids: string[]}`
 
-  It receives in the POST request body a list of wanted ids and it returns the wearables for that urns. Consider implementing in the BFF as it only applies a small transformation.
+  It receives in the POST request body a list of wanted ids and it returns the wearables for those urns. Consider implementing in the BFF as it only applies a small transformation.
 
 - `GET /wearables/collections/:collectionId` (paginated)
   
