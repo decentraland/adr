@@ -1,4 +1,3 @@
-
 ---
 layout: adr
 adr: 203
