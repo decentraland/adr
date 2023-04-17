@@ -217,21 +217,6 @@ Saving the profile would mean that the nearby users will be able to see the chan
 
 **Update:** we will go for option 1, taking in consideration that we cant save the profile during the quitting of the application. It will only be saved when closing the backpack, just like the "save" button worked before.
 
-## Emotes pagination
-
-![image](https://user-images.githubusercontent.com/64659061/229866787-de1aa022-edee-4bea-b1f1-c138b1f5da82.png)
-
-We will need to refactor the current emotes catalog, the same way on how we did on wearables catalog, so its supports pagination.
-We will also reduce kernel responsibilities, moving all (or most) of the emote handling in the renderer.
-No need backend support.
-Open ticket: [#4429](https://github.com/decentraland/unity-renderer/issues/4429)
-
-## BackpackEditorV2
-
-In Unity we are going to implement a new UI for the backpack v2 requirements, including all the components needed.
-
-We will keep retro-compatibility with the old one, including the UI, service calls and dependencies.
-
 ## Open questions
 
 1. We need to define an approach on how to request/store the outfits information for every user (ref: outfits). **Its going to be stored in the user profile.**
@@ -240,3 +225,55 @@ We will keep retro-compatibility with the old one, including the UI, service cal
 4. In order to query market details for every wearable, we need to solve the specific minted wearableId (now the client uses the generic one). In case the user has many wearables of the same generic id, how are we going to display the information?
 5. The randomizer will need a bounded scope because querying the whole wearables that the user may have would be too expensive. Is it ok that the randomized result is smaller?
 6. Is it necessary that the nearby users see the avatar changes as soon as you equip a wearable in the backpack? Taking in consideration that we will go for option 1, the nearby users will only see the avatar changes when closing the backpack, very similar on how it works today.
+
+## Analysis provided by Platform team
+### Functional requirements
+Explorer needs a list of paginated wearables based on filters and with sorting criteria.
+
+Filter criteria:
+1. Owner address (implicit in the URL as a path param). 
+2. Collection Type (multiselect):
+   - Off-chain (base-wearables)
+   - On-chain (The Graph Ethereum and Matic)
+   - ThirdParty (one API for each Third Party)
+3. Name: “contains”, case insensitive. 
+4. Category[]: included in categories.
+
+Sorting criteria:
+5. Date:
+   - On-chain: use transferredAt field.
+   - ThirdParty/BaseWearables: use the deploy timestamp of the entity stored in the Content Server .
+6. Rarity (rarest / least_rare): consider Third Party as the rarest and Base Wearables as the least rarest. 
+7. Name.
+
+### Analyzed solutions
+#### Option 1 - Single endpoint to fulfill UI
+Create a single endpoint that is capable of returning a paginated collection of all wearable types unified. This includes base wearables, on-chain wearables and third-party wearables. It allows the required filtering criteria: category, name and collection type. And also the sorting criteria: date, rarity and name.
+This aligns 100% with what the new UI design requires. However it has many API design issues that should not be added to an endpoint that becomes part of the DCL protocol. The main issues are:
+- The return elements in the collection are of different kinds. It’s a heterogeneous collection consisting of 3 types: base, on-chain and third party wearables.
+- Each type has different data.
+- Some of the filtering criteria are valid for some types but not the others.
+- Some sorting criteria are valid for some types but not the others.
+
+The issues above should be sufficient for avoiding going that way. But also, the nature of the issue (different types of entities treated as if they were the same) also permeates to the client, where depending on the type there will be different options available. For example, for on-chain items it makes sense to show marketplace transactions, but not for the other two types. Third party and base wearables don’t have rarity, so a compromise needs to be made regarding where to display them when sorting by rarity. Whatever is chosen can make sense for UI but not for a general purpose endpoint exposed by the Catalyst.
+The root cause of the issue comes from trying to treat different wearable types as if they were the same, when they are actually quite different. The forcing of this into similar-looking elements adds a lot of complexity to implementation and maintenance of the UI also.
+
+#### Option 2 - Multiple endpoints - Front end code unifies
+Leverage the existing endpoints created for passport, enhancing them with filtering and sorting capabilities. Change would be backwards compatible, it only adds specification for filtering and sorting criteria, but still behaves the same when nothing is specified.
+This solution doesn’t serve exactly what the new UI design suggests, but the endpoints can still be used to provide the same approach (unified view) by implementing the unification in the client side.
+The main advantages of this approach are:
+- Clean API design.
+- Very fast API dev time, as the endpoints already exist and work only involves adding support for filtering / sorting.
+
+The disadvantage is that the UI needs to either implement the unification by consuming the existing endpoints + adding a layer of merging the different sources into a single collection.
+
+#### Option 3 - Multiple endpoints - UI changes to show items separately (recommended)
+This option is similar to Option 2 in regards to the API endpoints: enhancing existing endpoints with filtering / sorting capabilities.
+The difference would be that the UI changes to show the 3 types of wearables separately. So this makes the nature of the different types of wearables (which have different behavior) become visible to the user, rather than trying to hide it.
+The UI should be iterated and adapted so it doesn’t try to force the unified view of entities of different kinds. It will be easier for users to understand what is happening. It will be easier for UI developers to develop and maintain in the future.
+For e.g. users may wonder: why can’t I see transactions for this wearable (being a third party one)? Why are base wearables at the beginning / end when sorting by date? Or other things that make no sense in one type but do in others.
+
+#### Option 4 - Unified intermediate service (CHOSEN OPTION)
+This option aims to have an intermediary service, out of the Decentraland protocol, and enable use cases for our reference client.
+In this approach we would be using the endpoints resulting from Option 3 in the service for wearables and doing the merge of the three while paginating the results to the client. In this case the solution in the frontend side would be similar to Option 1, having a single endpoint for paginating all kinds of wearables.
+It remains to be analyzed where this intermediate service would be hosted, whether inside or outside the Catalysts.
