@@ -20,6 +20,7 @@ The input system can be described in a sentence as:
 
 _For each interactable entity (`PointerEvents` component), all input commands are sent back to the scene for processing by the rendering engine (`PointerEventsResult` component)._
 
+
 ## Components description
 
 PointerEvents adds configurable pointer-based interactions to the attached Entity.
