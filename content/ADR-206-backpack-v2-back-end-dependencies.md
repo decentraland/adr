@@ -3,35 +3,21 @@ layout: adr
 adr: 206
 title: Back-end dependencies for the new Backpack V2
 date: 2023-04-17
-status: Review
+status: Draft
 type: RFC
 spdx-license: CC0-1.0
 authors:
-- sandrade-dcl
-- lorux0
-- davidejensen
+  - sandrade-dcl
+  - lorux0
+  - davidejensen
 ---
 
-## Need
-This is a technical proposal for the needs described here: [PRD: Backpack V2](https://www.notion.so/decentraland/PRD-Backpack-V2-13fd81cca29a45a180af6b73c2ca49b5)
+## Abstract
+This is a technical proposal for the needs that we have from back-end to implement the new BackpackV2 feature.
 
 ![image](https://user-images.githubusercontent.com/64659061/229762895-ea269990-2b40-412b-be26-071228f6a226.png)
 
-The intention of this document is:
-
-- Identifying which teams will be involved and what responsibilities they’ll cover.
-- Dividing the new functionality in smaller tasks that will be estimated accordingly in order to create a development roadmap.
-- Finding possible corner cases in order to preemptively identify and solve them.
-- Reaching a consensus between different affected teams in terms of defining the different functionalities and flows.
-
-### Involved teams
-This initiative will require a cross team effort that will include the following teams:
-
-- Explorer: for the UI, UI functionalities and integration with the back-end side.
-- Platform: for the modification of the already existing lambdas endpoints in order to make them compatible with the new requirements (sorting wearables by different criteria, filtering them by different criteria, etc.) and/or the creation of new ones required.
-
-## Back-end dependencies
-
+## Context, Reach & Prioritization
 We currently have several lambdas endpoints (some of them compatible with pagination) that are already being used by the current version of the Backpack to retrieve the information about the wearables. These endpoints are:
 - **Base Wearables**: `/lambdas/collections/wearables?collectionId=urn:decentraland:off-chain:base-avatars`
 - **Owned Wearables**: `/lambdas/users/:userId/wearables?includeDefinitions=true`
@@ -203,7 +189,7 @@ There is no need to store the images in the catalysts.
 
 We may encounter the need of checking that the wearables in the outfit are valid for the current user. (What happens if the user does not have the wearable anymore?)
 
-## Equip/save wearables
+### Equip/save wearables
 
 ![image](https://user-images.githubusercontent.com/64659061/229867289-dafd7612-c4bd-4d71-a1a0-e02746290187.png)
 
@@ -217,8 +203,7 @@ Saving the profile would mean that the nearby users will be able to see the chan
 
 **Update:** we will go for option 1, taking in consideration that we cant save the profile during the quitting of the application. It will only be saved when closing the backpack, just like the "save" button worked before.
 
-## Open questions
-
+### Open questions
 1. We need to define an approach on how to request/store the outfits information for every user (ref: outfits). **Its going to be stored in the user profile.**
 2. We need to discuss and define an approach on when we should save the profile (ref: equip/save wearables). **Option 1.**
 3. Is the preview image generation for outfits going to be a suitable approach? (ref: outfits). **Yes, it will be done in the client.**
@@ -226,7 +211,7 @@ Saving the profile would mean that the nearby users will be able to see the chan
 5. The randomizer will need a bounded scope because querying the whole wearables that the user may have would be too expensive. Is it ok that the randomized result is smaller?
 6. Is it necessary that the nearby users see the avatar changes as soon as you equip a wearable in the backpack? Taking in consideration that we will go for option 1, the nearby users will only see the avatar changes when closing the backpack, very similar on how it works today.
 
-## Analysis provided by Platform team
+## Solution Space Exploration
 ### Functional requirements
 Explorer needs a list of paginated wearables based on filters and with sorting criteria.
 
@@ -277,3 +262,15 @@ For e.g. users may wonder: why can’t I see transactions for this wearable (bei
 This option aims to have an intermediary service, out of the Decentraland protocol, and enable use cases for our reference client.
 In this approach we would be using the endpoints resulting from Option 3 in the service for wearables and doing the merge of the three while paginating the results to the client. In this case the solution in the frontend side would be similar to Option 1, having a single endpoint for paginating all kinds of wearables.
 It remains to be analyzed where this intermediate service would be hosted, whether inside or outside the Catalysts.
+
+## Participants
+- Santi Andrade
+- Nico Lorusso
+- Davide Jensen
+- Matias Pentreath
+- Pedro Tamborindeguy
+- Mariano Goldman
+- Miguel Oliva
+
+## RFC 2119 and RFC 8174
+> The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.
