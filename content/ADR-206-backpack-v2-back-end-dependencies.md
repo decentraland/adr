@@ -7,9 +7,9 @@ status: Review
 type: ADR
 spdx-license: CC0-1.0
 authors:
-  - sandrade-dcl
-  - lorux0
-  - davidejensen
+- sandrade-dcl
+- lorux0
+- davidejensen
 ---
 
 ## Need
