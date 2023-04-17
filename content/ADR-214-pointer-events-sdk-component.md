@@ -20,7 +20,6 @@ The input system can be described in a sentence as:
 
 _For each interactable entity (`PointerEvents` component), all input commands are sent back to the scene for processing by the rendering engine (`PointerEventsResult` component)._
 
-
 ## Components description
 
 PointerEvents adds configurable pointer-based interactions to the attached Entity.
@@ -45,11 +44,13 @@ parameters:
   COMPONENT_ID: 1062
   COMPONENT_NAME: core::PointerEvents
   CRDT_TYPE: LastWriteWin-Element-Set
+```
 
+```yaml
 parameters:
   COMPONENT_ID: 1063
   COMPONENT_NAME: core::PointerEventsResult
-  CRDT_TYPE: Append
+  CRDT_TYPE: GrowOnly-Value-Set
 ```
 
 <!-- And provide a complete and commented protobuf serialization for the component -->
