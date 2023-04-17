@@ -4,7 +4,7 @@ adr: 206
 title: Back-end dependencies for the new Backpack V2
 date: 2023-04-17
 status: Review
-type: ADR
+type: RFC
 spdx-license: CC0-1.0
 authors:
 - sandrade-dcl
