@@ -126,7 +126,7 @@ enum PointerEventType {
 
 A component called `PointerEvents` is designed to signal the Renderer which entities are interactable. It is also used to provide information about "call to action placeholders" which are recommended to appear as visual cues in the screen. These cues are specialized per input action, enabling the renderer to select a special texture for each action key-mapping.
 
-Based on the `PointerEvents` component, at the "executeRaycast" stage of the tick ([ADR-148](https://adr.decentraland.org/adr/ADR-148)), a continuous raycast ([ADR-200](https://adr.decentraland.org/adr/ADR-200)) is added to process the events to be sent to the scene.
+Based on the `PointerEvents` component, at the "executeRaycast" stage of the tick ([ADR-148](/adr/ADR-148)), a continuous raycast ([ADR-200](/adr/ADR-200)) is added to process the events to be sent to the scene.
 
 ### Mesh selection for PointerEvent raycast
 
@@ -168,6 +168,12 @@ ROOT_ENTITY
       └── B ❌ (MeshCollider)
 ```
 
+### Mesh selection for UiElements
+
+Any entity with `UiTransform` ([ADR-124](/adr/ADR-124)) can be eligible for pointer events if they have a `PointerEvents` component, all other UI entities will not be eligible and pointer events will be bubbled up until finding an entity that matches the criteria. A rectangular mesh occupying the whole area designated by the `UiTransform` MUST be used.
+
+In UI entities, contrary to the render order ([ADR-151](/adr/ADR-151)), the events MUST bubble up from the leaves of the tree up to the root until finding an entity that matches the pointer event. In that case, the propagation of the event MUST stop, and the event MUST be added to the `PointerEventsResult`.
+
 ## Input commands
 
 For the ECS to work, "events" and "state" must be separated into two different categories. A challenge is faced here, since "events" or "interrupts" are not compatible with data representations at one moment in time (like the state of the ECS). To overcome this, all the input events of the frame must be queued and processed at the "executeRaycast" stage of the tick for all the scenes that are running. Naturally, this compute MUST count towards the quota/limit suggested by ADR-148.
@@ -180,7 +186,7 @@ It also enables high resolution events for cases of moving entities, e.g. assumi
 
 In summary, the input system does not send the last snapshot of every action to the scene like other engines. Instead, a list of commands for each entity is sent. The SDK takes care of making sense of these commands with input helpers.
 
-Before jumping into the implementation, a new CRDT operation called `append` must be introduced, together with its own kind of CRDT store called `GrowOnly-Value-Set` ([ADR-117](https://adr.decentraland.org/adr/ADR-117)). It is used by the `PointerEventResult` component, and instead of being a `Last-Write-Win Element set`, it is an ordered set of events. Since it is a grow only set, the only possible operation over this set is "append". More details about this CRDT data structure are available at ([ADR-117](https://adr.decentraland.org/adr/ADR-117)).
+Before jumping into the implementation, a new CRDT operation called `append` must be introduced, together with its own kind of CRDT store called `GrowOnly-Value-Set` ([ADR-117](/adr/ADR-117)). It is used by the `PointerEventResult` component, and instead of being a `Last-Write-Win Element set`, it is an ordered set of events. Since it is a grow only set, the only possible operation over this set is "append". More details about this CRDT data structure are available at ([ADR-117](/adr/ADR-117)).
 
 ## Tooltips
 
