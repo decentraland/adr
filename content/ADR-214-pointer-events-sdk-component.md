@@ -161,7 +161,7 @@ Like in the SDK entities, the interal collider meshes of the
 GltfContainer will be used to filter which meshes are eligible for raycasts.
 
 ROOT_ENTITY
-  └── A ❌ (GltfContainner, PointerEvents) <─┐
+  └── A ✅ (GltfContainner, PointerEvents) <─┐
       ├── GLTF_ROOT                          │
       │   └── ...                            │
       │       └── ✅ internal gltf node (MeshCollider)
