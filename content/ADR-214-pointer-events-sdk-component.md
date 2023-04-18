@@ -130,7 +130,7 @@ Based on the `PointerEvents` component, at the "executeRaycast" stage of the tic
 
 ### Mesh selection for PointerEvent raycast
 
-The eligible meshes for raycast are the ones that met any of this criteria:
+The eligible meshes for raycast are the ones that meet any of this criteria:
 
 1. MeshCollider of the entity
 1. Collider mesh inside a direct children Container (like GltfContainer).
@@ -178,11 +178,11 @@ In UI entities, contrary to the render order ([ADR-151](/adr/ADR-151)), the even
 
 For the ECS to work, "events" and "state" must be separated into two different categories. A challenge is faced here, since "events" or "interrupts" are not compatible with data representations at one moment in time (like the state of the ECS). To overcome this, all the input events of the frame must be queued and processed at the "executeRaycast" stage of the tick for all the scenes that are running. Naturally, this compute MUST count towards the quota/limit suggested by ADR-148.
 
-Then, in the "executeRaycast" step of the scene tick (on the renderer side), that queue will be consumed and "InputCommands" will be produced. An InputCommand is a record in a PointerEventResult component listing all the pertinent input actions for that entity. It is done to process when the pointer is "hovering" an entity, when it leaves, when the key down and key up in input. All of that can happen in the same frame. For example, a cube can be aimed at, clicked, and released the click on the same frame.
+Then, in the "executeRaycast" step of the scene tick (on the renderer side), that queue will be consumed and "InputCommands" will be produced. An InputCommand is a record in a PointerEventResult component listing all the pertinent input actions for that entity. This is done to process when the pointer is "hovering" an entity, when it leaves, when the key down and key up in input. All of that can happen in the same frame. For example, a cube can be aimed at, clicked, and released the click on the same frame.
 
 This design enables rapid games with low input lag and without losing information regardless of the framerate of the scene and renderer.
 
-It also enables high resolution events for cases of moving entities, e.g. assuming one is pointing still, with one finger on the trigger, if the engine puts an entity in front of someone for one frame, the scene will receive the "Hover Enter" event for that unique frame, and if one is fast enough, it may also be clicked.
+It also enables high resolution events for cases of moving entities, e.g. assuming one is pointing still, with one finger on the trigger, if the engine puts an entity in front of someone for one frame, the scene will receive the "HoverEnter" event for that unique frame, and if one is fast enough, it may also be clicked.
 
 In summary, the input system does not send the last snapshot of every action to the scene like other engines. Instead, a list of commands for each entity is sent. The SDK takes care of making sense of these commands with input helpers.
 
