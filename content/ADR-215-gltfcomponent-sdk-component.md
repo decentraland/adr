@@ -142,7 +142,7 @@ The meshes of node names ending in `_collider` MUST _always_ be invisible. This 
 
 The dcl_collider_mask will be used as `MeshCollider.collider_mask` for each mesh if provided, behaviors of `disable_physics` and `enable_pointers` will be additive to the collider_mask when they enable the significant bits.
 
-On the contrary, if `disable_physics == true` the CL*PHYSICS collider bit MUST be disabled for \_every* mesh of the model, overriding it even if defined by the `dcl_collider_mask` extra property.
+On the contrary, if `disable_physics == true` the `ColliderMask.CL_PHYSICS` collider bit MUST be disabled for _every_ mesh of the model, overriding it even if defined by the `dcl_collider_mask` extra property.
 
 ## RFC 2119 and RFC 8174
 
