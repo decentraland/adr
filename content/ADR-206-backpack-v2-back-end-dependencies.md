@@ -10,6 +10,8 @@ authors:
   - sandrade-dcl
   - lorux0
   - davidejensen
+  - pedrotambo
+  - marianogoldman
 ---
 
 ## Abstract
