@@ -1,7 +1,7 @@
 ---
 layout: adr
 adr: 214 # replace this number for the PR or ISSUE number
-title: ComponentName SDK Component
+title: PointerEvents SDK Component & Input system
 date: 2023-04-17
 status: Draft # pick one of these
 type: Standards Track
