@@ -73,7 +73,7 @@ For the renderer frame:
   <img src="/resources/ADR-148/Frame 2.svg" />
 </figure>
 
-### Proposed approach
+### Recommended approach
 
 Now that the frame is decomposed into smaller chunks, it can be observed that the RENDER part doesn't necessarily need to halt the **Renderer.Send** back to the scene, but it is a requirement for the **Renderer.Render**, since physics and transformations are used to calculate the GPU buffers for the next frame.
 
