@@ -50,7 +50,7 @@ To fulfill the goal of creating a cost-effective, scalable, and globally accessi
 
 To assess these aspects, we will examine the workload of the current algorithm, which is monitored through Segment events. The chart below presents the workload data for the past 4 months as of the time of writing.
 
-![Realm-Picking algorithm workload](./../public/resources/ADR-145/realm-picking-algorithm-workload.png)
+<img src="resources/ADR-145/realm-picking-algorithm-workload.png" alt="drawing" style="width:100%;"/>
 _The average workload is 10k._
 
 ## Specification
