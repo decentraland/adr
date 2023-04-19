@@ -16,7 +16,7 @@ This ADR documents the current implementation for Realm Picking in Kernel.
 
 ## Need
 
-When an user starts the client and no realm is specified, then there are multiple criterias to pick realms, and there is no clear agreement on which of these criterias is more important.
+When a user starts the client and no realm is specified, then there are multiple criteria to pick realms, and there is no clear agreement on which of these criteria is more important.
 
 ## Approach
 
@@ -36,7 +36,7 @@ Let’s say that there’s an event, and there are 3 catalysts that have at leas
 Taking into consideration the cases variables and cases listed above is how the algorithm works. Something that will try to “intelligently” decide which is the best realm, given all the conditions.
 
 1. It considers the latency difference as the most important factor. If the difference is greater than a hard limit (for instance, 1.5 seconds), always prefer the catalyst with the lowest latency. If the latency difference is less than this hard limit, consider the next criteria.
-2. It gives an score to a realm based on the amount of users it has. The greater the number of users, the better.
+2. It gives a score to a realm based on the amount of users it has. The greater the number of users, the better.
 3. Then, it deduces some score based on the latency, exponentially. For instance, consider 100 ms of latency equivalent to 1 user. 200 ms equivalent to 5 users. 500 ms equivalent to 30 users. 1000 ms equivalent to 200 users, etc. This is to account for the effect the latency may have on user experience (latencies lower than 500 ms may not be noticed by most people, given our current experiences).
 4. If the number of users pass a certain threshold (for instance, 1000 users), give a maximum score so the next criteria can be considered.
 5. Of those catalysts that have the same score, and latency that can be considered “acceptable”, pick the one with the least amount of users, to balance the load.
@@ -56,7 +56,7 @@ This algorithm also checks that the Catalysts are healthy to send traffic to che
 
 This algorithm is implemented as a [Chain of Responsibility](https://sourcemaking.com/design_patterns/chain_of_responsibility).
 
-This means that it encapsulates the processing elements inside a "pipeline" abstraction; and have clients "launch and leave" their requests at the entrance to the pipeline. The pattern chains the receiving objects together, and then passes any request messages from object to object until it reaches an object capable of handling the message. The number and type of handler objects isn't known a priori, they can be configured dynamically. The chaining mechanism uses recursive composition to allow an unlimited number of handlers to be linked.
+This means that it encapsulates the processing elements inside a "pipeline" abstraction; and have clients "launch and leave" their requests at the entrance to the pipeline. The pattern chains together the receiving objects and passes any request messages from one object to the next until it reaches an object capable of handling the message. The number and type of handler objects isn't known a priori, they can be configured dynamically. The chaining mechanism uses recursive composition to allow an unlimited number of handlers to be linked.
 
 The request for the chain will be picking a realm from a list of candidates. Each “rule” of the algorithm can be a link of the chain. Rules are prioritized. If a rule can make a decision, then it does. If not, it delegates in the following rules.
 
@@ -172,7 +172,7 @@ export type AllPeersScoreConfig = {
 #### Close Peers
 
 _Description_:
-Calculates the score acording the amount of users near the current parcel.
+Calculates the score according the amount of users near the current parcel.
 
 _Pseudo Code_:
 
