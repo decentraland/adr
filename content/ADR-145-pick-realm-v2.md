@@ -24,7 +24,7 @@ The realm-picking algorithm utilizes a predefined set of rules called `variants`
 
 - Addition of new rules:
   - Overloaded Catalyst: Servers with CPU or memory usage exceeding 90%, or reaching maximum user capacity, will be excluded from selection.
-  - Catalyst Version: Nodes with a version lower than the minimum required version (_as specified in the configuration_) will be excluded from selection. This will allow us setting minimum required version for each service running within a Catalyst.
+  - Catalyst Version: Nodes with a version lower than the minimum required version (_as specified in the configuration_) will be excluded from selection. This will allow us to set minimum required version for each service running within a Catalyst.
   - Catalyst Force: Possibility to forcibly select a Catalyst.
 - Creation of multiple default rule sets (known as _variants_) that can be easily switched to use different techniques for realm picking.
 - Relocating the algorithm to the server-side to accommodate multiple client implementations without losing any capabilities.
@@ -36,7 +36,7 @@ From now on, the rules will be referred to as `links` and `filters`. Filters wil
 ### Algorithm improvement
 
 The existing implementation of the realm picking algorithm, as outlined in the [Realm Picking Algorithm ADR](https://adr.decentraland.org/adr/ADR-86), allows for extensibility through the addition of new links and filters. In this proposal, two filters and a new link will be introduced:
-- **OVERLOADED_CATALYST**: This filter will exclude a Catalyst if its resource usage or user capacity reaches the limit.
+- **OVERLOADED_CATALYST**: This filter will exclude a Catalyst if its resource usage or user capacity reaches a certain threshold.
 - **VERSION_CATALYST**: This filter will exclude a Catalyst if it does not meet the minimum required version as specified.
 - **FORCE_CATALYST**: This new link will enable the forcible selection of a Catalyst listed in its configuration.
 
@@ -46,13 +46,13 @@ Furthermore, four new variants will be added, each containing a set of rules des
 
 This algorithm will be implemented on the server-side to accommodate various client implementations. While this may require modifying the implementation of the `LARGE_LATENCY` rule to receive necessary information from the client-side, it will enable enhancements such as adding a cache mechanism or event-driven notifications to proactively filter out unhealthy Catalysts, thereby improving the overall performance of the algorithm.
 
-To fulfill the goal of creating a cost-effective, scalable, and globally accessible service, two implementation proposals, CloudFlare Workers and AWS Lambdas, are being considered. The optimal choice for this service will be determined by analyzing various aspects related to cost, pricing model, performance, and latency, which will be discussed in detail in the Server-Side Implementation section.
+To fulfill the goal of creating a cost-effective, scalable and globally accessible service, two implementation proposals, CloudFlare Workers and AWS Lambdas, are being considered. The optimal choice for this service will be determined by analyzing various aspects related to cost, pricing model, performance, and latency, which will be discussed in detail in the Server-Side Implementation section.
 
 To assess these aspects, we will examine the workload of the current algorithm, which is monitored through Segment events. The chart below presents the workload data for the past 4 months as of the time of writing.
 
 <img src="resources/ADR-145/realm-picking-algorithm-workload.png" alt="drawing" style="width:100%;"/>
 
-_The average workload is 10k._
+_The average workload is 10k realm picks per day._
 
 ## Specification
 

@@ -56,7 +56,7 @@ This algorithm also checks that the Catalysts are healthy to send traffic to che
 
 This algorithm is implemented as a [Chain of Responsibility](https://sourcemaking.com/design_patterns/chain_of_responsibility).
 
-This means that it encapsulates the processing elements inside a "pipeline" abstraction; and have clients "launch and leave" their requests at the entrance to the pipeline. The pattern chains together the receiving objects and passes any request messages from one object to the next until it reaches an object capable of handling the message. The number and type of handler objects isn't known a priori, they can be configured dynamically. The chaining mechanism uses recursive composition to allow an unlimited number of handlers to be linked.
+This means that it encapsulates the processing elements inside a "pipeline" abstraction; and has clients "launch and leave" their requests at the entrance to the pipeline. The pattern chains together the receiving objects and passes any request messages from one object to the next until it reaches an object capable of handling the message. The number and type of handler objects isn't known a priori, they can be configured dynamically. The chaining mechanism uses recursive composition to allow an unlimited number of handlers to be linked.
 
 The request for the chain will be picking a realm from a list of candidates. Each “rule” of the algorithm can be a link of the chain. Rules are prioritized. If a rule can make a decision, then it does. If not, it delegates in the following rules.
 
