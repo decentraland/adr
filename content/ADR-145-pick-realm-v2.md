@@ -204,4 +204,12 @@ This variant will be useful when we want to crowd the nodes so the users can int
 
 ### Server-Side Implementation
 
-TBD
+In this section, we will analyze the options for implementing the algorithm on the server side, considering factors such as global availability, cache capabilities, scalability, and cold-start performance. The two options under consideration are `AWS Lambdas` and `CloudFlare Workers`.
+
+CloudFlare Workers have a unique advantage in terms of cold-start performance compared to AWS Lambdas. CloudFlare Workers are built on CloudFlare's extensive global edge network, which allows them to be _always on_ and ready to respond to requests, with no cold-start delays. This is because CloudFlare Workers are deployed across numerous data centers worldwide, enabling them to be readily available and responsive to incoming requests, even in geographically distributed environments.
+
+Additionally, CloudFlare Workers leverage CloudFlare's global edge network to provide worldwide availability and offer built-in caching capabilities, making it easy to cache responses and implement flexible caching strategies using features like custom cache control headers, edge caching, and KV storage. This can significantly improve performance and reduce the load on the origin server.
+
+On the other hand, AWS Lambdas, while highly scalable, do not have built-in caching capabilities and may experience cold-start delays, where the first request to a Lambda function after a period of inactivity may experience higher latency due to the need to spin up a new instance of the function. This can result in longer response times for the initial request compared to subsequent requests, and may impact applications with strict latency requirements or variable workloads.
+
+Therefore, in terms of global availability, cache capabilities, and performance, CloudFlare Workers may have an advantage over AWS Lambdas, as they do not experience cold-start delays, are _always on_ due to their global edge network architecture, and offer built-in caching capabilities, making them a preferable choice for this use case.
