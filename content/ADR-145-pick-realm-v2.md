@@ -3,7 +3,7 @@ layout: adr
 adr: 145
 title: Pick Realm Algorithm V2
 date: 2022-11-28
-status: Draft
+status: Living
 type: RFC
 spdx-license: CC0-1.0
 slug: /adr/TEMPLATE
