@@ -28,7 +28,7 @@ Some examples of the new rules that may be added to the algorithm include:
 - Catalyst Version: This rule will allow the Foundation to specify the minimum required version of the Catalyst service to be eligible for realm picking, ensuring compatibility and optimal performance.
 - Catalyst Force: This rule will enable the Foundation to direct the workload to a specific Catalyst, facilitating targeted resource allocation.
 
-In addition, multiple default rule sets will be created, making it easy to switch between different techniques for realm picking based on the current context of the platform. Furthermore, the algorithm will be relocated to the server-side to accommodate multiple client implementations while retaining its full capabilities.
+In addition, multiple default rule sets will be created, making it easy to switch between different techniques for realm picking based on the current context of the platform. Moreover, the algorithm will be relocated to the server-side to accommodate multiple client implementations while retaining its full capabilities.
 
 ## Solution Space Exploration
 
@@ -36,10 +36,16 @@ In addition, multiple default rule sets will be created, making it easy to switc
 
 The existing implementation of the realm picking algorithm, as outlined in the [Realm Picking Algorithm ADR](https://adr.decentraland.org/adr/ADR-86), allows for extensibility through the addition of new rules. In this proposal, three rules will be introduced:
 - **OVERLOADED_CATALYST**: This rule will exclude a Catalyst if its resource usage or user capacity reaches a certain threshold.
-- **VERSION_CATALYST**: This rule will exclude a Catalyst if it does not meet the minimum required version as specified.
-- **FORCE_CATALYST**: This rule will enable the forcible selection of a Catalyst listed in its configuration.
+- **VERSION_CATALYST**: This rule will exclude a Catalyst if it does not meet the minimum required version as specified in its own configuration.
+- **FORCE_CATALYST**: This rule will enable the forcible selection of a Catalyst listed in its own configuration.
 
-Furthermore, four new variants will be added, each containing a set of rules designed to address specific contexts.
+Furthermore, a predefined set of rules will be created to enable quick switching between them based on the platform context. Currently, four sets of rules are planned to be added:
+- **Default**: This set of rules will be used as the standard configuration, prioritizing performance and proximity of users.
+- **Versioning**: This set of rules will be employed when it is necessary to ensure a minimum version requirement for compatibility and optimal performance.
+- **Force**: This set of rules will be used for targeted resource allocation, allowing for specification of multiple Catalysts sorted by priority or a single one.
+- **Crowd**: This set of rules will be utilized when it is desired to increase the density of nodes to facilitate frequent interaction among users.
+
+These predefined sets of rules will be managed by the Foundation, and can be easily switched between based on the current context of the platform.
 
 ### Server-side
 
