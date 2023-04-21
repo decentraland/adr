@@ -39,6 +39,12 @@ The existing implementation of the realm picking algorithm, as outlined in the [
 - **VERSION_CATALYST**: This rule will exclude a Catalyst if it does not meet the minimum required version as specified in its own configuration.
 - **FORCE_CATALYST**: This rule will enable the forcible selection of a Catalyst listed in its own configuration.
 
+These new rules will be added to the existing rules currently in place, which include:
+- **LARGE_LATENCY**: Calculates the latency to all node candidates, then filters out the ones with a latency greater than the threshold.
+- **LOAD_BALANCING**: Is a Round Robin Mechanism to distribute all peers between all Catalysts.
+- **CLOSE_PEERS_SCORE**: Calculates the score acording the amount of users near the current parcel.
+- **ALL_PEERS_SCORE**: Assigns to all peers a scored based on their amount of total users. Then calculates the estimation of the size of the peer if assigning current user to it, and returns the score deduced by latency, equivalent to users.
+
 Furthermore, a predefined set of rules will be created to enable quick switching between them based on the platform context. Currently, four sets of rules are planned to be added:
 - **Default**: This set of rules will be used as the standard configuration, prioritizing performance and proximity of users.
 - **Versioning**: This set of rules will be employed when it is necessary to ensure a minimum version requirement for compatibility and optimal performance.
