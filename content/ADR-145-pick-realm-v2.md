@@ -20,14 +20,15 @@ With regard to functionality, the algorithm will be updated to incorporate addit
 
 ## Context, Reach & Prioritization
 
-The realm-picking algorithm utilizes a predefined set of rules called `variants` to dynamically switch to the optimal approach based on the platform context through configuration files. However, it has been identified that this algorithm lacks certain capabilities to address potential contexts that Decentraland may encounter. To enhance the selection algorithm, the following improvements are intended:
+The [realm-picking algorithm currently in use](https://adr.decentraland.org/adr/ADR-86) has the ability to manually add or remove rules, allowing for dynamic adjustments during runtime based on the platform context. However, going forward, the algorithm will be enhanced with a predefined set of rules that are specifically designed to address expected contexts such as events or performance degradation. These predefined rules will be configured and managed by the Foundation.
 
-- Addition of new rules:
-  - Overloaded Catalyst: Servers with CPU or memory usage exceeding 90%, or reaching maximum user capacity, will be excluded from selection.
-  - Catalyst Version: Nodes with a version lower than the minimum required version (_as specified in the configuration_) will be excluded from selection. This will allow us to set minimum required version for each service running within a Catalyst.
-  - Catalyst Force: Possibility to forcibly select a Catalyst.
-- Creation of multiple default rule sets (known as _variants_) that can be easily switched to use different techniques for realm picking.
-- Relocating the algorithm to the server-side to accommodate multiple client implementations without losing any capabilities.
+Some examples of the new rules that may be added to the algorithm include:
+
+- Overloaded Catalyst: This rule will filter out nodes with CPU or memory usage exceeding 90% or reaching maximum user capacity, ensuring efficient workload distribution.
+- Catalyst Version: This rule will allow the Foundation to specify the minimum required version of the Catalyst service to be eligible for realm picking, ensuring compatibility and optimal performance.
+- Catalyst Force: This rule will enable the Foundation to direct the workload to a specific Catalyst, facilitating targeted resource allocation.
+
+In addition, multiple default rule sets will be created, making it easy to switch between different techniques for realm picking based on the current context of the platform. Furthermore, the algorithm will be relocated to the server-side to accommodate multiple client implementations while retaining its full capabilities.
 
 ## Solution Space Exploration
 
