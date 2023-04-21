@@ -47,7 +47,7 @@ Furthermore, a predefined set of rules will be created to enable quick switching
 
 These predefined sets of rules will be managed by the Foundation, and can be easily switched between based on the current context of the platform.
 
-### Server-side
+### Allocating the algorithm on its own server
 
 This algorithm will be implemented on the server-side to accommodate various client implementations. While this may require modifying the implementation of the `LARGE_LATENCY` rule to receive necessary information from the client-side, it will enable enhancements such as adding a cache mechanism or event-driven notifications to proactively filter out unhealthy Catalysts, thereby improving the overall performance of the algorithm.
 
