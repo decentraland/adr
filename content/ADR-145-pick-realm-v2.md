@@ -3,7 +3,7 @@ layout: adr
 adr: 145
 title: Pick Realm Algorithm V2
 date: 2022-11-28
-status: Living
+status: Draft
 type: RFC
 spdx-license: CC0-1.0
 slug: /adr/TEMPLATE
@@ -60,11 +60,11 @@ _The average workload is 10k realm picks per day._
 
 _Description_:
 
-Exposing the available resources of Catalyst Nodes publicly poses a security risk, and thus, their estimation should be conducted within the Catalyst itself (_specifically in the BFF_), rather than in the Kernel.
+Exposing the available resources of Catalyst Nodes publicly poses a security risk, and thus, their estimation should be conducted within the Catalyst itself, rather than in the Kernel.
 
-Consequently, the BFF will utilize the `acceptingUsers` field in the `/about` endpoint to leverage the calculation of this value. The logic on the Kernel side will be straightforward, involving filtering out Catalysts with a value of false for this field.
+Consequently, the Catalyst will utilize the `acceptingUsers` field, which will be returned as part of the realm description in a specific endpoint, to leverage the calculation of this value. The logic on the Kernel side will be straightforward, involving filtering out nodes with a value of false for this field.
 
-On the other hand, the BFF will implement a set of rules to determine the value of `acceptingUsers`. The `acceptingUsers` field will be set to false if:
+On the other hand, the Catalyst will implement a set of rules to determine the value of `acceptingUsers`. The `acceptingUsers` field will be set to false if:
 - The maximum number of users for the server has been reached, with the maximum amount being specified through environment variables.
 - The CPU is at 90% or higher
 - The memory usage is at 90% or higher
@@ -91,7 +91,7 @@ export function fetchCatalystStatus() {
 
 _Description_:
 
-Every Catalyst node provides information about the versions of its Content, Lambdas, BFF, and Comms components. The Kernel reads these version fields and compares them with the minimum required version specified in the rule configuration. As a result, the configuration has the flexibility to specify minimum required versions for one or more services, allowing the Catalyst to be considered as a candidate only if it meets these requirements. This means that the configuration file can specify minimum required versions for X and Xn services, giving the flexibility to specify versions for one or more services as needed.
+Every Catalyst node provides information about the versions of its Content, Lambdas, and Comms components. The Kernel reads these version fields and compares them with the minimum required version specified in the rule configuration. As a result, the configuration has the flexibility to specify minimum required versions for one or more services, allowing the Catalyst to be considered as a candidate only if it meets these requirements. This means that the configuration file can specify minimum required versions for X and Xn services, giving the flexibility to specify versions for one or more services as needed.
 
 
 _Pseudo Code_:
@@ -115,7 +115,6 @@ _Configuration_:
 export type CatalystVersionConfig = {
   config?: 
           { comms?: string;
-            bff?: string;
             content?: string;
             lambdas?: string;
           }
