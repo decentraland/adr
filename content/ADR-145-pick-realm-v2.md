@@ -168,43 +168,43 @@ This rule will still operate as it currently does. However, in order to implemen
 #### Default
 
 This variant will serve as the default configuration when no specific context needs to be addressed.
-- Filter by OVERLOADED_CATALYST
-  - Firstly, nodes that are struggling to perform as expected will be filtered out.
-- Filter by LARGE_LATENCY
-  - Next, nodes that are located far away from the user in terms of latency will be filtered out.
-- Score by CLOSE_PEERS_SCORE
-  - After filtering, if the user is attempting to connect to a specific scene, they will be redirected to the node with the highest number of peers in that scene.
-- Score by ALL_PEERS_SCORE
-  - If the previous score does not result in the selection of a single catalyst, the node with the highest number of peers connected to it will be chosen.
-- Balance with LOAD_BALANCING
-  - As a fallback, if multiple catalysts are eligible for selection, a Round-Robin strategy will be implemented to evenly distribute the load among them.
+1. Filter by OVERLOADED_CATALYST
+    - Firstly, nodes that are struggling to perform as expected will be filtered out.
+2. Filter by LARGE_LATENCY
+    - Next, nodes that are located far away from the user in terms of latency will be filtered out.
+3. Score by CLOSE_PEERS_SCORE
+    - After filtering, if the user is attempting to connect to a specific scene, they will be redirected to the node with the highest number of peers in that scene.
+4. Score by ALL_PEERS_SCORE
+    - If the previous score does not result in the selection of a single catalyst, the node with the highest number of peers connected to it will be chosen.
+5. Balance with LOAD_BALANCING
+    - As a fallback, if multiple catalysts are eligible for selection, a Round-Robin strategy will be implemented to evenly distribute the load among them.
 
 #### Versioning
 
 This variant will be utilized when it is necessary to ensure that users connect to a specific or minimum version of Catalyst.
-- Filter by CATALYST_VERSION
-  - Firstly, nodes that do not meet the specified version criteria will be filtered out.
-- Filter by OVERLOADED_CATALYST
-  - Then, nodes that are struggling to perform as expected will be filtered out.
-- Balance with LOAD_BALANCING
-  - As a fallback, if multiple catalysts are eligible for selection, a Round-Robin strategy will be implemented to evenly distribute the load among them.
+1. Filter by CATALYST_VERSION
+    - Firstly, nodes that do not meet the specified version criteria will be filtered out.
+2. Filter by OVERLOADED_CATALYST
+    - Then, nodes that are struggling to perform as expected will be filtered out.
+3. Balance with LOAD_BALANCING
+    - As a fallback, if multiple catalysts are eligible for selection, a Round-Robin strategy will be implemented to evenly distribute the load among them.
 
 
 #### Force
 
 This variant will be employed when it is necessary to forcibly direct users to connect to specific realms.
-- FORCE_CATALYST
-  - This rule will be used to attempt selection of a node as specified in its configuration.
+1. FORCE_CATALYST
+    - This rule will be used to attempt selection of a node as specified in its configuration.
 
 #### Crowd
 
 This variant will be useful when we want to crowd the nodes so the users can interact between them more frequently.
-- Score by CLOSE_PEERS_SCORE
-  - After filtering, if the user is attempting to connect to a specific scene, they will be redirected to the node with the highest number of peers in that scene.
-- Score by ALL_PEERS_SCORE
-  - If the previous score does not result in the selection of a single catalyst, the node with the highest number of peers connected to it will be chosen.
-- Balance with LOAD_BALANCING
-  - As a fallback, if multiple catalysts are eligible for selection, a Round-Robin strategy will be implemented to evenly distribute the load among them.
+1. Score by CLOSE_PEERS_SCORE
+    - After filtering, if the user is attempting to connect to a specific scene, they will be redirected to the node with the highest number of peers in that scene.
+2. Score by ALL_PEERS_SCORE
+    - If the previous score does not result in the selection of a single catalyst, the node with the highest number of peers connected to it will be chosen.
+3. Balance with LOAD_BALANCING
+    - As a fallback, if multiple catalysts are eligible for selection, a Round-Robin strategy will be implemented to evenly distribute the load among them.
 
 ### Server-Side Implementation
 
