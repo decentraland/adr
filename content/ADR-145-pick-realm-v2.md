@@ -49,7 +49,7 @@ These predefined sets of rules will be managed by the Foundation, and can be eas
 
 ### Allocating the algorithm on its own server
 
-This algorithm will be implemented on the server-side, on its own server, to accommodate various client implementations. While this may require modifying the implementation of the `LARGE_LATENCY` rule to receive necessary information from the client-side, it will enable enhancements such as adding a cache mechanism or event-driven notifications to proactively filter out unhealthy Catalysts, thereby improving the overall performance of the algorithm.
+The algorithm will be implemented as a serverless service, outside of the Catalyst services bundle, to accommodate various client implementations. While this may involve modifying the `LARGE_LATENCY` rule to obtain necessary information from the client-side, it opens up possibilities for enhancements such as implementing cache mechanisms or event-driven notifications to proactively filter out unhealthy Catalysts, leading to improved algorithm performance. For further details on this specific rule implementation, please refer to the section on the Large Latency rule.
 
 To fulfill the goal of creating a cost-effective, scalable and globally accessible service, two implementation proposals, CloudFlare Workers and AWS Lambdas, are being considered. The optimal choice for this service will be determined by analyzing various aspects related to cost, pricing model, performance, and latency, which will be discussed in detail in the Server-Side Implementation section.
 
@@ -60,6 +60,8 @@ To assess these aspects, we will examine the workload of the current algorithm, 
 _The average workload is 10k realm picks per day._
 
 In light of the service being allocated on the server-side going forward, it is imperative to implement a fallback mechanism on the client-side for situations where the service may be unavailable at certain times. This desirable feature would allow for connecting to the most suitable node based on specific user and rule criteria. In the event that the service is unavailable, the client would then redirect the user to any available node using a Round Robin algorithm, ensuring uninterrupted access to Decentraland.
+
+The service will continue to operate as it currently does, returning the most suitable node based on specific user and rule criteria, if it is reachable. However, in case there are no eligible Catalyst nodes based on the given context, the service will utilize a Round-Robin algorithm to select any available node.
 
 ## Specification
 
@@ -163,13 +165,13 @@ export type ForceCatalystConfig = {
 
 _Description_:
 
-This rule will still operate as it currently does. However, in order to implement it on the server-side, the client will need to check the latency on all nodes to pass this information to the service. To prevent clients from constantly calling all nodes to check latency, they will first check if the realm-picking service is using a `variant` that contains the `LARGE_LATENCY` filter and only if it does it will gather the latency information to pass it over.
+This rule will still operate as it currently does. However, to implement it on the server-side, the client will be required to check the latency of all nodes and provide this information to the service. To avoid excessive latency checks by clients, they will first verify if the realm-picking service is utilizing a set of rules that includes `LARGE_LATENCY`, and only then gather latency information to pass on. Ultimately, if this rule is in effect, it will filter out nodes that do not meet a predefined threshold as per its configuration.
 
-### Variants
+### Set of Rules
 
 #### Default
 
-This variant will serve as the default configuration when no specific context needs to be addressed.
+This set of rules will serve as the default configuration when no specific context needs to be addressed.
 1. Filter by OVERLOADED_CATALYST
     - Firstly, nodes that are struggling to perform as expected will be filtered out.
 2. Filter by LARGE_LATENCY
@@ -183,7 +185,7 @@ This variant will serve as the default configuration when no specific context ne
 
 #### Versioning
 
-This variant will be utilized when it is necessary to ensure that users connect to a specific or minimum version of Catalyst.
+This set of rules will be utilized when it is necessary to ensure that users connect to a specific or minimum version of Catalyst.
 1. Filter by CATALYST_VERSION
     - Firstly, nodes that do not meet the specified version criteria will be filtered out.
 2. Filter by OVERLOADED_CATALYST
@@ -194,13 +196,13 @@ This variant will be utilized when it is necessary to ensure that users connect 
 
 #### Force
 
-This variant will be employed when it is necessary to forcibly direct users to connect to specific realms.
+This set of rules will be employed when it is necessary to forcibly direct users to connect to specific realms.
 1. FORCE_CATALYST
     - This rule will be used to attempt selection of a node as specified in its configuration.
 
 #### Crowd
 
-This variant will be useful when we want to crowd the nodes so the users can interact between them more frequently.
+This set of rules will be useful when we want to crowd the nodes so the users can interact between them more frequently.
 1. Score by CLOSE_PEERS_SCORE
     - After filtering, if the user is attempting to connect to a specific scene, they will be redirected to the node with the highest number of peers in that scene.
 2. Score by ALL_PEERS_SCORE
