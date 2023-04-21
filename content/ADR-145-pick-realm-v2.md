@@ -75,9 +75,9 @@ The service will continue to operate as it currently does, returning the most su
 
 _Description_:
 
-Exposing the available resources of Catalyst Nodes publicly poses a security risk, and thus, their estimation should be conducted within the Catalyst itself, rather than in the Kernel.
+Exposing the available resources of Catalyst Nodes publicly poses a security risk, and thus, their estimation should be conducted within the Catalyst itself, rather than in the service.
 
-Consequently, the Catalyst will utilize the `acceptingUsers` field, which will be returned as part of the realm description in a specific endpoint, to leverage the calculation of this value. The logic on the Kernel side will be straightforward, involving filtering out nodes with a value of false for this field.
+Consequently, the Catalyst will utilize the `acceptingUsers` field, which will be returned as part of the realm description in a specific endpoint, to leverage the calculation of this value. The logic on the service side will be straightforward, involving filtering out nodes with a value of false for this field.
 
 On the other hand, the Catalyst will implement a set of rules to determine the value of `acceptingUsers`. The `acceptingUsers` field will be set to false if:
 - The maximum number of users for the server has been reached, with the maximum amount being specified through environment variables.
@@ -88,7 +88,7 @@ On the other hand, the Catalyst will implement a set of rules to determine the v
 
 _Description_:
 
-Every Catalyst node provides information about the versions of its Content, Lambdas, and Comms components. The Kernel reads these version fields and compares them with the minimum required version specified in the rule configuration. As a result, the configuration has the flexibility to specify minimum required versions for one or more services, allowing the Catalyst to be considered as a candidate only if it meets these requirements. This means that the configuration file can specify minimum required versions for X and Xn services, giving the flexibility to specify versions for one or more services as needed.
+Every Catalyst node provides information about the versions of its Content, Lambdas, and Comms components. The service reads these version fields and compares them with the minimum required version specified in the rule configuration. As a result, the configuration has the flexibility to specify minimum required versions for one or more services, allowing the Catalyst to be considered as a candidate only if it meets these requirements. This means that the configuration file can specify minimum required versions for X and Xn services, giving the flexibility to specify versions for one or more services as needed.
 
 _Configuration_:
 
