@@ -49,7 +49,7 @@ These predefined sets of rules will be managed by the Foundation, and can be eas
 
 ### Allocating the algorithm on its own server
 
-This algorithm will be implemented on the server-side to accommodate various client implementations. While this may require modifying the implementation of the `LARGE_LATENCY` rule to receive necessary information from the client-side, it will enable enhancements such as adding a cache mechanism or event-driven notifications to proactively filter out unhealthy Catalysts, thereby improving the overall performance of the algorithm.
+This algorithm will be implemented on the server-side, on its own server, to accommodate various client implementations. While this may require modifying the implementation of the `LARGE_LATENCY` rule to receive necessary information from the client-side, it will enable enhancements such as adding a cache mechanism or event-driven notifications to proactively filter out unhealthy Catalysts, thereby improving the overall performance of the algorithm.
 
 To fulfill the goal of creating a cost-effective, scalable and globally accessible service, two implementation proposals, CloudFlare Workers and AWS Lambdas, are being considered. The optimal choice for this service will be determined by analyzing various aspects related to cost, pricing model, performance, and latency, which will be discussed in detail in the Server-Side Implementation section.
 
@@ -58,6 +58,8 @@ To assess these aspects, we will examine the workload of the current algorithm, 
 <img src="resources/ADR-145/realm-picking-algorithm-workload.png" alt="drawing" style="width:100%;"/>
 
 _The average workload is 10k realm picks per day._
+
+In light of the service being allocated on the server-side going forward, it is imperative to implement a fallback mechanism on the client-side for situations where the service may be unavailable at certain times. This desirable feature would allow for connecting to the most suitable node based on specific user and rule criteria. In the event that the service is unavailable, the client would then redirect the user to any available node using a Round Robin algorithm, ensuring uninterrupted access to Decentraland.
 
 ## Specification
 
