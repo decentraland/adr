@@ -84,45 +84,11 @@ On the other hand, the Catalyst will implement a set of rules to determine the v
 - The CPU is at 90% or higher
 - The memory usage is at 90% or higher
 
-
-_Pseudo Code_:
-
-To filter out a new check will need to be added to:
-https://github.com/decentraland/kernel/blob/main/packages/shared/dao/index.ts#L69
-
-
-```typescript
-export function fetchCatalystStatus() {
-
-  if (currentChecks && result.acceptingUsers) {
-    // ...
-  }
-
-  return undefined
-}
-```
-
 ### Catalyst Version
 
 _Description_:
 
 Every Catalyst node provides information about the versions of its Content, Lambdas, and Comms components. The Kernel reads these version fields and compares them with the minimum required version specified in the rule configuration. As a result, the configuration has the flexibility to specify minimum required versions for one or more services, allowing the Catalyst to be considered as a candidate only if it meets these requirements. This means that the configuration file can specify minimum required versions for X and Xn services, giving the flexibility to specify versions for one or more services as needed.
-
-
-_Pseudo Code_:
-
-```typescript
-export function catalystVersionRule(configuration: CatalystVersionConfig) {
-  const minimumRequiredVersions = configuration
-
-  Object.keys(minimumRequiredVersions).forEach(([serviceName, serviceRequiredVersion]) => {
-    validCandidates = picked.filter(candidate => meetsVersion(candidate, serviceName, serviceRequiredVersion))
-    // ...
-  })
-
-  return validCandidates
-}
-```
 
 _Configuration_:
 
@@ -141,23 +107,6 @@ export type CatalystVersionConfig = {
 _Description_:
 
 This rule will have multiple Catalysts, sorted by priority, defined in its configuration. The rule will attempt to connect to the first Catalyst in the list. If it is unavailable, it will continue trying with the subsequent Catalysts specified in the configuration in order of priority.
-
-_Pseudo Code_:
-
-```typescript
-export function catalystVersionRule(configuration: ForceCatalystConfig) {
-    let picked = context.picked
-    
-    const candidates = picked.map(candidate => candidate.catalystName)
-    const selected = configuration.sortedOptions?.find(candidate => candidates.includes(candidate))
-    
-    context.selected = !!selected 
-        ? picked.find(candidate => candidate.catalystName === selected)
-        : undefined
-
-    return context
-}
-```
 
 _Configuration_:
 
