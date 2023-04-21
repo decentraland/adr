@@ -29,16 +29,14 @@ The realm-picking algorithm utilizes a predefined set of rules called `variants`
 - Creation of multiple default rule sets (known as _variants_) that can be easily switched to use different techniques for realm picking.
 - Relocating the algorithm to the server-side to accommodate multiple client implementations without losing any capabilities.
 
-From now on, the rules will be referred to as `links` and `filters`. Filters will be used to remove nodes that do not meet specific criteria, while links will be used to assign scores to nodes to determine the best one for redirecting users.
-
 ## Solution Space Exploration
 
 ### Algorithm improvement
 
-The existing implementation of the realm picking algorithm, as outlined in the [Realm Picking Algorithm ADR](https://adr.decentraland.org/adr/ADR-86), allows for extensibility through the addition of new links and filters. In this proposal, two filters and a new link will be introduced:
-- **OVERLOADED_CATALYST**: This filter will exclude a Catalyst if its resource usage or user capacity reaches a certain threshold.
-- **VERSION_CATALYST**: This filter will exclude a Catalyst if it does not meet the minimum required version as specified.
-- **FORCE_CATALYST**: This new link will enable the forcible selection of a Catalyst listed in its configuration.
+The existing implementation of the realm picking algorithm, as outlined in the [Realm Picking Algorithm ADR](https://adr.decentraland.org/adr/ADR-86), allows for extensibility through the addition of new rules. In this proposal, three rules will be introduced:
+- **OVERLOADED_CATALYST**: This rule will exclude a Catalyst if its resource usage or user capacity reaches a certain threshold.
+- **VERSION_CATALYST**: This rule will exclude a Catalyst if it does not meet the minimum required version as specified.
+- **FORCE_CATALYST**: This rule will enable the forcible selection of a Catalyst listed in its configuration.
 
 Furthermore, four new variants will be added, each containing a set of rules designed to address specific contexts.
 
@@ -97,7 +95,7 @@ Every Catalyst node provides information about the versions of its Content, Lamb
 _Pseudo Code_:
 
 ```typescript
-export function catalystVersionLink(configuration: CatalystVersionConfig) {
+export function catalystVersionRule(configuration: CatalystVersionConfig) {
   const minimumRequiredVersions = configuration
 
   Object.keys(minimumRequiredVersions).forEach(([serviceName, serviceRequiredVersion]) => {
@@ -130,7 +128,7 @@ This rule will have multiple Catalysts, sorted by priority, defined in its confi
 _Pseudo Code_:
 
 ```typescript
-export function catalystVersionLink(configuration: ForceCatalystConfig) {
+export function catalystVersionRule(configuration: ForceCatalystConfig) {
     let picked = context.picked
     
     const candidates = picked.map(candidate => candidate.catalystName)
@@ -189,7 +187,7 @@ This variant will be utilized when it is necessary to ensure that users connect 
 
 This variant will be employed when it is necessary to forcibly direct users to connect to specific realms.
 - FORCE_CATALYST
-  - This link will be used to attempt selection of a node as specified in its configuration.
+  - This rule will be used to attempt selection of a node as specified in its configuration.
 
 #### Crowd
 
