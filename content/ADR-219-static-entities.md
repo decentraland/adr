@@ -34,6 +34,8 @@ The `Transform` component of the RootEntity cannot be modified by any system. Al
 
 The `UiCanvasInformation` component of the RootEntity MUST be set by the renderer to inform the scene about the current canvas size and the current UI scale. This component is described in the [ADR-124](/adr/ADR-124)
 
+The `EngineInformation` component of the RootEntity MUST be set by the renderer to inform the scene about information of the engine.
+
 ### PlayerEntity
 
 The `Transform` component can be READ/WRITE from the scene. Under normal circumstances, the `Transform` updates will be ignored by the renderer, but it is possible to override the player position when the scene is in control of the `PlayerEntity`, this behavior is yet to be formalized.

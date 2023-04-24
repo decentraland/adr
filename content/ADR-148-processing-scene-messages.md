@@ -31,10 +31,10 @@ Discuss and go into detail about the subject in question. Make sure you cover:
 Decentraland scenes run in contexts isolated from the rendering engine (_renderer_ from now on), in a worst-case scenario, in a different process, only being able to communicate via messaging. Since scenes have an independent update loop (_scene frame_ from now on) clear synchronization points need to be designed to reach consistent states between the renderer and the scene.
 
 The context of synchronizing the scenes and the renderer is complex. Many dimensions participate in the analysis:
+
 - Dropping scene frames due to waits or locks
 - Input delay (time or frames between the interaction and effect)
 - Optimization of compute time (or what can be executed while the main thread is waiting for the GPU)
-
 
 ## Solution Space Exploration
 
@@ -59,11 +59,13 @@ This approach is the simplest to explain: A scene frame runs in the Scene, then 
 To illustrate better what happens inside the scene frame and renderer frame, we will consider some stages for each of them:
 
 For the scene frame:
+
 - **Scene.Receive**: Read all the messages from the renderer
 - **Scene.Update**: Execute scene logic, run systems, mutate state
 - **Scene.Send**: Send all the updates to the renderer
 
 For the renderer frame:
+
 - **Renderer.Receive**: Read all the messages from the scenes
 - **Renderer.Update**: Update transforms, calculate physics, etc.
 - **Renderer.Render**: Batch GPU commands and send them to the GPU Process
@@ -107,6 +109,11 @@ Update messages will arrive at the Renderer via sockets or shared memory. It is 
   <img src="/resources/ADR-148/Frame 7.svg" />
 </figure>
 
+#### First frame
+
+The first frame of a scene is either sent by the scene code or by the runtime (via `main.crdt` as stated in [ADR-133](/adr/ADR-133)). The physics phase of this initial frame MUST only be executed after all the messages of this initial frame have been processed and after all the models have been loaded.
+
+This is so, to enable the scene to embed Raycast queries that will hit the models that are being loaded in this first frame.
 
 ## RFC 2119 and RFC 8174
 
