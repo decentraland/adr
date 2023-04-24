@@ -115,6 +115,10 @@ The first frame of a scene is either sent by the scene code or by the runtime (v
 
 This is so, to enable the scene to embed Raycast queries that will hit the models that are being loaded in this first frame.
 
+<figure>
+  <img src="/resources/ADR-148/tick.svg" />
+</figure>
+
 ## RFC 2119 and RFC 8174
 
 > The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.
