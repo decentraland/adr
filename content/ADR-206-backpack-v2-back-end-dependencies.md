@@ -26,7 +26,7 @@ We currently have several lambdas endpoints (some of them compatible with pagina
 - **Owned Emotes**: `/lambdas/users/:userId/emotes?includeDefinitions=true`
 - **Third Party Wearables by collection**: `/lambdas/users/:userId/third-party-wearables/:collectionId&includeDefinitions=true`
 
-We need to support the features in the lambdas. It is recommended to create new ones, to keep retro-compatibility, but we leave the decision to the @platform team.
+In order to support the new features that come with the version 2 of the backpack, new endpoints are needed. We'll describe below the functional requirements that they must suffice.
 
 ### Filter WEARABLES by collection
 In order to give the user the possibility of seeing and managing any type of wearables (BASE, OWNED and THIRD PARTY) together in the backpack, we would need to receive all the information from a single endpoint instead of having to request them separately.
@@ -42,19 +42,19 @@ In order to be able to manage these filters, we will need an endpoint where we c
 #### Examples:
 ##### Only owned collection
 ```
-/lambdas/users/:userId/wearables?includeDefinitions=true&collectionIds=decentraland
+/<lambdasEndPoint>/:userAddress/wearables?collectionCategory=on-chain
 ```
 ##### Only base collection
 ```
-/lambdas/users/:userId/wearables?includeDefinitions=true&collectionIds=urn:decentraland:off-chain:base-avatars
+/<lambdasEndPoint>/:userAddress/wearables?collectionCategory=base-wearable
 ```
 ##### Several third party collections
 ```
-/lambdas/users/:userId/wearables?includeDefinitions=true&collectionIds=urn:decentraland:matic:collections-thirdparty:cryptoavatars,urn:decentraland:matic:collections-thirdparty:kollectiff,...
+/<lambdasEndPoint>/:userAddress/wearables?collectionCategory=third-party&collectionIds=urn:decentraland:matic:collections-thirdparty:cryptoavatars,urn:decentraland:matic:collections-thirdparty:kollectiff,...
 ```
 ##### Any combination
 ```
-/lambdas/users/:userId/wearables?includeDefinitions=true&collectionIds=decentraland,urn:decentraland:off-chain:base-avatars,urn:decentraland:matic:collections-thirdparty:cryptoavatars,urn:decentraland:matic:collections-thirdparty:kollectiff,...
+/<lambdasEndPoint>/:userAddress/wearables?collectionCategory=on-chain,base-wearable,third-party&collectionIds=urn:decentraland:matic:collections-thirdparty:cryptoavatars,urn:decentraland:matic:collections-thirdparty:kollectiff,...
 ```
 
 ### Filter EMOTES by collection
@@ -69,15 +69,15 @@ In order to be able to manage these filters, we will need an endpoint where we c
 #### Examples:
 ##### Only owned collection
 ```
-/lambdas/users/:userId/emotes?includeDefinitions=true&collectionIds=decentraland
+/<lambdasEndPoint>/:userAddress/emotes?collectionCategory=on-chain
 ```
 ##### Only base collection
 ```
-/lambdas/users/:userId/emotes?includeDefinitions=true&collectionIds=base
+/<lambdasEndPoint>/:userAddress/emotes?collectionCategory=base
 ```
 ##### Any combination
 ```
-/lambdas/users/:userId/emotes?includeDefinitions=true&collectionIds=decentraland,base
+/<lambdasEndPoint>/:userAddress/emotes?collectionCategory=on-chain,base
 ```
 
 ### Filter WEARABLES/EMOTES by text
@@ -92,11 +92,11 @@ In order to be able to manage this filter, we will need an endpoint (the same de
 #### Examples:
 ##### Filter any combination of wearables by text
 ```
-/lambdas/users/:userId/wearables?includeDefinitions=true&collectionIds=decentraland,urn:decentraland:off-chain:base-avatars,urn:decentraland:matic:collections-thirdparty:cryptoavatars,urn:decentraland:matic:collections-thirdparty:kollectiff&textFilter=aviator
+/<lambdasEndPoint>/:userAddress/wearables?collectionCategory=on-chain,base-wearable,third-party&collectionIds=urn:decentraland:matic:collections-thirdparty:cryptoavatars,urn:decentraland:matic:collections-thirdparty:kollectiff&name=aviator
 ```
 ##### Filter any combination of emotes by text
 ```
-/lambdas/users/:userId/wearables?includeDefinitions=true&collectionIds=decentraland,base&textFilter=chic
+/<lambdasEndPoint>/:userAddress/emotes?collectionCategory=on-chain,base-wearable&name=chic
 ```
 
 ### Filter WEARABLES by category
@@ -109,7 +109,7 @@ In order to be able to manage this filter, we will need an endpoint (the same de
 #### Examples:
 ##### Filter any combination of wearables by category
 ```
-/lambdas/users/:userId/wearables?includeDefinitions=true&collectionIds=decentraland,urn:decentraland:off-chain:base-avatars,urn:decentraland:matic:collections-thirdparty:cryptoavatars,urn:decentraland:matic:collections-thirdparty:kollectiff&category=hat
+/<lambdasEndPoint>/:userAddress/wearables?collectionCategory=on-chain,base-wearable,third-party&collectionIds=urn:decentraland:matic:collections-thirdparty:cryptoavatars,urn:decentraland:matic:collections-thirdparty:kollectiff&categories=hat
 ```
 
 ### Sort WEARABLES/EMOTES
@@ -130,11 +130,11 @@ In cases where wearables or emotes dont have minted timestamps, they should be a
 #### Examples:
 ##### Sort any combination of wearables by rarest
 ```
-/lambdas/users/:userId/wearables?includeDefinitions=true&collectionIds=decentraland,urn:decentraland:off-chain:base-avatars,urn:decentraland:matic:collections-thirdparty:cryptoavatars,urn:decentraland:matic:collections-thirdparty:kollectiff&sort=rarest
+/<lambdasEndPoint>/:userAddress/wearables?collectionCategory=on-chain,base-wearable,third-party&collectionIds=urn:decentraland:matic:collections-thirdparty:cryptoavatars,urn:decentraland:matic:collections-thirdparty:kollectiff&orderBy=rarity&direction=ASC
 ```
 ##### Filter any combination of emotes by name A-Z
 ```
-/lambdas/users/:userId/wearables?includeDefinitions=true&collectionIds=decentraland,base&sort=name_a_z
+/<lambdasEndPoint>/:userAddress/emotes?collectionCategory=on-chain,base&orderBy=name&direction=ASC
 ```
 
 ### Get wearable market details (NEW ENDPOINT)
@@ -159,7 +159,7 @@ In order to be able to get this info, we will need to create a new endpoint that
 #### Example:
 ##### Get market details of a specific wearable
 ```
-/lambdas/wearables/:wearableId/market-details
+/<lambdasEndPoint>/:wearableId/market-details
 ```
 
 ### Get a random list of equipped wearables (NEW ENDPOINT)
@@ -173,21 +173,16 @@ The wearables must be from each category, avoiding conflicts with hides and repl
 #### Example:
 ##### Get random wearables of a specific user
 ```
-/lambdas/users/:userId/random-wearables
+/<lambdasEndPoint>/:userAddress/random-wearables
 ```
 
 ### Outfits
 ![image](https://user-images.githubusercontent.com/64659061/229866578-4a39e202-03d8-407c-907b-aaf5509f21eb.png)
 
-The outfit information should be stored in the catalyst because we need to support multi-platform.
-
-~~On the other hand, we should avoid storing it in profiles since it is information that only each individual user needs and does not need to be shared with other users.
-Adding it to the profiles would add an additional data transfer for each request unnecessarily.~~
-
-**Update:** The outfit information will be stored in the user profile.
+The outfit information needs to be multi-platform support so it will be stored in the user profile.
 
 Regarding to the outfit image previews, they can be generated in the client when saving the outfit.
-There is no need to store the images in the catalysts.
+There is no need to store the images in the back-end.
 
 We may encounter the need of checking that the wearables in the outfit are valid for the current user. (What happens if the user does not have the wearable anymore?)
 
@@ -203,19 +198,11 @@ We though about several alternatives to avoid performance issues by saving the p
 
 Saving the profile would mean that the nearby users will be able to see the changes as soon as possible.
 
-**Update:** we will go for option 1, taking in consideration that we cant save the profile during the quitting of the application. It will only be saved when closing the backpack, just like the "save" button worked before.
-
-### Open questions
-1. We need to define an approach on how to request/store the outfits information for every user (ref: outfits). **Its going to be stored in the user profile.**
-2. We need to discuss and define an approach on when we should save the profile (ref: equip/save wearables). **Option 1.**
-3. Is the preview image generation for outfits going to be a suitable approach? (ref: outfits). **Yes, it will be done in the client.**
-4. In order to query market details for every wearable, we need to solve the specific minted wearableId (now the client uses the generic one). In case the user has many wearables of the same generic id, how are we going to display the information?
-5. The randomizer will need a bounded scope because querying the whole wearables that the user may have would be too expensive. Is it ok that the randomized result is smaller?
-6. Is it necessary that the nearby users see the avatar changes as soon as you equip a wearable in the backpack? Taking in consideration that we will go for option 1, the nearby users will only see the avatar changes when closing the backpack, very similar on how it works today.
+The chosen option is the number 1, taking in consideration that we can't save the profile when the user quits the application. It will only be saved when closing the backpack, just like the "save" button worked before.
 
 ## Solution Space Exploration
 ### Functional requirements
-Explorer needs a list of paginated wearables based on filters and with sorting criteria.
+By summarizing the requirements described above, we need to implement an endpoint that complies with the following:
 
 Filter criteria:
 1. Owner address (implicit in the URL as a path param). 
@@ -254,16 +241,19 @@ The main advantages of this approach are:
 
 The disadvantage is that the UI needs to either implement the unification by consuming the existing endpoints + adding a layer of merging the different sources into a single collection.
 
-#### Option 3 - Multiple endpoints - UI changes to show items separately (recommended)
+#### Option 3 - Multiple endpoints - UI changes to show items separately
 This option is similar to Option 2 in regards to the API endpoints: enhancing existing endpoints with filtering / sorting capabilities.
 The difference would be that the UI changes to show the 3 types of wearables separately. So this makes the nature of the different types of wearables (which have different behavior) become visible to the user, rather than trying to hide it.
 The UI should be iterated and adapted so it doesn’t try to force the unified view of entities of different kinds. It will be easier for users to understand what is happening. It will be easier for UI developers to develop and maintain in the future.
 For e.g. users may wonder: why can’t I see transactions for this wearable (being a third party one)? Why are base wearables at the beginning / end when sorting by date? Or other things that make no sense in one type but do in others.
 
-#### Option 4 - Unified intermediate service (CHOSEN OPTION)
+#### Option 4 - Unified intermediate service
 This option aims to have an intermediary service, out of the Decentraland protocol, and enable use cases for our reference client.
 In this approach we would be using the endpoints resulting from Option 3 in the service for wearables and doing the merge of the three while paginating the results to the client. In this case the solution in the frontend side would be similar to Option 1, having a single endpoint for paginating all kinds of wearables.
 It remains to be analyzed where this intermediate service would be hosted, whether inside or outside the Catalysts.
+
+## Conclusion
+After discussing the different solutions between Platform, Renderer and Product team, we agreed to go with the **Option 4** since it has the best effort/benefit balance.
 
 ## Participants
 - Santi Andrade
