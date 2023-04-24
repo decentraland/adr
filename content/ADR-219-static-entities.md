@@ -28,6 +28,8 @@ Three static entities are reserved at the moment:
 - `PlayerEntity = 1`
 - `CameraEntity = 2`
 
+All the components presented in this document MUST be updated at the physics phase of each tick as per [ADR-148](/adr/ADR-148).
+
 ### RootEntity
 
 The `Transform` component of the RootEntity cannot be modified by any system. All updates coming from the scene MAY be ignored or have no effect.
