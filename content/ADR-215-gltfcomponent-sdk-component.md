@@ -145,7 +145,7 @@ The `dcl_collider_mask` property MUST be a valid `uint32` value. If the value is
 
 The meshes of node names ending in `_collider` MUST _always_ be invisible. This enables both invisible colliders and visible colliders to operate at once.
 
-The dcl_collider_mask will be used as `MeshCollider.collider_mask` for each mesh if provided.
+The extra property `dcl_collider_mask` will be used as `MeshCollider.collider_mask` for each mesh if provided.
 
 ## Reporting loading state
 
