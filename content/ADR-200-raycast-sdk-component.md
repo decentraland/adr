@@ -85,13 +85,15 @@ message PBRaycast {
 
 message PBRaycastResult {
   // the timestamp of the Raycast component, used to correlate results
-  int32 timestamp = 1;
+  optional unt32 timestamp = 1;
   // the starting point of the ray in global coordinates
   Vector3 global_origin = 2;
   // the direction vector of the ray in global coordinates
   Vector3 direction = 3;
   // zero or more hits
   repeated RaycastHit hits = 4;
+  // number of tick in which the event was produced, equals to EngineInfo.tick_number (ADR-148) + (ADR-219)
+  uint32 tick_number = 5;
 }
 
 // RaycastHit contains information about the intersection of a ray with a mesh.
@@ -209,6 +211,34 @@ function raycast(entity: Entity, direction: Vector3) {
 ### Usage of the `timestamp` property
 
 The timestamp property is a correlation number, only defined by the scene. The renderer MUST copy the value of the `timestamp` from the Raycast component to the RaycastResult component.
+
+### Usage of the `tick_number` property
+
+The `tick_number` is set to the `EngineInfo.tick_number` of the current frame, as specified by [ADR-148](/adr/ADR-148) and the `EngineInfo` in [ADR-219](/adr/ADR-219). This number is used to correlate the RaycastResult with the frame in which it was produced. Enabling the following use case:
+
+```typescript
+function performRaycast(entity: Entity, direction: Vector3): RaycastResult | null {
+  const result = RaycastResult.getOrNull(entity)
+  const { tickNumber } = EngineInfo.get(engine.RootEntity)
+
+  // is the result from the current frame?
+  const haveResult = result && result.tickNumber === tickNumber
+
+  // NOTE: many fields are omitted for brevity and clarity of the example
+  Raycast.createOrReplace(entity, { direction, continous: false })
+
+  return haveResult ? result : null
+}
+
+function laserSystem() {
+  for (const [entity, _laser] of engine.getEntitiesWith(LaserComponent)) {
+    const result = performRaycast(entity, Vector3.Forward())
+    if (result?.hits.length) {
+      // apply damage to all hitted entities
+    }
+  }
+}
+```
 
 ### Performance considerations
 
