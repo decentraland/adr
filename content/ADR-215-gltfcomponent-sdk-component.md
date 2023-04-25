@@ -165,7 +165,7 @@ The dcl_collider_mask will be used as `MeshCollider.collider_mask` for each mesh
 
 On the contrary, if `disable_physics == true` the `ColliderMask.CL_PHYSICS` collider bit MUST be disabled for _every_ mesh of the model, overriding it even if defined by the `dcl_collider_mask` extra property.
 
-### Reporting loading state
+## Reporting loading state
 
 For cases depending on the complete loading of an asset like calculating raycasts or colliders, the engine MUST provide a way to report the loading state of the glTF. This is done via the `GltfContainerLoadingState` component. The component provides information about the current state of loading using the following properties:
 
@@ -187,7 +187,7 @@ Where `UNKNOWN` is the default state, `LOADING` is the state when the glTF is be
 
 This component also represents the instancing state of the glTF. If the glTF is instanced, the `current_state` will be `FINISHED`. Otherwise, the `current_state` will be `LOADING` until the glTF is instanced correctly.
 
-#### Possible errors
+### Possible errors
 
 The `FINISHED_WITH_ERROR` can be caused by the following errors:
 
