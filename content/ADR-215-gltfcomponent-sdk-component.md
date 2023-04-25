@@ -42,12 +42,12 @@ parameters:
 message PBGltfContainer {
   // the GLTF file path as listed in the deployed entity
   string src = 1;
-
-  // disable automatic physics collider creation (default: false)
-  optional bool disable_physics_colliders = 2;
-
-  // copies the visible meshes into a virtual MeshCollider with CL_POINTER collider_mask (default: false)
-  optional bool create_pointer_colliders = 3;
+  
+  // default: 0
+  optional int32 visible_meshes_collision_mask = 2
+  
+  // default: CL_POINTER | CL_PHYSICS
+  optional int32 invisible_meshes_collision_mask = 3
 }
 
 // GltfContainerLoadingState is set by the engine and provides information about
@@ -122,30 +122,16 @@ Each entity will have its own animation state. The engine MUST provide a way to 
 
 This version of the component does not specify any way to modify the materials of the models. This is a future work.
 
-## Handling colliders meshes
+## Handling visibility & colliders
 
-### Handling `_collider` meshes
+All meshes belong either to visible or invisible category. Names of invisible meshes should end in `_collider`. Those meshes MUST be invisible and the
+rest of the properties of the mesh like its position in an animation should be honored. This convention is permanent and is not affected by any flag or configuration.
 
-All meshes of a node with a name ending in `_collider` will generate internally `MeshCollider`. Those meshes MUST be invisible and the
-rest of the properties of the mesh like its position in an animation should be honored. That enables colliders to be animated along with visible meshes. It is RECOMMENDED that all the engines implement a way to visualize the colliders for debugging purposes, making these meshes visible with a distinctive material.
+Collision layers of both visible and invisible meshes are set via `visible_meshes_collision_mask` and `invisible_meshes_collision_mask`. Collision mask set to 0 indicates that collision detection / physics system should ignore meshes of this group, otherwise an engine MUST generate a collider for each mesh of this group and set its collision layers accordingly.
 
-This convention is permanent and is not affected by any flag or configuration.
+By default, collision mask of visible meshes is set to 0, but it could be set, for example, to CL_POINTER if it is desirable for pointer meshes to receive pointer events.
 
-### Automatic physics colliders
-
-Physics colliders (`ColliderMask.CL_PHYSICS`) are automatically generated based on the `_collider` meshes if the property `disable_physics_colliders == false`.
-
-It is possible that the value of `disable_physics_colliders` is changed at runtime, so the engine SHOULD be able to enable/disable the colliders at runtime.
-
-Skinned meshes are not supported for colliders of any kind.
-
-### Automatic pointer colliders
-
-All visible meshes (not ending in `_collider`) MAY create an internal `MeshCollider` if the property `create_pointer_colliders == true`. This is useful for meshes that are not meant to be colliders but that should still be able to receive pointer events. Those colliders will have the `ColliderMask.CL_POINTER` mask.
-
-The `MeshCollider` will be created with the same properties as the visible mesh, so it will be animated along with the visible mesh.
-
-It is possible that the value of `create_pointer_colliders` is changed at runtime, so the engine SHOULD be able to enable/disable the colliders at runtime.
+It is possible that the value of collision masks is changed at runtime, so the engine SHOULD be able to enable/disable the colliders at runtime.
 
 Skinned meshes are not supported for colliders of any kind.
 
@@ -157,13 +143,9 @@ The glTF [extra property](https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.h
 
 The `dcl_collider_mask` property MUST be a valid `uint32` value. If the value is not valid, the engine MUST ignore it.
 
-To disable all the assumptions made by the engine, the RECOMMENDED values are `create_pointer_colliders := false` and `disable_physics_colliders := true`.
-
 The meshes of node names ending in `_collider` MUST _always_ be invisible. This enables both invisible colliders and visible colliders to operate at once.
 
-The dcl_collider_mask will be used as `MeshCollider.collider_mask` for each mesh if provided, behaviors of `disable_physics` and `enable_pointers` will be additive to the collider_mask when they enable the significant bits.
-
-On the contrary, if `disable_physics == true` the `ColliderMask.CL_PHYSICS` collider bit MUST be disabled for _every_ mesh of the model, overriding it even if defined by the `dcl_collider_mask` extra property.
+The dcl_collider_mask will be used as `MeshCollider.collider_mask` for each mesh if provided.
 
 ## Reporting loading state
 
