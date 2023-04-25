@@ -111,9 +111,9 @@ Update messages will arrive at the Renderer via sockets or shared memory. It is 
 
 #### First frame
 
-The first frame of a scene is either sent by the scene code or by the runtime (via `main.crdt` as stated in [ADR-133](/adr/ADR-133)). The physics phase of this initial frame MUST only be executed after all the messages of this initial frame have been processed and after all the models have been loaded.
+The first frame of a scene is either sent by the scene code or by the runtime (via `main.crdt` as stated in [ADR-133](/adr/ADR-133)). The physics phase of this initial frame MUST only be executed after all its messages have been processed and all the models have been loaded.
 
-This is so, to enable the scene to embed Raycast queries that will hit the models that are being loaded in this first frame.
+This enables the scene to embed Raycast queries that will hit the models being loaded in this first frame.
 
 <figure>
   <img src="/resources/ADR-148/tick.svg" />
