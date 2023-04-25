@@ -28,11 +28,15 @@ Three static entities are reserved at the moment:
 - `PlayerEntity = 1`
 - `CameraEntity = 2`
 
+All the components presented in this document MUST be updated at the physics phase of each tick as per [ADR-148](/adr/ADR-148).
+
 ### RootEntity
 
 The `Transform` component of the RootEntity cannot be modified by any system. All updates coming from the scene MAY be ignored or have no effect.
 
 The `UiCanvasInformation` component of the RootEntity MUST be set by the renderer to inform the scene about the current canvas size and the current UI scale. This component is described in the [ADR-124](/adr/ADR-124)
+
+The `EngineInformation` component of the RootEntity contains information about the current frame number, tick number and total elapsed time counters. The component MUST be updated by the renderer each frame.
 
 ### PlayerEntity
 
