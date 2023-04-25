@@ -16,7 +16,7 @@ authors:
 
 <!-- Human readable description of the component, what does it fix and how it affects the entities or the systems from an SDK user point of view -->
 
-This component allows to load GLTF models into the scene.
+The `GltfContainer` component allows to load GLTF models into the scene. The `GltfContainerLoadingState` component allows to track the loading state of the GLTF model.
 
 ## Serialization
 
@@ -26,6 +26,13 @@ This component allows to load GLTF models into the scene.
 parameters:
   COMPONENT_ID: 1041
   COMPONENT_NAME: core::GltfContainer
+  CRDT_TYPE: LastWriteWin-Element-Set
+```
+
+```yaml
+parameters:
+  COMPONENT_ID: 1049
+  COMPONENT_NAME: core::GltfContainerLoadingState
   CRDT_TYPE: LastWriteWin-Element-Set
 ```
 
@@ -41,6 +48,20 @@ message PBGltfContainer {
 
   // copies the visible meshes into a virtual MeshCollider with CL_POINTER collider_mask (default: false)
   optional bool create_pointer_colliders = 3;
+}
+
+// GltfContainerLoadingState is set by the engine and provides information about
+// the current state of the GltfContainer of an entity.
+message PBGltfContainerLoadingState {
+  enum LoadingState {
+    UNKNOWN = 0;
+    LOADING = 1;
+    NOT_FOUND = 2;
+    FINISHED_WITH_ERROR = 3;
+    FINISHED = 4;
+  }
+
+  LoadingState current_state = 1;
 }
 ```
 
@@ -143,6 +164,37 @@ The meshes of node names ending in `_collider` MUST _always_ be invisible. This 
 The dcl_collider_mask will be used as `MeshCollider.collider_mask` for each mesh if provided, behaviors of `disable_physics` and `enable_pointers` will be additive to the collider_mask when they enable the significant bits.
 
 On the contrary, if `disable_physics == true` the `ColliderMask.CL_PHYSICS` collider bit MUST be disabled for _every_ mesh of the model, overriding it even if defined by the `dcl_collider_mask` extra property.
+
+### Reporting loading state
+
+For cases depending on the complete loading of an asset like calculating raycasts or colliders, the engine MUST provide a way to report the loading state of the glTF. This is done via the `GltfContainerLoadingState` component. The component provides information about the current state of loading using the following properties:
+
+```protobuf
+message PBGltfContainerLoadingState {
+  enum LoadingState {
+    UNKNOWN = 0;
+    LOADING = 1;
+    NOT_FOUND = 2;
+    FINISHED_WITH_ERROR = 3;
+    FINISHED = 4;
+  }
+
+  LoadingState current_state = 1;
+}
+```
+
+Where `UNKNOWN` is the default state, `LOADING` is the state when the glTF is being loaded, `NOT_FOUND` is the state when the glTF is not found, `FINISHED_WITH_ERROR` is the state when the glTF finished loading but with errors and `FINISHED` is the state when the glTF finished loading without errors.
+
+This component also represents the instancing state of the glTF. If the glTF is instanced, the `current_state` will be `FINISHED`. Otherwise, the `current_state` will be `LOADING` until the glTF is instanced correctly.
+
+#### Possible errors
+
+The `FINISHED_WITH_ERROR` can be caused by the following errors:
+
+- An asset is not found, including textures, mesh data, etc.
+- An extension is not compatible with the engine.
+
+<!-- - Weights are not normalized -->
 
 ## RFC 2119 and RFC 8174
 
