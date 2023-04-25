@@ -87,10 +87,12 @@ message PBPointerEventsResult {
   raycast.RaycastHit hit = 2;
   // kind of interaction that was detected
   PointerEventType event_type = 4;
-  // could be a Lamport timestamp
+  // could be a Lamport timestamp or a global monotonic counter
   uint32 timestamp = 5;
   // if the input is analog then we store it here
   optional float analog = 6;
+  // number of tick in which the event was produced, equals to EngineInfo.tick_number (ADR-148) + (ADR-219)
+  uint32 tick_number = 7;
 }
 
 enum InputAction {
