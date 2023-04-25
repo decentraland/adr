@@ -129,6 +129,8 @@ rest of the properties of the mesh like its position in an animation should be h
 
 Collision layers of both visible and invisible meshes are set via `visible_meshes_collision_mask` and `invisible_meshes_collision_mask`. Collision mask set to 0 indicates that collision detection / physics system should ignore meshes of this group, otherwise an engine MUST generate a collider for each mesh of this group and set its collision layers accordingly.
 
+It is RECOMMENDED that an engine implements a way to visualize the colliders for debugging purposes, making these meshes visible with a distinctive material.
+
 By default, collision mask of visible meshes is set to 0, but it could be set, for example, to `CL_POINTER` if it is desirable for pointer meshes to receive pointer events.
 
 It is possible that the value of collision masks is changed at runtime, so the engine SHOULD be able to enable/disable the colliders at runtime.
