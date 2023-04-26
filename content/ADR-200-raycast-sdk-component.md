@@ -248,6 +248,16 @@ Having multiple continuous raycasts in a scene can significantly impact performa
 
 The `collision_mask` parameter allows scene creators to target different layers of elements, including colliders, avatars, visible meshes, UI elements, and more. The flags for this mask are defined in the `ColliderLayer` enum, which is part of the `MeshCollider` component. It is RECOMMENDED that scene creators carefully select the least amount of flags for each raycast to prevent a performance penalty on the engine.
 
+Any mesh including at least one matching of the specified bits in the `collision_mask` will be considered for the raycast. If the `collision_mask` is set to `0`, then the raycast will not intersect any mesh.
+
+The mesh selection filter will behave like the following pseudocode:
+
+```typescript
+function isMeshEligibleForRaycast(mesh: Mesh, mask: number) {
+  return (mesh.colliderLayer & mask) !== 0
+}
+```
+
 ### Kinds of raycasts
 
 There are three types of raycasts, as defined by the `RaycastQueryType` enum:

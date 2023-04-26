@@ -176,6 +176,8 @@ Any entity with `UiTransform` ([ADR-124](/adr/ADR-124)) can be eligible for poin
 
 In UI entities, contrary to the render order ([ADR-151](/adr/ADR-151)), the events MUST bubble up from the leaves of the tree up to the root until finding an entity that matches the pointer event. In that case, the propagation of the event MUST stop, and the event MUST be added to the `PointerEventsResult`.
 
+Like in Raycasts [ADR-200](/adr/ADR-200), the selection of the meshes for the pointer events matches any mesh including at least the `CL_POINTER` bit in its collision layers.
+
 ## Input commands
 
 For the ECS to work, "events" and "state" must be separated into two different categories. A challenge is faced here, since "events" or "interrupts" are not compatible with data representations at one moment in time (like the state of the ECS). To overcome this, all the input events of the frame must be queued and processed at the "executeRaycast" stage of the tick for all the scenes that are running. Naturally, this compute MUST count towards the quota/limit suggested by ADR-148.
