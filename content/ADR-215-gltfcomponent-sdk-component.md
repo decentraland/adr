@@ -44,10 +44,10 @@ message PBGltfContainer {
   string src = 1;
   
   // default: 0
-  optional int32 visible_meshes_collision_mask = 2
+  optional uint32 visible_meshes_collision_mask = 4;
   
   // default: CL_POINTER | CL_PHYSICS
-  optional int32 invisible_meshes_collision_mask = 3
+  optional uint32 invisible_meshes_collision_mask = 5;
 }
 
 // GltfContainerLoadingState is set by the engine and provides information about
