@@ -26,49 +26,49 @@ Action: deprecation
 
 Lambdas health endpoint has been replaced for the realm description endpoint `/about` specified by [./ADR-110-realm-description.md](ADR-110: Realm description).
 
-# GET /lambdas/contentv2/parcel_info
+### GET /lambdas/contentv2/parcel_info
 
 Action: deprecation
 
 This endpoint is just a proxy to content-server's `POST /entities/active'.
 
-# GET /lambdas/contentv2/contents/:cid
+### GET /lambdas/contentv2/contents/:cid
 
 Action: deprecation
 
 This endpoint is just a proxy to content-server's `GET /contents/:hashId'.
 
-# GET /lambdas/scenes
+### GET /lambdas/scenes
 
 Action: deprecation
 
 This endpoint is just a proxy to content-server's `POST /entities/active'.
 
-# GET /lambdas/profiles
+### GET /lambdas/profiles
 
 Action: deprecation
 
 This endpoint is replaced by `POST /lambdas/profiles`, this endpoint had a limit on the number of profiles you can request at once given by the lenght of the url, the POST version of this endpoint removes this restriction.
 
-# GET /lambdas/profiles/{id}
+### GET /lambdas/profiles/{id}
 
 Action: deprecation
 
 This endpoint is replaced by `POST /lambdas/profiles`, in which many profiles can be requested at once.
 
-# GET /lambdas/contracts/servers
+### GET /lambdas/contracts/servers
 
 Action: deprecation
 
 This endpoint is a proxy to the catalyst smart contract, this can be replaced by a call to the contract. To make things easier for clients, a new version of the calyst-client will be released, including both a way to query the contract if you have a web3 provider and a snapshot of the data of the contract at the time of the release.
 
-# GET /lambdas/contracts/pois
+### GET /lambdas/contracts/pois
 
 Action: deprecation
 
 This endpoint is a proxy to the POIs smart contract, this can be replaced by a call to the contract. To make things easier for clients, a new version of the calyst-client will be released, including both a way to query the contract if you have a web3 provider and a snapshot of the data of the contract at the time of the release.
 
-# GET /lambdas/contracts/denylisted-names
+### GET /lambdas/contracts/denylisted-names
 
 Action: deprecation
 
