@@ -12,11 +12,11 @@ authors:
 
 ## Abstract
 
-Catalyst's Lambdas is a service created to support many unrelated operations needed originally by the reference implementation client, but as time goes by, new, more efficient endpoints or ways of performing the same operation are implemented, but the service still contains every one of this iterations. The idea of this ADR is to describe the status of those endpoints in order to be able to clean up the service and have a more robust catalyst implementation.
+Catalyst's Lambdas is a service created to support many unrelated operations needed initially by the reference implementation client. As time goes by, new and more efficient endpoints with the same responsibilities are implemented, but the service still contains every iteration. The idea of this ADR is to describe those endpoints statuses to clean up the service, and have a more robust catalyst implementation.
 
 ## Context, Reach & Prioritization
 
-Given the nature of the service lambdas is one of the most complex pieces of software inside the catalyst node, documenting the changes and been able to cleanup the service drasticaly will improve the mantenability and efficence of the catalyst itself.
+Given its nature, the Lambdas service is one of the most complex pieces of software inside the catalyst node. Documenting the changes and being able to clean up the service drastically will improve the maintainability and efficiency of the catalyst itself.
 
 ## Specification
 
@@ -24,25 +24,25 @@ Given the nature of the service lambdas is one of the most complex pieces of sof
 
 Action: deletion
 
-Lambdas health endpoint has been replaced for the realm description endpoint `/about` specified by [ADR-110: Realm description](./ADR-110-realm-description.md).
+Lambdas' health endpoint has been replaced with the realm description endpoint `/about` specified by [ADR-110: Realm description](./ADR-110-realm-description.md).
 
 ### GET /lambdas/contentv2/parcel_info
 
 Action: deletion
 
-This endpoint is just a proxy to content-server's `POST /entities/active'.
+This endpoint is a proxy to the content-server `POST /entities/active`.
 
 ### GET /lambdas/contentv2/contents/:cid
 
 Action: deletion
 
-This endpoint is just a proxy to content-server's `GET /contents/:hashId'.
+This endpoint is a proxy to the content-server `GET /contents/:hashId`.
 
 ### GET /lambdas/scenes
 
 Action: deletion
 
-This endpoint is just a proxy to content-server's `POST /entities/active'.
+This endpoint is just a proxy to content-server's `POST /entities/active`.
 
 ### GET /lambdas/profiles
 
