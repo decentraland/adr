@@ -73,3 +73,9 @@ This endpoint is a proxy to the POIs smart contract, this can be replaced by a c
 Action: deletion
 
 This endpoint is a proxy to the names denylist smart contract, this can be replaced by a call to the contract. To make things easier for clients, a new version of the calyst-client will be released, including both a way to query the contract if you have a web3 provider and a snapshot of the data of the contract at the time of the release.
+
+### GET /lambdas/collections/wearables-by-owner/{address}
+
+Action: deletion
+
+Replaced by GET /lambdas/nfts/wearables/{address}, which returns the same data, but its paginated.
