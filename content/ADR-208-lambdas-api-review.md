@@ -50,12 +50,6 @@ Action: deletion
 
 This endpoint is replaced by `POST /lambdas/profiles`. It had a limit on the number of profiles you can request at once given by the URL length. The POST version of this endpoint removes this restriction.
 
-### GET /lambdas/profiles/{id}
-
-Action: deletion
-
-This endpoint is replaced by `POST /lambdas/profiles`, in which many profiles can be requested at once.
-
 ### GET /lambdas/contracts/servers
 
 Action: deletion
