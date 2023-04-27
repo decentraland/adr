@@ -48,7 +48,7 @@ This endpoint is just a proxy to content-server's `POST /entities/active`.
 
 Action: deletion
 
-This endpoint is replaced by `POST /lambdas/profiles`, this endpoint had a limit on the number of profiles you can request at once given by the lenght of the url, the POST version of this endpoint removes this restriction.
+This endpoint is replaced by `POST /lambdas/profiles`. It had a limit on the number of profiles you can request at once given by the URL length. The POST version of this endpoint removes this restriction.
 
 ### GET /lambdas/profiles/{id}
 
