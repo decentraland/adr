@@ -78,4 +78,4 @@ This endpoint is a proxy to the names denylist smart contract that can be replac
 
 Action: deletion
 
-Replaced by GET /lambdas/nfts/wearables/{address}, which returns the same data, but its paginated.
+Replaced by GET /lambdas/nfts/wearables/{address}, which returns the same data, but paginated.
