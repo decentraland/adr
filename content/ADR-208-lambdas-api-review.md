@@ -24,7 +24,7 @@ Given its nature, the Lambdas service is one of the most complex pieces of softw
 
 Action: deletion
 
-Lambdas' health endpoint has been replaced with the realm description endpoint `/about` specified by [ADR-110: Realm description](./ADR-110-realm-description.md).
+Lambdas' health endpoint has been replaced with the realm description endpoint `/about` specified by [ADR-110: Realm description](/adr/ADR-110).
 
 ### GET /lambdas/contentv2/parcel_info
 
