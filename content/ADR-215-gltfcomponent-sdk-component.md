@@ -124,8 +124,9 @@ This version of the component does not specify any way to modify the materials o
 
 ## Handling visibility & colliders
 
-All meshes belong either to visible or invisible category. Names of invisible meshes should end in `_collider`. Those meshes MUST be invisible and the
-rest of the properties of the mesh like its position in an animation should be honored. This convention is permanent and is not affected by any flag or configuration.
+All meshes belong either to visible or invisible category. Names of invisible meshes should end in `_collider` (case insensitive). Those meshes MUST be invisible and the rest of the properties of the mesh (like its position in an animation) should be honored. This convention is permanent and is not affected by any flag or configuration.
+
+Nodes that are not meshes are also affected by this naming convention. If a node is not a mesh, but it has a direct child that is a mesh, then the mesh MUST be invisible. This behavior only affects the direct children meshes, but not the children of the children and the rest of the descendants.
 
 Collision layers of both visible and invisible meshes are set via `visible_meshes_collision_mask` and `invisible_meshes_collision_mask`. Collision mask set to 0 indicates that collision detection / physics system should ignore meshes of this group, otherwise an engine MUST generate a collider for each mesh of this group and set its collision layers accordingly.
 
