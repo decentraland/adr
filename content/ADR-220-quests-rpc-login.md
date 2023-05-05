@@ -36,27 +36,27 @@ If the [AuthChain](https://docs.decentraland.org/contributor/auth/authchain/) si
 The happy-path of this solution is: 
 ```mermaid
 sequenceDiagram
-    WebSocketClient-->WebSocketServer: opens connection
-    WebSocketServer-->WebSocketServer: upgrades connection
-    WebSocketServer-->WebSocketClient: signature_challenge_{random_u32}
+    WebSocketClient->WebSocketServer: opens connection
+    WebSocketServer->WebSocketServer: upgrades connection
+    WebSocketServer->WebSocketClient: signature_challenge_{random_u32}
     note over WebSocketServer: wait 30 seconds for signature or close connection
-    WebSocketClient-->WebSocketServer: auth_chain(payload=signature_challenge_{random_u32})
-    WebSocketServer-->WebSocketServer: verifies signature & is valid
-    WebSocketServer-->WebSocketServer: creates WebSocketTransport
-    WebSocketServer-->RpcServer: attaches new transport
+    WebSocketClient->WebSocketServer: auth_chain(payload=signature_challenge_{random_u32})
+    WebSocketServer->WebSocketServer: verifies signature & is valid
+    WebSocketServer->WebSocketServer: creates WebSocketTransport
+    WebSocketServer->RpcServer: attaches new transport
 ```
 
 
 The unhappy-path of this solution is: 
 ```mermaid
 sequenceDiagram
-    WebSocketClient-->WebSocketServer: opens connection
-    WebSocketServer-->WebSocketServer: upgrades connection
-    WebSocketServer-->WebSocketClient: signature_challenge_{random_u32}
+    WebSocketClient->WebSocketServer: opens connection
+    WebSocketServer->WebSocketServer: upgrades connection
+    WebSocketServer->WebSocketClient: signature_challenge_{random_u32}
     note over WebSocketServer: wait 30 seconds for signature or close connection
-    WebSocketClient-->WebSocketServer: auth_chain(payload=signature_challenge_{random_u32})
-    WebSocketServer-->WebSocketServer: verifies signature & is not valid
-    WebSocketServer-->WebSocketClient: closes connection
+    WebSocketClient->WebSocketServer: auth_chain(payload=signature_challenge_{random_u32})
+    WebSocketServer->WebSocketServer: verifies signature & is not valid
+    WebSocketServer->WebSocketClient: closes connection
 ```
 
 
