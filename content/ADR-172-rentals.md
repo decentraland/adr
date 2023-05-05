@@ -1,6 +1,6 @@
 ---
 layout: adr
-adr: 172 
+adr: 172
 title: Rentals
 date: 2023-01-10
 status: Living
@@ -46,13 +46,13 @@ Transfer the asset back to the original owner when they claim it back after the 
 
 Checks that the asset's contract implements the `verifyFingerprint(uint256, bytes memory)` method.
 
-**setUpdateOperator** 
+**setUpdateOperator**
 
 Define the address that will be able to work on the asset when the rental is executed. In the case of Land, for example, this method will determine the address that can deploy scenes to it.
 
-There are 2 extra functions that the Rentals contract *may* call from the rented asset but they depend on the implementation and might not be required like the previous ones.
+There are 2 extra functions that the Rentals contract _may_ call from the rented asset but they depend on the implementation and might not be required like the previous ones.
 
-**verifyFingerprint** 
+**verifyFingerprint**
 
 Only when `supportsInterface` returns that the asset contract implements this method, it will be called. This method validates that composable assets, such as Estates, have not been modified before the rental is executed, preventing tenants from renting an asset different than expected.
 
@@ -70,7 +70,7 @@ Listings and Offers are data structures that contain the information required to
 - **address contractAddress** - The address of the to-be-rented asset's contract.
 - **uint256 tokenId** - The id of the asset.
 - **uint256 expiration** - The timestamp up to when the listing can be executed.
-- **uint256[3] indexes** - The indexes used for extra signature verification, learn more about it [here](#verification-indexes).
+- **uint256[3] indexes** - The indexes used for extra signature verification, learn more about it [here](/adr/ADR-172/#verification-indexes).
 - **uint256[] pricePerDay, maxDays, minDays** - The different options provided in the Listing that be selected by the user that accepts it. The price per day is how much MANA will be paid upfront for each day the asset will be rented. max and minDays determine the range of days the asset can be rented for a given price.
 - **address target** - The address of the account this Listing is targeted to. If the value is not the `address(0)` only the target can accept it.
 
@@ -80,7 +80,7 @@ Listings and Offers are data structures that contain the information required to
 - **address contractAddress** - The address of the to-be-rented asset's contract.
 - **uint256 tokenId** - The id of the asset.
 - **uint256 expiration** - The timestamp up to when the listing can be executed.
-- **uint256[3] indexes** - The indexes used for extra signature verification, learn more about it [here](#verification-indexes).
+- **uint256[3] indexes** - The indexes used for extra signature verification, learn more about it [here](/adr/ADR-172/#verification-indexes).
 - **uint256 pricePerDay** - The amount of MANA the tenant is willing to pay upfront per rental day for the asset.
 - **uint256 rentalDays** - The number of days the tenant wants to rent the asset.
 - **address operator** - The address that will be given update operator permissions over the asset. In the case of Land, it will be the account that has permission to deploy scenes on it. If the operator is set as address(0) the `signer` will be given the update operator role.
@@ -95,7 +95,7 @@ The diagram shows the flow of a lessor creating and signing a Listing that is th
 
 ### Verification Indexes
 
-Listings and Offers have an `indexes` property that is an array composed of 3 integers. Each one of these integers represents a verification index that the Rentals contract will use to verify that the Listing/Offer is still valid. 
+Listings and Offers have an `indexes` property that is an array composed of 3 integers. Each one of these integers represents a verification index that the Rentals contract will use to verify that the Listing/Offer is still valid.
 
 Any of these indexes can be updated at any time to invalidate signatures. Each index is updated differently and is in charge of invalidating signatures in different ways.
 
@@ -103,7 +103,7 @@ Any of these indexes can be updated at any time to invalidate signatures. Each i
 
 This index can be updated by the owner of the Rentals contract. Updating this index with `bumpContractIndex()` will invalidate all signatures created with the previous value. It is intended to be used in case there is a signature leak from the off-chain signature storage to protect users.
 
-**Signer Index** 
+**Signer Index**
 
 Each address has its signer index. Updating this index with `bumpSignerIndex()` will update the index of the sender. This is helpful for users that have lost track of their signatures and want to invalidate them all at once.
 
@@ -145,7 +145,7 @@ As long as the tenant and the lessor are the same, a new Listing/Offer can be ac
 
 Once the rental ends, the lessor is the one that can do the previously mentioned actions while the tenant can't do them anymore.
 
-The lessor also has the option to claim the asset back, causing it to be transferred back from the Rentals contract to its original owner. 
+The lessor also has the option to claim the asset back, causing it to be transferred back from the Rentals contract to its original owner.
 
 The lessor can also create new Listings or accept new Offers for the asset without the need of claiming it back. This is called a re-rent. This saves some gas because an extra transaction is prevented.
 
@@ -159,14 +159,13 @@ For the contract to be used successfully, a dapp to facilitate signing and a ser
 
 The contract design does not require any existing protocol to be updated.
 
-
 ## Specification
 
 [Rentals Smart Contract](https://goerli.etherscan.io/address/0x92159c78f0f4523b9c60382bb888f30f10a46b3b) deployed on the Goerli network on Sep 30, 2022
 
 [Rentals Smart Contract](https://etherscan.io/address/0x3a1469499d0be105d4f77045ca403a5f6dc2f3f5#code) deployed on Mainnet on Nov 28, 2022
 
-Rentals feature went live on the [Marketplace](https://market.decentraland.org) and [Builder](https://builder.decentraland.org) with its [first](https://etherscan.io/tx/0x04615578483b03a36209e338cad787774db5f85bddc4fbce3079e7f4761285ae) executed rental on Dec 05, 2022 
+Rentals feature went live on the [Marketplace](https://market.decentraland.org) and [Builder](https://builder.decentraland.org) with its [first](https://etherscan.io/tx/0x04615578483b03a36209e338cad787774db5f85bddc4fbce3079e7f4761285ae) executed rental on Dec 05, 2022
 
 ## RFC 2119 and RFC 8174
 
