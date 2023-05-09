@@ -25,5 +25,5 @@ wearables from being submitted.
 
 ## Deadline
 
-    ADR75_DEADLINE: 2023-05-09T12:00:00Z
+    ADR232_DEADLINE: 2023-05-09T12:00:00Z
     Unix Timestamp: 1680571200000
