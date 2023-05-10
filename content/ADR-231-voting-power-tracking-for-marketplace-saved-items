@@ -24,6 +24,8 @@ Defining accuracy as a measure of how many users involved in the project added a
 
 To prevent users from creating different accounts and adding the same item to a list multiple times with them, the strategy employed in Places has been adapted to the new feature requirements. When a new item is added to the list, the user's Voting Power (VP) is retrieved from the Snapshot platform and stored for future use. Then, the number of times an item has been added to a list only considers users with a specific VP.
 
+We chose to store the VP when a user selects an item instead of retrieving the VP each time the saved items count is requested. This approach is more efficient in terms of performance since the number of VP calculations increases linearly with the number of users who have added an item to their list.
+
 One potential drawback of this method, on the one hand, is that users may transfer their assets to a new account and re-add an item to the list with the same Voting Power, as it is only recorded once an item is added. As a result, this could cause the count for that item to be artificially inflated, as the same assets would be counted twice when retrieving the VP, resulting in an inaccurate count. On the other hand, this approach could also lead to undervalue new users or those with less Voting Power who have added an item to their list, as their addition would not be considered in the final count.
 
 ## Specification
