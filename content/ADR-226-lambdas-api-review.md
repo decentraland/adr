@@ -26,6 +26,16 @@ Action: deletion
 
 Lambdas' health endpoint has been replaced with the realm description endpoint `/about` specified by [ADR-110: Realm description](/adr/ADR-110).
 
+This action was approved on [this DAO poll](https://governance.decentraland.org/proposal/?id=24f524f0-eb50-11ed-ac2d-876c6fc9416f).
+
+### GET /lambdas/profiles
+
+Action: deletion
+
+This endpoint is replaced by `POST /lambdas/profiles`. It had a limit on the number of profiles you can request at once given by the URL length. The POST version of this endpoint removes this restriction.
+
+This action was approved on [this DAO poll](https://governance.decentraland.org/proposal/?id=24f524f0-eb50-11ed-ac2d-876c6fc9416f).
+
 ### GET /lambdas/contentv2/parcel_info
 
 Action: deletion
@@ -43,12 +53,6 @@ This endpoint is a proxy to the content-server `GET /contents/:hashId`.
 Action: deletion
 
 This endpoint is just a proxy to content-server's `POST /entities/active`.
-
-### GET /lambdas/profiles
-
-Action: deletion
-
-This endpoint is replaced by `POST /lambdas/profiles`. It had a limit on the number of profiles you can request at once given by the URL length. The POST version of this endpoint removes this restriction.
 
 ### GET /lambdas/contracts/servers
 
