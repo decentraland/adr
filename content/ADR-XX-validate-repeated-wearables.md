@@ -2,7 +2,7 @@
 adr: 232
 date: 2023-05-09
 title: Add validation that prevents repeated wearables in profiles
-status: Draft
+status: Review
 authors:
   - marianogoldman
 type: Standards Track
@@ -25,5 +25,5 @@ wearables from being submitted.
 
 ## Deadline
 
-    ADR232_DEADLINE: 2023-05-09T12:00:00Z
-    Unix Timestamp: 1680571200000
+    ADR232_DEADLINE: 2023-06-12T12:00:00Z
+    Unix Timestamp: 1685126400000
