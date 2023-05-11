@@ -1,7 +1,7 @@
 ---
 layout: adr
 adr: 231
-title: Voting Power Tracking for Marketplace Saved Items
+title: Voting Power usage for High Rated Places and Marketplace Saved Items
 date: 2023-05-09
 status: Idea
 type: Standards Track
@@ -12,25 +12,27 @@ authors:
 
 ## Abstract
 
-This document outlines the guidelines for counting the number of users who have saved an item in the Marketplace. The approach adopted is similar to the one used in Places for determining the highest-rated percentage of upvotes and downvotes from users with specific Voting Power. However, it has been adapted to meet the needs of the recently launched Marketplace Lists feature.
+This document outlines the guidelines implemented in Places and Marketplace to use the Voting Power (VP) against abuse. Given that both dApps have use cases where users can vote, rank, or save resources for later use, the Voting Power could help determine the number of reliable users interacting with them.
 
 ## Context, Reach & Prioritization
 
-Previously, users of the Decentraland Marketplace needed an option to save items for future reference, leading to missed opportunities for creators and potential customers. The Marketplace Lists feature was introduced to tackle this problem, enabling users to easily create and manage lists of items they plan to save for later and offering a gamified experience.
+Since interacting with Places or the Marketplace only requires a wallet, creating multiple accounts can easily manipulate the number of likes a Place receives or the count of users who add an item to their list. To combat this, users' Voting Power can be utilized to address the problem of account spamming.
 
-Defining accuracy as a measure of how many users involved in the project added an item to their list, a Voting Power criterion has been introduced for calculating that number to improve the metric and to empower community members, ensuring a more precise count of saved items.
+Both dApps adopted a similar approach not only to show more accurate and reliable results but also to empower community members and ask them to participate more actively.
+
+On the one hand, Places uses the VP to determine the highest-rated locations. On the other hand, the Marketplace adopts the same technique for counting and showing the number of users who have saved an item in their list.
 
 ## Solution Space Exploration
 
-To prevent users from creating different accounts and adding the same item to a list multiple times with them, the strategy employed in Places has been adapted to the new feature requirements. When a new item is added to the list, the user's Voting Power (VP) is retrieved from the Snapshot platform and stored for future use. Then, the number of times an item has been added to a list only considers users with a specific VP.
+To prevent users from creating multiple accounts to manipulate numbers and metrics in the applications mentioned above, a strategy was put in place to retrieve each user's Voting Power (VP) from the Snapshot platform whenever they perform relevant actions, such as saving an item or liking a place. This information is then stored for future use, and only users with a specific VP, as defined by each dApp, are considered in the final calculation.
 
-We chose to store the VP when a user selects an item instead of retrieving the VP each time the saved items count is requested. This approach is more efficient in terms of performance since the number of VP calculations increases linearly with the number of users who have added an item to their list.
+To improve performance, the decision was made to store the VP when a user performs an action, rather than retrieving it each time the calculation is requested. This approach is more efficient, as the number of VP calculations increases linearly with the number of users who perform relevant actions.
 
-One potential drawback of this method, on the one hand, is that users may transfer their assets to a new account and re-add an item to the list with the same Voting Power, as it is only recorded once an item is added. As a result, this could cause the count for that item to be artificially inflated, as the same assets would be counted twice when retrieving the VP, resulting in an inaccurate count. On the other hand, this approach could also lead to undervalue new users or those with less Voting Power who have added an item to their list, as their addition would not be considered in the final count.
+However, one potential drawback of this method is that users could transfer their assets to a new account and use the same VP they had in their original account to perform actions again in the new one. This could result in inaccurate calculations, as the same assets would be counted twice when retrieving the VP. Additionally, this approach could undervalue new users or those with less Voting Power, as their actions would not be considered in the final count.
 
 ## Specification
 
-The guidelines mentioned above were introduced on May 4, 2023.
+The guidelines mentioned above were introduced on September 28, 2022 for Places upvotes and downvotes and on May 4, 2023 for the Marketplace Saved Items.
 
 ## RFC 2119 and RFC 8174
 
