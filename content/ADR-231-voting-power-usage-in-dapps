@@ -16,7 +16,7 @@ This document outlines the guidelines implemented in Places and Marketplace to u
 
 ## Context, Reach & Prioritization
 
-Since interacting with Places or the Marketplace only requires a wallet, creating multiple accounts can easily manipulate the number of likes a Place receives or the count of users who add an item to their list. To combat this, users' Voting Power can be utilized to address the problem of account spamming.
+Since interacting with Places or the Marketplace only requires a wallet, by creating multiple accounts, anyone can easily manipulate the number of likes a Place receives or the count of users who add an item to their list. To combat this, users' Voting Power can be utilized to address the problem of account spamming.
 
 Both dApps adopted a similar approach not only to show more accurate and reliable results but also to empower community members and ask them to participate more actively.
 
