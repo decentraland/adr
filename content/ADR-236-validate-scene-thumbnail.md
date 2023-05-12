@@ -1,5 +1,5 @@
 ---
-adr: 233
+adr: 236
 date: 2023-05-12
 title: Add validation that prevents scene thumbnails from being URLs
 status: Review
@@ -24,5 +24,5 @@ a thumbnail to be one of the files embedded in the deployment.
 
 ## Deadline
 
-    ADR232_DEADLINE: 2023-06-12T12:00:00Z
-    Unix Timestamp: 1685126400000
+    ADR236_DEADLINE: 2023-05-19T12:00:00Z
+    Unix Timestamp: 1681660800000
