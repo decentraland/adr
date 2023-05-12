@@ -12,15 +12,13 @@ authors:
 
 ## Abstract
 
-This document outlines the guidelines implemented in Places and Marketplace to use the Voting Power (VP) against abuse. Given that both dApps have use cases where users can vote, rank, or save resources for later use, the Voting Power could help determine the number of reliable users interacting with them.
+This document outlines the guidelines implemented in the dApps to use the Voting Power (VP) against abuse. Given that some dApps such as Places and the Marketplace have use cases where users can vote, rank, or save resources for later use, the Voting Power could help determine the number of reliable users interacting with them.
 
 ## Context, Reach & Prioritization
 
-Since interacting with Places or the Marketplace only requires a wallet, by creating multiple accounts, anyone can easily manipulate the number of likes a Place receives or the count of users who add an item to their list. To combat this, users' Voting Power can be utilized to address the problem of account spamming.
+Since interacting with the dApps only requires a wallet, by creating multiple accounts, anyone can easily manipulate, for example, the number of likes a Place receives or the count of users who add an item to their list. To combat this, users' Voting Power can be utilized to address the problem of account spamming while showing more accurate and reliable results.
 
-Both dApps adopted a similar approach not only to show more accurate and reliable results but also to empower community members and ask them to participate more actively.
-
-On the one hand, Places uses the VP to determine the highest-rated locations. On the other hand, the Marketplace adopts the same technique for counting and showing the number of users who have saved an item in their list.
+For example, Places utilizes the VP system to identify the top-rated locations and the number of times they've been favorited. Likewise, the Marketplace employs the same method to tally and showcase how many users have bookmarked a particular item.
 
 ## Solution Space Exploration
 
