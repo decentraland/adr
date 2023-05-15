@@ -12,7 +12,7 @@ spdx-license: CC0-1.0
 ## Context and Problem Statement
 
 Currently, it is possible to add a full URL as a thumbnail in the scene 
-display metadata. That fields should only allow referencing a file that is 
+display metadata. This `thumbnail` field should only allow referencing a file that is 
 part of the scene deployment.
 
 This ADR proposes a new validation to prevent it.
