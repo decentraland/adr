@@ -24,7 +24,7 @@ It is important to prioritize the decision-making process to ensure we have enou
 
 There are three potential solutions for designing the Quests System UI:
 
-Using pure SDK components: In this approach, we would create the UI using only the components provided by the SDK. While this approach provides consistency across implementations, there may be some gaps that we would need to fill by implementing additional components.
+Using pure SDK components: In this approach, we would create the UI using only the components provided by the SDK. While this approach gives consistency across implementations, there may be some gaps that we would need to fill by implementing additional components.
 
 Using SDK to communicate the UI state to the Explorer: In this approach, we would use the SDK to store the UI state and communicate it to the Explorer. This would reduce the amount of communication required between the Explorer and the backend to retrieve information needed to render the UI. However, we would need to ensure that the SDK's capabilities are sufficient for our use case.
 
