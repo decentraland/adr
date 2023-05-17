@@ -30,7 +30,7 @@ However, one potential drawback of this method is that users could transfer thei
 
 ## Specification
 
-The guidelines mentioned above were introduced on September 28, 2022 for Places upvotes and downvotes and on May 4, 2023 for the Marketplace Saved Items.
+The guidelines mentioned above were released to production on September 28, 2022 for Places upvotes, downvotes, and favorites ([here](https://github.com/decentraland/places/pull/81) the link to the PR) and on May 4, 2023 for the Marketplace Lists ([here](https://github.com/decentraland/marketplace-favorites-server/pull/27) and [here](https://github.com/decentraland/marketplace-favorites-server/pull/80) the links to the PRs).
 
 ## RFC 2119 and RFC 8174
 
