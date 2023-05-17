@@ -48,7 +48,7 @@ Step Completed Popup: Whenever a quest step is completed, a feedback message or 
 
 ## Decision
 
-After exploring the available options, we have decided to use the Explorer for everything and the first option (develop new SDK components) will be considered as a nice-to-have in the future. This decision was made based on the fact that using the Explorer for everything provides more flexibility and control over the UI.
+After exploring the available options, we have decided to use the Explorer for everything. It would be nice to have the first option (develop new SDK components), so it will be considered in the future. The decision is based on the fact that using the Explorer for everything provides more flexibility and control over the UI.
 
 ## RFC 2119 and RFC 8174
 
