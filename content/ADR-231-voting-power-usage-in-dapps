@@ -3,7 +3,7 @@ layout: adr
 adr: 231
 title: Voting Power usage for High Rated Places and Marketplace Saved Items
 date: 2023-05-09
-status: Draft
+status: Living
 type: Standards Track
 spdx-license: CC0-1.0
 authors:
