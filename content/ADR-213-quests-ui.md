@@ -26,7 +26,7 @@ There are three potential solutions for designing the Quests System UI:
 
 Using pure SDK components: In this approach, we would create the UI using only the components provided by the SDK. While this approach gives consistency across implementations, there may be some gaps that we would need to fill by implementing additional components.
 
-Using SDK to communicate the UI state to the Explorer: In this approach, we would use the SDK to store the UI state and communicate it to the Explorer. This would reduce the amount of communication required between the Explorer and the backend to retrieve information needed to render the UI. However, we would need to ensure that the SDK's capabilities are sufficient for our use case.
+Using SDK to communicate the UI state to the Explorer: In this approach, we would use the SDK to store the UI state and spread it to the Explorer. This would reduce the required communication between the Explorer and the backend to retrieve information needed to render the UI. However, we should ensure that the SDK's capabilities are sufficient for our use case.
 
 Using the Explorer for everything: In this approach, each Explorer implementation would be responsible for implementing the entire UI. While this approach provides the most flexibility, it also means that each implementation would need to re-do everything, which could result in inconsistent UIs across different implementations.
 
