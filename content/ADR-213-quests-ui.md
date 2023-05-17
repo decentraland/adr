@@ -44,7 +44,7 @@ Quests Log: A window containing all the details for each quest, including name, 
 
 New Quests Offer: A pop-up with a proposal to start a new quest, with buttons to accept or decline. This component should make it easy for users to begin a new one and ensure they don't miss any available ones.
 
-Step Completed Popup: Whenever a quest step is completed, a feedback or animation should be shown to indicate progress and keep the user engaged.
+Step Completed Popup: Whenever a quest step is completed, a feedback message or animation should be shown to indicate progress and keep the user engaged.
 
 ## Decision
 
