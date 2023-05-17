@@ -34,7 +34,7 @@ Each of these approaches has its benefits and drawbacks, and we need to carefull
 
 ## Specification
 
-The technical specification for this approach will involve defining the specific data storage mechanisms that will be used in the SDK, as well as the frontend rendering logic. It will also require integration between the two systems to ensure that they are communicating effectively. The UI design will need to be developed in parallel with the technical implementation.
+The technical specification for this approach will involve defining the specific data storage mechanisms that will be used in the SDK, as well as the frontend rendering logic. It will also require integration between the two systems to ensure they are communicating effectively. The UI design should be developed in parallel with the technical implementation.
 
 Based on the mockups we have, the Quests System UI should include the following components:
 
