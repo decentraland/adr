@@ -42,17 +42,23 @@ Action: deletion
 
 This endpoint is a proxy to the content-server `POST /entities/active`.
 
+This action was approved on [this DAO poll](https://governance.decentraland.org/proposal/?id=709968b0-ef44-11ed-813c-b353c3943eab).
+
 ### GET /lambdas/contentv2/contents/:cid
 
 Action: deletion
 
 This endpoint is a proxy to the content-server `GET /contents/:hashId`.
 
-### GET /lambdas/scenes
+This action was approved on [this DAO poll](https://governance.decentraland.org/proposal/?id=709968b0-ef44-11ed-813c-b353c3943eab).
+
+### GET /lambdas/contentv2/scenes
 
 Action: deletion
 
 This endpoint is just a proxy to content-server's `POST /entities/active`.
+
+This action was approved on [this DAO poll](https://governance.decentraland.org/proposal/?id=709968b0-ef44-11ed-813c-b353c3943eab).
 
 ### GET /lambdas/contracts/servers
 
