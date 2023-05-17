@@ -42,7 +42,7 @@ Quests HUD: A list of active quests with current tasks. This component should pr
 
 Quests Log: A window containing all the details for each quest, including name, description, steps, and rewards. Users should be able to view their progress and access information about each quest, and also be able to abandon a quest by clicking a button in this UI.
 
-New Quests Offer: A pop-up with a proposal to start a new quest, with buttons to accept or decline. This component should make it easy for users to start a new quest and ensure they don't miss any available quests.
+New Quests Offer: A pop-up with a proposal to start a new quest, with buttons to accept or decline. This component should make it easy for users to begin a new one and ensure they don't miss any available ones.
 
 Step Completed Popup: Whenever a quest step is completed, a feedback or animation should be shown to indicate progress and keep the user engaged.
 
