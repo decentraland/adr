@@ -12,7 +12,7 @@ authors:
 
 ## Abstract
 
-This document outlines the guidelines implemented in the dApps to use the Voting Power (VP) against abuse. Given that some dApps such as Places and the Marketplace have use cases where users can vote, rank, or save resources for later use, the Voting Power could help determine the number of reliable users interacting with them.
+This document outlines the guidelines for dApps that use Voting Power (VP) in their voting and ranking procedures and how to prevent its abuse. Indeed, the VP feature is handy for those dApps that implement such use cases, like Places and the Marketplace, as it can help determine the number of reliable users interacting with them.
 
 ## Context, Reach & Prioritization
 
