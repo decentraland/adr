@@ -70,14 +70,16 @@ import React from 'react'
 import { Theme, ThemeContext } from './ThemeContext'
 
 export function ThemeProvider({ children }: React.PropsWithChildren<{}>) {
-  const [theme, setTheme] = React.useState<Theme>('light')s
+  const [theme, setTheme] = React.useState<Theme>('light')
 
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light')
   }
 
+  const value = { theme: theme, toggleTheme: toggleTheme }
+
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={value}>
       {children}
     </ThemeContext.Provider>
   )
@@ -112,12 +114,15 @@ const Button = () => {
     }
   }[theme]
 
+  const uiTransform = { height: 100, width: 100 }
+  const uiBackground = { color: Color4.fromHexString(buttonStylesDependOnTheme.color) }
+  const uiText = { value: theme }
   return (
     <UiEntity
-      uiTransform={{ height: 100, width: 100 }}
-      uiBackground={{ color: Color4.fromHexString(buttonStylesDependOnTheme.color) }}
+      uiTransform={uiTransform}
+      uiBackground={uiBackground}
       onMouseDown={toggleTheme}
-      uiText={{ value: theme }}
+      uiText={uiText}
     />
   )
 }
