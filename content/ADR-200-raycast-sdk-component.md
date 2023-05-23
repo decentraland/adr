@@ -85,13 +85,15 @@ message PBRaycast {
 
 message PBRaycastResult {
   // the timestamp of the Raycast component, used to correlate results
-  int32 timestamp = 1;
+  optional unt32 timestamp = 1;
   // the starting point of the ray in global coordinates
   Vector3 global_origin = 2;
   // the direction vector of the ray in global coordinates
   Vector3 direction = 3;
   // zero or more hits
   repeated RaycastHit hits = 4;
+  // number of tick in which the event was produced, equals to EngineInfo.tick_number (ADR-148) + (ADR-219)
+  uint32 tick_number = 5;
 }
 
 // RaycastHit contains information about the intersection of a ray with a mesh.
@@ -210,6 +212,34 @@ function raycast(entity: Entity, direction: Vector3) {
 
 The timestamp property is a correlation number, only defined by the scene. The renderer MUST copy the value of the `timestamp` from the Raycast component to the RaycastResult component.
 
+### Usage of the `tick_number` property
+
+The `tick_number` is set to the `EngineInfo.tick_number` of the current frame, as specified by [ADR-148](/adr/ADR-148) and the `EngineInfo` in [ADR-219](/adr/ADR-219). This number is used to correlate the RaycastResult with the frame in which it was produced. Enabling the following use case:
+
+```typescript
+function performRaycast(entity: Entity, direction: Vector3): RaycastResult | null {
+  const result = RaycastResult.getOrNull(entity)
+  const { tickNumber } = EngineInfo.get(engine.RootEntity)
+
+  // is the result from the current frame?
+  const haveResult = result && result.tickNumber === tickNumber
+
+  // NOTE: many fields are omitted for brevity and clarity of the example
+  Raycast.createOrReplace(entity, { direction, continous: false })
+
+  return haveResult ? result : null
+}
+
+function laserSystem() {
+  for (const [entity, _laser] of engine.getEntitiesWith(LaserComponent)) {
+    const result = performRaycast(entity, Vector3.Forward())
+    if (result?.hits.length) {
+      // apply damage to all hitted entities
+    }
+  }
+}
+```
+
 ### Performance considerations
 
 Having multiple continuous raycasts in a scene can significantly impact performance. As a scene developer, it is RECOMMENDED to minimize the number of continuous raycasts. Renderer implementations MUST count the computation of raycasts towards the execution quota of each scene to prevent non-optimized scenes from negatively affecting the overall experience.
@@ -217,6 +247,16 @@ Having multiple continuous raycasts in a scene can significantly impact performa
 ### Filtering collision layers
 
 The `collision_mask` parameter allows scene creators to target different layers of elements, including colliders, avatars, visible meshes, UI elements, and more. The flags for this mask are defined in the `ColliderLayer` enum, which is part of the `MeshCollider` component. It is RECOMMENDED that scene creators carefully select the least amount of flags for each raycast to prevent a performance penalty on the engine.
+
+Any mesh including at least one matching of the specified bits in the `collision_mask` will be considered for the raycast. If the `collision_mask` is set to `0`, then the raycast will not intersect any mesh.
+
+The mesh selection filter will behave like the following pseudocode:
+
+```typescript
+function isMeshEligibleForRaycast(mesh: Mesh, mask: number) {
+  return (mesh.colliderLayer & mask) !== 0
+}
+```
 
 ### Kinds of raycasts
 

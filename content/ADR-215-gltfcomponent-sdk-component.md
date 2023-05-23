@@ -16,7 +16,7 @@ authors:
 
 <!-- Human readable description of the component, what does it fix and how it affects the entities or the systems from an SDK user point of view -->
 
-This component allows to load GLTF models into the scene.
+The `GltfContainer` component allows to load GLTF models into the scene. The `GltfContainerLoadingState` component allows to track the loading state of the GLTF model.
 
 ## Serialization
 
@@ -29,18 +29,39 @@ parameters:
   CRDT_TYPE: LastWriteWin-Element-Set
 ```
 
+```yaml
+parameters:
+  COMPONENT_ID: 1049
+  COMPONENT_NAME: core::GltfContainerLoadingState
+  CRDT_TYPE: LastWriteWin-Element-Set
+```
+
 <!-- And provide a complete and commented protobuf serialization for the component -->
 
 ```protobuf
 message PBGltfContainer {
   // the GLTF file path as listed in the deployed entity
   string src = 1;
+  
+  // default: 0
+  optional uint32 visible_meshes_collision_mask = 4;
+  
+  // default: CL_POINTER | CL_PHYSICS
+  optional uint32 invisible_meshes_collision_mask = 5;
+}
 
-  // disable automatic physics collider creation (default: false)
-  optional bool disable_physics_colliders = 2;
+// GltfContainerLoadingState is set by the engine and provides information about
+// the current state of the GltfContainer of an entity.
+message PBGltfContainerLoadingState {
+  enum LoadingState {
+    UNKNOWN = 0;
+    LOADING = 1;
+    NOT_FOUND = 2;
+    FINISHED_WITH_ERROR = 3;
+    FINISHED = 4;
+  }
 
-  // copies the visible meshes into a virtual MeshCollider with CL_POINTER collider_mask (default: false)
-  optional bool create_pointer_colliders = 3;
+  LoadingState current_state = 1;
 }
 ```
 
@@ -101,30 +122,19 @@ Each entity will have its own animation state. The engine MUST provide a way to 
 
 This version of the component does not specify any way to modify the materials of the models. This is a future work.
 
-## Handling colliders meshes
+## Handling visibility & colliders
 
-### Handling `_collider` meshes
+All meshes belong either to visible or invisible category. Names of invisible meshes should end in `_collider` (case insensitive). Those meshes MUST be invisible and the rest of the properties of the mesh (like its position in an animation) should be honored. This convention is permanent and is not affected by any flag or configuration.
 
-All meshes of a node with a name ending in `_collider` will generate internally `MeshCollider`. Those meshes MUST be invisible and the
-rest of the properties of the mesh like its position in an animation should be honored. That enables colliders to be animated along with visible meshes. It is RECOMMENDED that all the engines implement a way to visualize the colliders for debugging purposes, making these meshes visible with a distinctive material.
+Nodes that are not meshes are also affected by this naming convention. If a node is not a mesh, but it has a direct child that is a mesh, then the mesh MUST be invisible. This behavior only affects the direct children meshes, but not the children of the children and the rest of the descendants.
 
-This convention is permanent and is not affected by any flag or configuration.
+Collision layers of both visible and invisible meshes are set via `visible_meshes_collision_mask` and `invisible_meshes_collision_mask`. Collision mask set to 0 indicates that collision detection / physics system should ignore meshes of this group, otherwise an engine MUST generate a collider for each mesh of this group and set its collision layers accordingly.
 
-### Automatic physics colliders
+It is RECOMMENDED that an engine implements a way to visualize the colliders for debugging purposes, making these meshes visible with a distinctive material.
 
-Physics colliders (`ColliderMask.CL_PHYSICS`) are automatically generated based on the `_collider` meshes if the property `disable_physics_colliders == false`.
+By default, collision mask of visible meshes is set to 0, but it could be set, for example, to `CL_POINTER` if it is desirable for pointer meshes to receive pointer events.
 
-It is possible that the value of `disable_physics_colliders` is changed at runtime, so the engine SHOULD be able to enable/disable the colliders at runtime.
-
-Skinned meshes are not supported for colliders of any kind.
-
-### Automatic pointer colliders
-
-All visible meshes (not ending in `_collider`) MAY create an internal `MeshCollider` if the property `create_pointer_colliders == true`. This is useful for meshes that are not meant to be colliders but that should still be able to receive pointer events. Those colliders will have the `ColliderMask.CL_POINTER` mask.
-
-The `MeshCollider` will be created with the same properties as the visible mesh, so it will be animated along with the visible mesh.
-
-It is possible that the value of `create_pointer_colliders` is changed at runtime, so the engine SHOULD be able to enable/disable the colliders at runtime.
+It is possible that the value of collision masks is changed at runtime, so the engine SHOULD be able to enable/disable the colliders at runtime.
 
 Skinned meshes are not supported for colliders of any kind.
 
@@ -136,13 +146,40 @@ The glTF [extra property](https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.h
 
 The `dcl_collider_mask` property MUST be a valid `uint32` value. If the value is not valid, the engine MUST ignore it.
 
-To disable all the assumptions made by the engine, the RECOMMENDED values are `create_pointer_colliders := false` and `disable_physics_colliders := true`.
-
 The meshes of node names ending in `_collider` MUST _always_ be invisible. This enables both invisible colliders and visible colliders to operate at once.
 
-The dcl_collider_mask will be used as `MeshCollider.collider_mask` for each mesh if provided, behaviors of `disable_physics` and `enable_pointers` will be additive to the collider_mask when they enable the significant bits.
+The extra property `dcl_collider_mask` will be used as `MeshCollider.collider_mask` for each mesh if provided.
 
-On the contrary, if `disable_physics == true` the `ColliderMask.CL_PHYSICS` collider bit MUST be disabled for _every_ mesh of the model, overriding it even if defined by the `dcl_collider_mask` extra property.
+## Reporting loading state
+
+For cases depending on the complete loading of an asset like calculating raycasts or colliders, the engine MUST provide a way to report the loading state of the glTF. This is done via the `GltfContainerLoadingState` component. The component provides information about the current state of loading using the following properties:
+
+```protobuf
+message PBGltfContainerLoadingState {
+  enum LoadingState {
+    UNKNOWN = 0;
+    LOADING = 1;
+    NOT_FOUND = 2;
+    FINISHED_WITH_ERROR = 3;
+    FINISHED = 4;
+  }
+
+  LoadingState current_state = 1;
+}
+```
+
+Where `UNKNOWN` is the default state, `LOADING` is the state when the glTF is being loaded, `NOT_FOUND` is the state when the glTF is not found, `FINISHED_WITH_ERROR` is the state when the glTF finished loading but with errors and `FINISHED` is the state when the glTF finished loading without errors.
+
+This component also represents the instancing state of the glTF. If the glTF is instanced, the `current_state` will be `FINISHED`. Otherwise, the `current_state` will be `LOADING` until the glTF is instanced correctly.
+
+### Possible errors
+
+The `FINISHED_WITH_ERROR` can be caused by the following errors:
+
+- An asset is not found, including textures, mesh data, etc.
+- An extension is not compatible with the engine.
+
+<!-- - Weights are not normalized -->
 
 ## RFC 2119 and RFC 8174
 

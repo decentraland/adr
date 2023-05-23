@@ -87,10 +87,12 @@ message PBPointerEventsResult {
   raycast.RaycastHit hit = 2;
   // kind of interaction that was detected
   PointerEventType event_type = 4;
-  // could be a Lamport timestamp
+  // could be a Lamport timestamp or a global monotonic counter
   uint32 timestamp = 5;
   // if the input is analog then we store it here
   optional float analog = 6;
+  // number of tick in which the event was produced, equals to EngineInfo.tick_number (ADR-148) + (ADR-219)
+  uint32 tick_number = 7;
 }
 
 enum InputAction {
@@ -173,6 +175,8 @@ ROOT_ENTITY
 Any entity with `UiTransform` ([ADR-124](/adr/ADR-124)) can be eligible for pointer events if they have a `PointerEvents` component, all other UI entities will not be eligible and pointer events will be bubbled up until finding an entity that matches the criteria. A rectangular mesh occupying the whole area designated by the `UiTransform` MUST be used.
 
 In UI entities, contrary to the render order ([ADR-151](/adr/ADR-151)), the events MUST bubble up from the leaves of the tree up to the root until finding an entity that matches the pointer event. In that case, the propagation of the event MUST stop, and the event MUST be added to the `PointerEventsResult`.
+
+Like in Raycasts [ADR-200](/adr/ADR-200), the selection of the meshes for the pointer events matches any mesh including at least the `CL_POINTER` bit in its collision layers.
 
 ## Input commands
 
