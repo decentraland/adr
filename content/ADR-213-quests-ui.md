@@ -40,7 +40,7 @@ Based on the mockups we have, the Quests System UI should include the following 
 
 Quests HUD: A list of active quests with current tasks. This component should provide a quick overview of the user's progress in each quest.
 
-Quests Log: A window containing all the details for each quest, including name, description, steps, and rewards. Users should be able to view their progress and access information about each quest, and also be able to abandon a quest by clicking a button in this UI.
+Quests Log: A window containing all the details for each quest, including name, description, steps, and rewards. Users should be able to view their progress and access information about each one, and also be able to abandon it by clicking a button in this UI.
 
 New Quests Offer: A pop-up with a proposal to start a new quest, with buttons to accept or decline. This component should make it easy for users to begin a new one and ensure they don't miss any available ones.
 
