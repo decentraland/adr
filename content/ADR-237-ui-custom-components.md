@@ -2,7 +2,7 @@
 adr: 237
 date: 2023-05-23
 title: SDK 7 Custom UI Components
-status: Review
+status: Living
 authors:
   - gonpombo8
 type: Standards Track
@@ -42,6 +42,7 @@ This decision will have the following implications:
 - [React UI ADR](https://adr.decentraland.org/adr/ADR-124)
 - [React docs](https://react.dev)
 - [React State changes](https://react.dev/learn/reacting-to-input-with-state)
+- [DApps React standards](https://decentraland.notion.site/dApps-Standards-760ee6551c9f4c00aa71f7d9c50a7646#61b8471f12cc4bf598be06f81f49ea07)
 
 ## Theme System Implementation
 
