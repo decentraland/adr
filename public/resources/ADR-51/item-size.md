@@ -1,4 +1,4 @@
-## item Size
+## Item Size
 
 Validates item (wearable/emote) files size, excluding thumbnail, is less than expected
 
