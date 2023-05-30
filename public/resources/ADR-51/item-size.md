@@ -1,6 +1,6 @@
-## Wearable Size
+## item Size
 
-Validates wearable files size, excluding thumbnail, is less than expected
+Validates item (wearable/emote) files size, excluding thumbnail, is less than expected
 
 ```
 parameter ADR_45_TIMESTAMP = 1648771200

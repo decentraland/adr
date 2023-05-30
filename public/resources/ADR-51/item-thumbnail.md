@@ -1,6 +1,6 @@
-## Wearable Thumbnail
+## Item Thumbnail
 
-Validates that given wearable deployment includes a thumbnail with valid format and size
+Validates that given item (wearable/emote) deployment includes a thumbnail with valid format and size
 
 ```
 parameter ADR_45_TIMESTAMP = 1648771200
