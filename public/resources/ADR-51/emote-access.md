@@ -23,12 +23,12 @@ function checkCollectionAccess:
     - isApproved && isCompleted
     at the moment
 
-  2. If P.contentHash is pressent
-    a. Fail if deployment.address ∉ P.comitee
+  2. If P.contentHash is present
+    a. Fail if deployment.address ∉ P.committee
     b. Fail if P.contentHash != IPFS_HASH_V0(deployment.content.bytes) or P.contentHash != IPFS_HASH_V1(deployment.content.bytes)
 
   3. Else
-    a. Fail if deployment.address ∉ (P.collectionManagers ∪ P.collectionCreator ∪ P.itemManagers ∪ P.comitee)
+    a. Fail if deployment.address ∉ (P.collectionManagers ∪ P.collectionCreator ∪ P.itemManagers ∪ P.committee)
     b. Fail if !(P.isApproved and P.isCompleted)
 
 ----
@@ -39,14 +39,14 @@ function checkCollectionAccess:
 
 2. Fail if deployment.pointers.length > 1
 
-2. Let parsed pointer P be the parsed deployment.pointers[0]
+3. Let parsed pointer P be the parsed deployment.pointers[0]
 
-3. Fail if P.type ∉ ALLOWED_TYPES
+4. Fail if P.type ∉ ALLOWED_TYPES
 
-4. If P.type == 'off-chain'
+5. If P.type == 'off-chain'
   a. Fail if deployment.address != DECENTRALAND_ADDRESS
 
-5. Else
+6. Else
   a. Fail if P.network ∉ L1_NETWORKS and parsed.network ∉ L2_NETWORKS
   b. Let HAS_ACCESS be the result of checkCollectionAccess(deployment, P)
   c. If !HAS_ACCESS
