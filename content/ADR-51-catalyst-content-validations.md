@@ -64,8 +64,19 @@ STORE entities will have following validations:
 WEARABLE entities will have following validations:
 
 - [WEARABLE ACCESS]
-- [WEARABLE THUMBNAIL]
-- [WEARABLE SIZE]
+- [ITEM THUMBNAIL]
+- [ITEM SIZE]
+
+EMOTE entities will have following validations:
+
+- [EMOTE ACCESS]
+- [ITEM THUMBNAIL]
+- [ITEM SIZE]
+
+OUTFITS entities will have following validations:
+
+- [OUTFITS ACCESS]
+- [OUTFITS STATIC]
 
 ## Status
 
@@ -95,5 +106,8 @@ Catalysts will need to provide external calls that may introduce some complexity
 [scene access]: ./resources/ADR-51/scene-access.md
 [store access]: ./resources/ADR-51/store-access.md
 [wearable access]: ./resources/ADR-51/wearable-access.md
-[wearable thumbnail]: ./resources/ADR-51/wearable-thumbnail.md
-[wearable size]: ./resources/ADR-51/wearable-size.md
+[emote access]: ./resources/ADR-51/emote-access.md
+[item thumbnail]: ./resources/ADR-51/item-thumbnail.md
+[item size]: ./resources/ADR-51/item-size.md
+[outfits access]: ./resources/ADR-51/outfits-access.md
+[outfits static]: ./resources/ADR-51/outfits-static.md
