@@ -18,7 +18,7 @@ function checkCollectionAccess:
       - collection creator
       - collection managers
       - item managers
-      - comitee
+      - committee
     - the contentHash
     - isApproved && isCompleted
     at the moment
