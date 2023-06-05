@@ -83,7 +83,7 @@ As an example:
 This example means that when the avatar is going to be assembled the "mask", "top_head" and "feet" categories will be shown even if other wearables are hiding them.
 
 Here's the avatar definition with the additional forceRender field that will be provided:
-```
+```json
 {
    "timestamp":1684839566179,
    "avatars":[
