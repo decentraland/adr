@@ -191,7 +191,7 @@ Here's the avatar definition with the additional forceRender field that will be 
 ### Avatar assembly suggested flow
 
 With the points previously discovered, the suggested procedure to visualize an avatar is the following:
-* Request a user profile ( `https://catalyst/lambdas/profile/address` )
+* Request a user profile ( `POST https://content-server/content/active {"pointers": ["0xaddress"]}` )
 * Request the wearables listed in the profile wearables field, all wearables listed are the equipped ones, no matter their visibility. ( `https://catalyst/lambdas/collections/wearables?wearableId=urnId` )
 * Process the hide list provided in each wearable following the visualization priority ( the field is the array `data.hides` in each wearable definition )
 * Apply any force render category listed in the forceRender array in the profile definition ( obtained in the profile response called `forceRender` )
