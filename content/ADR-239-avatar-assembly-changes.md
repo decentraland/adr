@@ -77,7 +77,7 @@ This forced render effect is removed as soon as another wearable that re-hides t
 In order to store the force render categories, it is proposed to add a new field to the player profile holding a list of overridden hide categories.
 This list of string will hold the current overridden categories so that each player can render other players (and itself) according to the new rules.
 As an example:
-```
+```yaml
 "forceRender": ["mask","top_head","feet"]
 ```
 This example means that when the avatar is going to be assembled the "mask", "top_head" and "feet" categories will be shown even if other wearables are hiding them.
