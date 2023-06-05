@@ -67,7 +67,6 @@ This prevents, for example, players from going barefoot or without t-shirt.
 The system will extent the concept of Body by removing the default fallback wearables.
 These pieces, which can be called "Bare feet", "Naked Top" and "Naked Bottom", are not considered wearables, but rather parts of the base body geometry that are exclusively displayed when no wearables are equipped and there are no other wearables hiding the relevant category.
 
-The base body geometry and textures will change to make them more suitable for an environment for all audiences.
 
 ### Force Render
 
