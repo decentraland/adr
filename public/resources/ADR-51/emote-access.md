@@ -6,7 +6,7 @@ Given the pointers (URNs), determine which layer should be used to check the acc
 ```
 parameter DECENTRALAND_ADDRESS = 0x1337e0507eb4ab47e08a179573ed4533d9e22a7b
 
-parameter ALLOWED_TYPES = ['off-chain', 'blockchain-collection-v1-asset', 'blockchain-collection-v2-asset', 'blockchain-collection-third-party']
+parameter ALLOWED_TYPES = ['off-chain', 'blockchain-collection-v2-asset', 'blockchain-collection-third-party']
 
 parameter L1_NETWORKS = ['mainnet', 'ropsten', 'kovan', 'rinkeby', 'goerli']
 
