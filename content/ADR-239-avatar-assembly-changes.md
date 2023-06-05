@@ -70,7 +70,7 @@ These pieces, which can be called "Bare feet", "Naked Top" and "Naked Bottom", a
 
 ### Force Render
 
-To extend further players ability to use the wearables they have in all their glory. If an equipped wearable is hidden by the effect of another wearable, players can unhide them and override this instruction.
+To extend further players ability to use the wearables they have. If an equipped wearable is hidden by the effect of another wearable, players can unhide them and override this instruction.
 This forced render effect is removed as soon as another wearable that re-hides that category is equipped, forcing the user to show it again.
 
 In order to store the force render categories, it is proposed to add a new field to the player profile holding a list of overridden hide categories.
