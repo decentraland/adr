@@ -106,7 +106,7 @@ Here's the avatar definition with the additional forceRender field that will be 
                "urn:decentraland:matic:collections-v2:0xca7c347ffdeee480092f3b1268550b60ea031077:4",
                "urn:decentraland:matic:collections-v2:0x2a3a6d0c92b18102ed189233976c974473a59c87:0"
             ],
-            "forceRender":["mask","top_head","feet"]
+            "forceRender":["mask","top_head","feet"],
             "emotes":[
                {
                   "slot":0,
