@@ -117,7 +117,7 @@ This is a summary of the process to render an avatar.
 
 1. Gather the _bodyshape._
 2. Filter out _wearables_ that doesn’t contain a _representation_ for that _bodyshape._
-3. Iterate the hides list and remove affected _wearables_ from the process.
+3. Iterate the hides list and remove affected _wearables_ from the process if not present in the _forceRender_ field.
 4. Fill _required categories_ with default _wearables_ for the _bodyshape._
 5. Download the wearable assets.
    1. If the download fails, fallback to a default one.
