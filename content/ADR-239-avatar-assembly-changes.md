@@ -2,7 +2,7 @@
 adr: 239
 date: 2023-06-01
 title: Avatar Assembly Changes
-status: Review
+status: Living
 authors:
   - davidejensen
 type: Standards Track
