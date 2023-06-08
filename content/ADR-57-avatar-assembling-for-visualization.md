@@ -24,7 +24,6 @@ An Avatar in Decentraland is a set of _wearables_ on top of a bodyshape. Its com
         {
           "bodyShapes": ["urn:decentraland:off-chain:base-avatars:BaseMale"],
           "mainFile": "F_Eyewear_BlackSunglasses.glb",
-          "overrideReplaces": [],
           "overrideHides": [],
           "contents": [
             {
@@ -40,7 +39,6 @@ An Avatar in Decentraland is a set of _wearables_ on top of a bodyshape. Its com
         {
           "bodyShapes": ["urn:decentraland:off-chain:base-avatars:BaseFemale"],
           "mainFile": "F_Eyewear_BlackSunglasses.glb",
-          "overrideReplaces": [],
           "overrideHides": [],
           "contents": [
             {
@@ -60,9 +58,10 @@ An Avatar in Decentraland is a set of _wearables_ on top of a bodyshape. Its com
   }
   ```
 
-# Hides and Replaces
+# Hides and Force Render
 
-To avoid issues such as clipping when rendering, each _wearable_ contains sets of categories to _hide_ and _replace._
+To avoid issues such as clipping when rendering, each _wearable_ contains sets of categories to _hide_.
+In addition, the avatar definition contains a field called _forceRender_ to allow specific hidden categories to be displayed anyway. More info at [ADR-239](/adr/ADR-239)
 
 ## Hides
 
@@ -72,12 +71,6 @@ Conflicts are solved in order within the profile. If two wearables mutually hide
 
 Hides list is mostly used at rendering time.
 
-## Replaces
-
-This list represents the categories a wearable replace. It’s used when constructing the avatar in the editor. For intance, your _greek mask_ covers most of your face, so you want any eyewear to be replaced; if you equip it in the Avatar Editor any eyewear equiped will be unequiped.
-
-Conflicts are _not posible_ at rendering time, an avatar profile containing a wearable within the _replaces_ _list_ of another one should never be received. If this were to happen both wearables will be visible and rendered.
-
 # Representations
 
 A _wearable_ definition holds an array of representations that determines its content for a specific bodyshape. The lack of a representation for a bodyshape is handled as an incompatibility.
@@ -86,7 +79,6 @@ A _wearable_ definition holds an array of representations that determines its co
 {
   "bodyShapes": ["urn:decentraland:off-chain:base-avatars:BaseMale"],
   "mainFile": "F_Eyewear_BlackSunglasses.glb",
-  "overrideReplaces": [],
   "overrideHides": [],
   "contents": [
     {
@@ -108,23 +100,15 @@ Avatars shouldn’t run naked around the world, to prevent this a fallback syste
 - _BaseFemale_
   ```
   "eyes" => "urn:decentraland:off-chain:base-avatars:f_eyes_00"
-  "eyebrows" => "urn:decentraland:off-chain:base-avatars:f_eyebrows_00"
   "mouth" => "urn:decentraland:off-chain:base-avatars:f_mouth_00"
   "hair" => "urn:decentraland:off-chain:base-avatars:standard_hair"
-  "upper_body" => "urn:decentraland:off-chain:base-avatars:f_sweater"
-  "lower_body" => "urn:decentraland:off-chain:base-avatars:f_jeans"
-  "feet" => "urn:decentraland:off-chain:base-avatars:bun_shoes"
   ```
 - _BaseMale_
   ```
   "eyes" => "urn:decentraland:off-chain:base-avatars:eyes_00"
-  "eyebrows" => "urn:decentraland:off-chain:base-avatars:eyebrows_00"
   "mouth" => "urn:decentraland:off-chain:base-avatars:mouth_00"
   "hair" => "urn:decentraland:off-chain:base-avatars:casual_hair_01"
   "facial" => "urn:decentraland:off-chain:base-avatars:beard"
-  "upper_body" => "urn:decentraland:off-chain:base-avatars:green_hoodie"
-  "lower_body" => "urn:decentraland:off-chain:base-avatars:brown_pants"
-  "feet" => "urn:decentraland:off-chain:base-avatars:sneakers"
   ```
 
 # Cheat sheet
@@ -133,7 +117,7 @@ This is a summary of the process to render an avatar.
 
 1. Gather the _bodyshape._
 2. Filter out _wearables_ that doesn’t contain a _representation_ for that _bodyshape._
-3. Iterate the hides list and remove affected _wearables_ from the process.
+3. Iterate the hides list and remove affected _wearables_ from the process if not present in the _forceRender_ field.
 4. Fill _required categories_ with default _wearables_ for the _bodyshape._
 5. Download the wearable assets.
    1. If the download fails, fallback to a default one.
