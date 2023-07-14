@@ -148,7 +148,7 @@ Example: https://api.cryptohats.io/registry/cryptohats/address/0x0f5d2fb29fb7d3c
 
 If the registry is invalid, the address does not own the asset, or the id non-existent the `urn` prop should set `decentraland` as an empty string.
 
-```json
+```
 {
   "id": "0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1",
   "amount": 0,
@@ -185,7 +185,7 @@ Example: https://api.cryptohats.io/registry/cryptohats/ownership
 ```
 #### Response
 
-```json 
+``` 
 [
  { 
    "urn_decentraland": "urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1", 
