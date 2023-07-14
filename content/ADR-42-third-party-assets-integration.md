@@ -195,7 +195,7 @@ Example: https://api.cryptohats.io/registry/cryptohats/ownership
  {
    "urn_decentraland": "...",
    "address": "...",
-   "owned": <true|false> 
+   "owned": [true|false]
  }
   ...
 ]
