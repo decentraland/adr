@@ -44,9 +44,10 @@ Multiple third parties with their own NFT contracts (ERC721, ERC1155, etc) want 
 
 Each Third Party will require to create and maintain an API with these endpoints:
 
-- @GET /registry/:registry-id/owners-bloom-filter - get a [bloom filter](https://en.wikipedia.org/wiki/Bloom_filter) as an hex value comprising all the owners a registry has
-- @GET /registry/:registry-id/address/:address/assets - get a list of assets asociated with a given address
-- @GET /registry/:registry-id/address/:address/assets/:id - get if a dcl item is owned by a given address
+- `@GET /registry/:registry-id/owners-bloom-filter` get a [bloom filter](https://en.wikipedia.org/wiki/Bloom_filter) as an hex value comprising all the owners a registry has
+- `@GET /registry/:registry-id/address/:address/assets` get a list of assets asociated with a given address
+- `@GET /registry/:registry-id/address/:address/assets/:id` get if a dcl item is owned by a given address
+- `@POST /registry/:registry-id/ownership` that receives an array of data and performs validations in batch. 
 
 > It is recommended to accept any format for the `:address` parameter: checksummed, lowercased, uppercased, mixed, etc. You can always checksum and validate if it is a valid Ethereum address later.
 
@@ -155,6 +156,49 @@ If the registry is invalid, the address does not own the asset, or the id non-ex
     "decentraland": ""
   }
 }
+```
+
+### POST /registry/:registry-id/ownership
+
+When provided with a list of owners and their respective items, the expected functionality is to determine whether each owner owns the corresponding item or not. 
+#### Request
+
+```
+POST /registry/:registry-id/ownership
+Example: https://api.cryptohats.io/registry/cryptohats/ownership
+``` 
+
+**body:**
+
+```json
+[
+ { 
+   "urn_decentraland": "urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1", 
+   "address": "0x0f5d2fb29fb7d3cfee444a200298f468908cc942" 
+ },
+ {
+   "urn_decentraland": "...", 
+   "address": "..."
+ },
+ ...
+]
+```
+#### Response
+
+```json 
+[
+ { 
+   "urn_decentraland": "urn:decentraland:matic:collections-thirdparty:cryptohats:0xc04528c14c8ffd84c7c1fb6719b4a89853035cdd:1", 
+   "address": "0x0f5d2fb29fb7d3cfee444a200298f468908cc942", 
+   "owned": true
+ },
+ {
+   "urn_decentraland": "...",
+   "address": "...",
+   "owned": <true|false> 
+ }
+  ...
+]
 ```
 
 ## Third Party Collection Smart Contract Registry
