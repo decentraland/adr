@@ -44,7 +44,7 @@ Multiple third parties with their own NFT contracts (ERC721, ERC1155, etc) want 
 
 Each Third Party will require to create and maintain an API with these endpoints:
 
-- `@GET /registry/:registry-id/owners-bloom-filter` get a [bloom filter](https://en.wikipedia.org/wiki/Bloom_filter) as an hex value comprising all the owners a registry has
+- `@GET /registry/:registry-id/owners-bloom-filter` get a [bloom filter](https://en.wikipedia.org/wiki/Bloom_filter) as a hex value comprising all the owners a registry has
 - `@GET /registry/:registry-id/address/:address/assets` get a list of assets asociated with a given address
 - `@GET /registry/:registry-id/address/:address/assets/:id` get if a dcl item is owned by a given address
 - `@POST /registry/:registry-id/ownership` that receives an array of data and performs validations in batch. 
