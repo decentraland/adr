@@ -2,7 +2,7 @@
 layout: adr
 adr: 226
 title: Lambdas API Review
-date: 2020-02-20
+date: 2023-04-28
 status: Draft
 type: Standards Track
 spdx-license: CC0-1.0
