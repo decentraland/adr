@@ -2,8 +2,8 @@
 layout: adr
 adr: 244
 title: Extended Content Addressable URNs for Decentraland minted items
-date: 2023-07-24
-status: Draft
+date: 2023-07-28
+status: Review
 type: Standards Track
 spdx-license: CC0-1.0
 authors:
@@ -36,6 +36,8 @@ Once this ADR takes effect, the URNs will be modified as follows:
 
 In these updated URNs, the last part of each URN (:1 and :2) represents the token ID, which becomes essential in identifying the specific blue shirt managed by the user.
 
+**This modification will exclusively apply to minted items originating from V1 and V2 collections. Third-party items, on the other hand, will remain unaffected by this change and will not undergo any alterations. The adjustment in question will be limited in scope to maintain the distinction between minted items from V1 and V2 collections versus third-party items.**
+
 # Specification
 
 The extended content-addressable URN format for Decentraland emotes and wearables will be applied over collections v1 and v2 specifically. This extension was already proposed in the [ADR-109](/adr/ADR-109) on the second alternative:
@@ -50,7 +52,69 @@ The token ID part is optional and will only be used when addressing specific min
 
 The migration of the minted items to the new URN format will be done in a progressive manner. The **Explorer** will show the items grouped by item kinds but allow the user to select the specific NFT to add to their profile. Once the users save their profile for the first time and this ADR is running effectively, a process in the client should select the first NFT for each item kind saved in the profile.
 
-Starting from `1691118000` (Friday 08 of August), this ADR will come into effect. This means that the Catalyst Content Server will begin rejecting new profile updates related to wearables or emotes that do not include a token ID, except for the base ones. Upon upgrading the nodes version, the endpoints returning wearable URNs will be modified to include this last token ID part.
+Starting from `1692673200` (Tuesday 22 of August), this ADR will come into effect. This means that the Catalyst Content Server will begin rejecting new profile updates related to wearables or emotes that do not include a token ID, except for the base ones. Upon upgrading the nodes version, the endpoints returning wearable URNs will be modified to include this last token ID part.
+
+## Catalyst endpoints changes
+
+In this section, you will find a comprehensive list of all the changes that will be implemented across the Catalyst endpoint contracts. 
+
+### Content Server
+
+#### POST /content/entities
+
+From the specified date onwards, all URNs associated with minted wearables and emotes arriving at this endpoint must adhere to the extended format: `decentraland:{protocol}:collections-{version}:{contract(0x[a-fA-F0-9]+)}:{itemId}:{tokenId}`. This requirement applies specifically to V1 and V2 collections.
+
+If any URN is received that does not conform to this extended format, the endpoint will reject any attempts to deploy such an entity. 
+
+#### POST /content/entities/active
+
+Starting from the proposed date, if you attempt to use a pointer to fetch an active entity of a minted wearable or emote item, the endpoint will examine the received pointer's structure. It should precisely match the pattern `decentraland:{protocol}:collections-{version}:{contract(0x[a-fA-F0-9]+)}:{itemId}:{tokenId}`.
+
+If the pointer does not adhere to this specified structure, the endpoint will reject the request and respond with a 400 Bad Request status. This regex has been implemented to guarantee the presence of the Token Id property, ensuring proper validation of the request.
+
+#### GET /content/pointer-changes
+ 
+Starting from the proposed date, this endpoint will include the extended URN in the pointers property for both minted wearables and emotes that are returned. The new format is as follows: `decentraland:{protocol}:collections-{version}:{contract(0x[a-fA-F0-9]+)}:{itemId}:{tokenId}`.
+
+### Lambdas
+
+#### GET /lambdas/collections/wearables?collectionId={collectionId}
+
+The endpoint's response will return the extended URN format in the `id` property for each minted wearable. The new format is as follows: `decentraland:{protocol}:collections-{version}:{contract(0x[a-fA-F0-9]+)}:{itemId}:{tokenId}`.
+
+Previously, the endpoint provided an older format that lacked the `tokenId` part. This update ensures that the `tokenId` component is now included in the `id` property.
+
+#### GET /lambdas/collections/contents/{urn}/thumbnail
+
+This endpoint will exclusively accept extended URNs when requesting the thumbnail of a minted wearable or emote. If an old URN format is received, the endpoint will respond with a Bad Request 400 error, indicating that the request was not valid.
+
+#### GET /lambdas/collections/contents/{urn}/image
+
+This endpoint will exclusively accept extended URNs when requesting the image of a minted wearable or emote. If an old URN format is received, the endpoint will respond with a Bad Request 400 error, indicating that the request was not valid.
+
+#### GET /lambdas/profiles/{address}
+
+This endpoint will now provide the extended URNs for minted wearables and emotes on the respective properties: `avatars[].avatar.wearables` and `avatars[].avatar.emotes`. Prior to this update, the endpoint returned different URN formats. With the change, you can expect to receive extended URNs for a more consistent and comprehensive representation of minted wearables and emotes in the specified properties.
+
+#### POST /lambdas/profiles
+
+This endpoint will now provide the extended URNs for minted wearables and emotes on the respective properties: `avatars[].avatar.wearables` and `avatars[].avatar.emotes`. Prior to this update, the endpoint returned different URN formats. With the change, you can expect to receive extended URNs for a more consistent and comprehensive representation of minted wearables and emotes in the specified properties.
+
+#### GET /lambdas/users/{address}/wearables
+
+The endpoint's response will return the extended URN format in the `id` property for each minted wearable. The new format is as follows: `decentraland:{protocol}:collections-{version}:{contract(0x[a-fA-F0-9]+)}:{itemId}:{tokenId}`.
+
+Previously, the endpoint provided an older format that lacked the `tokenId` part. This update ensures that the `tokenId` component is now included in the `id` property.
+
+#### GET /lambdas/users/{address}/emotes
+
+The endpoint's response will return the extended URN format in the `id` property for each minted emote. The new format is as follows: `decentraland:{protocol}:collections-{version}:{contract(0x[a-fA-F0-9]+)}:{itemId}:{tokenId}`.
+
+Previously, the endpoint provided an older format that lacked the `tokenId` part. This update ensures that the `tokenId` component is now included in the `id` property.
+
+#### GET /lambdas/profiles/outfits/{address}
+
+Starting from the proposed date, this endpoint will include the extended URN for both minted wearables and emotes that are returned. The new format is as follows: `decentraland:{protocol}:collections-{version}:{contract(0x[a-fA-F0-9]+)}:{itemId}:{tokenId}`.
 
 ## RFC 2119 and RFC 8174
 
