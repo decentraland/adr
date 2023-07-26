@@ -1,7 +1,7 @@
 ---
 layout: adr
 adr: 244
-title: Extended Content Addressable URNs for Decentraland wearables
+title: Extended Content Addressable URNs for Decentraland minted items
 date: 2023-07-24
 status: Draft
 type: Standards Track
