@@ -18,38 +18,39 @@ The new system will be more reliable, efficient, and scalable, and it will allow
 
 This documents presents a PoC of the implementation for the Presence Notifications in Social Service.
 
-
 ## Context, Reach & Prioritization
 
 Doing this PoC is necessary to understand the effort estimation of migrating Presence feature from Synapse to the Social Service.
 
+The feature needed is to broadcast to all user's friends the position, realm and status (online/offline).
 
 ## Solution Space Exploration
 
-Use Redis to store all the connected users, so every time a new user connects to the social service they can retrieve all the friends that are online. Then they can subscribe to all status updates so know when a friend connects or disconnects.
+Use Redis to store all the connected users, so every time every other user connects to the social service they can retrieve all the friends that are online. Then they can subscribe to all status updates so know when a friend connects or disconnects.
 
 This is a PoC so handling different status of presence is out of the scope, the idea is to migrate the same functionality that currently Matrix has to the Social Server.
 
 ## Specification
 
-New messages added to the RPC Websocket server:
+The current authentication flow relays on the client to obtain the Matrix Token by themselves, so the ideal will be that when migrating the Presence Feature from Synapse to the Social service implement the Authentication Flow in the Social Service as discussed in [ADR-143](https://adr.decentraland.org/adr/ADR-143).
+
+As this is a PoC, the focus will be unblocking the project and reduce any risk that can be found. In that line, the PoC doesn't include any change on the Authentication Flow and the current one is the one that's going to be used.
+
+So, the changes in this PoC include the following messages in the RPC Websocket server:
 
 ```
-rpc SetPresenceStatus(StatusPayload) returns (StatusResponse) {}
+rpc PositionHeartbeat(PositionPayload) returns (PositionResponse) {}
 rpc GetOnlineFriends(Payload) returns (stream UsersResponse) {}
 rpc SubscribeFriendshipPresenceUpdates(Payload) returns (stream SubscribeFriendshipPresenceUpdatesResponse) {}
 ```
 
 As the current social service doesn't implement itself authentication, there is no way to automatically identify online users. Doing that is the correct solution, but it's out of scope for this PoC.
 
-So, the proposed solution here isthat when a user wants to be set as active in presence, then they will send the message `SetPresenceStatus` with the status online, so it will be visible. The same if they want to appear offline.
+So, the proposed solution here is that all the users will send a heartbeat to the social service every 30 seconds using the message `PositionHeartbeat` which includes the coordenates and the realm. So, when a heartbeat arrives to the social service, that means that the user is online. The same way if the service stops receiving updates from an online user after 2 minutes, then the user will start appearing ofline.
 
-Note that marking a user as disconnected when loosing the connection to the server is out of the scope too, as for that it's needed to have a way to identify the user address from the connection.
+That way, Redis will have cached a set with all the connected users, so when a user asks for `GetOnlineFriends` then the service filters out only the friends from that set, and send them to the final user. That set will have a TTL of 2 minutes, so if no new update has arrived then the status of the user will change to offline (notifying the corresponding friends connected to `SubscribeFriendshipPresenceUpdates`).
 
-That way, Redis will have cached a set with all the connected users, so when a user asks for `GetOnlineFriends` then the service filters out only the friends from that set, and send them to the final user.
-
-The same way, when a user triggers a change of `SetPresenceStatus` then all of their friends that are connected to `SubscribeFriendshipPresenceUpdates` will be notified.
-
+The same way, when a user triggers a change of `PositionHeartbeat` then all of their friends that are connected to `SubscribeFriendshipPresenceUpdates` will be notified.
 
 ## RFC 2119 and RFC 8174
 
