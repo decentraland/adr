@@ -78,12 +78,6 @@ Starting from the proposed date, this endpoint will include the extended URN in 
 
 ### Lambdas
 
-#### GET /lambdas/collections/wearables?collectionId={collectionId}
-
-The endpoint's response will return the extended URN format in the `id` property for each minted wearable. The new format is as follows: `decentraland:{protocol}:collections-{version}:{contract(0x[a-fA-F0-9]+)}:{itemId}:{tokenId}`.
-
-Previously, the endpoint provided an older format that lacked the `tokenId` part. This update ensures that the `tokenId` component is now included in the `id` property.
-
 #### GET /lambdas/collections/contents/{urn}/thumbnail
 
 This endpoint will exclusively accept extended URNs when requesting the thumbnail of a minted wearable or emote. If an old URN format is received, the endpoint will respond with a Bad Request 400 error, indicating that the request was not valid.
