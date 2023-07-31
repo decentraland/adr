@@ -47,7 +47,7 @@ The proposed priority list is (from most important to least):
 
 All elements associated with the face, such as the mouth, eyes, and eyebrows, directly depend on the visualization of the head. The head is not a wearable itself, so it cannot create circular references, and it is hidden as soon as one or more wearables determine it.
 
-The following example illustrates the expected behavior: If a wearable of type "Mask" hides another wearable of type "Hat", and this in turn hides wearables of type "Mask", the wearable of type "Mask" will have visualization priority, hiding the Mask.
+The following example illustrates the expected behavior: If a wearable of type "Mask" hides another wearable of type "Hat", and this in turn hides wearables of type "Mask", the wearable of type "Mask" will have visualization priority, hiding the Hat.
 
 
 ### Hiding and replacing
