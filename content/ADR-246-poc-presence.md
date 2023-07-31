@@ -32,7 +32,7 @@ This is a PoC so handling different status of presence is out of the scope, the 
 
 ## Specification
 
-The current authentication flow relays on the client to obtain the Matrix Token by themselves, so the ideal will be that when migrating the Presence Feature from Synapse to the Social service implement the Authentication Flow in the Social Service as discussed in [ADR-143](https://adr.decentraland.org/adr/ADR-143).
+The current authentication flow relies on the client to obtain the Matrix Token by themselves, so the ideal would be that when migrating the Presence Feature from Synapse to the Social service, the Authentication Flow should be implemented in the Social Service as discussed in [ADR-143](https://adr.decentraland.org/adr/ADR-143).
 
 As this is a PoC, the focus will be unblocking the project and reduce any risk that can be found. In that line, the PoC doesn't include any change on the Authentication Flow and the current one is the one that's going to be used.
 
