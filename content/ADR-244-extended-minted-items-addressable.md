@@ -66,25 +66,7 @@ From the specified date onwards, all URNs associated with minted wearables and e
 
 If any URN is received that does not conform to this extended format, the endpoint will reject any attempts to deploy such an entity. 
 
-#### POST /content/entities/active
-
-Starting from the proposed date, if you attempt to use a pointer to fetch an active entity of a minted wearable or emote item, the endpoint will examine the received pointer's structure. It should precisely match the pattern `decentraland:{protocol}:collections-{version}:{contract(0x[a-fA-F0-9]+)}:{itemId}:{tokenId}`.
-
-If the pointer does not adhere to this specified structure, the endpoint will reject the request and respond with a 400 Bad Request status. This regex has been implemented to guarantee the presence of the Token Id property, ensuring proper validation of the request.
-
-#### GET /content/pointer-changes
- 
-Starting from the proposed date, this endpoint will include the extended URN in the pointers property for both minted wearables and emotes that are returned. The new format is as follows: `decentraland:{protocol}:collections-{version}:{contract(0x[a-fA-F0-9]+)}:{itemId}:{tokenId}`.
-
 ### Lambdas
-
-#### GET /lambdas/collections/contents/{urn}/thumbnail
-
-This endpoint will exclusively accept extended URNs when requesting the thumbnail of a minted wearable or emote. If an old URN format is received, the endpoint will respond with a Bad Request 400 error, indicating that the request was not valid.
-
-#### GET /lambdas/collections/contents/{urn}/image
-
-This endpoint will exclusively accept extended URNs when requesting the image of a minted wearable or emote. If an old URN format is received, the endpoint will respond with a Bad Request 400 error, indicating that the request was not valid.
 
 #### GET /lambdas/profiles/{address}
 
@@ -93,6 +75,10 @@ This endpoint will now provide the extended URNs for minted wearables and emotes
 #### POST /lambdas/profiles
 
 This endpoint will now provide the extended URNs for minted wearables and emotes on the respective properties: `avatars[].avatar.wearables` and `avatars[].avatar.emotes`. Prior to this update, the endpoint returned different URN formats. With the change, you can expect to receive extended URNs for a more consistent and comprehensive representation of minted wearables and emotes in the specified properties.
+
+#### GET /explorer/{address}/wearables
+
+This endpoint will provide the two types of URNs: extended and non-extended (_with and without token id respectively_). The non-extended URN will continue to be delivered as it currently does, accessed through `elements[n].urn`. However, the extended URN for each item will now be received at `elements[n].individualData[n].id`.
 
 #### GET /lambdas/users/{address}/wearables
 
