@@ -14,19 +14,19 @@ authors:
 
 ## Abstract
 
-This ADR proposes the implementation of player data components in SDK7 to enhance the information retrieval and management of player entities. The goal is to improve the real-time player data experience by reserving specific entities for players, optimizing data updates, and ensuring that every scene receives player data components.
+This ADR proposes the implementation of player data components in SDK7 to enhance the information retrieval and management of player entities. The goal is to improve the real-time player data experience by reserving specific entities for players, optimizing data updates, and ensuring every scene receives player data components.
 
 ## Context
 
-In SDK6, retrieving player information involved using an async function, which provided data from the closest tick, resulting in some latency between the actual player state and the received data. To address this limitation, SDK7 introduces a new approach by reserving entities specifically for player data. Entities 0, 1, and 2 are reserved for the root scene, current camera, and current player, respectively, leaving 509 entities available for further optimizations.
+In SDK6, retrieving player information involved an async function, which provided data from the closest tick, resulting in latency between the actual player state and the received data. SDK7 introduces a new approach to address this limitation by reserving entities specifically for player data. Entities 0, 1, and 2 are reserved for the root scene, current camera, and current player, respectively, leaving 509 entities available for further optimizations.
 
 ## Proposal
 
 The proposal consists of the following key points:
-- Reserving Entities: Entities numbered 32 to 256 will be reserved for storing player data components. This reservation ensures that sufficient entities are available to accommodate player data. When a player disconnected from the room, the entity MUST be deleted, and a new generation for the entity number will be used. This ensure a session up to 14.680.064 unique players.
+- Reserving Entities: Entities numbered 32 to 256 will be reserved for storing player data components. This reservation ensures that sufficient entities are available to accommodate player data. When a player disconnects from the room, the entity MUST be deleted, and a new generation for the entity number will be used. This ensures a session of up to 14.680.064 unique players.
 - Player Data Components: A new set of player data components will be introduced, containing essential information about the player, such as position(Transform), wearables, identity, base avatar properties, and emote commands. 
 - Scene Inclusion: Every scene in SDK7 MUST receive player data components. This inclusion ensures that each scene has access to real-time player data, which is vital for smooth interactions and gameplay experiences.
-- Transform Updates: To optimize data updates and reduce overhead, only active scenes and global scenes will receive real-time transform updates. If in a Scene the Transform is not set this means is out of scene.
+- Transform Updates: Only active and global scenes will receive real-time transform updates to optimize data updates and reduce overhead. If the Transform is not set in a Scene, it is out of the scene.
 
 # Player Data Components
 
