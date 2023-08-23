@@ -76,10 +76,6 @@ This endpoint will now provide the extended URNs for minted wearables and emotes
 
 This endpoint will now provide the extended URNs for minted wearables and emotes on the respective properties: `avatars[].avatar.wearables` and `avatars[].avatar.emotes`. Prior to this update, the endpoint returned different URN formats. With the change, you can expect to receive extended URNs for a more consistent and comprehensive representation of minted wearables and emotes in the specified properties.
 
-#### GET /explorer/{address}/wearables
-
-This endpoint will provide the two types of URNs: extended and non-extended (_with and without token id respectively_). The non-extended URN will continue to be delivered as it currently does, accessed through `elements[n].urn`. However, the extended URN for each item will now be received at `elements[n].individualData[n].id`.
-
 #### GET /lambdas/users/{address}/wearables
 
 The endpoint's response will return the extended URN format in the `id` property for each minted wearable. The new format is as follows: `decentraland:{protocol}:collections-{version}:{contract(0x[a-fA-F0-9]+)}:{itemId}:{tokenId}`.
