@@ -3,7 +3,7 @@ layout: adr
 adr: 189
 title: Social Service M2
 date: 2023-02-08
-status: Draft # pick one of these
+status: Living # pick one of these
 type: RFC # pick one of these
 spdx-license: CC0-1.0
 authors:
