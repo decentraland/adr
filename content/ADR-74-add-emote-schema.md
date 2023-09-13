@@ -140,9 +140,20 @@ Since the ADR74 Emotes will have proper categories now, we need to start saving 
 In summary, for emotes, the metadata stored in the contract will now be:
 `${version}:${type}:${name}:${description}:${category}:${bodyShapeTypes}:${loop}`
 
+##### 6. Extend Collection contract metadata to store sound and geometry properties
+As of *Emotes 2.0* initiative, emotes will now have the possibility to have additional properties to enhance their behavior. These new properties are *sound* and *geometry*. To categorize this, a new section will be added to the end of the current emote metadata stored in the contract.
+
+The possible values will be:
+`s` : Emote has only sound
+`g` : Emote has only additional geometry
+`sg`: Emote has sound and geometry
+
+In summary, for new emotes with geometry and sound, the metadata stored in the contract will now be:
+`${version}:${type}:${name}:${description}:${category}:${bodyShapeTypes}:${loop}:${additionalProperties}`
+
 ## Benefit
 
-The bigger benefit is that the validation of schemas over the time becomes somehow trivial\*:
+The bigger benefit is that the validation of schemas over time becomes somehow trivial:
 
 ```typescript
 function validate(emote) {
