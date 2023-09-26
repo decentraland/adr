@@ -91,7 +91,7 @@ function setImmediate(fn: Function): void
 #### Fetch & WebSocket API
 - Only secure connection MUST be allowed for `Fetch API` and `WebSocket API` on production mode.
 - This is the minimal implementation and it's a subset of Web API standard.
-- The SDKs MUST exposed this declaration and not the DOM types.
+- The SDKs MUST expose this declaration and not the DOM types.
 
 ```ts
 /// --- Fetch ---
