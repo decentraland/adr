@@ -2,8 +2,8 @@
 layout: adr
 adr: 244
 title: Extended Content Addressable URNs for Decentraland minted items
-date: 2023-07-28
-status: Review
+date: 2023-10-26
+status: Living
 type: Standards Track
 spdx-license: CC0-1.0
 authors:
