@@ -3,7 +3,7 @@ layout: adr
 adr: 244
 title: Extended Content Addressable URNs for Decentraland minted items
 date: 2023-07-28
-status: Review
+status: Living
 type: Standards Track
 spdx-license: CC0-1.0
 authors:
@@ -36,7 +36,7 @@ Once this ADR takes effect, the URNs will be modified as follows:
 
 In these updated URNs, the last part of each URN (:1 and :2) represents the token ID, which becomes essential in identifying the specific blue shirt managed by the user.
 
-**This modification will exclusively apply to minted items originating from V1 and V2 collections. Third-party items, on the other hand, will remain unaffected by this change and will not undergo any alterations. The adjustment in question will be limited in scope to maintain the distinction between minted items from V1 and V2 collections versus third-party items.**
+**This modification will exclusively apply to minted items originating from V1 and V2 collections, while third-party items will remain unaffected and not undergo any alterations. Consequently, APIs' consumers should handle both types of URNs (_shortened and extended_) depending on the asset being managed, ensuring the distinction between V1 and V2 collection items and third-party items is maintained.**
 
 # Specification
 
