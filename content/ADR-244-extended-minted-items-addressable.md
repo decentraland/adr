@@ -27,12 +27,12 @@ The purpose of this update is twofold:
 2. **Enhanced Ownership Validation**: The extended URN format significantly enhances the ownership validation process for minted items. By leveraging the unique token ID, the Catalyst's content validation system can effectively verify and confirm ownership of individual minted wearable items, streamlining interactions within the Decentraland metaverse.
 
 Let's consider an example where a user mints two identical blue shirts from a specific V2 collection. Currently, the URNs for each NFT appear as follows:
-* **First blue shirt**: urn:decentraland:mumbai:collections-v2:0x02101c138653a0af06a45b729d9c5d6ba27b8f4a
-* **Second blue shirt**: urn:decentraland:mumbai:collections-v2:0x02101c138653a0af06a45b729d9c5d6ba27b8f4a
+* **First blue shirt**: urn:decentraland:mumbai:collections-v2:0x02101c138653a0af06a45b729d9c5d6ba27b8f4a:0
+* **Second blue shirt**: urn:decentraland:mumbai:collections-v2:0x02101c138653a0af06a45b729d9c5d6ba27b8f4a:0
 
 Once this ADR takes effect, the URNs will be modified as follows:
-* **First blue shirt**: urn:decentraland:mumbai:collections-v2:0x02101c138653a0af06a45b729d9c5d6ba27b8f4a:1
-* **Second blue shirt**: urn:decentraland:mumbai:collections-v2:0x02101c138653a0af06a45b729d9c5d6ba27b8f4a:2
+* **First blue shirt**: urn:decentraland:mumbai:collections-v2:0x02101c138653a0af06a45b729d9c5d6ba27b8f4a:0:1
+* **Second blue shirt**: urn:decentraland:mumbai:collections-v2:0x02101c138653a0af06a45b729d9c5d6ba27b8f4a:0:2
 
 In these updated URNs, the last part of each URN (:1 and :2) represents the token ID, which becomes essential in identifying the specific blue shirt managed by the user.
 
