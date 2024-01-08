@@ -27,7 +27,7 @@ module.exports = function ({ context }) {
 }
 
 function checkAdrStatus(page) {
-  const validStatuses = new Set(["Draft", "Review", "LastCall", "Final", "Stagnant", "Withdrawn", "Living"])
+  const validStatuses = new Set(["Idea", "Draft", "Review", "LastCall", "Final", "Stagnant", "Withdrawn", "Living"])
   const validTypes = new Set(["RFC", "Standards Track", "Meta"])
   if (!page.matterfront.status) throw new Error("ADR-" + page.matterfront.adr + " has no `status`")
   if (!page.matterfront.type) throw new Error("ADR-" + page.matterfront.adr + " has no `type`")
