@@ -112,7 +112,9 @@ We can clearly see that regardless of the deployed texture, the glTF model remai
 
 ### Initial state
 
-All animations in a glTF instance MUST be stopped as the default state.
+All animations in a glTF instance MUST be stopped as the default state when a Animator is present in the entity, so the Animator can manually control the state.
+
+If Animator is not present, only the first animation MUST be played in loop state.
 
 ### Controlling animations
 
