@@ -92,6 +92,11 @@ Previously, the endpoint provided an older format that lacked the `tokenId` part
 
 Starting from the proposed date, this endpoint will include the extended URN for both minted wearables and emotes that are returned. The new format is as follows: `decentraland:{protocol}:collections-{version}:{contract(0x[a-fA-F0-9]+)}:{itemId}:{tokenId}`.
 
+## Deadline
+
+    ADR244_DEADLINE: 2024-03-14T15:00:00Z
+    Unix Timestamp: 1710428400000
+
 ## RFC 2119 and RFC 8174
 
 > The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "
