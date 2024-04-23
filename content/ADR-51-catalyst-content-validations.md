@@ -71,7 +71,7 @@ EMOTE entities will have following validations:
 
 - [EMOTE ACCESS]
 - [ITEM THUMBNAIL]
-- [ITEM SIZE]
+- [ITEM SIZE] ([see updates](./ADR-246-update-max-size-for-skins-and-thumbnail-validation-for-wearables.md))
 
 OUTFITS entities will have following validations:
 
