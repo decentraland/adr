@@ -71,7 +71,7 @@ EMOTE entities will have following validations:
 
 - [EMOTE ACCESS]
 - [ITEM THUMBNAIL]
-- [ITEM SIZE]
+- [ITEM SIZE] ([see updates](/adr/ADR-246))
 
 OUTFITS entities will have following validations:
 

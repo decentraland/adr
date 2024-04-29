@@ -20,7 +20,7 @@ We defined a list of changes to support the new validations
 - [Entity schemas](https://github.com/decentraland/common-schemas) will be defined for all entity types and every deployment will be validated against them.
 - As there will be a transition period in the content server, when getting the deployments through lambdas we will need to transform any entity into a compliant format. Most probably that this change will only be needed for wearables names and descriptions.
 - Deployment size will be validated per pointer taking into account previous deployments and the final result and not just the current deployment files. This will prevent land owners to exceed the size limits as it happens today.
-- Wearables size will be validated without taking into account the generated images (thumbnail and image with rarity background) and a new size limit will be set:
+- Wearables size will be validated without taking into account the generated images (thumbnail and image with rarity background) and a new size limit will be set ([see updates](/adr/ADR-246)):
   - Total size: 3MB
   - All files size without generated images: 2MB
 - A deadline will be defined for the new validations to start working.
