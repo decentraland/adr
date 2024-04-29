@@ -21,5 +21,5 @@ The current specifications for wearable sizes, as defined in ADR-45, set a limit
 1. **Wearables (excluding Skins):** The total size of any wearable, excluding Skins, shall not exceed 3MB, which includes all associated files like thumbnail and image with rarity background.
 2. **Skins:** The category "Skins" will have a separate max size of 9MB, which includes all associated files like thumbnail and image with rarity background.
 
-These changes supersede the previous size limitations specified in [ADR-45](./ADR-45-entities-v4.md) and [ADR-45](./ADR-51-catalyst-content-validations.md) .
+These changes supersede the previous size limitations specified in [ADR-45](/adr/ADR-45-entities-v4.md) and [ADR-51](/adr/ADR-51-catalyst-content-validations.md) .
 
