@@ -3,7 +3,7 @@ layout: adr
 adr: 246
 title: Update Max Size for Skins and Thumbnail Validation for Wearables
 date: 2024-04-23
-status: Draft
+status: Living
 type: Standards Track
 spdx-license: CC0-1.0
 authors:
