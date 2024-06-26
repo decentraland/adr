@@ -91,7 +91,7 @@ This option is inspired by the current implementation, which the reference clien
 The endpoint base URL specified in the Realm follows the next schema:
 ```javascript
 const { baseUrl, suffixUrl } = realmAbout.minimaps.satelliteView
-const imageUrl = `${baseUrl}/${zoom}/${x},${y}${suffixUrl}
+const imageUrl = `${baseUrl}/${zoom}/${x},${y}${suffixUrl}`
 ```
 
 Where the zoom is 1 to N (from far to near), and the `{x},{y}` is the quadrant you want to get. Both `baseUrl` and `suffixUrl` are to give flexibility when hosting this service.
