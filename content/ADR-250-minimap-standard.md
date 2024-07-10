@@ -80,7 +80,7 @@ Whether the minimap SHOULD be shown or not.
 
 With these parameters, we can compute an vital square, which is the contained one, and the following vertices determine it:
   - top-left = (minX, maxY) 
-  - bottom-left = (minX, minX) 
+  - bottom-left = (minX, minY) 
   - top-right = (maxX, maxY) 
   - bottom-right = (maxX, maxY) 
 
