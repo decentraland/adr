@@ -13,27 +13,23 @@ authors:
 
 # Abstract
 
-This ADR proposes standardizing how we consume the Minimap data and how the Explorers should render it. The objective is to have a standard way of doing that for each Realm and World, not just for Genesis City.
+This ADR proposes standardizing how the realm SHOULD provide the map data and how the Explorers MAY use it to render it. The objective is to have a standard way of doing that for each Realm and World, not only for Genesis City.
 
 # Context
 
-At the date of publishing this ADR, the Explorers have a Minimap specific to Genesis City. The Expansion of Decentraland created new realms and worlds that were not in Genesis City. More general support requires a common way of displaying the map in the Explorers, including metadata for detailing where the districts are, empty parcels, owned lands, and more.
+At the date of publishing this ADR, the Explorers have a Minimap and NavMap specific to Genesis City. The Expansion of Decentraland created new realms and worlds that were not in Genesis City. More general support requires a common way of displaying and computing the Map in the Explorers, including metadata detailing where the districts are, empty parcels, owned lands, and more.
 
 # Proposal
 
-This proposal maintains compatibility with the current Explorers Minimaps implementation. Also, at the time this is proposed, no known explorer is using the current parameters in the `/about` endpoint.
+This proposal maintains compatibility with the current Explorers Minimaps implementation. Also, at the time this is proposed, no known explorer is using the `minimap` parameters in the `/about` endpoint.
 
-So, to show the Minimap's data, the protocol for the [/about](https://decentraland.github.io/catalyst-api-specs/#tag/Global/operation/getAboutCatalystInfo) is modified [here](https://github.com/decentraland/protocol/blob/main/proto/decentraland/realm/about.proto), and the `MinimapConfiguration` is modified, making the old parameters deprecated. The new `MinimapConfiguration` is:
+So, to show the Map's data, the protocol for the [/about](https://decentraland.github.io/catalyst-api-specs/#tag/Global/operation/getAboutCatalystInfo) is modified [here](https://github.com/decentraland/protocol/blob/main/proto/decentraland/realm/about.proto), and the `MinimapConfiguration` is deprecated. The new `MapConfiguration` is:
 
 ```proto
-message MinimapConfiguration {
-  bool enabled = 1;
+message MapConfiguration {
+  bool minimap_enabled = 1;
+  repeated decentraland.common.BorderRect sizes = 2; 
 
-  // deprecated parameters
-  reserved 2;
-  reserved 3;
-  
-  repeated decentraland.common.BorderRect sizes = 4; 
   message ImageViewWithZoomLevel {
     string version = 1; 
     optional string base_url = 2;
@@ -45,9 +41,9 @@ message MinimapConfiguration {
     optional string image_url = 2;
  }
 
-  optional ImageViewWithZoomLevel satellite_view = 5;
-  optional ParcelView parcel_view = 6;
-  optional ImageViewWithZoomLevel thumbnail_view = 7;
+  optional ImageViewWithZoomLevel satellite_view = 3;
+  optional ParcelView parcel_view = 4;
+  optional ImageViewWithZoomLevel thumbnail_view = 5;
 }
 
 ```
@@ -72,16 +68,21 @@ Example for genesis city:
 }
 ```
 
+## minimap_enabled
+Whether the minimap SHOULD be shown or not.
 
 ## size
-- The union of all rectangles here represents the places where can have scenes
-- All the other parcels are considered empty; it is up to the explorer to decide if they are walkable or not
+`size` MUST be present for well-defined maps. Its purpose is to compute in advance the boundaries of the Map:
+- The union of all rectangles here represents the places where MAY have scenes
+- All the other parcels are considered empty; for now it is up to the explorer to decide if they are walkable or not
 
-With these parameters we can compute an important square, which is the contained one, and the following vertices determine it:
+With these parameters, we can compute an vital square, which is the contained one, and the following vertices determine it:
   - top-left = (minX, maxY) 
   - bottom-left = (minX, minX) 
   - top-right = (maxX, maxY) 
   - bottom-right = (maxX, maxY) 
+
+Note: the coordinate system used is the Cartesian coordinate system, where the y-axis increases upwards, not the screen coordinate system, where the origin is at the top-left corner and the y-axis increases downwards.
 
 ## Image view with zoom-level (version `v1`)
 This option is inspired by the current implementation, which the reference client takes from the `genesis.city` grant. It takes satellite pictures of the World with Orthographic projection and multiple resolutions.
@@ -90,7 +91,7 @@ This option is inspired by the current implementation, which the reference clien
 
 The endpoint base URL specified in the Realm follows the next schema:
 ```javascript
-const { baseUrl, suffixUrl } = realmAbout.minimaps.satelliteView
+const { baseUrl, suffixUrl } = realmAbout.map.satelliteView
 const imageUrl = `${baseUrl}/${zoom}/${x},${y}${suffixUrl}`
 ```
 
@@ -110,7 +111,7 @@ For `zoom=1`, the pixel-per-parcel ratio MUST be `3.2`. This means every 32x32 p
 It allows the Explorers at least to render a basic shape to Explore every Realm.
 
 ## Parcel view
-This option is based on the also implemented in the reference client with colored parcels. Due to the little information needed for each parcel, an RGB pixel is an oversized amount of data. However, a simple and extensible solution is that each pixel represents each parcel. 
+This option is based on what is implemented in the reference client with colored parcels. Due to the little information needed for each parcel, an RGB pixel is an oversized amount of data. However, a simple and extensible solution is that each pixel represents each parcel. 
 
 Image specification:
 - The 0,0 pixel MUST map to the top-left contained square
@@ -144,82 +145,83 @@ uniform float line_width_px = 1.0;
 uniform vec2 selected_tile = vec2(20.0, 20.0);
 
 const vec3[] colors = {
- vec3(0.0, 0.0, 0.0), // without 
- vec3(0.314,0.329,0.831), // district
- vec3(0.439,0.675,0.463), // plaza
- vec3(0.443,0.424,0.478), // road
- vec3(0.239,0.227,0.275), // onwed
- vec3(0.035,0.031,0.039), // unowned
- vec3(0.0, 0.0, 0.0),
- vec3(0.0, 0.0, 0.0)
+  vec3(0.0, 0.0, 0.0), // without 
+  vec3(0.314,0.329,0.831), // district
+  vec3(0.439,0.675,0.463), // plaza
+  vec3(0.443,0.424,0.478), // road
+  vec3(0.239,0.227,0.275), // onwed
+  vec3(0.035,0.031,0.039), // unowned
+  vec3(0.0, 0.0, 0.0),
+  vec3(0.0, 0.0, 0.0)
 };
 
 void vertex() {
- world_position = VERTEX;
+  world_position = VERTEX;
 }
 
 void fragment() {
- float line_width = line_width_px / size;
- vec2 frag_position = floor(world_position);
- float fx = frag_position.x / size, fy = (frag_position.y / size) + 1.0;
- float cx = floor(fx), cy = floor(fy);
-  
- vec4 pixel_data = texelFetch(map_data, ivec2(int(cx), int(cy)), 0);
- int flagsR = int(pixel_data.r * 255.0);
- int flagsG = int(pixel_data.g * 255.0);
+  float line_width = line_width_px / size;
+  vec2 frag_position = floor(world_position);
+  float fx = frag_position.x / size, fy = (frag_position.y / size) + 1.0;
+  float cx = floor(fx), cy = floor(fy);
 
- bool topMask = (flagsR & 0x8) > 0;
- bool leftMask = (flagsR & 0x10) > 0;
-  
- vec3 parcel_color;
- if (flagsG == 32) {
- parcel_color = colors[1];
- } else if (flagsG == 64) {
- parcel_color = colors[3];
- } else if (flagsG == 128) {
- parcel_color = colors[4];
- } else {
- parcel_color = colors[2];
- }
+  vec4 pixel_data = texelFetch(map_data, ivec2(int(cx), int(cy)), 0);
+  int flagsR = int(pixel_data.r * 255.0);
+  int flagsG = int(pixel_data.g * 255.0);
 
- vec4 resolved_color = vec4(parcel_color, COLOR.a);
+  bool topMask = (flagsR & 0x8) > 0;
+  bool leftMask = (flagsR & 0x10) > 0;
 
- bool borderLeft = false;
- bool borderTop = false;
+  vec3 parcel_color;
+  if (flagsG == 32) {
+    parcel_color = colors[1];
+  } else if (flagsG == 64) {
+    parcel_color = colors[3];
+  } else if (flagsG == 128) {
+    parcel_color = colors[4];
+  } else {
+    parcel_color = colors[2];
+  }
 
- if (topMask == false && leftMask == false) {
- borderLeft = true;
- borderTop = true;
- } else if (topMask && leftMask) {
- borderLeft = false;
- borderTop = false;
- } else {
- if (topMask == false) {
- borderTop = true;
- }
- if (leftMask == false) {
- borderLeft = true;
- }
- }
+  vec4 resolved_color = vec4(parcel_color, COLOR.a);
 
- if (borderLeft && (fx - cx < line_width)) {
- resolved_color = vec4(0.0, 0.0, 0.0, COLOR.a);
- }
+  bool borderLeft = false;
+  bool borderTop = false;
 
- if (borderTop && (fy - cy < line_width)) {
- resolved_color = vec4(0.0, 0.0, 0.0, COLOR.a);
- }
-  
- if (selected_tile.x == cx && selected_tile.y == cy) {
- resolved_color += vec4(0.7, 0.1, 0.1, COLOR.a);
- }
-  
- COLOR = resolved_color;
+  if (topMask == false && leftMask == false) {
+    borderLeft = true;
+    borderTop = true;
+  } else if (topMask && leftMask) {
+    borderLeft = false;
+    borderTop = false;
+  } else {
+    if (topMask == false) {
+      borderTop = true;
+    }
+
+    if (leftMask == false) {
+      borderLeft = true;
+    }
+  }
+
+  if (borderLeft && (fx - cx < line_width)) {
+    resolved_color = vec4(0.0, 0.0, 0.0, COLOR.a);
+  }
+
+  if (borderTop && (fy - cy < line_width)) {
+    resolved_color = vec4(0.0, 0.0, 0.0, COLOR.a);
+  }
+
+  if (selected_tile.x == cx && selected_tile.y == cy) {
+    resolved_color += vec4(0.7, 0.1, 0.1, COLOR.a);
+  }
+
+  COLOR = resolved_color;
 }
 ```
 
 # Conclusion
-This is an optional feature that Realm can use to specify the explorer how to render the Minimap or not. The example for the Genesis-City is straightforward and ready to be implemented in the `/about` request.
+This is an optional feature that Realm can use to specify the Explorers the data needed to render the Map. The example for the Genesis-City is straightforward and ready to be implemented in the `/about` request.
 
 
 ## RFC 2119 and RFC 8174
