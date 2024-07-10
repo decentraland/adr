@@ -34,6 +34,7 @@ message MapConfiguration {
     string version = 1; 
     optional string base_url = 2;
     optional string suffix_url = 3;
+    optional Vector2 top_left_offset = 4;
  }
   
   message ParcelView {
@@ -52,14 +53,15 @@ Example for genesis city:
 ```json
 {
   "sizes": [
- { "left": -150, "top": -150, "right": 150, "bottom": 150 },
- { "left": 62, "top": 151, "right": 162, "bottom": 158 },
- { "left": 151, "top": 59, "right": 163, "bottom": 150 }
+ { "left": -150, "top": 150, "right": 150, "bottom": -150 },
+ { "left": 62, "top": 158, "right": 162, "bottom": 151 },
+ { "left": 151, "top": 150, "right": 163, "bottom": 59 }
  ],
   "satelliteView": {
     "version": "v1",
     "baseUrl": "https://genesis.city/map/latest",
-    "suffixUrl": ".jpg"
+    "suffixUrl": ".jpg",
+    "topLeftOffset": [-2,-6]
  },
   "parcelView": {
     "version": "v1",
@@ -105,10 +107,22 @@ For `zoom=1`, the pixel-per-parcel ratio MUST be `3.2`. This means every 32x32 p
 |2   |6.4         | 64x64 |
 |3   |12.8        | 128x128 |
 |4   |25.6        | 256x256 |
-|5   |102.4       | 1024x1024 |
-|6   |204.8       | 2048x2048 |
+|5   |51.2        | 512x512 |
+|6   |102.4       | 1024x1024 |
+
+The image size provided MUST be 512x512 pixels.
+
+The `topLeftOffset` parameter MUST specify how many additional parcels are in `0,0` before placing the top-left parcel in the contained square. Its default is `(0,0)`. 
 
 It allows the Explorers at least to render a basic shape to Explore every Realm.
+
+
+### Genesis city example
+At the date this is publishing, the `genesis.city` grant provides the `0,0` image with `zoom=6` where the parcel (-150, 150) is placed at (204, 204) pixel. This means the (0,0) of the image is mapped to (-152, 152) parcel.
+From the Map's specification, the top-left of the contained square is: (-150, 158), this means the right `topLeftOffset` would be (-2, -6).
+
+![image](resources/ADR-250/0-0-zoom6-genesis-city.png)
+
 
 ## Parcel view
 This option is based on what is implemented in the reference client with colored parcels. Due to the little information needed for each parcel, an RGB pixel is an oversized amount of data. However, a simple and extensible solution is that each pixel represents each parcel. 
