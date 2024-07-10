@@ -61,7 +61,7 @@ Example for genesis city:
     "version": "v1",
     "baseUrl": "https://genesis.city/map/latest",
     "suffixUrl": ".jpg",
-    "topLeftOffset": [-2,-6]
+    "topLeftOffset": { "x": -2, "y": -6 }
  },
   "parcelView": {
     "version": "v1",
