@@ -1,7 +1,7 @@
 ---
 layout: adr
 adr: 250
-title: Explorer Minimap Standard
+title: Explorer Map Standard
 date: 2024-05-13
 status: Review
 type: Standards Track
