@@ -83,7 +83,7 @@ The examples below are mapping configurations within a wearable entity that repr
     }
   }
   ```
-  - **Owns any item from a list of items within a specified NFT collection**: Any user who owns an item with the ids `3`, `5`, `6`, or `9` from the collection `0x9876543210abcdef9876543210abcdef98765432` on `matic` will be granted with this wearable.
+  - **Owns any item from a list of items within a specified NFT collection**: Any user who owns an item with the ids `3`, `5`, `7`, or `9` from the collection `0x9876543210abcdef9876543210abcdef98765432` on `matic` will be granted with this wearable.
   ```
   {
     "mappings": {
