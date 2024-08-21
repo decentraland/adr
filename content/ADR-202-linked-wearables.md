@@ -174,7 +174,7 @@ Catalyst->>ThirdPartyRegistry: Get all third-party collections addresses
 ThirdPartyRegistry-->>Catalyst: contractAddresses[]
 Catalyst->>Alchemy: getNFTsForOwner(owner, contractAddresses[])
 Alchemy-->>Catalyst: tokenIds[]
-Catalyst-->>Catalyst: Get Wearable URN for tokenId[]
+Catalyst-->>Catalyst: Calculate Wearable URN for tokenId[]
 Catalyst-->>Client: owned linked wearables
 ```
 *When the client requests the owned wearables for a specific user, Catalyst nodes can query the third-party registry contract to obtain a list of all available NFT collection contracts that provide wearables to their holders. Using this contract information, the Catalyst node can leverage a third-party service like Alchemy to retrieve the list of token IDs owned by a wallet across these contracts. This data can then be cross-referenced with the existing wearables mappings for those collections to identify which token IDs correspond to wearables, allowing the Catalyst node to return the extended URN for each wearable.*
@@ -191,3 +191,4 @@ Date: TBD
 - Retrieving a profile or batch of profiles from the Catalyst node will no longer be affected by slow third-party resolvers.
 - Old third-party wearables need to be updated by the third parties to include the mapping information, or after the deadline, they will stop working, and their NFT holders won't be able to retrieve their wearables.
 - There is a dependency on the Alchemy API or similar third-party services to query which NFT items a user owns from a collection. - Only the chains supported by these services can be used. This dependency could be replaced or expanded to add support for more chains as they become available in the market. 
+- This implementation is extensible to support Linked Emotes or any other supported item.
