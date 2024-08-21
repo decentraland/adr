@@ -98,7 +98,7 @@ The examples below are mapping configurations within a wearable entity that repr
     }
   }
 ``` 
-- **Owns any item from a range of items within a specified NFT collection**: Any user who owns an item with an id between `10` and `20` from the collection `0xabcdefabcdefabcdefabcdefabcdefabcdefabcdef` on `mainnet` will be granted with this wearable.
+- **Owns any item from a range of items within a specified NFT collection**: Any user who owns an item with an id between `10` and `20` from the collection `0xabcdefabcdefabcdefabcdefabcdefabcdefabcdef` on `mainnet` will be granted with this wearable. Both boundaries of the range are included, so a user owning nft with id `20` will receive the wearable.
 ```
   {
     "mappings": {
