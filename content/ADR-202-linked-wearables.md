@@ -167,6 +167,7 @@ When a third party is registered, a record is added to the third party's smart c
 
 The Catalyst node will expose an endpoint `GET /explorer/:address/wearables`, which will retrieve all owned wearables for a given wallet, including all LinkedWearables owned by that wallet, as specified in this ADR. Below is a sequence diagram illustrating the general implementation concept for retrieving all wearables for the backpack, with a focus on the LinkedWearables use case.
 
+**Sequence diagram of for backpack building**
 ```mermaid
 sequenceDiagram
 Client->>Catalyst: GET /explorer/:address/wearables
@@ -178,6 +179,23 @@ Catalyst-->>Catalyst: Calculate Wearable URN for tokenId[]
 Catalyst-->>Client: owned linked wearables
 ```
 *When the client requests the owned wearables for a specific user, Catalyst nodes can query the third-party registry contract to obtain a list of all available NFT collection contracts that provide wearables to their holders. Using this contract information, the Catalyst node can leverage a third-party service like Alchemy to retrieve the list of token IDs owned by a wallet across these contracts. This data can then be cross-referenced with the existing wearables mappings for those collections to identify which token IDs correspond to wearables, allowing the Catalyst node to return the extended URN for each wearable.*
+
+**Sequence diagram for ownership checking during profile validation**
+```mermaid
+sequenceDiagram
+   participant Client
+   participant Catalyst
+   participant Blockchain
+   Client ->> Catalyst: Get Profile 0x123
+   activate Catalyst
+   Catalyst ->> Blockchain: Does the user 0x123 own this red shirt, this blue hat and the yellow shoes?
+   Blockchain->> Catalyst: Ok: yes, no, yes
+   Catalyst ->> Catalyst: Remove all non-owned wearables
+   deactivate Catalyst
+   Catalyst ->> Client: Ok (HTTP 200) with the Profile
+```
+
+*When a client requests a profile from the Catalyst node, the node must sanitize the profile by removing any equipped items that are no longer owned by the user. To achieve this, the node validates the current ownership of the items on the blockchain and returns the profile with only the items that are currently owned by the user's wallet.*
 
 ## Deadline
 
