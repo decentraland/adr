@@ -115,7 +115,7 @@ The examples below are mapping configurations within a wearable entity that repr
   }
 ```
 
-- **Owns items from different collections**: Any user who owns an item with an id between `100` and `200`, or the specific ids `203`, `207`, and `233` from the collection `0x1234567890abcdef1234567890abcdef12345678` on `matic`, or any user who owns any item from the collection `0xabcdefabcdefabcdefabcdefabcdefabcdef12345678` on `mainnet`, will be granted this wearable
+- **Owns items from different collections**: Any user who owns an item with an id between `100` and `200`, or the specific ids `203`, `207`, and `233` from the collection `0x1234567890abcdef1234567890abcdef12345678` on `matic`, or who owns any item from the collection `0xabcdefabcdefabcdefabcdefabcdefabcdef12345678` on `mainnet`, will be granted this wearable.
 
 ```
   {
