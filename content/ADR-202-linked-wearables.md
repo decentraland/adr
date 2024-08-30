@@ -23,7 +23,7 @@ To foster greater adoption and streamline the cost and maintenance of LinkedWear
 
 ## Decision
 
-LinkedWearables in Decentraland are wearables exclusively granted to owners of specific NFTs. While the wearables themselves cannot be traded, the underlying NFTs can. Verifying ownership of these wearables necessitated a third-party API. To streamline this process, a new system of URNs for LinkedWearables and wearable metadata will be introduced. These URNs and metadata will comprehensively describe both the Decentraland wearable and its corresponding NFT, enabling on-chain verification of NFT ownership, thereby eliminating the reliance on third party APIs.
+LinkedWearables in Decentraland are wearables exclusively granted to owners of specific NFTs. While the wearables themselves cannot be traded, the underlying NFTs can. Verifying ownership of these wearables necessitated a service to provide the owner of the represented NFTs. To streamline this process, a new system of URNs for LinkedWearables and wearable metadata will be introduced. These URNs and metadata will comprehensively describe both the Decentraland wearable and its corresponding NFT, enabling on-chain verification of NFT ownership, thereby eliminating the reliance on third party APIs.
 
 Furthermore, the relationship between Decentraland Wearables and their associated NFT collection items will be recorded within the wearable entity's metadata. This ensures that when a LinkedWearable is submitted to the Catalyst node, it includes details about the represented NFT collections items.
 
@@ -55,7 +55,7 @@ The mappings configuration supports lists of contracts by chain and multiple set
 The examples below are mapping configurations within a wearable entity that represent various use cases. This information is sent to the Catalyst during the deployment of the wearable entity. 
 
 - **Owns a specific NFT collection item**: the user owning the item with id `1` in the NFT collection `0x1234567890abcdef1234567890abcdef12345678` on `matic` will be granted with this wearable
-```code:json     
+```   
   {
     "mappings": {
       "matic": {        
@@ -163,6 +163,11 @@ With the information from the URN, the collection contract at address `0xba0c9cf
 
 When a third party is registered, a record is added to the third party's smart contract. This record must now include the list of NFT collection contracts and their corresponding chains for which the third party will create wearables. This information is essential for the Catalyst nodes to create a backpack endpoint, retrieve all NFTs owned by a wallet across those collections, and identify any corresponding linked wearables for those NFT items.
 
+The third parties will be registered as follow: 
+`tp:1:[thirdPartyName]:[thirdPartyDescription]:[thirdPartyContracts]`  where `[thirdPartyContracts]` is equal to `[network]-[contract];[thirdPartyContracts]`  
+for example: 
+`tp:1:my-awesome-studio:back-to-the-future:amoy-0x1d9fb685c257E74f869BA302e260C0b68f5eBB37;sepolia-0x74c78f5a4ab22f01d5fd08455cf0ff5c3367535c`
+
 ### Catalyst 
 
 The Catalyst node will expose an endpoint `GET /explorer/:address/wearables`, which will retrieve all owned wearables for a given wallet, including all LinkedWearables owned by that wallet, as specified in this ADR. Below is a sequence diagram illustrating the general implementation concept for retrieving all wearables for the backpack, with a focus on the LinkedWearables use case.
@@ -205,8 +210,8 @@ Date: TBD
 
 ## Consequences
 
-- Third parties will no longer need to pay for the development and maintenance of an API to verify NFT ownership and the associated wearables.
+- Third parties will no longer need to develop and maintain an API to verify NFT ownership and the associated Decentraland wearables.
 - Retrieving a profile or batch of profiles from the Catalyst node will no longer be affected by slow third-party resolvers.
 - Old third-party wearables need to be updated by the third parties to include the mapping information, or after the deadline, they will stop working, and their NFT holders won't be able to retrieve their wearables.
-- There is a dependency on the Alchemy API or similar third-party services to query which NFT items a user owns from a collection. - Only the chains supported by these services can be used. This dependency could be replaced or expanded to add support for more chains as they become available in the market. 
+- For this iteration, the service to validate NFT ownership will be a thirdparty API. Only the chains supported by these services can be used. This service can be replaced or expanded to support more chains as they become available in the market.
 - This implementation is extensible to support Linked Emotes or any other supported item.
