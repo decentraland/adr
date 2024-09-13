@@ -93,7 +93,7 @@ Trades are designed to be versatile, supporting a wide range of asset exchanges 
 3. **Assets Involved**  
     
     Trades specify the assets that will be exchanged when the trade is executed. These assets can include ERC721 tokens, ERC20 tokens, and Collection Items.  
-    
+
     - **Assets to be Received**: 
       
       Lists the assets that the trade creator (signer) will receive from the counterparty.  
@@ -108,11 +108,15 @@ Trades are designed to be versatile, supporting a wide range of asset exchanges 
 
 - **Off-Chain Creation and Signing**:  
 
-    A trade is defined off-chain, and its structure is signed by the wallet of the user who creates it. This creates a cryptographically secure agreement, ensuring that the trade cannot be tampered with once signed.
+    The Signer defines a Trade on the frontend and signs it using their wallet. This process creates a cryptographically secure agreement that cannot be tampered with after signing.
+
+- **Storage and Presentation**:  
+
+    Once the Trade is signed, the Trade data and its corresponding signature are stored on a server for future use. The signed Trade is then made available to all users on the frontend or to a limited group of users, depending on the Trade's availability or specific restrictions.
 
 - **On-Chain Execution via `accept(Trade[] _trades)`**:  
 
-    When a user (or an authorized address) is ready to execute a trade, they call the `accept` function on-chain with the signed `Trade` object(s). This triggers the on-chain validation, where the smart contract checks the trade’s conditions. Once all checks are satisfied, the trade is executed, and the assets are swapped accordingly.
+    When a user is interested in executing the Trade, they call the `accept(Trade[] _trades)` function on-chain, submitting the stored Trade data and signature. This triggers the on-chain validation, where the smart contract checks the Trade's conditions. Once all checks are satisfied, the Trade is executed, and the assets are swapped on-chain.
 
 ### Benefits
 
