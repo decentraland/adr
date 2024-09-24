@@ -166,6 +166,29 @@ Auctions allow multiple bids for a specific asset or collection of assets.
 
 **Purpose**: This provides a flexible way to run decentralized auctions while ensuring that bids that are outbid are invalidated once the auction is over.
 
+**Trade ID for Auctions**
+
+The **Trade ID** is a unique identifier used to link trades within the same operation and is crucial to the auction process. It consists of:
+
+1. The address of the user executing the trade.
+2. The assets received by the trade signer.
+3. A unique salt for the trade.
+
+As long as these values remain the same, the Trade ID will be identical across trades. This allows all bids in an auction, though independently signed, to be associated through the same Trade ID.
+
+When the seller accepts the winning bid, the Trade ID is marked as "used" in the contract, automatically invalidating all other auction bids.
+
+This mechanism saves auction participants from having to manually cancel their bids for an expired auction, reducing gas fees and preventing unintended trade execution.
+
+**Creating Auctions**
+
+1. The seller specifies the asset(s) to be auctioned. This information, along with a randomly generated value used as "salt," is stored on the backend for later use.
+2. Interested users participate in the auction by creating and signing trade bids, specifying what they are willing to pay for the auctioned item. Each bid must include the salt generated at the start of the auction.
+3. The seller selects one of the bids (typically the highest offer) and executes it on the blockchain, finalizing the auction.
+
+Since all bids are linked by the same salt and the same asset(s), once the seller accepts and executes a bid, the **Trade ID** is marked as consumed. This ensures that no other bids can be executed in the future, providing security for bidders by guaranteeing that their signed trades cannot be misused after the auction ends.
+
+
 #### 5. **Public Order for Multiple Items**
 
 A public order allows a user to sell multiple items in one transaction. The seller can bundle several supported assets, specifying a single amount of ERC20 tokens to receive in exchange.
