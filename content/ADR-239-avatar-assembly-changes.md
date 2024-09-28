@@ -194,3 +194,44 @@ With the points previously discovered, the suggested procedure to visualize an a
 * Request the wearables listed in the profile wearables field, all wearables listed are the equipped ones, no matter their visibility. ( `POST https://content-server/content/active {"pointers": ["urn1", "urn2"]}` )
 * Process the hide list provided in each wearable following the visualization priority ( the field is the array `data.hides` in each wearable definition )
 * Apply any force render category listed in the forceRender array in the profile definition ( obtained in the profile response called `forceRender` )
+
+### Example code
+```typescript
+
+function getHiddenList(profile: UserProfile): HideableCategory[] {
+   const alreadyHidden = new Set<HideableWearableCategory>()
+   const wearables: Map<WearableCategory, Wearable> = profile.wearables
+   for (const category of categoriesPriority) {
+      const wearable = wearables.get(category)
+      if (!wearable) {
+         continue
+      }
+
+      if (alreadyHidden.has(category)) {
+         continue
+      }
+      
+      // getHides provides the union of hides and replaces given the representation
+      //    and also add the provided by the category (skin case) 
+      for (const slot of getHides(wearable, profile.bodyShape)) {
+         alreadyHidden.add(slot)
+      }
+   }
+
+   return Array.from(alreadyRemoved).filter(category => !profile.includes(category))
+}
+
+// 1) Build the hidden list
+const toHide = getHiddenList(profile)
+
+// 2) Remove the hidden wearables
+for (const category of toHide) {
+   wearables.delete(category)
+}
+
+// 3) Compute the current hidden list for hiding parts of the bodyshape
+const hidden = getHiddenList(profile)
+const bodyShape = getBodyShape(profile, hidden)
+
+
+```
