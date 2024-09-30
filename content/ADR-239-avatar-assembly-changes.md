@@ -198,7 +198,12 @@ With the points previously discovered, the suggested procedure to visualize an a
 ### Example code
 ```typescript
 
-function getHiddenList(profile: UserProfile): HideableCategory[] {
+/** 
+ * @param profile - holds the wearables equipped, bodyShape and the forceRender parameter
+ * @param forceAll - wheter if ALL the hides in wearables equipped should be considered or not 
+ * @returns the set of categories that should be hidden
+ */
+function getHiddenList(profile: UserProfile, forceAll: boolean = false): HideableCategory[] {
    const alreadyHidden = new Set<HideableWearableCategory>()
    const wearables: Map<WearableCategory, Wearable> = profile.wearables
    for (const category of categoriesPriority) {
@@ -207,8 +212,10 @@ function getHiddenList(profile: UserProfile): HideableCategory[] {
          continue
       }
 
-      if (alreadyHidden.has(category)) {
-         continue
+      if (!forceAll) {
+         if (alreadyHidden.has(category)) {
+            continue
+         }
       }
       
       // getHides provides the union of hides and replaces given the representation
@@ -218,7 +225,7 @@ function getHiddenList(profile: UserProfile): HideableCategory[] {
       }
    }
 
-   return Array.from(alreadyRemoved).filter(category => !profile.includes(category))
+   return Array.from(alreadyRemoved).filter(category => !profile.forceRender.includes(category))
 }
 
 // 1) Build the hidden list
@@ -230,7 +237,7 @@ for (const category of toHide) {
 }
 
 // 3) Compute the current hidden list for hiding parts of the bodyshape
-const hidden = getHiddenList(profile)
+const hidden = getHiddenList(profile, true)
 const bodyShape = getBodyShape(profile, hidden)
 
 
