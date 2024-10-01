@@ -195,12 +195,12 @@ With the points previously discovered, the suggested procedure to visualize an a
 * Process the hide list provided in each wearable following the visualization priority ( the field is the array `data.hides` in each wearable definition )
 * Apply any force render category listed in the forceRender array in the profile definition ( obtained in the profile response called `forceRender` )
 
-### Example code
+### Examples
 ```typescript
 
 /** 
  * @param profile - holds the wearables equipped, bodyShape and the forceRender parameter
- * @param forceAll - wheter if ALL the hides in wearables equipped should be considered or not 
+ * @param forceAll - whether ALL the hides in wearables equipped should be considered or not 
  * @returns the set of categories that should be hidden
  */
 function getHiddenList(profile: UserProfile, forceAll: boolean = false): HideableCategory[] {
@@ -239,6 +239,19 @@ for (const category of toHide) {
 // 3) Compute the current hidden list for hiding parts of the bodyshape
 const hidden = getHiddenList(profile, true)
 const bodyShape = getBodyShape(profile, hidden)
-
-
 ```
+
+Given the next list of wearables with the `hides` as the array value:
+```json
+{
+   "helmet": [ "top_head", "head", "hair", "earring" ],
+   "top_head": [ "hat" ],
+   "hands_wear": [ "hands" ],
+   "hat": [ "helmet", "hair" ]
+}
+```
+In step (1), the `toHide` array is as follows: `[ "top_head", "head", "hair", "earring", "helmet", "hair" ]`. Consequently, in step (2), the wearables `helmet` and `top_head` are removed.
+
+With the remaining wearables `hands_wear` and `hat`, the resulting hidden array becomes: `[ "hands", "hair" ]`. Therefore, the `bodyShape` should hide both the `hands` and `hair`. Note that if we had used the original `toHide` list to determine what body parts to conceal, the head would be hidden in the final outcome.
+
+Now, consider the scenario where `top_head` is included in the forceRender value: in this case, the `toHide` list remains the same, except for the exclusion of `top_head`. As a result, in step (2), this wearable is not removed. Interestingly, the `hidden` list now changes in (3), incorporating `hat`. However, this does not affect the `bodyShape` or alter the wearable list in any way.
