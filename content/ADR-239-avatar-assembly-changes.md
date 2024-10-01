@@ -194,3 +194,64 @@ With the points previously discovered, the suggested procedure to visualize an a
 * Request the wearables listed in the profile wearables field, all wearables listed are the equipped ones, no matter their visibility. ( `POST https://content-server/content/active {"pointers": ["urn1", "urn2"]}` )
 * Process the hide list provided in each wearable following the visualization priority ( the field is the array `data.hides` in each wearable definition )
 * Apply any force render category listed in the forceRender array in the profile definition ( obtained in the profile response called `forceRender` )
+
+### Examples
+```typescript
+
+/** 
+ * @param profile - holds the wearables equipped, bodyShape and the forceRender parameter
+ * @param forceAll - whether ALL the hides in wearables equipped should be considered or not 
+ * @returns the set of categories that should be hidden
+ */
+function getHiddenList(profile: UserProfile, forceAll: boolean = false): HideableCategory[] {
+   const alreadyHidden = new Set<HideableWearableCategory>()
+   const wearables: Map<WearableCategory, Wearable> = profile.wearables
+   for (const category of categoriesPriority) {
+      const wearable = wearables.get(category)
+      if (!wearable) {
+         continue
+      }
+
+      if (!forceAll) {
+         if (alreadyHidden.has(category)) {
+            continue
+         }
+      }
+      
+      // getHides provides the union of hides and replaces given the representation
+      //    and also add the provided by the category (skin case) 
+      for (const slot of getHides(wearable, profile.bodyShape)) {
+         alreadyHidden.add(slot)
+      }
+   }
+
+   return Array.from(alreadyRemoved).filter(category => !profile.forceRender.includes(category))
+}
+
+// 1) Build the hidden list
+const toHide = getHiddenList(profile)
+
+// 2) Remove the hidden wearables
+for (const category of toHide) {
+   wearables.delete(category)
+}
+
+// 3) Compute the current hidden list for hiding parts of the bodyshape
+const hidden = getHiddenList(profile, true)
+const bodyShape = getBodyShape(profile, hidden)
+```
+
+Given the next list of wearables with the `hides` as the array value:
+```json
+{
+   "helmet": [ "top_head", "head", "hair", "earring" ],
+   "top_head": [ "hat" ],
+   "hands_wear": [ "hands" ],
+   "hat": [ "helmet", "hair" ]
+}
+```
+In step (1), the `toHide` array is as follows: `[ "top_head", "head", "hair", "earring", "helmet", "hair" ]`. Consequently, in step (2), the wearables `helmet` and `top_head` are removed.
+
+With the remaining wearables `hands_wear` and `hat`, the resulting hidden array becomes: `[ "hands", "hair" ]`. Therefore, the `bodyShape` should hide both the `hands` and `hair`. Note that if we had used the original `toHide` list to determine what body parts to conceal, the head would be hidden in the final outcome.
+
+Now, consider the scenario where `top_head` is included in the forceRender value: in this case, the `toHide` list remains the same, except for the exclusion of `top_head`. As a result, in step (2), this wearable is not removed. Interestingly, the `hidden` list now changes in (3), incorporating `hat`. However, this does not affect the `bodyShape` or alter the wearable list in any way.
