@@ -16,7 +16,7 @@ This document explores the enhancements introduced by the third version of the T
 
 # Context
 
-In the previous version of this smart contract, the creation of Third Parties was restricted to a designated wallet known as the “Third Party Aggregator.” This wallet was responsible for manually adding a Third Party whenever a proposed “Linked Wearable” project was approved through governance in https://decentraland.org/dao/.
+In the previous version of this smart contract, the creation of Third Parties was restricted to a designated wallet known as the “Third Party Aggregator”. This wallet was responsible for manually adding a Third Party whenever a proposed “Linked Wearable” project was approved through governance in https://decentraland.org/dao/.
 
 This process restricted the number of projects that could be added to Decentraland, necessitating the development of an alternative approach to improve this functionality.
 
@@ -34,7 +34,7 @@ When creating a third party, the user specifies the number of item slots by sett
 
 Each slot has a fixed price in USD, stored in the `itemSlotPrice` variable. This USD price is then converted to MANA using the [MANA/USD Chainlink price feed](https://data.chain.link/feeds/polygon/mainnet/mana-usd), which determines the final MANA amount the user must pay.
 
-For instance, if MANA is priced at 0.5 USD, and the user wishes to create a Third Party (TP) with 10 slots at a rate of 100 USD per slot, the total cost would be 2000 MANA (200 MANA per slot * 10).
+For instance, if MANA is priced at 0.5 USD, and the user wishes to create a Third Party with 10 slots at a rate of 100 USD per slot, the total cost would be 2000 MANA (200 MANA per slot * 10).
 
 **Programmatic Third Parties**
 
