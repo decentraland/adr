@@ -48,7 +48,7 @@ Given that programmatic Third Parties are reviewed by curators before being made
 
 ---
 
-The `buyItemSlots` function has been updated to allow programmatic Third Party managers to add an unlimited number of item slots for free if the initial amount defined was insufficient.
+The `buyItemSlots` function has been updated to allow programmatic Third Party managers to add more item slots for free if the initial amount defined was insufficient.
 
 This function enables users to add item slots to their Third Parties. For non-programmatic Third Parties, the cost of adding additional slots remains the same as the price per slot at the time of creation.
 
