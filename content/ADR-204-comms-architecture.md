@@ -109,11 +109,77 @@ and Scene Room
 	User->>C: move to parcel 
 	C->>G: Get sceneRoom 
 	G-->>C: room connectionStr
-	C->>L: Connect to Scene Room: connectionStr
-	L-->>C: roomConnection to realm:sceneId
+	C->>L: Connect to Scene Room (realm:sceneId): connectionStr
+	L-->>C: roomConnection
 	C->>L: send message: movement / playEmote / chat / voice / announceProfileV
 	L-->>L: brodcast msg to roomId participats 
 end
+``` 
+
+
+## Sequence Diagram Breakdown 
+
+#### 1. Handshake 
+
+```mermaid
+sequenceDiagram
+actor User
+participant C as Decentraland Client
+participant R as Realm Provider
+participant WS as WebSocket Connector
+User->>C: log in
+C->>R: get realm /main/about
+R-->>C: realm { comms: adapter: ... }
+critical Handshake
+	C->>WS: Start Handshake: Authenticate /ws challenge Request
+	WS-->>C: challengeResponse: messageToSign
+	C->>WS: signedChallenge  
+	WS->>WS: validateSignature 
+	WS-->>C: Welcome
+end	
+```
+
+#### 2. Archipelago Island 
+
+
+```mermaid
+sequenceDiagram
+participant C as Decentraland Client
+participant R as Realm Provider
+participant WS as WebSocket Connector
+participant N as NATS
+participant A as Archipelago Core
+participant L as LiveKit 
+Note over A: Initialize LiveKit Transport
+  A->>N: subscribe: peer.*.heartbeat/disconnect
+  C->>WS: Heartbeat with position 
+	WS->>N: publish: peer.0x....heartbeat
+	WS->>N: subscribe: peer.0x...island_changed 
+	A->>N: publish: peer.0x...island_change: islandId & connStr 
+	N-->>WS: islandID & connectionStr
+	WS-->>C: IslandId & connectionStr
+	C->>L: connect to LiveKit room Id = islandId
+	L-->>C: roomConnection
+	C->>L: msgs to roomId: movement / nearby chat
+	L-->>L: brocast msg to roomId participants 
+```
+
+#### 3. Scene Room
+
+```mermaid
+sequenceDiagram
+actor User
+participant C as Decentraland Client
+participant G as GateKeeper 
+participant L as LiveKit 
+
+  User->>C: move to parcel 
+	C->>G: Get sceneRoom 
+	G-->>C: room connectionStr
+	C->>L: Connect to Scene Room (realm:sceneId): connectionStr
+	L-->>C: roomConnection 
+	C->>L: send message: movement / playEmote / chat / voice / announceProfileV
+	L-->>L: brodcast msg to roomId participats 
 ```
 
 
