@@ -187,7 +187,7 @@ participant L as LiveKit
 
 ## Protocol Messages  
 
-The protocol messages for profiles, positions, and updates have been optimized for client performance, aiming to minimize data transmission through the channels. In this new implementation, profiles are no longer sent through the island and are instead retrieved from the Catalyst network. When a user updates their profile, a notification is sent, and the updated profile is downloaded from the servers. This approach ensures that avatar impersonation is prevented, as the signed profile is retrieved from a trusted Catalyst node.
+The protocol messages for profiles, positions, and updates have been optimized for client performance, aiming to minimize data transmission through the channels. In this new implementation, profiles' data is no longer sent through the island and is instead retrieved from the Catalyst network. When a user updates their profile, a notification is sent, and the updated profile is downloaded from the servers. This approach ensures that avatar impersonation is prevented, as the signed profile is retrieved from a trusted Catalyst node.
 
 TBD 
 
