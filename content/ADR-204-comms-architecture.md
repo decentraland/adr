@@ -25,6 +25,7 @@ The new architecture, incompatible with the existing implementation ([comms-v3](
 - **Message Handling**: Effectively manage the influx of messages received by peers within a cluster, preventing congestion and data transfer inefficiencies.
 - **Uniform Communication Transport**: Maintain consistency across all environments (in-world, DCL editor, etc.) to ensure uniform features and behaviors.
 
+
 ## Decision
 
 ### Archipelago Background 
@@ -39,6 +40,7 @@ The Archipelago protocol scales efficiently due to its dynamic island calculatio
 Maintain the current Archipelago implementation while establishing a new scene room connection specific to the active scene. The Archipelago channel should be reserved solely for receiving avatar positions, profile update notifications, and nearby chat messages with the objective to be able to interact with users beyond the limits of a scene. All communications, including voice chat, scene objects state, and streams, will be shared within the scene channel. 
 This new model grants scene owners authority over the communication channel, allowing them to share content streams, share object states or handling speakers, providing a consistent experience for all users visiting the scene.
 
+At any given moment, a user can maintain up to two connections: one with the current scene and another with the island. When the scene changes, the existing connection to the previous scene should be closed, and a new connection to the current scene must be established. 
 
 ![comms](/resources/ADR-204/comms.png)
 
