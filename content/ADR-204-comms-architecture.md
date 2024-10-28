@@ -16,8 +16,7 @@ authors:
 The current Decentraland client communication protocol effectively supports user scaling but has inherent design limitations that restrict certain functionalities in Genesis City, such as content casting for in-world streaming, serverless multiplayer experiences, and being able to handle scene-hosted events with speaker moderators. This ADR explores the architectural decisions behind a new communication protocol designed to overcome these limitations. 
 
 ## Context, Reach & Prioritization 
-
-The new architecture, incompatible with the existing implementation, will be deployed in a forthcoming client version and become the new standard. The objective is to incorporate the following functionalities without overburdening the client implementation with additional complexities, while maintaining the ability to stream the world and visualize users in surrounding areas. This entails:
+The new architecture, incompatible with the existing implementation ([comms-v3](https://github.com/decentraland/protocol/tree/main/proto/decentraland/kernel/comms/v3), [unity-renderer](https://github.com/decentraland/unity-renderer/tree/dev/browser-interface/packages/shared/comms)), will be deployed in a forthcoming client version and become the new standard.The objective is to incorporate the following functionalities without overburdening the client implementation with additional complexities, while maintaining the ability to stream the world and visualize users in surrounding areas. This entails:
 
 - **Enable Content Casting**: Facilitate voice and video streaming in a scene, even when multiple clusters (islands) of users are present.
 - **Authorization Management**: Empower scene owners or their authorized third parties to manage content casting and moderate voice chat accessibility within a scene.
@@ -67,6 +66,9 @@ The establishment of the connection with the island remains unchanged, as that p
 - **Core**: Implements all Archipelago heuristics to calculate and assign an island to a user based on their position.
 - **Stats**: A service that exposes users' positions and islands to display realm statistics, providing insights into hot scenes and identifying where crowds are gathering.
 - **[NATS](https://nats.io/)**: Message broker to exchange information between services. 
+
+**Rom Limits**: The transport layer (LiveKit) does not impose a strict limit on the number of participants in a single room. The real constraint comes from the end user’s bandwidth and the client’s ability to process data efficiently to render nearby players. In Archipelago, islands are capped at a maximum of 100 players, a limitation originally introduced to prevent performance degradation when rendering large numbers of avatars simultaneously.
+With the new implementation, clients will receive data from up to 100 players through Archipelago, but the scene room currently has no predefined limit. Clients are free to define rendering strategies and possible limits or optimizations, e.g. render the closest N users and dynamically adjusting based on proximity. 
 
 ## General Connection Flow 
 The user logs into the platform, retrieves a realm description, and initiates a connection handshake with the backend. In parallel, the user establishes both the Archipelago connection and the scene connection to begin exchanging information with other users connected across different clusters.
