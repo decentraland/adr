@@ -17,7 +17,7 @@ The current Decentraland client communication protocol effectively supports user
 
 ## Context, Reach & Prioritization 
 
-The new architecture, incompatible with the existing implementation, will be deployed in a forthcoming client version and become the new standard.The objective is to incorporate the following functionalities without overburdening the client implementation with additional complexities, while maintaining the ability to stream the world and visualize users in surrounding areas. This entails:
+The new architecture, incompatible with the existing implementation, will be deployed in a forthcoming client version and become the new standard. The objective is to incorporate the following functionalities without overburdening the client implementation with additional complexities, while maintaining the ability to stream the world and visualize users in surrounding areas. This entails:
 
 - **Enable Content Casting**: Facilitate voice and video streaming in a scene, even when multiple clusters (islands) of users are present.
 - **Authorization Management**: Empower scene owners or their authorized third parties to manage content casting and moderate voice chat accessibility within a scene.
