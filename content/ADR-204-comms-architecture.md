@@ -49,7 +49,7 @@ In the illustrated scenario, Peers 1, 2, and 3 are connected to the scene room `
 **Peer1**:
 - Can see and chat with `Peer4` because they are in the same island, `I1`.
 - Can also see `Peer2` and `Peer3` since they are in the same scene room `E1`.
-- Won't see are be able to interact with `Peer5` and `Peer6`
+- Won't see are or be able to interact with `Peer5` and `Peer6`
 
 **Peer2**:
 - Can see, share the scene state, view the streaming, communicate via audio, and chat with `Peer3` and `Peer1` through the scene room `E1`.
