@@ -44,7 +44,32 @@ At any given moment, a user can maintain up to two connections: one with the cur
 
 ![comms](/resources/ADR-204/comms.png)
 
-In the illustrated scenario, Peers 1, 2, and 3 are connected to the scene room `E1`. Additionally, Peer 1 establishes a connection to the island `I1`, while Peers 2 and 3 are linked to the island `I2`. This example serves as a simplified illustration. Users may be far apart within the same scene, but this aims to demonstrate that if a peer is at the edge of a scene, they will be able to see other players who are not within the scene but are within viewing range. On the other hand, the scene channel will be there to share consistent data among the visitors, like a stream of video on a texture or the state of an object like a door that can be opened or closed besides also sharing information about the users visiting the scene. 
+In the illustrated scenario, Peers 1, 2, and 3 are connected to the scene room `E1`. Additionally, Peer 1 establishes a connection to the island `I1`, while Peers 2 and 3 are linked to the island `I2`. This example serves as a simplified illustration. Users may be far apart within the same scene, but this aims to demonstrate that if a peer is at the edge of a scene, they will be able to see other players who are not within the scene but are within viewing range. On the other hand, the scene channel will be there to share consistent data among the visitors, like a stream of video on a texture or the state of an object like a door that can be opened or closed besides also sharing information about the users visiting the scene. Below are more details about the illustrated example:
+
+**Peer1**:
+- Can see and chat with `Peer4` because they are in the same island, `I1`.
+- Can also see `Peer2` and `Peer3` since they are in the same scene room `E1`.
+- Won't see are be able to interact with `Peer5` and `Peer6`
+
+**Peer2**:
+- Can see, share the scene state, view the streaming, communicate via audio, and chat with `Peer3` and `Peer1` through the scene room `E1`.
+- Can also see and chat with `Peer5` and `Peer6` because they are in the same island, `I2`.
+- Won't see are be able to interact with `Peer4`
+
+**Peer3**:
+- Can see, share the scene state, view the streaming, communicate via audio, and chat with `Peer2` and `Peer1` through the scene room `E1`.
+- Can also see and chat with `Peer5` and `Peer6` since they are in the same island, `I2`.
+- Won't see are be able to interact with `Peer4`
+
+**Peer4**:
+ - Can see and chat with `Peer1` because they are in the same island, `I1`.
+ - Won't see are be able to interact with `Peer2`, `Peer3`, `Peer5` and `Peer6`
+
+**Peer5**:
+ - Can see and chat with `Peer2`, `Peer3`, and `Peer6` since they are in the same island, `I2`.
+ - Won't see are be able to interact with `Peer1` and `Peer4`   
+
+
 
 The table below outlines the information that will be communicated through each channel.
 
@@ -61,7 +86,7 @@ The table below outlines the information that will be communicated through each 
 
 The establishment of the connection with the island remains unchanged, as that portion of the protocol is the same. The key difference lies in the types of messages sent through the channel. To establish a connection with a scene-room, a new service called [Gatekeeper](https://github.com/decentraland/comms-gatekeeper/) will be introduced to manage token permissions for the transport layer ([LiveKit](https://livekit.io/)). Only one scene room can be active at a time, as a user can only be present in one scene at any given moment. The scene room operates similarly to the communication service implementation used in worlds, where each scene has its own dedicated room. The Gatekeeper service will also allow scene owners to create authorizations for users, which will be reflected in the LiveKit token. This capability will enable them to moderate voice interactions and data streams within the scene effectively.
 
-![comms-services](/resources/ADR-204/comms-services.png)
+![comms-services](/resources/ADR-204/comms-services.png) 
 
 - **[Realm Provider](https://github.com/decentraland/realm-provider/)**: This small service is responsible for delivering a realm description in accordance with [ADR-110](https://adr.decentraland.org/adr/ADR-110). It specifies the list of services required to connect to Decentraland and provides the communications adapter, which points to the Archipelago workers stack.
 - **WebSocket connector**: Entry Point for the Communications Backend. This component exposes the WebSocket defined in the `commsAdapter` section of the realm description and in accordance with [ADR-180 Communication protocol](https://adr.decentraland.org/adr/ADR-180). Connected users send their positions through this channel and receive an Archipelago island ID, along with the necessary settings to connect to the LiveKit room (transport) where island messages will be exchanged with the cluster of users.
