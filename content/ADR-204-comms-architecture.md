@@ -53,21 +53,21 @@ In the illustrated scenario, Peers 1, 2, and 3 are connected to the scene room `
 
 **Peer2**:
 - Can see, share the scene state, view the streaming, communicate via audio, and chat with `Peer3` and `Peer1` through the scene room `E1`.
-- Can also see and chat with `Peer5` and `Peer6` because they are in the same island, `I2`.
+- Can also see and chat with `Peer5` and `Peer6` since they are in the same island, `I2`.
 - Won't see are be able to interact with `Peer4`
 
 **Peer3**:
 - Can see, share the scene state, view the streaming, communicate via audio, and chat with `Peer2` and `Peer1` through the scene room `E1`.
 - Can also see and chat with `Peer5` and `Peer6` since they are in the same island, `I2`.
-- Won't see are be able to interact with `Peer4`
+- Won't see are or be able to interact with `Peer4`
 
 **Peer4**:
  - Can see and chat with `Peer1` because they are in the same island, `I1`.
- - Won't see are be able to interact with `Peer2`, `Peer3`, `Peer5` and `Peer6`
+ - Won't see are be or able to interact with `Peer2`, `Peer3`, `Peer5` and `Peer6`
 
 **Peer5**:
  - Can see and chat with `Peer2`, `Peer3`, and `Peer6` since they are in the same island, `I2`.
- - Won't see are be able to interact with `Peer1` and `Peer4`   
+ - Won't see are be or able to interact with `Peer1` and `Peer4`   
 
 
 
