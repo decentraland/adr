@@ -85,6 +85,8 @@ The table below outlines the information that will be communicated through each 
 | Scene State      |                  | ✅               |
 | Nerby Chat       | ✅               | ✅               |
 
+> Note: The Scene State (CRDT State) is serverless and shared directly between peers, with no data stored on any server. Connected peers hold the state and share it with others in real-time. For more information, see the CRDTs [ADR-117](https://adr.decentraland.org/adr/ADR-117).
+
 #### Design Considerations 
 
 The establishment of the connection with the island remains unchanged, as that portion of the protocol is the same. The key difference lies in the types of messages sent through the channel. To establish a connection with a scene-room, a new service called [Gatekeeper](https://github.com/decentraland/comms-gatekeeper/) will be introduced to manage token permissions for the transport layer ([LiveKit](https://livekit.io/)). Only one scene room can be active at a time, as a user can only be present in one scene at any given moment. The scene room operates similarly to the communication service implementation used in worlds, where each scene has its own dedicated room. The Gatekeeper service will also allow scene owners to create authorizations for users, which will be reflected in the LiveKit token. This capability will enable them to moderate voice interactions and data streams within the scene effectively.
