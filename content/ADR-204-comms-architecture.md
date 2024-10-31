@@ -47,14 +47,14 @@ At any given moment, a user can maintain up to two connections: one with the cur
 In the illustrated scenario, Peers 1, 2, and 3 are connected to the scene room `E1`. Additionally, Peer 1 establishes a connection to the island `I1`, while Peers 2 and 3 are linked to the island `I2`. This example serves as a simplified illustration. Users may be far apart within the same scene, but this aims to demonstrate that if a peer is at the edge of a scene, they will be able to see other players who are not within the scene but are within viewing range. On the other hand, the scene channel will be there to share consistent data among the visitors, like a stream of video on a texture or the state of an object like a door that can be opened or closed besides also sharing information about the users visiting the scene. Below are more details about the illustrated example:
 
 **Peer1**:
-- Can see and chat with `Peer4` because they are in the same island, `I1`.
-- Can also see `Peer2` and `Peer3` since they are in the same scene room `E1`.
+- Can see, share the scene state, view the streaming, communicate via audio, and chat with `Peer2` and `Peer3` since they are in the same scene room `E1`.
+- Can also see and chat with `Peer4` since they are in the same island, `I1`.
 - Won't see are or be able to interact with `Peer5` and `Peer6`
 
 **Peer2**:
 - Can see, share the scene state, view the streaming, communicate via audio, and chat with `Peer3` and `Peer1` through the scene room `E1`.
 - Can also see and chat with `Peer5` and `Peer6` since they are in the same island, `I2`.
-- Won't see are be able to interact with `Peer4`
+- Won't see or are be able to interact with `Peer4`
 
 **Peer3**:
 - Can see, share the scene state, view the streaming, communicate via audio, and chat with `Peer2` and `Peer1` through the scene room `E1`.
@@ -63,12 +63,15 @@ In the illustrated scenario, Peers 1, 2, and 3 are connected to the scene room `
 
 **Peer4**:
  - Can see and chat with `Peer1` because they are in the same island, `I1`.
- - Won't see are be or able to interact with `Peer2`, `Peer3`, `Peer5` and `Peer6`
+ - Won't see are or be able to interact with `Peer2`, `Peer3`, `Peer5` and `Peer6`
 
 **Peer5**:
  - Can see and chat with `Peer2`, `Peer3`, and `Peer6` since they are in the same island, `I2`.
- - Won't see are be or able to interact with `Peer1` and `Peer4`   
+ - Won't see are or be able to interact with `Peer1` and `Peer4`   
 
+**Peer6**:
+ - Can see and chat with `Peer2`, `Peer3`, and `Peer5` since they are in the same island, `I2`.
+ - Won't see are or be able to interact with `Peer1` and `Peer4`   
 
 
 The table below outlines the information that will be communicated through each channel.
