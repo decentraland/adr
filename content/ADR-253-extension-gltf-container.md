@@ -1,6 +1,6 @@
 ---
 layout: adr
-adr: 250
+adr: 253
 title: Extension GLTF functionality in runtime 7
 date: 2024-10-26
 status: Draft
