@@ -1,7 +1,7 @@
 ---
 layout: adr
 adr: 253
-title: Extension GLTF functionality in runtime 7
+title: Exposing GLTF internals
 date: 2024-10-26
 status: Draft
 type: Standards Track
@@ -12,19 +12,19 @@ authors:
 ---
 
 # Abstract
-This document sets the extension of [GLTF functionality](https://adr.decentraland.org/adr/ADR-215), the adopted standard in Decentraland to load 3D scenes, by allowing the access to the internal structure of GLTF/GLB models. This capability enables various functionalities such as the use of pointer events for specific colliders, modification of internal nodes and materials, and fetching animation lists. By exposing these internal components, developers can create more dynamic and interactive experiences within the engine.
+This document sets the extension of [GLTF functionality](https://adr.decentraland.org/adr/ADR-215), the adopted standard in Decentraland to load 3D scenes, by allowing access to the internal structure of GLTF/GLB models. This capability enables various functionalities, such as using pointer events for specific colliders, modifying internal nodes and materials, and fetching animation lists. By exposing these internal components, developers can create more dynamic and interactive experiences within the engine.
 
 # Context and Motivation
 The existing pipeline for using 3D assets in interactive environments lacks the flexibility needed to dynamically control or modify specific elements within a GLTF model. Currently, artists and developers face limitations such as:
 - Difficulty creating interactable components within a single GLTF asset, needing separate exports for each interactive model part.
-- Inability to directly reference or manipulate internal nodes, meshes, and materials within the GLTF, which complicates asset integration and limits creative potential.
+- The inability to directly reference or manipulate internal nodes, meshes, and materials within the GLTF complicates asset integration and limits creative potential.
 - Challenges in synchronizing code-driven animations, events, and visual modifications with specific parts of a model, impeding advanced customizations.
 
 This feature is motivated by the need to improve both basic and advanced use cases for creators working with GLTF models:
-- For **entry-level creators**: This feature enables direct access to model elements like colliders and transforms without separate exports, supporting quicker, easier setup for interactable components. For instance, you would be able to export a entire scene, prefix all the nodes you find relevant, and then fetch them in a list to manipulate in the scene-code.
-- For **advanced developers**: It provides powerful tools to transform internal nodes, repurpose model elements (e.g., using a mesh or material as a resource), and create code-driven animations or effects that modify specific model components dynamically. For example, you could attach other models to internal part, like a sword to a hand in a NPC model, or you can use a GLTF to instance several meshes with pointing the same resource.
+- For **entry-level creators**: This feature enables direct access to model elements like colliders and transforms without separate exports, supporting quicker, easier setup for interactable components. For instance, you would be able to export an entire scene, prefix all the relevant nodes, and then fetch them in a list to manipulate in the scene code.
+- For **advanced developers**: It provides powerful tools to transform internal nodes, repurpose model elements (e.g., using a mesh or material as a resource), and create code-driven animations or effects that modify specific model components dynamically. For example, you could attach other models to the internal parts, like a sword to a hand in an NPC model, or you can use a GLTF to instance several meshes pointing to the same resource.
 
-By extending access to these internal resources, this solution provides a deeper level of control, supporting a flexible workflow that integrates more seamlessly with artist pipelines and accelerates creative experimentation.
+This solution provides a deeper level of control by extending access to these internal resources. It supports a flexible workflow that integrates more seamlessly with artist pipelines and accelerates creative experimentation.
 
 # Proposed Solution
 
@@ -46,9 +46,9 @@ The primary and key elements for usage are as follows:
 When assigning a `GltfContainer` to an entity, and upon successful loading, the `GltfLoadingState` is populated with the complete GLTF scene data. This feedback can be disabled by setting `internalFeedback=false` within the `GltfContainer` (default is `true`).
 
 ### Generating an Accurate Animation List
-As a result of fetching the structure, one common challenge in utilizing animations is ensuring the accuracy of animation names. By retrieving the animation list directly from the GLTF, developers can either copy the string names or map the states through the array. 
+One common challenge in utilizing animations is ensuring the accuracy of animation names. As a result of fetching the structure, the animation list can directly be taken from the GLTF. Developers can either copy the string names or map the states through the array. 
 
-For instance, hardcoding each GLTF animation name is impractical when developing dynamic smart items within environments like the In-World-Builder. Obtaining the animation list at runtime is crucial to streamline the direct animation selection pipeline.
+For instance, hardcoding each GLTF animation name is impractical when developing dynamic smart items within environments like the In-World Builder. Obtaining the animation list at runtime is crucial to streamlining the direct animation selection pipeline.
 
 ## Accessing a Node from the Internal Tree
 Once a GLTF is loaded and instantiated within the world, referencing specific nodes of the GLTF scene becomes possible. The availability of the node list enables efficient identification without the need to reference the entire tree structure.
@@ -64,7 +64,7 @@ While all components are writable, specific considerations apply:
 - **Material**: If the `gltf` field is set in `Material`, default values fall back to the GLTF material properties. For example, properties such as `albedoColor` or `diffuseColor` default to *WHITE* but defer to the GLTF-defined settings if no custom values are provided.
 
 ## Using GLTF as a Mesh/Material Resource
-This specification further allows the use of resources from a GLTF by setting the `gltf` field within `Material`, `MeshRenderer`, or `MeshCollider`. It is recommended to first load the `GltfContainer` to retrieve available meshes, materials, and textures, ensuring that these resources are loaded into memory before use. 
+This specification further allows the use of resources from a GLTF by setting the `gltf` field within `Material`, `MeshRenderer`, or `MeshCollider`. It is recommended to first load the `GltfContainer` and retrieve available meshes, materials, and textures, ensuring that these resources are loaded into memory before being used. 
 
 # Specification
 ## Implementation details
@@ -108,7 +108,7 @@ This specification provides structured access to GLTF data for interactive scene
 
 
 ## Protobuf components
-Here is the specific part of modification to directly do in the Protocol.
+Here is the specific part of the modification to directly do in the Protocol.
 
 ### Modify
 It only shows the part is modified.
