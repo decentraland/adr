@@ -3,7 +3,7 @@ layout: adr
 adr: 214 # replace this number for the PR or ISSUE number
 title: PointerEvents SDK Component & Input system
 date: 2023-04-17
-status: Draft # pick one of these
+status: Living
 type: Standards Track
 spdx-license: CC0-1.0
 authors:

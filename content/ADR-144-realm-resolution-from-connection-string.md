@@ -3,7 +3,7 @@ layout: adr
 adr: 144
 title: Realm resolution from connection string
 date: 2022-12-13
-status: Review
+status: Living
 type: Standards Track
 spdx-license: CC0-1.0
 authors:
