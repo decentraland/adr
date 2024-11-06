@@ -3,7 +3,7 @@ layout: adr
 adr: 219
 title: Reserved & Static Entities
 date: 2023-04-19
-status: Draft
+status: Living
 type: Standards Track
 spdx-license: CC0-1.0
 authors:

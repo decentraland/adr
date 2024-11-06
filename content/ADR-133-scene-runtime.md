@@ -4,7 +4,7 @@ date: 2022-11-17
 title: Scene runtime definition
 authors:
   - menduz
-status: Draft
+status: Living
 type: Standards Track
 spdx-license: CC0-1.0
 ---
@@ -69,7 +69,6 @@ The runtime for the SDK7 is compatible with [CommonJS](https://en.wikipedia.org/
 
 The exposed RPC modules are defined in the [protocol repository](https://github.com/decentraland/protocol/blob/main/proto/decentraland/kernel/apis/engine_api.proto).
 
-> TODO: define and document naming conventions about code generation for modules
 
 ```ts
 // `require` instantiates a proxy to a RPC module. Every exposed function
