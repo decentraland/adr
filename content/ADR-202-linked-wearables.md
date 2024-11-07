@@ -3,7 +3,7 @@ layout: adr
 adr: 202
 title: Linked Wearables Implementation
 date: 2024-08-21
-status: Draft
+status: Living
 type: RFC
 spdx-license: CC0-1.0
 authors:
