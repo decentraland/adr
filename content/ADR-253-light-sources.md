@@ -3,7 +3,7 @@ layout: adr
 adr: 253
 title: Light Sources
 date: 2024-11-13
-status: Review
+status: Draft
 type: RFC
 spdx-license: CC0-1.0
 authors:
@@ -37,20 +37,21 @@ We should create a `LightSource` component that, when added to an entity, tells 
 
 A Type field will let you chose between _Spot_ and _Point_ light. We believe these two types of lights are enough for now, the component could be expanded in the future if we want to include other types.
 
+A _Spot_ light projects a cone of concentrated light in a single direction, originating from a single point in the scene. It's ideal for shows and theatric effects, it can also be used to shine a light on something with a functional intention.
+
+A _Point_ light expands in all directions from a point in the scene, illuminating the space in a more subtle way. The point of origin is often not easy to pinpoint for the player.
+
 The following fields will be available on both types of light:
 
-- Color: _Color4_
-- Intensity: _number_
-- Range: _number_
-- Active: _boolean_
+- Color: _Color4_ The color of the light
+- Intensity: _number_ The luminosity value of the light, from 0 to 1.
+- Range: _number_ The maximum distance that can be affected by the light source.
+- Active: _boolean_ Determines if the light is currently on or not.
 
 In lights of type _Spot_, we will also include:
 
-- Inner angle
-- Outer angle
-
-These two fields define how wide to make both cones, the full intensity center and the lighter margins.
-Caveats for these two: - max 180 - inner angle can’t be more than outer angle
+- Inner angle: _number_ This angle, measured from the direction vertex, defines a cone where the light has full intensity. Max 180, can’t be more than outer angle.
+- Outer angle: _number_ This angle, measured from the direction vertex, defines a cone where the light has an effect, the intensity decreases farther away from the inner cone. Max 180.
 
 The `Active` flag lets creators easily turn a light source on or off. We could otherwise achieve the same by setting intensity to 0, but offering a switch makes it easier to retain the prior configuration.
 
