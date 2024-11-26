@@ -1,9 +1,9 @@
 ---
 layout: adr  
-adr: 253 # replace this number with the PR or ISSUE number  
+adr: 277 # replace this number with the PR or ISSUE number  
 title: Introducing the "Deprecated" State for ADRs  
 date: 2024-11-15  
-status: Draft  
+status: Review  
 type: Meta  
 spdx-license: CC0-1.0  
 authors:  
