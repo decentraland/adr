@@ -12,7 +12,7 @@ authors:
 
 ## Abstract
 
-This ADR proposes introducing a new **Deprecated** status for ADRs that are no longer relevant due to changes in Decentraland’s architecture, clients, or feature set. The goal is to improve clarity by distinguishing between ADRs that were once implemented and valid but are now outdated, versus those that were never accepted or implemented.
+This ADR proposes introducing a new **Deprecated** status for ADRs that are no longer relevant due to changes in Decentraland’s architecture, protocol, clients, or feature set. The goal is to improve clarity by distinguishing between ADRs that were once implemented and valid but are now outdated, versus those that were never accepted or implemented.
 
 ## Context, Reach & Prioritization
 
@@ -22,7 +22,7 @@ The **Withdrawn** status implies that an ADR was abandoned or deemed incorrect b
 
 Introducing a **Deprecated** status will:
 
-- Clearly identify ADRs that have been rendered obsolete due to changes in architecture or feature sets.
+- Clearly identify ADRs that have been rendered obsolete due to changes in protocol or feature sets.
 - Preserve the historical context of past decisions while indicating that they are no longer applicable.
 - Reduce confusion among developers and stakeholders regarding the current relevance of ADRs.
 
@@ -74,7 +74,7 @@ The full list of ADR states will now include:
 - **Stagnant**: ADRs that are inactive for over 6 months in Draft, Review, or Last Call.
 - **Withdrawn**: The ADR was abandoned or rejected and will not be pursued further.
 - **Living**: The ADR is designed to be continually updated and does not reach finality (e.g., ADR-1).
-- **Deprecated**: The ADR was once Final and implemented but is now outdated or no longer relevant due to architectural changes.
+- **Deprecated**: The ADR was once Final and implemented but is now outdated or no longer relevant due to protocol changes.
 
 ### Deprecated State Requirements
 
