@@ -35,38 +35,51 @@ Note: Some GLTF models come with lights packaged as nodes inside the structure o
 
 We should create a `LightSource` component that, when added to an entity, tells the engine to shine a light from that entity’s Transform position.
 
-A Type field will let you chose between _Spot_ and _Point_ light. We believe these two types of lights are enough for now, the component could be expanded in the future if we want to include other types.
+A Type field will let you chose between _Spot_, _Point_ and _Global_ light. We believe these types of lights are enough for now, the component could be expanded in the future if we want to include other types.
 
 A _Spot_ light projects a cone of concentrated light in a single direction, originating from a single point in the scene. It's ideal for shows and theatric effects, it can also be used to shine a light on something with a functional intention.
 
 A _Point_ light expands in all directions from a point in the scene, illuminating the space in a more subtle way. The point of origin is often not easy to pinpoint for the player.
 
-The following fields will be available on both types of light:
+A _Global_ light overrides the default ambient light from the sun or moon. It can only be added to the scene _root_ entity.
+
+The following fields will be available on all types of light:
 
 - Color: _Color4_ The color of the light
-- Intensity: _number_ The luminosity value of the light, from 0 to 1.
+- Brightness: _number_ The luminosity value of the light, expressed in Lumens.
 - Range: _number_ The maximum distance that can be affected by the light source.
 - Active: _boolean_ Determines if the light is currently on or not.
+- Shadows: _boolean_. See [Shadows](#shadows)
 
 In lights of type _Spot_, we will also include:
 
 - Inner angle: _number_ This angle, measured from the direction vertex, defines a cone where the light has full intensity. Max 180, can’t be more than outer angle.
 - Outer angle: _number_ This angle, measured from the direction vertex, defines a cone where the light has an effect, the intensity decreases farther away from the inner cone. Max 180.
 
-The `Active` flag lets creators easily turn a light source on or off. We could otherwise achieve the same by setting intensity to 0, but offering a switch makes it easier to retain the prior configuration.
+In lights of type _Global_, we will also include:
+
+- direction: _Vector3_ Sunlight direction.
+- ambientColor: _Color3_; // Sky/environment contribution
+- ambientBrightness: _number_; // Overall scene brightness multiplier
+
+We will create helpers to make it easier for creators to create these components. For example:
+
+`LightSource.spotLight(myEntity, { brightness: 1000, angle: 10})`
+
+The `Active` flag lets creators easily turn a light source on or off. We could otherwise achieve the same by setting intensity to 0, but offering a switch makes it easier to retain the prior configuration. Another option debated was to use the `Visibility` component to turn off a light, but decided that we wanted to keep the visibility of any meshes as a separate independent consideration.
 
 ## Shadows
 
 Note: This feature will likely not ba a part of the initial implementation. It's included here to discuss the full vision, but field for this may not be present on the protocol or the SDK until later.
 
-By default lights won’t have shadows. Each light source can chose if they want shadows or not, and if to use hard shadows or soft shadows.
+All light sources will have a `shadows` property that determines if a light will cast shadows.
 
-We will add fields for this on the `LightSource` component:
+Default values should differ by light type:
 
-- Shadow type: No shadows / Hard Shadows / Soft shadows
+- Point/Spot lights: false (performance consideration)
+- Global light: true (essential for scene depth)
 
-- The creator can chose the shadow resolution as a setting on each light source
-- The shadow resolution is picked by the player in the user’s settings, as a global option. If they have low settings they’ll always use low res
+Each engine is free to determine considerations like shadow resolutions, or putting a limit on the number of shadows being computed and how to prioritize these. It's recommendable to make these variables dependent on user quality settings.
 
 ## Limitations
 
@@ -96,11 +109,15 @@ Note: This point deserves its own ADR and will be addressed in the future, but i
 
 Creators might want to turn off the default light of the sun, to have better control over lighting conditions. This is essential for example to create a spooky ambiance.
 
-They could be done via a component on the root entity. Otherwise it could be a scene setting in the scene.json. TBD.
+This will be done by adding a `LightSource` component to the root entity, using the type `Global`. This will override the default directional light from the sun or moon.
 
-It should ideally be possible to do both in worlds and in Genesis City, but perhaps we can start with enabling it just in worlds for now if that’s easier.
+Default values:
 
-To consider: Instead of turning on-off, can we also dim or tint the default light?
+- Default directional light should match typical daylight
+- Direction could vary with time-of-day (if implemented)
+- Reasonable ambient light for scene visibility
+
+It should be possible to do both in worlds and in Genesis City.
 
 ## Serialization
 
