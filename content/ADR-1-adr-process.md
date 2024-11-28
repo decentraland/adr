@@ -63,6 +63,7 @@ flowchart TB
     Draft <--> Stagnant
 
     Final --> Deprecated
+    Living --> Deprecated
 
 ```
 

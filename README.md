@@ -39,11 +39,14 @@ flowchart TB
 
     Review --> Withdrawn
     LastCall --> Withdrawn
-
+    
     LastCall <--> Stagnant
     Review <--> Stagnant
     Draft <--> Stagnant
-
+    
+    
+    Final --> Deprecated
+    Living --> Deprecated
 ```
 
 ## ADR Types
