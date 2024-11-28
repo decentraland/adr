@@ -23,7 +23,7 @@ For Decentraland implementers, ADRs are a convenient way to track the progress o
 
 There are three types of ADR:
 
-- A **Standards Track** ADR describes any change that affects most or all Decentraland implementations, such as—a change to the synchronzation protocol, a change in deployments validity rules, proposed application standards/conventions, or any change or addition that affects the interoperability of applications using Decentraland. Standards Track ADRs consist of three parts—a design document, an implementation, and (if warranted) an update to the [formal specification](https://github.com/decentraland/yellowpaper).
+- A **Standards Track** ADR describes any change that affects most or all Decentraland implementations, such as—a change to the synchronization protocol, a change in deployments validity rules, proposed application standards/conventions, or any change or addition that affects the interoperability of applications using Decentraland. Standards Track ADRs consist of three parts—a design document, an implementation, and (if warranted) an update to the [formal specification](https://github.com/decentraland/yellowpaper).
 
 - A **Meta** ADR describes a process surrounding Decentraland or proposes a change to (or an event in) a process. Process ADRs are like Standards Track ADRs but apply to areas other than the Decentraland protocol itself.
 
@@ -62,6 +62,8 @@ flowchart TB
     Review <--> Stagnant
     Draft <--> Stagnant
 
+    Final --> Deprecated
+
 ```
 
 **Idea** - An idea that is pre-draft. This is not tracked within the ADR Repository as a text file, it is recommended to start with an issue or discussion.
@@ -76,21 +78,23 @@ If this period results in necessary normative changes it will revert the ADR to 
 
 **Final** - This ADR represents the final standard. A Final ADR exists in a state of finality and should only be updated to correct errata and add non-normative clarifications.
 
-**Stagnant** - Any ADR in `Draft` or `Review` or `Last Call` if inactive for a period of 6 months or greater is moved to `Stagnant`. An ADR may be resurrected from this state by Authors or ADR Editors through moving it back to `Draft` or it's earlier status. If not resurrected, a proposal may stay forever in this status.
+**Stagnant** - Any ADR in `Draft` or `Review` or `Last Call` if inactive for a period of 6 months or greater is moved to `Stagnant`. An ADR may be resurrected from this state by Authors or ADR Editors through moving it back to `Draft` or its earlier status. If not resurrected, a proposal may stay forever in this status.
 
-**Withdrawn** - The ADR Author(s) have withdrawn the proposed ADR. This state has finality and can no longer be resurrected using this ADR number. If the idea is pursued at later date it is considered a new proposal.
+**Withdrawn** - The ADR Author(s) have withdrawn the proposed ADR. This state has finality and can no longer be resurrected using this ADR number. If the idea is pursued at a later date it is considered a new proposal.
 
 **Living** - A special status for ADRs that are designed to be continually updated and not reach a state of finality. This includes most notably ADR-1.
+
+**Deprecated** - An ADR that was previously marked as `Final` and implemented but has become obsolete or no longer relevant due to protocol or feature changes. Deprecated ADRs must include a Deprecation Reason explaining their obsolescence and, where applicable, link to newer ADRs that supersede them.
 
 ## What belongs in a successful ADR?
 
 Each ADR should have the following parts:
 
-- Preamble - RFC 822 style headers containing metadata about the ADR, including the ADR number, a short descriptive title (limited to a maximum of 44 characters), a description (limited to a maximum of 140 characters), and the author details. Irrespective of the category, the title and description should not include ADR number.
-- Abstract - Abstract is a multi-sentence (short paragraph) technical summary. This should be a very terse and human-readable version of the document section. **Someone should be able to read only the abstract to get the gist of what this document is about in its current state.** Abstracts should be always up to date with the current state of the document.
-- Context, Reach & Prioritization - Go into detail about the subject in question. Why is this decision important? The urgency of the decision? Datapoints and related background information. Vocabulary and key terms.
-- Solution Space Exploration - Discuss the potential alternatives and their impact. What alternatives are being considered, their benefits, their costs (team resources, money, time frames), and mitigations for any drawbacks.
-- Specification - The technical specification should describe the syntax and semantics of any new feature.
+- **Preamble** - RFC 822 style headers containing metadata about the ADR, including the ADR number, a short descriptive title (limited to a maximum of 44 characters), a description (limited to a maximum of 140 characters), and the author details. Irrespective of the category, the title and description should not include ADR number.
+- **Abstract** - Abstract is a multi-sentence (short paragraph) technical summary. This should be a very terse and human-readable version of the document section. **Someone should be able to read only the abstract to get the gist of what this document is about in its current state.** Abstracts should be always up to date with the current state of the document.
+- **Context, Reach & Prioritization** - Go into detail about the subject in question. Why is this decision important? The urgency of the decision? Datapoints and related background information. Vocabulary and key terms.
+- **Solution Space Exploration** - Discuss the potential alternatives and their impact. What alternatives are being considered, their benefits, their costs (team resources, money, time frames), and mitigations for any drawbacks.
+- **Specification** - The technical specification should describe the syntax and semantics of any new feature.
 
 ## Picking an ADR number
 
@@ -104,25 +108,17 @@ ADRs should be written in [markdown](https://github.com/adam-p/markdown-here/wik
 
 Each ADR must begin with an [RFC 822](https://www.ietf.org/rfc/rfc822.txt) style header preamble, preceded and followed by three hyphens (`---`). This header is also termed ["front matter" by Jekyll](https://jekyllrb.com/docs/front-matter/). The headers must appear in the following order.
 
-`adr`: _ADR number_ (this is determined by the ADR editor)
-
-`title`: _The ADR title is a few words, not a complete sentence_
-
-`description`: _Description is one full (short) sentence_
-
-`authors`: _The list of the author's GitHub username(s)._
-
-`discussion`: _The url pointing to the official discussion thread_
-
-`status`: _Draft, Review, Last Call, Final, Stagnant, Withdrawn, Living_
-
-`last-call-deadline`: _The date last call period ends on_ (Optional field, only needed when status is `Last Call`)
-
-`type`: _One of `Standards Track`, `Meta`, or `ADR`_
-
-`date`: _Date the ADR was created on_
-
-`withdrawal-reason`: _A sentence explaining why the ADR was withdrawn._ (Optional field, only needed when status is `Withdrawn`)
+- `adr`: _ADR number_ (this is determined by the ADR editor)
+- `title`: _The ADR title is a few words, not a complete sentence_
+- `description`: _Description is one full (short) sentence_
+- `authors`: _The list of the author's GitHub username(s)._
+- `discussion`: _The url pointing to the official discussion thread_
+- `status`: _Draft, Review, Last Call, Final, Stagnant, Withdrawn, Living, Deprecated_
+- `last-call-deadline`: _The date last call period ends on_ (Optional field, only needed when status is `Last Call`)
+- `type`: _One of `Standards Track`, `Meta`, or `ADR`_
+- `date`: _Date the ADR was created on_
+- `withdrawal-reason`: _A sentence explaining why the ADR was withdrawn._ (Optional field, only needed when status is `Withdrawn`)
+- `deprecated-reason`: _A sentence explaining why the ADR was deprecated._ (Optional field, only needed when status is `Deprecated`)
 
 Headers that permit lists must separate elements with commas.
 
@@ -155,8 +151,6 @@ Links to external resources **SHOULD NOT** be included. External resources may d
 ## Linking to other ADRs
 
 References to other ADRs should follow the format `ADR-N` where `N` is the ADR number you are referring to. Each ADR that is referenced in an ADR **MUST** be accompanied by an absolute markdown link to the absolute rendered path i.e. `/adr/ADR-1`.
-
-<!--  Each ADR that is referenced in an ADR **MUST** be accompanied by a relative markdown link the first time it is referenced, and **MAY** be accompanied by a link on subsequent references. The link **MUST** always be done via relative paths so that the links work in this GitHub repository, forks of this repository, the main ADRs site, mirrors of the main ADR site, etc.  For example, you would link to this ADR as `/adr/ADR-1`. -->
 
 ## Auxiliary Files
 
@@ -209,7 +203,15 @@ ADRs are encouraged to follow [RFC 2119](https://www.ietf.org/rfc/rfc2119.html) 
 
 This document was derived heavily from [Ethereum EIPs](https://github.com/ethereum/eips) which was also derived from [Bitcoin's BIP-0001](https://github.com/bitcoin/bips) written by Amir Taaki which in turn was derived from [Python's PEP-0001](https://peps.python.org/). In many places text was simply copied and modified. Although the PEP-0001 text was written by Barry Warsaw, Jeremy Hylton, and David Goodger.
 
-The initial document for ADRs for Decentraland can be found in the git history of this file and it was derived from [Documenting Architecture Decisions](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions) by Michael Nygard
+The initial document for ADRs for Decentraland can be found in the git history of this file and it was derived from [Documenting Architecture Decisions](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions) by Michael Nygard.
 
 1. [Importance of architecture decisions](http://www.computer.org/portal/web/csdl/doi/10.1109/MS.2009.52)
 2. [Documenting software architectures](http://www.sei.cmu.edu/library/abstracts/books/0321552687.cfm)
+
+## Changelog
+
+### [2024-11-28]
+- **Added `Deprecated` Status**:
+    - Introduced the `Deprecated` status to identify ADRs that were previously marked as `Final` but are now obsolete due to changes in Decentraland's architecture, protocol, or feature set.
+    - Deprecated ADRs must include a `deprecated-reason` explaining their obsolescence and, if applicable, link to newer ADRs that supersede them.
+    - More details https://adr.decentraland.org/adr/ADR-277

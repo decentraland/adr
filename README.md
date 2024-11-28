@@ -10,6 +10,7 @@ states:
 - LastCall
 - Stagnant
 - Withdrawn
+- Deprecated
 spdx-license: CC0-1.0
 ---
 
@@ -19,7 +20,7 @@ ADR stands for _Architecture Decision Record_. An ADR is a design document provi
 
 ## How do ADRs work?
 
-Read [the ADR explaining the rationale](/content/ADR-1-adr-process.md) for a detailed explaination.
+Read [the ADR explaining the rationale](/content/ADR-1-adr-process.md) for a detailed explanation.
 
 ### ADR Process
 
@@ -54,3 +55,4 @@ There are three types of ADRs:
 - A **Meta** ADR describes a process surrounding Decentraland or proposes a change to (or an event in) a process. Process ADRs are like Standards Track ADRs but apply to areas other than the Decentraland protocol itself.
 
 - An **RFC** describes a Decentraland design issue, or provides general guidelines or information to the Decentraland community. RFCs do not necessarily represent Decentraland community consensus or a recommendation, so users and implementers are free to ignore RFCs or follow their advice.
+    Final --> Deprecated
