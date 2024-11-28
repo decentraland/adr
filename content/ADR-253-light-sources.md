@@ -46,7 +46,7 @@ A _Global_ light overrides the default ambient light from the sun or moon. It ca
 The following fields will be available on all types of light:
 
 - Color: _Color4_ The color of the light
-- Brightness: _number_ The luminosity value of the light, expressed in Lumens.
+- Brightness: _number_ The luminosity value of the light. For _Spot_ and _Point_ light, this value is expressed in Lumens, for _Global_ light, it's expressed in Lux units (lumens per square metre).
 - Range: _number_ The maximum distance that can be affected by the light source.
 - Active: _boolean_ Determines if the light is currently on or not.
 - Shadows: _boolean_. See [Shadows](#shadows)
