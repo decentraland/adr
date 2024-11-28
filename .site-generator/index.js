@@ -58,11 +58,4 @@ function checkAdrStatus(page) {
         page.matterfront.adr +
         " is marked as `Deprecated` but has no `deprecated-reason`"
     )
-
-  if (page.matterfront.status === "Withdrawn" && !page.matterfront["withdrawal-reason"])
-    throw new Error(
-        "ADR-" +
-        page.matterfront.adr +
-        " is marked as `Withdrawn` but has no `withdrawal-reason`"
-    )
 }
