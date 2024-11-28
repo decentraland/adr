@@ -56,14 +56,35 @@ Any changes done to the entity should be reflected by the engine on that node of
 
 When we give an entity a `GltfNode` , the engine will also give it `MeshRenderer` , `MeshCollider` , `Material`, and `Transform` components if applicable.
 
-Note: The Transform will be read-only.
-The contents of the Material will be approximated as best as possible to what the SDK supports, it may not accurately reflect everything about the material in the GLTF.
+Note: When reading the contents of the Material, they will be approximated as best as possible to what the SDK supports, it may not accurately reflect everything about the material in the GLTF.
 
-### Changes to other components
+## Transform and parenting
+
+The transform of an entity with a `GltfNode` component will be relative to its parent node. It won't be global to the scene, and also won't be in relation to the root node of the GLTF.
+
+Suppose the following example for the internal structure of a GLTF:
+
+```
+gltf_root
+|
+|- Child A
+  |
+  |- Child B
+    |
+    |- Child C
+```
+
+The creator of a scene needs to be able to instance an entity for the root GLTF, and an entity to represent Child C. The creator doesn't need to define anything for Child A and Child B.
+
+The position and other Transform properties of this entity will be in relation to the parent node, in this case Child B. In this scenario the scene has no reference for this parent, but for many use cases that won't be needed. If the creator needs to be able to trace the full hierarchy, then it would be necessary to instance an entity for each.
+
+Note: Changes in the `parent` property of an entity with GltfNode will have no effect. It shouldn't be possible to mess with the hierarchy of the nodes inside a GLTF, as that opens the door to too many complex corner cases.
+
+## Changes to other components
 
 On the `MeshRenderer` and `MeshCollider` components, add the `GltfMesh` option.
 
-### Loading State
+## Loading State
 
 We will include a `GltfNodeState` component, that creators can use to verify if a node has already finished being populated with the components detected on the explorer. It should be similar to that would work similar to the existing `GltfContainerLoadingState`
 
