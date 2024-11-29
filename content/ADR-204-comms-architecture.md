@@ -138,7 +138,7 @@ par Archipelago Room
 	C->>L: connect to LiveKit room Id = islandId
 	L-->>C: roomConnection
 	C->>L: msgs to roomId: movement / nearby chat
-	L-->>L: brocast msg to roomId participants 
+	L-->>L: broadcast msg to roomId participants 
 and Scene Room
 	User->>C: move to parcel 
 	C->>G: Get sceneRoom 
@@ -146,7 +146,7 @@ and Scene Room
 	C->>L: Connect to Scene Room (realm:sceneId): connectionStr
 	L-->>C: roomConnection
 	C->>L: send message: movement / playEmote / chat / voice / announceProfileV
-	L-->>L: brodcast msg to roomId participats 
+	L-->>L: broadcast msg to roomId participants 
 end
 ``` 
 
@@ -194,8 +194,10 @@ Note over A: Initialize LiveKit Transport
 	WS-->>C: IslandId & connectionStr
 	C->>L: connect to LiveKit room Id = islandId
 	L-->>C: roomConnection
-	C->>L: msgs to roomId: movement / nearby chat
-	L-->>L: brocast msg to roomId participants 
+	C->>L: msgs to roomId: movement / nearby chat / announce profile version
+	L-->>L: broadcast messages to roomId participants
+    C->>L: set
+    L-->>L: broadcast metadata to roomId participants 
 ```
 
 #### 3. Scene Room
@@ -212,16 +214,397 @@ participant L as LiveKit
 	G-->>C: room connectionStr
 	C->>L: Connect to Scene Room (realm:sceneId): connectionStr
 	L-->>C: roomConnection 
-	C->>L: send message: movement / playEmote / chat / voice / announceProfileV
-	L-->>L: brodcast msg to roomId participats 
+	C->>L: send message: movement / playEmote / chat / voice / announce profile version
+	L-->>L: broadcast msg to roomId participants
+    C->>L: set metadata
+    L-->>L: broadcast metadata to roomId participants 
 ```
 
+## Metadata
+
+Metadata is supplementary data which is static or rarely changed, and is aimed to complement Protocol Messages per peer-basis (only one instance of metadata is set per LiveKit user at a time). Thus, the optimal usage of bandwidth is ensured as transmitting of non-changed data is prevented. 
+Metadata is provided in `JSON` format, and can be extended as Decentraland Client develops over time.
+
+Metadata is set via [setMetadata](https://docs.livekit.io/client-sdk-js/classes/LocalParticipant.html#setMetadata) method of the LiveKit Client SDK every time any of metadata components are changed.
+Metadata is written to both Scene and Island rooms.
+
+Every component is described in detail in the corresponding section of the Protocol Message it compliments.
 
 ## Protocol Messages  
 
 The protocol messages for profiles, positions, and updates have been optimized for client performance, aiming to minimize data transmission through the channels. In this new implementation, profiles' data is no longer sent through the island and is instead retrieved from the Catalyst network. When a user updates their profile, a notification is sent, and the updated profile is downloaded from the servers. This approach ensures that avatar impersonation is prevented, as the signed profile is retrieved from a trusted Catalyst node.
 
-TBD 
+### Profile Announcement 
+
+Before a remote peer is able to see another peer a profile version should be announced. This action is mandatory, if the version is not announced, the remote client is unable to visualize any other messages.
+
+**Communication Diagram**
+
+```mermaid
+sequenceDiagram
+  actor B as Bob
+  actor A as Alice
+  participant C as Catalyst
+  loop 
+    A->>A: Profile version is changed?
+    A->>B: Broadcast ProfileVersion($version)
+    B->>B: Do I have Alice's profile version==$version?
+    alt is Yes
+        B->>B: Do nothing
+    else is No    
+        B->>C: Request a new profile from Catalyst
+        C->>B: Profile Response
+        B->>B: Cache the new Alice Profile
+    end    
+  end
+```
+
+```protobuf
+message AnnounceProfileVersion {
+  uint32 profile_version = 1;
+}
+```
+
+`AnnounceProfileVersion` is sent to both `Island` and `Scene` rooms.
+The profile version should match the version sent to the catalyst.
+
+The process on the client looks like following:
+
+```mermaid
+flowchart LR
+id1["Make Profile Changes"] --> id2["Increment Version"] --> id3["Publish to Catalyst"] --> id4["Announce Profile Version"]
+```
+
+**Metadata**
+
+To ensure that peers will be able to retrieve the updated profile version from the correct Catalyst, `lambdasEndpoint` should be set in `Metadata`.
+It is equal to the `lambdas.publicUrl` received from `/about` response.
+It is sufficient to set this data only once per user session as it does not change while the session is active.
+
+`lambdasEndpoint` is optional and can be omitted: in this case it's not guaranteed that the profile received on a peer end will reflect the most recent changes, as it may take time to propagate profile changes through all available Catalysts.
+
+```json
+{
+  ...
+  "lambdasEndpoint": <serverAbout.lambdas.publicUrl>,
+  ...
+}
+```
+
+### Player Emote
+
+```protobuf
+message PlayerEmote {
+  uint32 incremental_id = 1;
+  string urn = 2;
+}
+```
+
+`PlayerEmote` is sent to both `Island` and `Scene` rooms.
+
+This message is used to notify other peers that a user is performing an emote. The `incremental_id` is a monotonic counter that grows with every sent message.
+- `incremental_id`: A monotonic counter that grows with every sent message. It is used for messages deduplication 
+- `urn`: The Uniform Resource Name (URN) of the emote being performed.
+
+**Looping Emotes Replication**
+
+For a looping emote this message should be replicated every cycle to ensure its visibility for a newly joined peer.
+
+```mermaid
+sequenceDiagram
+  actor A as Peer
+  participant B as LiveKit  
+  A->>A: Play Emote "Dance"
+  A->>A: Increment ID
+  A->>B: Broadcast PlayerEmote(incremental_id, "Dance")
+  A->>A: Is the emote looping?
+  alt is Yes
+    loop every emote cycle
+        A->>A: Don't increment ID
+        A->>B: Broadcast PlayerEmote(incremental_id, "Dance")
+    end
+  end    
+  
+```
+
+> Note: when a peer joins a room they will miss information about emotes currently being played. If an emote is looping they will receive it with the next message
+
+### Movement (Compressed)
+
+```protobuf
+message MovementCompressed {
+  int32 temporal_data = 1; // bit-compressed: timestamp + animations 
+  int64 movement_data = 2; // bit-compressed: position + velocity 
+}
+```
+
+`Movement` message is used to synchronize character position in the world and its animation state. The animation state is fully driven by a sender, a recipient does not infer anything on its own but fully follows the state received from another peer.
+
+This is a complex message that encodes all possible states of a player in a compressed format. Thus, the client keeps reasonable amount of data being transferred.
+
+`MovementCompressed` is sent to both `Island` and `Scene` rooms.
+
+#### Compression algorithms
+
+**Float quantization**
+
+The goal of quantization is to preserve the original `value` with the given accuracy which is defined by:
+- `minValue` - the minimum value that can be represented
+- `maxValue` - the maximum value that can be represented
+- `sizeInBits` - the number of bits used to represent the value, the higher the number the higher the accuracy
+
+When the value is quantized it is compressed to the range `[0, 2^sizeInBits - 1]` and then decompressed back to the original value.
+
+```csharp
+        public static int Compress(float value, float minValue, float maxValue, int sizeInBits)
+        {
+            int maxStep = (1 << sizeInBits) - 1;
+            float normalizedValue = (value - minValue) / (maxValue - minValue);
+            return Mathf.RoundToInt(Mathf.Clamp01(normalizedValue) * maxStep);
+        }
+        
+        public static float Decompress(int compressed, float minValue, float maxValue, int sizeInBits)
+        {
+            float maxStep = (1 << sizeInBits) - 1f;
+            float normalizedValue = compressed / maxStep;
+            return (normalizedValue * (maxValue - minValue)) + minValue;
+        }
+```
+
+#### Data breakdown
+
+For every property it is vital to define `minValue` and `maxValue` as close as possible to the practical range as it will increase the accuracy of the transmitted value within a fixed `sizeInBits`
+
+**temporal_data**:
+
+| Bits position | Description                                                                                                                                                                                                   |
+|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 0 - 14        | **Timestamp**: used for interpolation<br/>TIMESTAMP_QUANTUM = 0.02f<br/>TIMESTAMP_BITS = 15                                                                                                                   |
+| 15 - 16       | **Movement Kind**: Represents one of the movement states in the binary format:<br/>00 = IDLE<br/>01 = WALK<br/>10 = JOG<br/>11 = RUN                                                                          |
+| 17            | **Sliding Bit**: is set when the avatar is sliding according to the animations                                                                                                                                |
+| 18            | **Stunned Bit**: is set when the avatar is stunned (after a long jump)                                                                                                                                        |
+| 19            | **Long Jump Bit**                                                                                                                                                                                             |
+| 20            | **Falling Bit**                                                                                                                                                                                               |
+| 21            | **Long Falling Bit**                                                                                                                                                                                          |
+| 22 - 27       | **Rotation around Y-axis**<br/>Sent explicitly to identify cases when the avatar rotates without movement<br/>Uses Float Quantization algorithm:<br/>`minValue = 0`<br/>`maxValue = 360`<br/>`sizeInBits = 6` |
+| 28 - 29       | Two bits to identify the velocity tier                                                                                                                                                                        |
+
+
+Timestamp encoding:
+
+The TimestampEncoder algorithm implements a circular buffer for encoding and decoding timestamps to fit within a fixed bit-length constraint.
+
+- Key Concepts:
+
+  - Uses a circular buffer with a size defined by `2^TIMESTAMP_BITS * TIMESTAMP_QUANTUM`.
+  - Normalizes timestamps within the buffer range during encoding.
+  - Handles buffer wraparound during decoding to maintain continuity.
+
+```csharp
+        private const float WRAPAROUND_THRESHOLD = 0.75f;
+        
+        private int steps => 1 << settings.TIMESTAMP_BITS; // 2^TIMESTAMP_BITS
+        private int mask => steps - 1;
+
+        public float BufferSize => steps * settings.TIMESTAMP_QUANTUM;
+        
+        public int Compress(float timestamp)
+        {
+            float normalizedTimestamp = timestamp % BufferSize; // Normalize timestamp within the round buffer
+            return Mathf.RoundToInt(normalizedTimestamp / settings.TIMESTAMP_QUANTUM) % steps;
+        }
+
+        public float Decompress(long data)
+        {
+            float decompressedTimestamp = (int)(data & mask) * settings.TIMESTAMP_QUANTUM % BufferSize;
+            float adjustedTimestamp = decompressedTimestamp + timestampOffset;
+
+            // Adjust to buffer wraparound
+            if (adjustedTimestamp < lastOriginalTimestamp - (BufferSize * WRAPAROUND_THRESHOLD))
+            {
+                timestampOffset += BufferSize;
+                adjustedTimestamp += BufferSize;
+            }
+
+            lastOriginalTimestamp = adjustedTimestamp;
+            return adjustedTimestamp;
+        }
+```
+
+**movement_data**:
+
+Compression parameters of movement are based on the velocity of the avatar, and they are split into 3 tiers. Splitting provides higher accuracy if the avatar is moving slowly.
+Each tier defines the following values:
+- `MAX_SPEED` - speed (not a vector) threshold for the tiered settings, measured in meters per second
+- `XZ_BITS` - number of bits used to represent the X and Z components of the position relative to the parcel
+- `Y_BITS` - number of bits used to represent the Y component of the absolute position
+- `VELOCITY_BITS` - number of bits used to represent each component of the velocity
+
+Defined tiers:
+
+| Tier | MAX_SPEED | XZ_BITS | Y_BITS | VELOCITY_BITS |
+|------|-----------|---------|--------|---------------|
+| 0    | 4         | 10      | 13     | 4             |
+| 1    | 12        | 8       | 13     | 6             |
+| 2    | 50        | 8       | 13     | 6             |
+
+`50 m/s` is a theoretical speed limit for the avatar, and it is not expected to be reached in practice.
+
+In order to select the right tier they should be sorted by `MAX_VELOCITY` and the first one that does not exceed the current speed should be selected. There always should be one upper-most tier defined which will be selected if the speed exceeds the last defined tier.
+
+To properly decode `movement_data` settings must be shared between clients.
+
+`PARCEL_SIZE = 16 (m)` is a constant that defines the size of the parcel in meters. Parcel has a square shape.
+
+`PARCEL_BITS = 17` is a constant that defines the number of bits used to represent the parcel index. `17` bits are enough to encode the whole Genesis City.
+
+`Y_MAX = 200` is a constant that defines the practical maximum height the avatars can reach in the world.
+
+| Bit Position                                                                                                            | Description                                                                                                                       |
+|-------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| 0 - (PARCEL_BITS - 1)                                                                                                   | **Parcel Index**: Linearized parcel index                                                                                         |
+| PARCEL_BITS - (PARCEL_BITS + XZ_BITS - 1)                                                                               | **X Relative Position**:<br/> Uses Float Quantization:<br/>`minValue = 0`<br/>`maxValue = PARCEL_SIZE`<br/>`sizeInBits = XZ_BITS` |
+| (PARCEL_BITS + XZ_BITS) - (PARCEL_BITS + 2 * XZ_BITS - 1)                                                               | **Z Relative Position**:<br/> Uses Float Quantization:<br/>`minValue = 0`<br/>`maxValue = PARCEL_SIZE`<br/>`sizeInBits = XZ_BITS` |
+| (PARCEL_BITS + 2 * XZ_BITS) - (PARCEL_BITS + 2 * XZ_BITS + Y_BITS - 1)                                                  | **Y Absolute Position**:<br/> Uses Float Quantization:<br/>`minValue = 0`<br/>`maxValue = Y_MAX`<br/>`sizeInBits = Y_BITS`        |
+| (PARCEL_BITS + 2 * XZ_BITS + Y_BITS) - (PARCEL_BITS + 2 * XZ_BITS + Y_BITS + VELOCITY_BITS - 1)                         | **X Velocity**:<br/> Uses Velocity Compression:<br/>`minValue = 0`<br/>`maxValue = MAX_SPEED`<br/>`sizeInBits = VELOCITY_BITS`    |
+| (PARCEL_BITS + 2 * XZ_BITS + Y_BITS + VELOCITY_BITS) - (PARCEL_BITS + 2 * XZ_BITS + Y_BITS + 2 * VELOCITY_BITS - 1)     | **Y Velocity**:<br/> Uses Velocity Compression:<br/>`minValue = 0`<br/>`maxValue = MAX_SPEED`<br/>`sizeInBits = VELOCITY_BITS`    |
+| (PARCEL_BITS + 2 * XZ_BITS + Y_BITS + 2 * VELOCITY_BITS) - (PARCEL_BITS + 2 * XZ_BITS + Y_BITS + 3 * VELOCITY_BITS - 1) | **Z Velocity**:<br/> Uses Velocity Compression:<br/>`minValue = 0`<br/>`maxValue = MAX_SPEED`<br/>`sizeInBits = VELOCITY_BITS`    |
+
+**Parcel Linearization**
+
+```csharp
+        public static class GenesisCityData
+        {
+            public static readonly Vector2Int MIN_PARCEL = -150 * Vector2Int.one;
+            public static readonly Vector2Int MAX_PARCEL = new (163, 158);
+        }
+        
+        public int MinX => GenesisCityData.MIN_PARCEL.x - terrainData.borderPadding;
+        public int MinY => GenesisCityData.MIN_PARCEL.y - terrainData.borderPadding;
+        public int MaxX => GenesisCityData.MAX_PARCEL.x + terrainData.borderPadding;
+        public int MaxY => GenesisCityData.MAX_PARCEL.y + terrainData.borderPadding;
+        
+        public int Encode(Vector2Int parcel) =>
+            parcel.x - MinX + ((parcel.y - MinY) * width);
+
+        public Vector2Int Decode(int index) =>
+            new ((index % width) + MinX, (index / width) + MinY);
+```
+
+`terrainData.borderPadding = 2` in the new client.
+
+**Velocity Compression**
+
+```csharp
+        private static int CompressedVelocity(float velocity, int range, int sizeInBits)
+        {
+            int withoutSignBits = sizeInBits - 1;
+            float absVelocity = Mathf.Abs(velocity);
+            int compressed = FloatQuantizer.Compress(absVelocity, 0, range, withoutSignBits);
+            compressed <<= 1;
+            compressed |= NegativeSignFlag(velocity);
+            return compressed;
+        }
+
+        private static float DecompressedVelocity(int compressed, int range, int sizeInBits)
+        {
+            bool negativeSign = (compressed & 1) == 1;
+            int withoutSign = compressed >> 1;
+            int withoutSignBits = sizeInBits - 1;
+            float decompressed = FloatQuantizer.Decompress(withoutSign, 0, range, withoutSignBits);
+            if (negativeSign) decompressed *= -1;
+            return decompressed;
+        }
+```
+
+`CompressedVelocity`:
+- Takes a float velocity, a range, and bit size as inputs.
+- Calculates the absolute value of the velocity and quantizes it into an integer representation using a specified range and bit precision (excluding the sign bit).
+- Encodes the sign of the original velocity into the least significant bit (LSB).
+- Returns a compressed integer representing both the magnitude and sign.
+
+`DecompressedVelocity`:
+- Takes a compressed integer, a range, and bit size as inputs.
+- Extracts the sign information from the LSB and shifts the remaining bits to isolate the magnitude.
+- Decompresses the magnitude back to a float using the original range and precision.
+- Restores the original sign of the velocity and returns the decompressed value.
+
+These functions achieve efficient storage and retrieval of signed floating-point velocities by encoding the sign in the LSB and compressing the magnitude with quantization.
+
+### Movement
+
+```protobuf
+message Movement {
+  // command number
+  float timestamp = 1;
+  // world position
+  float position_x = 2;
+  float position_y = 3;
+  float position_z = 4;
+  // velocity
+  float velocity_x = 5;
+  float velocity_y = 6;
+  float velocity_z = 7;
+  // animations
+  float movement_blend_value = 8;
+  float slide_blend_value = 9;
+  bool is_grounded = 10;
+  bool is_jumping = 11;
+  bool is_long_jump = 12;
+  bool is_long_fall = 13;
+  bool is_falling = 14;
+
+  bool is_stunned = 15;
+  
+  float rotation_y = 16;
+}
+```
+
+Uncompressed `Movement` message can be used for debugging purposes, and it is optional to implement.
+It represents right the same values as the compressed version but without quantization and other compression techniques.
+
+Implementing this message is not sufficient to be compatible with the new client and its processing can be fully disabled in the production mode.
+
+### Chat Message
+
+```protobuf
+message Chat {
+  string message = 1;
+  double timestamp = 2;
+}
+```
+
+Chat message is used to send text messages to all peers connected to the same room as we are. `Chat` message is sent to both `Island` and `Scene` rooms.
+
+- Can contain emojis
+- Receiver should deduplicate messages received from both `Island` and `Scene` rooms from the same sender
+- `timestamp` is total seconds since Unix Epoch (UTC), used to properly order messages in the chat history
+- Messages with the following symbols are ignored as they are used as control symbols in the previous client:
+  - '␐'
+  - '␆'
+  - '␑'
+
+### Scene Message
+
+```protobuf
+message Scene {
+  string scene_id = 1;
+  bytes data = 2;
+}
+```
+
+`Scene` message is used to synchronize the state of the scene (Network Entities) between peers. `Scene` message is sent to the `Scene` room only.
+
+- `data` can contain a big chunk of arbitrary data
+- `scene_id` is used to identify the scene in case multiple ones are connected to the same LiveKit room (e.g. in a custom world/realm)
+
+#### `data` breakdown:
+
+| Bit Position | Description                                                                                     |
+|--------------|-------------------------------------------------------------------------------------------------|
+| 0 - 7        | **Message Type Byte**:<br/>1 - `String`, Message is encoded as a `UTF8` string<br/>2 - `Binary` |
+| 8 - END      | **Message Itself**: must be transmitted directly to the scene code itself                       |
+
 
 ## Deadline
 
