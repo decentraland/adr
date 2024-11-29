@@ -283,7 +283,7 @@ It is sufficient to set this data only once per user session as it does not chan
 
 `lambdasEndpoint` is optional and can be omitted: in this case it's not guaranteed that the profile received on a peer end will reflect the most recent changes, as it may take time to propagate profile changes through all available Catalysts.
 
-```json
+```
 {
   ...
   "lambdasEndpoint": <serverAbout.lambdas.publicUrl>,
