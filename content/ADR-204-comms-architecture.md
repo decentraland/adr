@@ -1,7 +1,7 @@
 ---
 layout: adr
 adr: 204
-title: Comms Architecture for new client
+title: Comms Architecture for client 2.0
 date: 2024-08-21
 status: Draft
 type: RFC
