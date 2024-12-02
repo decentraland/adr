@@ -34,6 +34,8 @@ The new `TextureMove` option on the `Tween` component will have the following fi
 - `TextureMovementType`: _(optional)_, defines if the movement will be on the `offset` or the `tiling` field (see section above)
 - `start`: _Vector2_ the initial value of the offset or tiling
 - `end`: _Vector2_ the final value of the offset or tiling
+- `duration`: _number_ how long the transition takes, in milliseconds
+- `easingFunction`: How the curve of movement over time changes, the default value is `EasingFunction.EF_LINEAR`
 
 The scene can also use a `TweenSequence` to make continuos movements possible, just like with other kinds of tweens.
 
@@ -60,3 +62,91 @@ parameters:
 ## Semantics
 
 ### Example
+
+Offset texture:
+
+```ts
+Material.setPbrMaterial(myEntity, {
+	texture: Material.Texture.Common({
+		src: 'assets/materials/wood.png',
+		wrapMode: TextureWrapMode.TWM_REPEAT,
+		offset: Vector2.create(0, 0.2),
+		tiling: Vector2.create(1, 1),
+	}),
+})
+```
+
+Simple continuos flow:
+
+```ts
+const myEntity = engine.addEntity()
+
+MeshRenderer.setPlane(myEntity)
+
+Transform.create(myEntity, {
+	position: Vector3.create(4, 1, 4),
+})
+
+Material.setPbrMaterial(myEntity, {
+	texture: Material.Texture.Common({
+		src: 'materials/water.png',
+		wrapMode: TextureWrapMode.TWM_REPEAT,
+	}),
+})
+
+Tween.create(myEntity, {
+	mode: Tween.Mode.TextureMove({
+		start: Vector2.create(0, 0),
+		end: Vector2.create(0, 1),
+	}),
+	duration: 1000,
+	easingFunction: EasingFunction.EF_LINEAR,
+})
+
+TweenSequence.create(myEntity, { sequence: [], loop: TweenLoop.TL_RESTART })
+```
+
+Square-moving tween sequence:
+
+```ts
+//(...)
+
+Tween.create(myEntity, {
+	mode: Tween.Mode.TextureMove({
+		start: Vector2.create(0, 0),
+		end: Vector2.create(0, 1),
+	}),
+	duration: 1000,
+	easingFunction: EasingFunction.EF_LINEAR,
+})
+
+TweenSequence.create(myEntity, {
+	sequence: [
+		{
+			mode: Tween.Mode.TextureMove({
+				start: Vector2.create(0, 1),
+				end: Vector2.create(1, 1),
+			}),
+			duration: 1000,
+			easingFunction: EasingFunction.EF_LINEAR,
+		},
+		{
+			mode: Tween.Mode.TextureMove({
+				start: Vector2.create(1, 1),
+				end: Vector2.create(1, 0),
+			}),
+			duration: 1000,
+			easingFunction: EasingFunction.EF_LINEAR,
+		},
+		{
+			mode: Tween.Mode.TextureMove({
+				start: Vector2.create(1, 0),
+				end: Vector2.create(0, 0),
+			}),
+			duration: 1000,
+			easingFunction: EasingFunction.EF_LINEAR,
+		},
+	],
+	loop: TweenLoop.TL_RESTART,
+})
+```
