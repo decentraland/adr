@@ -563,7 +563,7 @@ message Movement {
 Uncompressed `Movement` message can be used for debugging purposes, and it is optional to implement.
 It represents right the same values as the compressed version but without quantization and other compression techniques.
 
-Implementing this message is not sufficient to be compatible with the new client and its processing can be fully disabled in the production mode.
+Implementing this message is not sufficient to be compatible with this version of comms as its processing can be fully disabled in the production mode. To ensure full functionality we should implement `MovementCompressed` as a main way to pass the data between clients
 
 ### Chat Message
 
