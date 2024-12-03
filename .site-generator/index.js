@@ -16,24 +16,25 @@ module.exports = function ({ context }) {
       page.layout = "adr"
       page.matterfront.layout = "adr"
       if (page.matterfront["spdx-license"] !== "CC0-1.0")
-        throw new Error(`Page ADR-${page.matterfront.adr} as invalid license: ${page.matterfront["spdx-license"]}`)
+        throw new Error(`Page ADR-${page.matterfront.adr} has an invalid license: ${page.matterfront["spdx-license"]}`)
 
       checkAdrStatus(page)
     } else if (page.matterfront.rfc) {
       console.error(page)
-      throw new Error(`RFC are deprecated, plase upgrade. More info in ADR-1`)
+      throw new Error(`RFC are deprecated, please upgrade. More info in ADR-1`)
     }
   }
 }
 
 function checkAdrStatus(page) {
-  const validStatuses = new Set(["Draft", "Review", "LastCall", "Final", "Stagnant", "Withdrawn", "Living"])
+  const validStatuses = new Set(["Draft", "Review", "LastCall", "Final", "Stagnant", "Withdrawn", "Living", "Deprecated"])
   const validTypes = new Set(["RFC", "Standards Track", "Meta"])
+
   if (!page.matterfront.status) throw new Error("ADR-" + page.matterfront.adr + " has no `status`")
   if (!page.matterfront.type) throw new Error("ADR-" + page.matterfront.adr + " has no `type`")
   if (!validTypes.has(page.matterfront.type))
     throw new Error(
-      "ADR-" +
+        "ADR-" +
         page.matterfront.adr +
         " has invalid `type: " +
         page.matterfront.type +
@@ -43,11 +44,18 @@ function checkAdrStatus(page) {
 
   if (!validStatuses.has(page.matterfront.status))
     throw new Error(
-      "ADR-" +
+        "ADR-" +
         page.matterfront.adr +
         " has invalid `status: " +
         page.matterfront.status +
         "`, valid statuses are: " +
         Array.from(validStatuses).join(",")
+    )
+
+  if (page.matterfront.status === "Deprecated" && !page.matterfront["deprecated-reason"])
+    throw new Error(
+        "ADR-" +
+        page.matterfront.adr +
+        " is marked as `Deprecated` but has no `deprecated-reason`"
     )
 }
