@@ -41,13 +41,9 @@ The scene can also use a `TweenSequence` to make continuos movements possible, j
 
 ## Texture layers
 
-Materials have several textures besides the albedo_texture, including bump_texture, alpha_texture, emissive_texture. Because of shader optimization reasons, the alignment of these fields is not independent from each other. The albedo_texture behaves as the base texture, any changes to this texture affect all other layers equally. Other layers are then able to set their own different alignment properties, but these are compounded with those of the base texture.
-
-For example, if the offset of the base texture is `(0.2, 0)` and the offset of the emissive texture is `(0.1, 0)`, the final position of the emissive texture will end up equivalent to `(0.3, 0)`.
+Materials have several textures besides the albedo_texture, including bump_texture, alpha_texture, emissive_texture. The `TextureMove` Tween affects the base texture, so all textures move together with it.
 
 This applies to changing the `offset` and `tiling` fields manually, as well as using a texture tween.
-
-The `TextureMove` Tween affects the base texture, so all textures move together with it.
 
 ## Serialization
 
