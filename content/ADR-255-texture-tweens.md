@@ -12,7 +12,7 @@ authors:
 
 # Abstract
 
-This document describes an approach for making it possible for creators to slide textures. This can be used to simulate running liquids, as well as many other interesting texture effects.
+This document describes an approach for making it possible for creators to animate textures. This can be used to simulate running liquids, as well as many other interesting texture effects.
 
 This new feature combines very well with ADR-254 (GLTF Nodes), as it enables to do the same effects on the textures of any .gltf model.
 
