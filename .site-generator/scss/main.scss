@@ -53,6 +53,12 @@
     color: magenta;
   }
 
+  .status-Deprecated {
+    color: #555;
+    text-decoration: line-through !important;
+    font-style: italic;
+  }
+  
   .status-Withdrawn {
     text-decoration: line-through !important;
     color: #999;
