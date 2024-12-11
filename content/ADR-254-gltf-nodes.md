@@ -40,8 +40,9 @@ Workarounds for most of the above are prohibitively hard for most creators. Most
 
 We’ll define a new component: `GltfNode`. A GltfNode links a scene entity with a node from within a gltf, allowing the scene to inspect it or modify it. The `GltfNode` must include:
 
-- A reference to an entity that has a `GltfContainer` component
 - A string with a full path to one of the nodes inside the GLTF model of that entity
+
+The entity that has a `GltfNode` must also have a `Transform` component, where the `parent` must point to either the entity with the parent `GltfContainer` or another child entity with `GltfNode`.
 
 The creator will need to know the internal node structure of the model.
 We can recommend that they either check in Blender or use the [Babylon Sandbox](https://sandbox.babylonjs.com/). In the future we could offer some helpful tools inside the Scene Editor to know the path.
@@ -60,7 +61,9 @@ Note: When reading the contents of the Material, they will be approximated as be
 
 ## Transform and parenting
 
-The transform of an entity with a `GltfNode` component will be relative to its parent node. It won't be global to the scene, and also won't be in relation to the root node of the GLTF.
+The transform of an entity with a `GltfNode` must have its `parent` pointing directly or indirectly to the entity that holds the parent 3D model in a `GltfContainer`.
+
+The `position`, `rotation`, and `scale` of the `Transform` component will be relative to the parent node inside the GLTF tree. It won't be global to the scene, and also won't be in relation to the root node of the GLTF.
 
 Suppose the following example for the internal structure of a GLTF:
 
@@ -74,11 +77,9 @@ gltf_root
     |- Child C
 ```
 
-The creator of a scene needs to be able to instance an entity for the root GLTF, and an entity to represent Child C. The creator doesn't need to define anything for Child A and Child B.
+The creator of a scene needs to be able to instance an entity for the root GLTF, and an entity to represent Child C as a direct child of the root GLTF. The creator doesn't need to define anything for Child A and Child B.
 
-The position and other Transform properties of this entity will be in relation to the parent node, in this case Child B. In this scenario the scene has no reference for this parent, but for many use cases that won't be needed. If the creator needs to be able to trace the full hierarchy, then it would be necessary to instance an entity for each.
-
-Note: Changes in the `parent` property of an entity with GltfNode will have no effect. It shouldn't be possible to mess with the hierarchy of the nodes inside a GLTF, as that opens the door to too many complex corner cases.
+The position and other Transform properties of the entity representing Child C will be in relation to the parent node, in this case Child B. In this scenario the scene has no reference for this parent, but for most use cases that won't be needed. If the creator needs to be able to trace the full hierarchy, then it would be necessary to also instance an entity for `Child A` and `Child B` and set parenting accordingly.
 
 ## Changes to other components
 
