@@ -49,10 +49,49 @@ This applies to changing the `offset` and `tiling` fields manually, as well as u
 
 ```yaml
 parameters:
+  COMPONENT_ID: 1102
+  COMPONENT_NAME: core::Tween
+  CRDT_TYPE: LastWriteWin-Element-Set
 ```
 
 ```protobuf
+message Texture {
+  string src = 1;
+  optional TextureWrapMode wrap_mode = 2; // default = TextureWrapMode.Clamp
+  optional TextureFilterMode filter_mode = 3; // default = FilterMode.Bilinear
 
+  // Final uv = offset + (input_uv * tiling)
+  optional Vector2 offset = 4; // default = Vector2.Zero; Offset for texture positioning, only works for the texture property in PbrMaterial or UnlitMaterial.
+  optional Vector2 tiling = 5; // default = Vector2.One; Tiling multiplier for texture repetition, only works for the texture property in PbrMaterial or UnlitMaterial.
+}
+
+message PBTween {
+  float duration = 1; // in milliseconds
+  EasingFunction easing_function = 2;
+
+  oneof mode {
+    Move move = 3;
+    Rotate rotate = 4;
+    Scale scale = 5;
+    TextureMove texture_move = 8;
+  }
+
+  optional bool playing = 6; // default true (pause or running)
+  optional float current_time = 7; // between 0 and 1
+}
+
+// This tween mode allows to move the texture of a PbrMaterial or UnlitMaterial.
+// You can also specify the movement type (offset or tiling)
+message TextureMove {
+  decentraland.common.Vector2 start = 1;
+  decentraland.common.Vector2 end = 2;
+  optional TextureMovementType movement_type = 3; // default = TextureMovementType.TMT_OFFSET
+}
+
+enum TextureMovementType {
+  TMT_OFFSET = 0; // default = TextureMovementType.TMT_OFFSET
+  TMT_TILING = 1;
+}
 ```
 
 ## Semantics
