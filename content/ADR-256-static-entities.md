@@ -28,7 +28,7 @@ Add an additional field to the `Transform` component, a `static` boolean. This s
 
 If an entity is marked as static, we expect to not see any of the following:
 
-- Any change in the Transform
+- Any change in the `Transform`
 - Any change in `Material`, or if the material has a `VideoTexture`
 - Any change in `GltfContainer` or `MeshRenderer`
 - Any instruction from `Animator`
