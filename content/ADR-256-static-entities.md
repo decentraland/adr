@@ -31,10 +31,10 @@ If an entity is marked as static, we expect to not see any of the following:
 - Any change in the `Transform`
 - Any change in `Material`, or if the material has a `VideoTexture`
 - Any change in `GltfContainer` or `MeshRenderer`
-- Any instruction from `Animator`
-- Any instruction from `Tween` or `TweenSequence`
-- Any instruction from `Billboard`
 - Any change in `Visibility`
+- An `Animator`
+- A `Tween` or `TweenSequence`
+- A `Billboard`
 
 If a creator makes the mistake of marking an entity as static but then also does one of the forbidden things listed above, each engine is free to handle that as it wishes. Ideally instructions should be ignored by the engine, to potentially avoid glitchy-looking effects. When this happens, the SDK should print an error message to console.
 
