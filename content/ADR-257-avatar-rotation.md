@@ -1,7 +1,7 @@
 ---
 layout: adr
 adr: 257
-title: Player rotation
+title: Avatar rotation when moving player
 date: 2025-01-03
 status: Draft
 type: RFC
