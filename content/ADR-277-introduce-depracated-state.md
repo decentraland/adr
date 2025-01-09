@@ -1,9 +1,9 @@
 ---
 layout: adr  
 adr: 277 # replace this number with the PR or ISSUE number  
-title: Introducing the "Deprecated" State for ADRs  
+title: Introducing the Deprecated State for ADRs  
 date: 2024-11-15  
-status: Review  
+status: Final  
 type: Meta  
 spdx-license: CC0-1.0  
 authors:  
@@ -62,6 +62,7 @@ flowchart TB
     Draft <--> Stagnant
 
     Final --> Deprecated
+    Living --> Deprecated
 ```
 
 The full list of ADR states will now include:
