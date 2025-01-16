@@ -58,12 +58,12 @@ User-created items that can be either static or interactive, allowing creators t
 
 ### Asset Packs Repository
 
-- Central storage for default items and smart items
+- Central storage for default items and smart items ([asset-packs repository](https://github.com/decentraland/asset-packs))
 - Organized in themed collections (cyberpunk, fantasy, etc.)
 - Distributed via npm package `@dcl/asset-packs`
 - Accessible through CDN at builder-items.decentraland.org
 
-Custom items can be added to the default asset-packs registry by copying their folder and contents from the custom items folder into the appropriate asset-pack folder in the asset-packs repository.
+Custom items can be added to the default asset-packs registry by copying their folder and contents from the custom items folder into the appropriate asset-pack folder in the [asset-packs repository](https://github.com/decentraland/asset-packs).
 
 ### Custom Items Storage
 
@@ -162,3 +162,8 @@ When an item is added to a scene:
   - New SDK components with resource fields require manual tracking
   - Resource copying and path mapping needs careful handling
 - Multiple item sources require consistent handling
+
+# References
+
+- [Decentraland Asset Packs Repository](https://github.com/decentraland/asset-packs)
+- [Decentraland SDK Repository](https://github.com/decentraland/js-sdk-tooling)
