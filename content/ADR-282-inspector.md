@@ -11,7 +11,7 @@ spdx-license: CC0-1.0
 
 # Abstract
 
-The `@dcl/inspector` package implements a scene editor interface for Decentraland, built on React and TypeScript. It provides a modular architecture that can be integrated into different environments through well-defined RPC interfaces and abstractions.
+The `@dcl/inspector` package implements a scene editor interface for Decentraland, built on React, BabylonJS, and TypeScript. It provides a modular architecture that can be integrated into different environments through well-defined RPC interfaces and abstractions.
 
 # Core Components
 
@@ -238,20 +238,192 @@ Example:
 
 While the File System Interface would only handle the raw file operations without understanding the asset structure or scene context.
 
-# Integration Points
+# Integration Types
+
+## IFrame Integration
+
+The parent application embeds the Inspector in an IFrame and communicates through postMessage:
+
+### Storage RPC Setup
+
+The parent application needs to set up the RPC bridge to handle file system operations:
+
+```typescript
+function initRpc(iframe: HTMLIFrameElement) {
+  const transport = new MessageTransport(window, iframe.contentWindow!);
+  const storage = new StorageRPC(transport);
+
+  // Handle file operations
+  storage.handle("read_file", async ({ path }) => {
+    return fs.readFile(path);
+  });
+
+  storage.handle("write_file", async ({ path, content }) => {
+    await fs.writeFile(path, content);
+  });
+
+  storage.handle("exists", async ({ path }) => {
+    return fs.exists(path);
+  });
+
+  storage.handle("delete", async ({ path }) => {
+    await fs.rm(path);
+  });
+
+  storage.handle("list", async ({ path }) => {
+    const files = await fs.readdir(path);
+    return Promise.all(
+      files.map(async (name) => ({
+        name,
+        isDirectory: await fs.isDirectory(path.join(path, name)),
+      }))
+    );
+  });
+
+  return {
+    storage,
+    dispose: () => storage.dispose(),
+  };
+}
+```
+
+### React Component Integration
+
+Example of embedding the Inspector in a React application:
+
+```typescript
+const CONTENT_URL = "http://localhost:3000"; // URL to your iframe content
+
+function InspectorComponent() {
+  const iframeRef = useRef();
+
+  const handleIframeRef = useCallback((iframe) => {
+    if (iframe) {
+      iframeRef.current = initRpc(iframe);
+    }
+  }, []);
+
+  useEffect(() => {
+    return () => iframeRef.current?.dispose();
+  }, []);
+
+  const params = new URLSearchParams({
+    dataLayerRpcParentUrl: window.location.origin, // this is the url of the parent application
+  });
+  const url = `${CONTENT_URL}?${params}`; // url where the inspector is being served
+
+  return <iframe onLoad={handleIframeRef} src={url} />;
+}
+```
 
 ## CLI Integration
 
-The primary integration point is through the Decentraland CLI (`@dcl/sdk-commands`):
+The CLI integration provides a development-focused approach using WebSocket communication:
 
-- Starts a local development server
-- Creates a WebSocket server for the Data Layer
-- Handles file watching and hot reloading
-- Manages the scene's build process
-- Provides the RPC server implementation for the Data Layer
-- Implements a FileSystemInterface on top of NodeJS `fs`
+### Server Setup
 
-### VSCode Extension
+Using the Decentraland CLI (`@dcl/sdk-commands`):
+
+```bash
+# Start the CLI server with data layer enabled
+npx sdk-commands start --data-layer --port 8001
+```
+
+This creates:
+
+- A WebSocket server for the Data Layer
+- A file watcher for hot reloading
+- A local development server
+- A FileSystemInterface implementation using Node.js `fs`
+
+### Usage
+
+1. Serve the inspector. You can do so by running:
+
+```bash
+cd packages/@dcl/inspector
+npm start
+```
+
+Or you can also install the `@dcl/inspector` package in your project, and then serve it from node_modules, like:
+
+```bash
+npm install @dcl/inspector
+npx http-server node_modules/@dcl/inspector/public
+```
+
+2. Access the Inspector with CLI integration by visiting:
+
+Now access the inspector from the browser, passing the `dataLayerRpcWsUrl` parameter to connect to the CLI's WebSocket server:
+
+```
+http://localhost:3000/?dataLayerRpcWsUrl=ws://127.0.0.1:8001/data-layer
+```
+
+Where `localhost:3000` is the Inspector and `127.0.0.1:8001` is the CLI's WebSocket server.
+
+The Inspector will automatically:
+
+- Connect to the CLI's WebSocket server
+- Use the CLI's filesystem implementation
+- Receive real-time updates from file changes
+- Handle scene state through the Data Layer
+
+# Configuration
+
+The Inspector can be configured through URL parameters or by injecting a global `InspectorConfig` object:
+
+```typescript
+type InspectorConfig = {
+  // Data Layer Configuration
+  dataLayerRpcWsUrl: string | null; // WebSocket URL for CLI integration
+  dataLayerRpcParentUrl: string | null; // Parent window URL for IFrame integration
+
+  // Smart Items Configuration
+  binIndexJsUrl: string | null; // URL to smart items runtime (used for development of the @dcl/asset-packs module)
+  disableSmartItems: boolean; // Disable smart items functionality
+
+  // Content Configuration
+  contentUrl: string; // URL for asset packs content
+
+  // Analytics Configuration
+  segmentKey: string | null; // Segment.io write key
+  segmentAppId: string | null; // Application identifier
+  segmentUserId: string | null; // User identifier
+  projectId: string | null; // Current project identifier
+};
+```
+
+## URL Parameters
+
+Example URL with parameters:
+
+```
+https://localhost:8000/?dataLayerRpcWsUrl=ws://127.0.0.1:8001/data-layer&disableSmartItems=true
+```
+
+## Global Object
+
+Example global configuration:
+
+```typescript
+globalThis.InspectorConfig = {
+  dataLayerRpcWsUrl: "ws://127.0.0.1:8001/data-layer",
+  contentUrl: "https://builder-items.decentraland.org",
+};
+```
+
+The configuration is resolved in the following order:
+
+1. URL parameters
+2. Global object
+3. Default values
+
+# Real-World Integration Examples
+
+This section provides concrete examples of how different applications have integrated the Inspector, demonstrating the flexibility of its architecture. Each example showcases a different integration approach, from CLI-based development environments to web and desktop applications, illustrating how the Inspector's modular design accommodates various use cases.
+
+## VSCode Extension
 
 The VSCode extension is a separate product that:
 
@@ -261,7 +433,7 @@ The VSCode extension is a separate product that:
 - Embeds the Inspector in a VSCode webview
 - Inherits all functionality through the CLI's server implementation
 
-### Web Editor
+## Web Editor
 
 The Web Editor integration:
 
@@ -273,7 +445,7 @@ The Web Editor integration:
   - Handles user authentication and project permissions
 - Provides custom UI controls through the UI RPC
 
-### Creators Hub
+## Creators Hub
 
 The Creators Hub integration:
 
