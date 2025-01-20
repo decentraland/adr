@@ -105,21 +105,6 @@ Additional functionality includes:
 
 ## Data Layer RPC
 
-The Data Layer has two implementations:
-
-1. **Local (In-Memory):**
-
-   - Used for development and testing
-   - Stores all state in memory
-   - No network communication required
-   - Fast and suitable for local development
-
-2. **Remote (Protobuf):**
-   - Used in production environments
-   - Communicates over network using protobuf messages
-   - Supports WebSocket transport
-   - Enables integration with remote services
-
 The Data Layer provides a complete interface for all editor operations, handling both scene state and asset management. It serves as the primary communication channel between the Inspector and its host environment, responsible for:
 
 1. **Scene State Management:**
@@ -135,7 +120,22 @@ The Data Layer provides a complete interface for all editor operations, handling
    - Handles asset metadata and thumbnails
    - Controls asset lifecycle (create, rename, delete)
 
-The Data Layer is implemented as a protobuf-defined RPC service to ensure type safety and versioning:
+The Data Layer has two implementations:
+
+1. **Local (In-Memory):**
+
+   - Used for development and testing
+   - Stores all state in memory
+   - No network communication required
+   - Fast and suitable for local development
+
+2. **Remote (Protobuf):**
+   - Used in production environments
+   - Communicates over network using protobuf messages
+   - Supports WebSocket transport
+   - Enables integration with remote services
+
+The remote Data Layer is implemented as a protobuf-defined RPC service to ensure type safety and versioning:
 
 ```protobuf
 service DataService {
