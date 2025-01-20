@@ -173,7 +173,7 @@ The File System Interface is a lower-level abstraction focused solely on file op
    - Used for development and testing
    - No persistence between sessions
 
-2. Node.js ([`sdk-commands/start/data-layer/rpc.ts`](https://github.com/decentraland/js-sdk-toolchain/tree/main/packages/@dcl/sdk-commands/src/commands/start/data-layer/rpc.ts)):
+2. Node.js ([`sdk-commands/start/data-layer/fs.ts`](https://github.com/decentraland/js-sdk-toolchain/blob/main/packages/%40dcl/sdk-commands/src/commands/start/data-layer/fs.ts)):
 
    - Direct implementation using Node.js `fs` module
    - Used by the CLI for local development
