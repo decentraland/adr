@@ -98,12 +98,12 @@ import { Color4 } from '@dcl/sdk/math'
 
 export const uiMenu = () => (
 	<UiEntity
-		uiTransform={{
+		uiTransform={{{{
 			width: 700,
 			height: 400,
 			margin: { top: '35px', left: '500px' },
-		}}
-		uiBackground={{ color: Color4.Red() }}
+		}}}}
+		uiBackground={{{{ color: Color4.Red() }}}}
 	/>
 )
 
