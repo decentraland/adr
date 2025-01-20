@@ -48,6 +48,8 @@ Component-specific inspectors include:
 - `MeshColliderInspector`: Collision properties
 - `MeshRendererInspector`: Rendering settings
 
+A complete list of all available inspectors can be found in the [`EntityInspector`](https://github.com/decentraland/js-sdk-toolchain/tree/main/packages/%40dcl/inspector/src/components/EntityInspector) folder of the SDK repository.
+
 **Features:**
 
 - Dynamically loads inspectors based on attached components
