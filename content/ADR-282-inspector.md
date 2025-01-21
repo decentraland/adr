@@ -122,18 +122,26 @@ The Data Layer provides a complete interface for all editor operations, handling
 
 The Data Layer has two implementations:
 
-1. **Local (In-Memory):**
+1. **Local:**
 
-   - Used for development and testing
-   - Stores all state in memory
-   - No network communication required
-   - Fast and suitable for local development
+   - Runs in the same host as the Inspector (e.g. the browser)
+   - Direct function calls without network transport
 
-2. **Remote (Protobuf):**
-   - Used in production environments
-   - Communicates over network using protobuf messages
+2. **Remote:**
+   - Communicates with a remote host over network
+   - Uses protobuf messages for type-safe communication
    - Supports WebSocket transport
-   - Enables integration with remote services
+
+The storage behavior is determined by the File System Interface implementation used, not by the Data Layer type. For example:
+
+- A Local Data Layer could use:
+
+  - An in-memory File System Interface for testing
+  - A Node.js File System Interface for desktop apps
+  - An RPC-based File System Interface for web apps
+
+- A Remote Data Layer typically uses:
+  - Whatever File System Interface is implemented on the remote host
 
 The remote Data Layer is implemented as a protobuf-defined RPC service to ensure type safety and versioning:
 
