@@ -3,7 +3,7 @@ layout: adr
 adr: 255
 title: Texture tweens
 date: 2024-12-02
-status: Draft
+status: Living
 type: RFC
 spdx-license: CC0-1.0
 authors:
