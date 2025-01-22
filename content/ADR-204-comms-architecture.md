@@ -472,17 +472,11 @@ To properly decode `movement_data` settings must be shared between clients.
 
 **Parcel Linearization**
 
-```csharp
-        public static class GenesisCityData
-        {
-            public static readonly Vector2Int MIN_PARCEL = -150 * Vector2Int.one;
-            public static readonly Vector2Int MAX_PARCEL = new (163, 158);
-        }
-        
-        public int MinX => GenesisCityData.MIN_PARCEL.x - terrainData.borderPadding;
-        public int MinY => GenesisCityData.MIN_PARCEL.y - terrainData.borderPadding;
-        public int MaxX => GenesisCityData.MAX_PARCEL.x + terrainData.borderPadding;
-        public int MaxY => GenesisCityData.MAX_PARCEL.y + terrainData.borderPadding;
+```csharp      
+        public int MinX => MAP_SIZE.MIN_PARCEL.x - terrainData.borderPadding;
+        public int MinY => MAP_SIZE.MIN_PARCEL.y - terrainData.borderPadding;
+        public int MaxX => MAP_SIZE.MAX_PARCEL.x + terrainData.borderPadding;
+        public int MaxY => MAP_SIZE.MAX_PARCEL.y + terrainData.borderPadding;
         
         public int Encode(Vector2Int parcel) =>
             parcel.x - MinX + ((parcel.y - MinY) * width);
@@ -491,7 +485,66 @@ To properly decode `movement_data` settings must be shared between clients.
             new ((index % width) + MinX, (index / width) + MinY);
 ```
 
-`terrainData.borderPadding = 2` in the new client.
+`terrainData.borderPadding = 2`.
+
+`MAP_SIZE` should be determined based on the realm `/about` response:
+
+- It should be inferred from the node `configurations.map.sizes` if it's not empty:
+```json
+{
+  "configurations": {
+    "map": {
+      "sizes": [
+        {
+          "left": -150,
+          "top": 150,
+          "right": 150,
+          "bottom": -150
+        },
+        {
+          "left": 62,
+          "top": 158,
+          "right": 162,
+          "bottom": 151
+        },
+        {
+          "left": 151,
+          "top": 150,
+          "right": 163,
+          "bottom": 59
+        }
+      ]
+    }
+  }
+}
+```
+
+   The corresponding minimum and maximum from all array elements must be considered as the `MAP_SIZE`.
+
+- Otherwise, `MAP_SIZE` should be inferred from the parcels of the scenes listed in `configurations.scenesUrn` node:
+```json
+      
+{ 
+    "scenesUrn": [
+      "urn:decentraland:entity:bafkreigtsjzulx4mx2myoh74kjqezffaujtn5ae4tfzy4regpcaofw2hhe?=&baseUrl=https://worlds-content-server.decentraland.org/contents/"
+    ]
+}
+```
+   Parcels for each scene are defined in the `scene.json` file and retrieved from the `/content/` endpoint:
+```json
+{
+  "metadata": {
+      "scene": {
+        "parcels": [
+          "-19,-7"
+        ],
+        "base": "-19,-7"
+      }
+    }
+}
+```
+   As each scene can contain multiple parcels and there can be multiple "scenesUrn" elements, minimum and maximum coordinates from all of them approximated by the rectangular shape must be considered as `MAP_SIZE`
+
 
 **Velocity Compression**
 
