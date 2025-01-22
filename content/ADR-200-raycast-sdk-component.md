@@ -3,7 +3,7 @@ layout: adr
 adr: 200
 title: Raycasting Component for SDK
 date: 2023-03-14
-status: Draft # pick one of these
+status: Living
 type: Standards Track
 spdx-license: CC0-1.0
 authors:
