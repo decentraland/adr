@@ -99,7 +99,7 @@ The establishment of the connection with the island remains unchanged, as that p
 - **Stats**: A service that exposes users' positions and islands to display realm statistics, providing insights into hot scenes and identifying where crowds are gathering.
 - **[NATS](https://nats.io/)**: Message broker to exchange information between services. 
 
-**Rom Limits**: The transport layer (LiveKit) does not impose a strict limit on the number of participants in a single room. The real constraint comes from the end user’s bandwidth and the client’s ability to process data efficiently to render nearby players. In Archipelago, islands are capped at a maximum of 100 players, a limitation originally introduced to prevent performance degradation when rendering large numbers of avatars simultaneously.
+**Room Limits**: The transport layer (LiveKit) does not impose a strict limit on the number of participants in a single room. The real constraint comes from the end user’s bandwidth and the client’s ability to process data efficiently to render nearby players. In Archipelago, islands are capped at a maximum of 100 players, a limitation originally introduced to prevent performance degradation when rendering large numbers of avatars simultaneously.
 With the new implementation, clients will receive data from up to 100 players through Archipelago, but the scene room currently has no predefined limit. Clients are free to define rendering strategies and possible limits or optimizations, e.g. render the closest N users and dynamically adjusting based on proximity. 
 
 ## General Connection Flow 
