@@ -49,7 +49,7 @@ The following fields will be available on all types of light:
 - Brightness: _number_ The luminosity value of the light. For _Spot_ and _Point_ light, this value is expressed in Lumens, for _Global_ light, it's expressed in Lux units (lumens per square metre).
 - Range: _number_ The maximum distance that can be affected by the light source.
 - Active: _boolean_ Determines if the light is currently on or not.
-- Shadows: _boolean_. See [Shadows](#shadows)
+- Shadows: _enum_. See [Shadows](#shadows)
 
 In lights of type _Spot_, we will also include:
 
@@ -64,15 +64,15 @@ In lights of type _Global_, we will also include:
 
 We will create helpers to make it easier for creators to create these components. For example:
 
-`LightSource.spotLight(myEntity, { brightness: 1000, angle: 10})`
+`LightSource.create(myEntity, { color: { r:1, g:0, b:0.5 }, type: LightSource.Type.Spot({ innerAngle: 30, outerAngle: 50 }) })`
 
 The `Active` flag lets creators easily turn a light source on or off. We could otherwise achieve the same by setting intensity to 0, but offering a switch makes it easier to retain the prior configuration. Another option debated was to use the `Visibility` component to turn off a light, but decided that we wanted to keep the visibility of any meshes as a separate independent consideration.
 
 ## Shadows
 
-Note: This feature will likely not ba a part of the initial implementation. It's included here to discuss the full vision, but field for this may not be present on the protocol or the SDK until later.
+Note: This feature it's included here to discuss the full vision, but field for this may change later.
 
-All light sources will have a `shadows` property that determines if a light will cast shadows.
+All light sources will have a `shadows` property that determines if a light will cast shadows and if these are low or high quality (Hard and Soft shadows).
 
 Default values should differ by light type:
 
@@ -123,12 +123,78 @@ It should be possible to do both in worlds and in Genesis City.
 
 ```yaml
 parameters:
+  COMPONENT_ID: 1079
+  COMPONENT_NAME: core::LightSource
+  CRDT_TYPE: LastWriteWin-Element-Set
 ```
 
 ```protobuf
+message PBLightSource {
+  optional bool active = 4;                       // default = true, whether the lightSource is active or not.
+  optional decentraland.common.Color3 color = 1;  // default = Color.white, the tint of the light, in RGB format where each component is a floating point value with a range from 0 to 1.
+  optional float brightness = 2;                  // default = 250, ranges from 1 (dim) to 100,000 (very bright), expressed in Lumens for Point and Spot.
+  optional float range = 3;                       // default = 10, how far the light travels, expressed in meters.
 
+  oneof type {
+    Point point = 6;
+    Spot spot = 7;
+  }
+
+  message Point {
+    optional ShadowType shadow = 5; // default = ShadowType.ST_NONE The type of shadow the light source supports.
+  }
+
+  message Spot {
+    optional float inner_angle = 1;                                     // default = 21.8. Inner angle can't be higher than outer angle, otherwise will default to same value. Min value is 0. Max value is 179.
+    optional float outer_angle = 2;                                     // default = 30. Outer angle can't be lower than inner angle, otherwise will inner angle will be set to same value. Max value is 179.
+    optional ShadowType shadow = 5;                                     // default = ShadowType.ST_NONE The type of shadow the light source supports.
+    optional decentraland.common.TextureUnion shadow_mask_texture = 8;  // Texture mask through which shadows are cast to simulate caustics, soft shadows, and light shapes such as light entering from a window.
+  }
+
+  enum ShadowType {
+    ST_NONE = 0;  // No shadows are cast from this LightSource.
+    ST_SOFT = 1;  // More realistic type of shadow that reduces block artifacts, noise or pixelation, but requires more processing.
+    ST_HARD = 2;  // Less realistic type of shadow but more performant, uses hard edges.
+  }
+}
 ```
 
 ## Semantics
 
 ### Example
+
+Basic Spot Light with all default values
+```ts
+LightSource.create(myEntity, { type: LightSource.Type.Spot({}) })
+```
+
+Basic Point Light with all default values
+```ts
+LightSource.create(myEntity, { type: LightSource.Type.Point({}) })
+```
+
+Point Light with green color and big intensity and range
+```ts
+LightSource.create(myEntity,
+{
+  color: { r: 0, g: 1, b: 0 },
+  brightness: 10000,
+  type: LightSource.Type.Point({})
+})
+```
+
+Spot Light with complete declaration including shadows and shadow mask
+```ts
+LightSource.create(myEntity, {
+      color: { r: 0, g: 1, b: 0 },
+      range: 15,
+      active: true,
+      brightness: 1500,
+      shadow: PBLightSource_ShadowType.ST_HARD,
+      type: LightSource.Type.Spot({
+          innerAngle: 35,
+          outerAngle: 55,
+          shadowMaskTexture: { src: "assets/window_frame_mask.png" }
+        })
+    })
+```
