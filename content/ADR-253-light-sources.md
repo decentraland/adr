@@ -194,7 +194,7 @@ LightSource.create(myEntity, {
       type: LightSource.Type.Spot({
           innerAngle: 35,
           outerAngle: 55,
-          shadowMaskTexture: { src: "assets/window_frame_mask.png" }
+          shadowMaskTexture: Material.Texture.Common({src: "assets/window_frame_mask.png"})
         })
     })
 ```
