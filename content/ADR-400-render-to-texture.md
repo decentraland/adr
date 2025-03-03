@@ -35,6 +35,7 @@ Layer properties are managed via the `CameraLayer` component. This component can
 layer 0, the main world, cannot be modified by scenes, and a `CameraLayer` affecting layer 0 will be ignored. Additional layers are managed fully by scenes. Various properties of the layer (lighting, avatar rendering, etc) can be managed via this component.
 
 ```
+option (common.ecs_component_id) = 1210;
 message PBCameraLayer {
     // layer to which these settings apply. must be > 0
     // Layer 0 is the default "real world" layer viewed by the player and cannot be modified.
@@ -63,6 +64,7 @@ message PBCameraLayer {
 The `CameraLayers` component is used to assign entities to layers. Like `Visibility` it is propagated to children automatically until overridden by a child with a defined `CameraLayers` of its own.
 
 ```
+option (common.ecs_component_id) = 1208;
 message PBCameraLayers {
     repeated uint32 layers = 1;
 }
@@ -75,6 +77,7 @@ Entities can belong to multiple layers, and will be visible in cameras rendering
 The `TextureCamera` component creates a new texture, and renders the viewpoint from this entity onto that texture. The texture can then be used via a `VideoTexture` with `video_player_entity` set to the camera entity. 
 
 ```
+option (common.ecs_component_id) = 1207;
 message PBTextureCamera {
     // rendered texture width
     optional uint32 width = 1;
