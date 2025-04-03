@@ -26,7 +26,7 @@ Entities can belong to multiple layers, cameras can only render a single layer, 
 
 ![LayersDiagram](resources/ADR-400/layers-diagram.png)
 
-Layers are only used for rendering (entities with `GltfContainer`s, `MeshRenderer`s or light components, and any future types of rendered entities), all other entity properties (collisions, audio sources, etc) will not make any use of layer information.
+Layers are used for rendering (entities with `GltfContainer`s, `MeshRenderer`s or light components, and any future types of rendered entities), and spatial audio components (`PbAudioSource`, `AvatarShape`). All other entity properties (collisions, etc) will not make any use of layer information.
 
 ## Managing Layer Properties
 
@@ -74,7 +74,9 @@ Entities can belong to multiple layers, and will be visible in cameras rendering
 
 ## Rendering
 
-The `TextureCamera` component creates a new texture, and renders the viewpoint from this entity onto that texture. The texture can then be used via a `VideoTexture` with `video_player_entity` set to the camera entity. 
+The `TextureCamera` component creates a new texture, and renders all meshes with intersecting layers, from the viewpoint of this entity, into that texture. The texture can then be used via a `VideoTexture` with `video_player_entity` set to the camera entity. 
+
+If the `volume` field is non-zero, the camera entity should also act as an audio receiver for audio sources with an intersecting layer.
 
 ```
 option (common.ecs_component_id) = 1207;
@@ -97,6 +99,11 @@ message PBTextureCamera {
         Orthographic orthographic = 9;
         /* Portal portal = 10; */ 
     };
+
+    // controls whether this camera acts as a receiver for audio on sources with matching `PBCameraLayers`.
+    // range: 0 (off) - 1 (full volume)
+    // default: 0
+    optional float volume = 10;    
 }
 
 message Perspective {
