@@ -32,7 +32,7 @@ To implement this streaming architecture effectively, several workflows and impl
 
 Initially, in the first version of the scene admin smart item, admins were stored in memory; however, they now need to be stored in a database within the comms-gatekeeper. As of today, the comms-gatekeeper is the ideal location for storing admin information, as it manages and validates access to the scene-rooms in LiveKit. Scene admins will have authority over the communication channel, enabling them to create streaming access and moderate user activity. 
 A wallet will be recognized as the admin of a scene under specific conditions: 
-- if the scene is a World and the wallet is the owner of the NAME where the world is deployed or if the owner of the NAME has granted streaming permissions to the wallet. 
+- if the scene is a World and the wallet is the owner of the NAME where the world is deployed or if the owner of the NAME has granted streaming or deployment permissions to the wallet. 
 - if the scene is located in Genesis City and the wallet owns the LAND, possesses LAND operator rights, has an active LAND rental contract, or has a LAND lease. 
 Furthermore, a scene admin can grant admin access to a wallet for a specific scene where the granter has admin permissions.
 The gatekeeper will provide the CRUD API for the scene Admins and perform all the required ownership validations. 
@@ -89,16 +89,19 @@ The streaming feature was specifically designed for hosting live events rather t
 
 For context, each scene has a single streaming key, which serves as the access key to the scene room. All administrators have access to the streaming credentials and can refresh the token as needed. It is important to note that if the token has already been shared and is subsequently refreshed, the previous token will become invalid. 
 
-- Streaming keys will expire four days after their creation. They are designed for use during events, and this expiration policy helps prevent orphaned keys from lingering in the system.
+- Streaming keys will expire four days after their creation. They are designed for use during events, and this expiration policy helps prevent orphaned keys from lingering in the system. 
 
 - A streaming session cannot last longer than four hours. This limitation is in place to avoid situations where a video or stream runs in an infinite loop. Streams can be started or stopped as needed, but no single session should exceed four hours in duration.
+
+> Note: If a live streaming session is currently active, the expiration date will not terminate the session, however, the four-hour limit will.
 
 To keep users informed about important events, the Comms Gatekeeper—responsible for managing LiveKit and overseeing streaming keys—will be integrated into the notifications system. It will send notifications to all scene administrators in the following scenarios:
 
 - When the streaming key has expired
 - When the streaming key has been refreshed, rendering the previous version invalid
-- When a streaming session begins within the scene
-
+- When the streaming key is revoked (delete without referesh)
+- When the streaming session is terminated due to the 4 hours limit 
+- When a streaming key becomes obsolete due to the deployment of a new place in the location of the previous scene (new places as defined in [ADR-186](https://adr.decentraland.org/adr/ADR-186)).
 
 ## Deadline
 
