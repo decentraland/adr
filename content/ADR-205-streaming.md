@@ -58,7 +58,7 @@ L-->>G: RMTP Url & token
 G-->>S: RMTP Url & token 
 Note over S: Display Credentials  
 ``` 
-![streaming-flow](/resources/ADR-205/scene-admin.png) 
+<img src="/resources/ADR-205/scene-admin.png" alt="admin" style="max-width: 100%; height: auto;"> 
 
 ### Streaming Content 
 
@@ -78,10 +78,10 @@ Note over L: Make stream available in the scene-room
 S->>L: Read scene-room stream 
 User2->>S: watch stream
 ``` 
-![streaming-flow](/resources/ADR-205/streamer.png) 
 
-![obs](/resources/ADR-205/obs.png) 
+<img src="/resources/ADR-205/streamer.png" alt="streaming-flow" style="max-width: 100%; height: auto;">
 
+<img src="/resources/ADR-205/obs.png" alt="obs" style="max-width: 100%; height: auto;">
 
 ### Streaming channel policies 
 
