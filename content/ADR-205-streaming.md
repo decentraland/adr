@@ -3,7 +3,7 @@ layout: adr
 adr: 205
 title: Streaming Support
 date: 2025-05-28
-status: Draft
+status: Living
 type: RFC
 spdx-license: CC0-1.0
 authors:
@@ -105,7 +105,7 @@ To keep users informed about important events, the Comms Gatekeeper—responsibl
 
 ## Deadline
 
-Date: TBD
+Date: Q4 2025
 
 ## Consequences
 
