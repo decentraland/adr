@@ -65,6 +65,7 @@ C-->>S: { connectionString, key }
 S->>L: connect to priavet-chats-room (connStr, key)
 S->>L: send(message: abc, identity: 0x123)
 L->>R: message
+Note over R: filter(message)
 ``` 
 
 
