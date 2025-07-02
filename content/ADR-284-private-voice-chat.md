@@ -104,15 +104,16 @@ If successful, it will return without errors and will end the ringing process. T
 Here's the interaction flow of the Explorer and the Social Service:
 
 ```mermaid
-    actor U2 as Callee
-    participant SS as Social Server
+sequenceDiagram
+  actor U2 as Callee
+  participant SS as Social Server
 
-    U2->>SS: Reject call
-    alt The call doesn't exist
-		SS-->>U2: Not found error
-		else The call exists
-		SS-->>U2: Ok
-		end
+  U2->>SS: Reject call
+  alt The call doesn't exist
+	  SS-->>U2: Not found error
+	else The call exists
+	  SS-->>U2: Ok
+	end
 ```
 
 The RPC call is specified in the protocol as:
