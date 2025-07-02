@@ -14,7 +14,7 @@ authors:
 
 ## Abstract
 
-The implementation of new version of the Decentraland reference client does not integrate with the previous Matrix System, which was used for managing private chats and channels. Matrix has proven to be a costly solution, necessitating complex infrastructure deployment and the maintenance of a large database for relatively simple use cases. This ADR explores the development of a private chat system that utilizes the existing integration with LiveKit as the transport layer, relying on its Selective Forwarding Unit (SFU) to efficiently deliver messages to specific users.
+The implementation of the new version of the Decentraland reference client does not integrate with the previous Matrix System, which was used for managing private chats and channels. Matrix has proven to be a costly solution, requiring complex infrastructure deployment and maintenance of a large database for relatively simple use cases. This ADR explores the development of a private chat system that utilizes the existing integration with LiveKit as the transport layer, relying on its Selective Forwarding Unit (SFU) to efficiently deliver messages to specific users.
 
 ## Context, Reach & Prioritization 
 
