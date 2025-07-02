@@ -36,7 +36,7 @@ While the backend provides the infrastructure for connecting to the dedicated ch
 
 #### Send Messages 
 
-**Targeted Messaging**: The client is responsible for sending private messages directly to a specified identity or wallet. LiveKit SFU will use this identity to deliver the message to the target user instead of broadcasting a message to the room. In case a message does not have a target users, LiveKit SFU will broadcast the messages to the entire room.
+**Targeted Messaging**: The client is responsible for sending private messages directly to a specified identity or wallet. LiveKit SFU will use this identity to deliver the message to the target user instead of broadcasting a message to the room. In case a message does not have a target users, LiveKit SFU will broadcast the messages to the entire room. All private message must be targeted messages.
 
 #### Receive Messages 
 
