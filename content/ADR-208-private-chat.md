@@ -80,4 +80,4 @@ Date: Q4 2025
 
 ## Consequences 
 
-Private chat will be supported exclusively through this new model, with no persistence of chats in external systems like Matrix, which is set to be deprecated. This design is intended for real-time communication within the platform. While clients may implement caching strategies to display messages to users, no data will be stored server-side. Clients can utilize existing mechanisms to connect to LiveKit rooms and use the already implemented protocol messages to send private messages.
+Private chat will be supported exclusively through this new model, with no persistence of chats in external systems like Matrix, which is set to be deprecated. This design is intended for real-time communication within the platform. While clients may implement storage strategies to display a history of messages to users, no data will be stored server-side. Clients can utilize existing mechanisms to connect to LiveKit rooms and use the already implemented protocol messages to send private messages.
