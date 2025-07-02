@@ -70,7 +70,7 @@ Note over R: filter(message)
 ``` 
 
 
-> NOTE: To support friend, the client must maintain continuous communication with the social service to stay updated on friendship statuses and any changes. This includes actions such as a user blocking or unblocking another, or accepting or rejecting a friendship request. These updates, in combination with the privacy settings, will determine if messages are displayed to users.
+> NOTE: To support the friends only privacy setting, the client must maintain continuous communication with the social service to stay updated on friendship statuses and any changes. This includes actions such as a user blocking or unblocking another, or accepting or rejecting a friendship request. These updates, in combination with the privacy settings, will determine if messages are displayed to users.
 
 As a chat system, this design presents certain flaws. By obtaining a user's identity, it becomes technically feasible to programmatically generate spam messages and send them to the private chat room. Additionally, messages from blocked users may still reach the target user client but must be discarded by the client itself. There is no control over the LiveKit SFU to provent these scenarios. However, from an implementation perspective, it's straightforward for the client to establish another LiveKit room connection, similar to how scene rooms are created ([ADR-204](https://adr.decentraland.org/adr/ADR-204)). This approach utilizes the existing protocol messages to facilitate private messaging and does not require new third-party or backend services, making it a lightweight implementation that can be further developed in the future as needed. 
 
