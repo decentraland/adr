@@ -40,7 +40,7 @@ While the backend provides the infrastructure for connecting to the dedicated ch
 
 #### Receive Messages 
 
-**Privacy Settings Management**: User privacy settings are controlled via the Social Service through an RPC call. These settings determine who is permitted to communicate with the user. There are two possible configurations: one allows private messages from any user on the platform, while the other restricts private messages to only those who are friends. On the other hand, social settings also have a flag to allow users to view messages received from blocked users but this is up to the client and it is not currently used. 
+**Privacy Settings Management**: User privacy settings are controlled via the Social Service through an RPC call. These settings determine who is permitted to communicate with the user. There are two possible configurations: one allows private messages from any user on the platform, while the other restricts private messages to only those who are friends. 
 
 [Protocol Message: Social Setttings](https://github.com/decentraland/protocol/blob/ce7a4ebfc094f4764c5182b0e41d3ebc72e7a17d/proto/decentraland/social_service/v2/social_service_v2.proto#L237)
 ```message SocialSettings {
