@@ -27,23 +27,23 @@ Both users can end the call at any time, which will result in the other user bei
 
 The feature considers a some restrictions, with the aim to improve the user experience, that need to be enforced:
 
-- A user can't be in more than one private voice chat at a time.
-- A user can't be ringing or be ringed by another user at the time.
-- A user can't start a private voice chat with another user if at least one of them has their privacy settings set to _only friends_ and their are not friends.
-- A user can't be ringing someone or be ringed be someone if they're not connected.
+- A user can't participate in more than one private voice chat simultaneously.
+- A user can't be ringing or receiving a call from multiple users simultaneously.
+- A user can't start a private voice chat with another user if at least one of them has their privacy settings set to _only friends_ and they are not friends.
+- A user can't be initiate a call or receive a call from be someone if they're not connected.
 
 Following the user restrictions mentioned above, there are some restrictions for the voice chat that are required to be enforced as well:
 
 - A ringing private voice chat can't be ringing for an indeterminate amount of time, they must be expired.
 - A private voice chat where one of the users didn't connect for an expected amount of time must not exist
-- A private voice chat where one of the users abruptly disconnected for an expected amount of time must not exist
+- A private voice chat where one of the users disconnected, due to connectivity issues, for an expected amount of time must not exist
 - A private voice chat where one of the users disconnected willingly must not exist.
 
 All of these restrictions are enforced either through the Social Services or the Comms Gatekeeper, through private voice chat updates or through LiveKit actions respectively.
 
 ## Specification
 
-This section specifies the interaction between the Explorer and the Social Service for the purposes of ringing someone and receiving voice chat updates and LiveKit for
+This section specifies the interaction between the Explorer and the Social Service for the purposes of ringing someone, receiving voice chat updates and using LiveKit for
 the real time voice communication interactions.
 
 ### Starting a private voice chat
@@ -221,7 +221,7 @@ sequenceDiagram
   break Private voice chat exists
 		SS-->>U1: Ok
 	end
-	LK->>U1: End private voice chat
+	LK->>U1: Room destroyed
 ```
 
 ```protobuf
