@@ -22,7 +22,7 @@ After having had the voice chat for nearby users in previous versions of Decentr
 In this new feature, a user (now on called the **caller**) is able to ring another user (from now on the **callee**), which initiates the call flow.
 The callee has the capability of rejecting this call or accepting it and the caller can cancel the process at any time.
 If the callee chooses to reject it or the caller cancels it, the ringing process will end, notifying the caller about the decision the callee made.
-Case contrary, by accepting the call, the callee and the caller will both receive tokens to connect to the real time service that will be providing the service for the call ([LiveKit](https://livekit.io/) at the time of this ADR).
+Case contrary, by accepting the call, the callee and the caller will both receive tokens to connect to the real time service that will facilitate the call ([LiveKit](https://livekit.io/) at the time of this ADR).
 Both users can end the call at any time, which will result in the other user being disconnected from the call.
 
 The feature considers a some restrictions, with the aim to improve the user experience, that need to be enforced:
