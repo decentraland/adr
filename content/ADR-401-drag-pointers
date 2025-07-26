@@ -1,0 +1,67 @@
+---
+layout: adr
+adr: 401
+title: Pointer Drag Events
+date: 2025-03-03
+status: Draft
+type: RFC
+spdx-license: CC0-1.0
+authors:
+  - robtfm
+---
+
+## Pointer Drag Events
+
+Extend the current set of pointer events to include drag events, and provide facilities to manage them from UI and scene interactions.
+
+## PointerEventType
+
+We extend the PointerEventType enum with 3 new cases:
+
+```
+// PointerEventType is a kind of interaction that can be detected.
+enum PointerEventType {
+  ...
+  PET_DRAG_LOCKED = 4;
+  PET_DRAG = 5;
+  PET_DRAG_END = 6;
+}
+```
+
+`PET_DRAG` and `PET_DRAG_LOCKED` both provide callbacks when the pointer is in the interaction area for the given entity, the designated input button is pressed, and the pointer input device (e.g. mouse) is moved while the button is held.
+
+The difference between these 2 events is only in the treatment of the pointer during dragging: for `PET_DRAG_LOCKED` the explorer must keep the pointer at the original position, while for `PET_DRAG` the explorer allows the pointer to move around the screen as normal. When the pointer is locked, `PET_DRAG_LOCKED` stops the camera from rotating while dragging, and `PET_DRAG` allows it to rotate as normal.
+
+`PET_DRAG_END` fires a callback when the button is released following a drag event. 
+
+`PET_DRAG` and `PET_DRAG_END` callbacks must still be called even if the pointer moves outside of the interaction bounds of the entity during dragging.
+
+The mouse delta (in pixels) since last callback is provided in the `xy` fields of the `direction` field of the `RaycastHit` result passed to the callback.
+
+The SDK `PointerEventsSystem` will provide helpers for these new event types, `onPointerDrag`, `removeOnPointerDrag`, etc.
+
+## UI interactions
+
+The SDK will also provides react ui properties `onMouseDrag`, `onMouseDragLocked` and `onMouseDragEnd`. Note that these callbacks take no parameters, so the drag information is also made available separately via a new `PrimaryPointerInfo` component on the scene root:
+
+```
+option (common.ecs_component_id) = 1209;
+message PBPrimaryPointerInfo {
+  optional PointerType pointer_type = 1;
+  // in pixels
+  optional decentraland.common.Vector2 screen_coordinates = 2;
+  // in pixels
+  optional decentraland.common.Vector2 screen_delta = 3;
+  // ray direction that can be used with the primary camera origin for
+  // raycasting from the cursor into the world
+  optional decentraland.common.Vector3 world_ray_direction = 4;
+}
+
+enum PointerType {
+  POT_NONE = 0;
+  POT_MOUSE = 1;
+  POT_PAD = 2;
+  POT_TOUCH = 3;
+  POT_WAND = 4;
+}
+```
