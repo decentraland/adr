@@ -3,7 +3,7 @@ layout: adr
 adr: 204
 title: New Comms Architecture 
 date: 2024-08-21
-status: Draft
+status: Living
 type: RFC
 spdx-license: CC0-1.0
 authors:
@@ -662,7 +662,7 @@ message Scene {
 
 ## Deadline
 
-Date: TBD
+Date: Q4 2025
 
 ## Consequences
 
