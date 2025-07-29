@@ -23,32 +23,47 @@ Trigger areas are a region in the scene that trigger an action whenever somethin
 
 The shape of a trigger area is given by a collider. It can use a simple primitive shape, or it can even take any arbitrary shape from a 3D model.
 
-To repurpose a collider as a trigger area, we will need to add a new `isTrigger` property to both `MeshCollider` and `GLTFContainer`.
+We will create a new component for this, called `TriggerArea`. It will have the following fields:
 
-When this property is set to true, the collider will no longer perform physics calculations, but will instead trigger events.
+- `mesh`: An object similar to the one used for [MeshCollider](https://github.com/decentraland/protocol/blob/main/proto/decentraland/sdk/components/mesh_collider.proto#L33), that allows to define the shape of the trigger area.
+- `triggerLayer`: The collision layer that triggers the trigger
 
-Any GLTFContainer with a visible 3D model will keep being visible, but its collider geometry will stop blocking the player and will stop intercepting button events.
 
 ### Collision layers
 
-Trigger areas can only be triggered by entities on certain _collision layers_. Most of the time you want to check for just the position of the player, so we should have a collision layer dedicated to this, and it should be the default. But other times, you may want to check for other objects such as NPCs or any other object that can move around the scene. For this we can leverage the already existing `ColliderLayer` enum on our SDK.
+Trigger areas can only be triggered by entities on certain _collision layers_. Most of the time you want to check for just the position of the player, so we should have a collision layer dedicated to this, and it should be the default. We should create a new enum for this, called `TriggerLayer`.
 
-When a collider is configured to behave as a trigger, the `collisionMask` property (on [meshCollider](https://github.com/decentraland/protocol/blob/main/proto/decentraland/sdk/components/mesh_collider.proto#L33) & [gltfContainer](https://github.com/decentraland/protocol/blob/main/proto/decentraland/sdk/components/gltf_container.proto#L17~L18)) changes its purpose. Instead of determining what collision layers it collides with, now it controls what collision layers can trigger it. So if `collisionMask` is set to `ColliderLayer.CL_PHYSICS`, any object that has a collider on this layer will set off the trigger.
+This enum should have the following values:
 
-Most of the time, creators only want to detect triggers from the player, not from any object with a collider. The default configuration should just listen to the player, in case there’s no explicit value for `collisionMask`. 
+- `TL_PLAYER`: The default layer for the player
+- `TL_CUSTOM1`: A custom layer for any other object that can move around the scene
+- `TL_CUSTOM2`: A custom layer for any other object that can move around the scene
+- `TL_CUSTOM3`: A custom layer for any other object that can move around the scene
+- `TL_CUSTOM4`: A custom layer for any other object that can move around the scene
+- `TL_CUSTOM5`: A custom layer for any other object that can move around the scene
+- `TL_CUSTOM6`: A custom layer for any other object that can move around the scene
+- `TL_CUSTOM7`: A custom layer for any other object that can move around the scene
+- `TL_CUSTOM8`: A custom layer for any other object that can move around the scene
 
-We’ll need to assign the player a value in the `ColliderLayer` enum. We should either use 2 of the reserved collider layers (1 for main player only and another for any player) [here](https://github.com/decentraland/protocol/blob/main/proto/decentraland/sdk/components/mesh_collider.proto#L44~L62) at protocol level or introduce 2 new ones in that enum.
+A single trigger area can have multiple trigger layers at once, similarly to how collision layers work on colliders.
 
-### Low level
+### Trigger events
 
-Trigger events would have to be shared from the engine to the SDK via a component, following a similar approach as we do with pointer events and raycasts. We should create a `TriggerCollisionResult` component.
+Trigger areas can trigger events when the player (or any other entity on the trigger layer) enters, exits or stays in the area.
 
-Creators are not expected to read values or make use of this component in any way, unless they really want to fine tune their scene’s behavior.
+Trigger events would have to be shared from the engine to the SDK via a component, following a similar approach as we do with pointer events and raycasts. We should create a `TriggerCollisionResult` component. Creators are not expected to read values or make use of this component in any way, unless they really want to fine tune their scene’s behavior.
 
-The result component will have the following fields:
+This component will be added by the engine, similarly to how pointer events are handled. The event will be triggered when the entity enters, exits or stays in the area. Each event will have the following fields:
 
-- `triggeringEntity`: The entity that triggered the trigger
-- `triggeringCollisionLayer`: The collision layer of the entity that triggered the trigger
+- `triggeredEntity`: The entity that was triggered (this is the entity that owns the trigger area)
+- `state`: The state of the trigger event (ENTER, EXIT, STAY)
+- `timestamp`: The timestamp of the trigger event
+- `trigger`: An object with the following fields:
+  - `entity`: The entity that triggered the trigger
+  - `layer`: The collision layer of the entity that triggered the trigger (this is the same as the trigger layer of the trigger area)
+  - `position`: The position of the entity that triggered the trigger
+  - `rotation`: The rotation of the entity that triggered the trigger
+  - `scale`: The scale of the entity that triggered the trigger
 
 
 
@@ -61,6 +76,27 @@ We’ll create a system and helper functions for reacting to a trigger events fr
 - `onTriggerEnter`
 - `onTriggerExit`
 - `onTriggerStay`
+
+It will look something like this:
+
+```ts
+triggerEventsSystem.OnTriggerEnter(
+    {
+      entity: myTrigger,
+      opts: {
+        layer: Player
+      }
+    },
+    function (otherEntity) {
+      // Do whatever I want
+    }
+  )
+```
+
+## Triggers embedded in 3D models
+
+
+It should also be possible to create trigger areas embedded into 3D models. If a mesh in a 3D model has a name that ends with `_trigger`, it will be considered a trigger area.
 
 
 
@@ -97,13 +133,24 @@ engine.addSystem(TriggerReadingSystem)
 
 High level:
 
+_Option 1: Using the TriggerArea component_
 ```ts
 const myTrigger = engine.addEntity()
 
-MeshCollider.setBox(myTrigger, {isTrigger:true })
+MeshCollider.setBox(myTrigger, {collisionMask: ColliderLayer.CL_PHYSICS})
+
+TriggerArea.setBox(myTrigger, {layer:TriggerLayer.TL_PLAYER })
 
 Tramsform.create(myTrigger)
+```
 
+_Option 2: Using the triggerEventsSystem_
+```ts
+const myTrigger = engine.addEntity()
+
+MeshCollider.setBox(myTrigger, {collisionMask: ColliderLayer.CL_PHYSICS})
+
+Tramsform.create(myTrigger)
 triggerEventsSystem.OnTriggerEnter(
     {
       entity: myTrigger,
