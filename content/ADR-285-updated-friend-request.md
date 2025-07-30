@@ -1,7 +1,7 @@
 ---
 layout: adr
 adr: 285
-title: Updated Friend Request Protocol
+title: Friend Request Protocol V2
 date: 2025-07-25
 status: Draft
 type: Standards Track
@@ -218,6 +218,56 @@ rpc GetSentFriendshipRequests(GetFriendshipRequestsPayload) returns
 (PaginatedFriendshipRequestsResponse) {}
 ```
 
+### Getting Friends List
+
+Retrieving the user's current friends list is done through the `GetFriends` RPC call.
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant SS as Social Service
+
+  U->>SS: GetFriends(pagination: { limit: 50, offset: 0 })
+  SS-->>U: PaginatedFriendsProfilesResponse with friends list
+```
+
+```protobuf
+message GetFriendsPayload {
+  optional Pagination pagination = 1;
+}
+
+message PaginatedFriendsProfilesResponse {
+  repeated FriendProfile friends = 1;
+  PaginatedResponse pagination_data = 2;
+}
+
+rpc GetFriends(GetFriendsPayload) returns (PaginatedFriendsProfilesResponse) {}
+```
+
+### Getting Mutual Friends
+
+Retrieving mutual friends between two users is done through
+the `GetMutualFriends` RPC call.
+
+```mermaid
+sequenceDiagram
+  participant U1 as User
+  participant SS as Social Service
+
+  U1->>SS: GetMutualFriends(user: "0x...", pagination: { limit: 50, offset: 0 })
+  SS-->>U1: PaginatedFriendsProfilesResponse with mutual friends
+```
+
+```protobuf
+message GetMutualFriendsPayload {
+  User user = 1;
+  optional Pagination pagination = 2;
+}
+
+rpc GetMutualFriends(GetMutualFriendsPayload)
+returns (PaginatedFriendsProfilesResponse) {}
+```
+
 ### Getting Friendship Status
 
 Checking the friendship status between two users is done by performing the
@@ -332,6 +382,38 @@ rpc SubscribeToFriendshipUpdates(google.protobuf.Empty) returns
 (stream FriendshipUpdate) {}
 ```
 
+### Subscribing to Friend Connectivity Updates
+
+Subscribing to friend connectivity updates provides real-time information about
+friends' online status.
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant SS as Social Service
+
+  U->>SS: Subscribe to friend connectivity updates
+  alt Friend goes online/offline/away
+    SS-->>U: FriendConnectivityUpdate(friend: {...}, status: ONLINE/OFFLINE/AWAY)
+  end
+```
+
+```protobuf
+enum ConnectivityStatus {
+  ONLINE = 0;
+  OFFLINE = 1;
+  AWAY = 2;
+}
+
+message FriendConnectivityUpdate {
+  FriendProfile friend = 1;
+  ConnectivityStatus status = 2;
+}
+
+rpc SubscribeToFriendConnectivityUpdates(google.protobuf.Empty) returns
+(stream FriendConnectivityUpdate) {}
+```
+
 ### Blocking and Unblocking Users
 
 The protocol also supports blocking and unblocking users, which affects friend
@@ -409,6 +491,57 @@ message UnblockUserResponse {
 rpc UnblockUser(UnblockUserPayload) returns (UnblockUserResponse) {}
 ```
 
+#### Getting Blocked Users
+
+Retrieving the list of blocked users is done through the `GetBlockedUsers` RPC call.
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant SS as Social Service
+
+  U->>SS: GetBlockedUsers(pagination: { limit: 50, offset: 0 })
+  SS-->>U: GetBlockedUsersResponse with blocked users list
+```
+
+```protobuf
+message GetBlockedUsersPayload {
+  optional Pagination pagination = 1;
+}
+
+message GetBlockedUsersResponse {
+  repeated BlockedUserProfile profiles = 1;
+  PaginatedResponse pagination_data = 2;
+}
+
+rpc GetBlockedUsers(GetBlockedUsersPayload)
+returns (GetBlockedUsersResponse) {}
+```
+
+#### Getting Blocking Status
+
+Checking the blocking status between users is done
+through the `GetBlockingStatus` RPC call.
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant SS as Social Service
+
+  U->>SS: GetBlockingStatus()
+  SS-->>U: GetBlockingStatusResponse with blocking information
+```
+
+```protobuf
+message GetBlockingStatusResponse {
+  repeated string blocked_users = 1;
+  repeated string blocked_by_users = 2;
+}
+
+rpc GetBlockingStatus(google.protobuf.Empty)
+returns (GetBlockingStatusResponse) {}
+```
+
 #### Subscribing to Block Updates
 
 ```mermaid
@@ -452,6 +585,9 @@ The client must handle various error scenarios gracefully:
 - **InternalServerError**: Implement retry logic for server errors
 - **InvalidRequest**: Validate input data before sending requests
 - **ProfileNotFound**: Handle cases where target users don't exist
+- **ConflictingError**: Handle conflicts when multiple operations are attempted simultaneously
+- **ForbiddenError**: Handle permission-related errors
+- **NotFoundError**: Handle cases where requested resources don't exist
 
 ### State Management
 
@@ -459,17 +595,19 @@ The client must maintain local state for:
 
 - Pending friend requests (both sent and received)
 - Current friends list
+- Mutual friends with other users
 - Blocked users list
 - Friendship status with other users
+- Friend connectivity status (online/offline/away)
 
-### Privacy Settings Integration
+### Blocking Integration
 
-The client must respect user privacy settings when displaying friend requests and
+The client must respect blocking functionality when displaying friend requests and
 managing friendships. This includes:
 
 - Filtering blocked users from friend request lists
 - Preventing actions with blocked users
-- Respecting privacy settings for private messages (as defined in ADR-208)
+- Respecting blocking status when managing friendships
 
 ## Migration from ADR-137
 
@@ -483,8 +621,7 @@ Key changes include:
 3. **Enhanced Error Handling**: More specific error types and better error handling
 4. **Blocking Support**: Integrated blocking functionality that affects friend
    request behavior
-5. **Privacy Integration**: Better integration with privacy settings and social
-   features
+5. **Connectivity Features**: Real-time friend online status tracking
 
 ## RFC 2119 and RFC 8174
 
