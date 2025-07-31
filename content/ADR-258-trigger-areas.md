@@ -31,21 +31,30 @@ We will create a new component for this, called `TriggerArea`. It will have the 
 
 ### Collision layers
 
-Trigger areas can only be triggered by entities on certain _collision layers_. Most of the time you want to check for just the position of the player, so we should have a collision layer dedicated to this, and it should be the default. We should create a new enum for this, called `TriggerLayer`.
+Trigger areas can only be triggered by entities on certain _collision layers_. We should reuse the `ColliderLayer` enum for this.
 
-This enum should have the following values:
+Most of the time you want to check for just the position of the player, so we should have a collision layer dedicated to this, and it should be the default of any Trigger component. This new layer should be added to the `ColliderLayer` enum.
 
-- `TL_PLAYER`: The default layer for the player
-- `TL_CUSTOM1`: A custom layer for any other object that can move around the scene
-- `TL_CUSTOM2`: A custom layer for any other object that can move around the scene
-- `TL_CUSTOM3`: A custom layer for any other object that can move around the scene
-- `TL_CUSTOM4`: A custom layer for any other object that can move around the scene
-- `TL_CUSTOM5`: A custom layer for any other object that can move around the scene
-- `TL_CUSTOM6`: A custom layer for any other object that can move around the scene
-- `TL_CUSTOM7`: A custom layer for any other object that can move around the scene
-- `TL_CUSTOM8`: A custom layer for any other object that can move around the scene
+The `ColliderLayer` enum should have the following values:
+
+- `CL_NONE`: No layer, the trigger area will not trigger any events
+- `CL_POINTER`: The default layer for any pointer events
+- `CL_PHYSICS`: The default layer for all entities with a physics collider
+- `CL_CUSTOM1`: A custom layer for any other object that can move around the scene
+- `CL_CUSTOM2`: A custom layer for any other object that can move around the scene
+- `CL_CUSTOM3`: A custom layer for any other object that can move around the scene
+- `CL_CUSTOM4`: A custom layer for any other object that can move around the scene
+- `CL_CUSTOM5`: A custom layer for any other object that can move around the scene
+- `CL_CUSTOM6`: A custom layer for any other object that can move around the scene
+- `CL_CUSTOM7`: A custom layer for any other object that can move around the scene
+- `CL_CUSTOM8`: A custom layer for any other object that can move around the scene
+- `CL_PLAYER`: The default layer for the player
 
 A single trigger area can have multiple trigger layers at once, similarly to how collision layers work on colliders.
+
+When using the `POINTER` layer, the trigger area will trigger events when the pointer is hovered over it, in the same way that ON_HOVER events from the PointerEvents component work.
+
+When using the `PHYSICS` layer, the trigger area will trigger events when any entity with a physics collider overlaps with it.
 
 ### Trigger events
 
@@ -96,7 +105,7 @@ triggerEventsSystem.OnTriggerEnter(
 ## Triggers embedded in 3D models
 
 
-It should also be possible to create trigger areas embedded into 3D models. If a mesh in a 3D model has a name that ends with `_trigger`, it will be considered a trigger area.
+It should also be possible to create trigger areas embedded into 3D models. If a mesh in a 3D model has a name that contains the string `_trigger`, it will be considered a trigger area.
 
 
 
