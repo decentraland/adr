@@ -12,10 +12,21 @@ authors:
 
 ## Abstract
 
-This document describes an approach for making it possible for creators to use native trigger areas in their scenes. 
-Our SDK never included this essential feature, so creators have relied heavily using the Utils library. Triggers in this library are implemented with an approach that has bad performance and is not so easy on the creator, and also has its limits.
+This document describes an approach for implementing native trigger areas in creator scenes. Triggers are a fundamental feature of game development that should be available as a core engine capability rather than requiring external dependencies. Currently, creators must rely heavily on the Utils library for this essential functionality, which presents several significant limitations:
 
-This new approach results in better performance and a better developer experience. It also allows for more freedom, as the trigger areas can now be any shape, not just a box.
+- **Performance degradation**: The library implementation results in bad performance and slower SDK ticks due to its non-native approach
+- **Shape constraints**: Triggers are restricted to box colliders only, limiting creative possibilities  
+- **Developer experience**: The current approach is not easy on the creator and requires additional library dependencies
+- **Architectural limitations**: As a library solution, it cannot leverage engine-level optimizations or native collision detection
+
+The native engine implementation addresses these issues by providing:
+- Better performance through engine-level integration with the existing collision system
+- Support for any arbitrary shape from 3D models using mesh colliders, not just primitive shapes
+- Seamless integration with existing components like MeshCollider and ColliderLayer
+- A friendlier developer experience through helper functions similar to our pointerEvents system
+- Native support for multiple trigger layers and collision detection
+
+This new approach enables creators to define trigger areas using any collider shape - from simple primitives to complex meshes from GLTF models - and react to enter, exit, and stay events when entities on specific collision layers overlap with them.
 
 ## Trigger areas
 
