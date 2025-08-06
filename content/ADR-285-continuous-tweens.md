@@ -36,11 +36,11 @@ The `RotateContinuous` mode allows to rotate an entity at a constant speed in a 
 The `RotateContinuous` mode will have the following fields:
 
 - `direction`: _Quaternion_, the direction of the rotation
-- `speed`: _number_, the speed of the rotation in radians per second
+- `speed`: _number_, the speed of the rotation in degrees per second
 - `duration`: _number_, the duration of the rotation in milliseconds
 - `easingFunction`: _EasingFunction_ (optional), the easing function to use for the rotation
 
-Note: The `duration` field is optional. If it is not specified, the rotation will be continuous and infinite. The `easingFunction` field will only be used if the `duration` field is specified.
+Note: The `duration` field is optional. If it is not specified, the rotation will be continuous and infinite. The `easingFunction` field will only be used if the `duration` field is specified. If an easing function is present, it will apply a multiplier from 0 to 1 to the speed, distorting the final resulting speed.
 
 
 ## MoveContinuous
@@ -49,12 +49,12 @@ The `MoveContinuous` mode allows to move an entity at a constant speed in a give
 
 The `MoveContinuous` mode will have the following fields:
 
-- `direction`: _Vector3_, the direction of the movement
-- `speed`: _number_, the speed of the movement in meters per second
+- `movement`: _Vector3_, a single vector that specifies the movement direction and speed (given by the magnitude).
 - `duration`: _number_, the duration of the movement in milliseconds
 - `easingFunction`: _EasingFunction_ (optional), the easing function to use for the movement
 
-Note: The `duration` field is optional. If it is not specified, the movement will be continuous and infinite. The `easingFunction` field will only be used if the `duration` field is specified.
+Note: In a helper we can expose separate fields for the direction (as a normalized vector3) and the speed (as meters per second)
+Note: The `duration` field is optional. If it is not specified, the movement will be continuous and infinite. The `easingFunction` field will only be used if the `duration` field is specified. If an easing function is present, it will apply a multiplier from 0 to 1 to the speed, distorting the final resulting speed.
 
 
 ## TextureMoveContinuous
@@ -63,12 +63,13 @@ The `TextureMoveContinuous` mode allows to move the texture of a material at a c
 
 The `TextureMoveContinuous` mode will have the following fields:
 
-- `direction`: _Vector2_, the direction of the movement
-- `speed`: _number_, the speed of the movement expressed as a percentage of the texture size per second
+
+- `movement`: _Vector2_, a single vector that specifies the movement direction and speed (given by the magnitude).
 - `duration`: _number_, the duration of the movement in milliseconds
 - `easingFunction`: _EasingFunction_ (optional), the easing function to use for the movement
 
-Note: The `duration` field is optional. If it is not specified, the movement will be continuous and infinite. The `easingFunction` field will only be used if the `duration` field is specified.
+Note: In a helper we can expose separate fields for the direction (as a normalized vector2) and the speed (as a percentage of the texture size per second)
+Note: The `duration` field is optional. If it is not specified, the movement will be continuous and infinite. The `easingFunction` field will only be used if the `duration` field is specified. If an easing function is present, it will apply a multiplier from 0 to 1 to the speed, distorting the final resulting speed.
 
 
 ## Easing function to be optional
