@@ -67,6 +67,8 @@ When using the `POINTER` layer, the trigger area will trigger events when the po
 
 When using the `PHYSICS` layer, the trigger area will trigger events when any entity with a physics collider overlaps with it.
 
+Note: If a collider with the same shape blocks a player from entering a trigger area, then we won't consider a trigger event being sent. There must be an overlap with the area, not just contact. For example, if a same entity has both a MeshCollider component set to the layer `CL_PHYSICS` and a Trigger component set to the layer `CL_PLAYER`, and both meshes have the same shape, then the player will never be able to activate a trigger event from this entity. In the future we'll likely want to do _Collision Events_ as a separate feature.
+
 ### Trigger events
 
 Trigger areas can trigger events when the player (or any other entity on the trigger layer) enters, exits or stays in the area.
@@ -76,6 +78,8 @@ Trigger events would have to be shared from the engine to the SDK via a componen
 This component will be added by the engine, similarly to how pointer events are handled. The event will be triggered when the entity enters, exits or stays in the area. Each event will have the following fields:
 
 - `triggeredEntity`: The entity that was triggered (this is the entity that owns the trigger area)
+- `triggeredEntityPosition`: The position of the triggered entity at the time of the trigger.
+- `triggeredEntityRotation`: The rotation of the triggered entity at the time of the trigger.
 - `state`: The state of the trigger event (ENTER, EXIT, STAY)
 - `timestamp`: The timestamp of the trigger event
 - `trigger`: An object with the following fields:
@@ -85,7 +89,11 @@ This component will be added by the engine, similarly to how pointer events are 
   - `rotation`: The rotation of the entity that triggered the trigger
   - `scale`: The scale of the entity that triggered the trigger
 
+### Ensure detection
 
+There's a possible scenario where an entity may be moving so fast that it crosses through a trigger area without spending a frame within the trigger area. We should detect when this is the case and activate a trigger event in this scenario too.
+
+We can make reasonable asssumptions to cover this scenario only if the moving object is moving via a Tween. If the moving object is being moved by a system in the scene frame by frame, we can't easily infer from the engine that a smooth movement is taking place. For those cases, the engine only knows of distinct positions on each frame, and we should evaluate triggers frame by frame.
 
 ### Code helpers
 
