@@ -1,8 +1,8 @@
 ---
 layout: adr
 adr: 286
-title: Voice chat areas
-date: 2025-07-31
+title: Scene Voice Chat
+date: 2025-08-20
 status: Living
 type: RFC
 spdx-license: CC0-1.0
@@ -12,85 +12,108 @@ authors:
 
 # Abstract
 
-Scenes often require localized, ad-hoc voice communication between players who are physically near each other within a specific in-game space — for example, social hubs, games like speed dating, art exhibits, or impromptu stage areas. The current voice system only supports Community Voice Chat (with moderators and persistent rooms) or Private Conversations, which are either too global or too exclusive for these use cases.
+Scenes often require localized, ad-hoc voice communication between players — for example, social hubs, use cases like speed dating, or impromptu stage areas. The current voice system only supports Community Voice Chat (with moderators and persistent rooms) or Private Conversations, which require that the players first become friends. This is not ideal for more spontaneous use cases.
 
 ## Decision
 
-We are introducing a new type of Avatar Modifier Area called a Voice Chat Area, which automatically places players into a temporary, scoped LiveKit room when they are standing inside a defined 3D region. These areas provide private, ephemeral voice chat spaces where everyone can speak freely without moderation.
+We are introducing a means for the scene to assign players to a group voice chat. Scenes can use any logic they want to determine which players are in a voice chat.
 
-## Abstract
+The creation and management of voice chat rooms is handled by a backend service, each explorer can use the new provided functions to join and leave voice chat rooms.
 
-A Voice Chat Area is a volume in the scene that automatically joins players into a dedicated voice room when entered and removes them when exited. These rooms are:
-
-- Ephemeral (only exist when 2+ people are inside)
-- Private (not accessible from outside)
-- Equal-access (no moderation; open mic format)
-
-This ADR specifies the data model, runtime behavior, UI integration, and constraints for implementing Voice Chat Areas.
+In these voice chats everyone can speak freely without moderation.
 
 ## Motivation
 
-- Support natural, proximity-based audio conversations within specific scene areas.
+- Support natural audio conversations within specific scene areas.
 
-- Enable immersive use cases like speed dating, stage performances, open mic corners.
+- Enable immersive use cases like speed dating, stage performances, open mic corners, etc.
 
-- Avoid eavesdropping and ensure conversations are scoped to what players see.
-
-
-## Room Lifecycle
-
-A new LiveKit room is instantiated on-demand only if two or more users are present in the area.
-
-- Rooms are ephemeral and are destroyed when fewer than two participants remain.
-- Room identifiers do not persist — each room instance can have a new ID.
-
-## Microphone Behavior
-
-Upon joining, the player's mic is automatically muted by default.
-
-Players must manually unmute to speak, to prevent accidental broadcast. This is to avoid the situation where a player accidentally unmutes their mic and starts talking to the world, which is not what we want.
 
 ## Design Constraints
 
 ### Privacy
 
-- No eavesdropping — players outside the volume cannot hear or join the conversation.
+— Althought there will always be ways for players to eavesdrop on a voice chat, each explorer should display the list of players who are taking part in the conversation. Thanks to that, players can be sure of the privacy of their conversation.
 
-- Participants should feel safe that the conversation is limited to visible, present users.
 
 ### Exclusivity
 
-- A player cannot be in multiple voice chats simultaneously:
+- A player cannot be in multiple voice chats simultaneously. If the scene assigns a player to a voice chat, the player will be disconnected from any other voice chat they were in.
 
-- No overlapping Voice Chat Areas.
+- No joining while in a Private or Community Voice Chat.
 
-- No joining while in a Private or Community Chat.
+- Voice chats are exclusive to each scene. A single voice chat can't span players from different scenes.
 
-- Attempts to join while already in a call must trigger a prompt to leave first.
-
-
-## Engine Responsibilities
-
-- Monitor player position relative to all VoiceChatArea volumes.
-
-- Manage joining/leaving LiveKit rooms automatically based on presence.
-
-- Avoid resource waste by not persisting empty rooms.
-
-- Synchronize user presence lists with UI updates in real-time.
+- Players should be ablele to see a video stream from a scene while in a voice chat. We don't want more than one channel where the player can speak, but they should be able to consume other streams passively. For example, a scene might stream music while the player is in a voice chat.
 
 
-## Scalability
+## Connect and disconnect from a voice chat
 
-- Unlimited number of VoiceChatAreas can exist in a scene.
+We'll introduce two new functions to connect and disconnect from a voice chat: `ConnectToVoiceChat()` and `DisconnectFromVoiceChat()`.
 
-- Only active areas with multiple users consume backend voice resources.
+The function `ConnectToVoiceChat()` will pass a room ID. The room ID is a unique identifier for each voice chat managed by the scene. Players who are in the same voice chat will be able to hear each other.
 
-- LiveKit’s built-in user limits (e.g., ~256 per room) apply.
+The function `DisconnectFromVoiceChat()` doesn't need to pass a room ID, since the player will be disconnected from the voice chat they are currently in.
 
-## Excluded IDs
+There is no limit to the amount of room IDs that a scene can handle. On the backend, only active voice chats with multiple users consume voice resources.
+The backend will handle the connection to the voice chat room and the disconnection from the voice chat room.
 
-As in other avatar modifier areas, the `excludeIds` field can be used to exclude specific players from the area. This could be useful for creators or eventually scene admins to exclude toxic players from joining the voice conversation.
+We want to allow scenes to be able to hard-code the room ID in the scene. This is useful for scenes that have a fixed number of voice chats.
+
+```ts
+triggerEventsSystem.OnTriggerEnter(
+    {
+      entity: myTrigger,
+      opts: {
+        layer: Player
+      }
+    },
+    function () {
+      ConnectToVoiceChat(1)
+    }
+  )
+  
+  triggerEventsSystem.OnTriggerLeave(
+    {
+      entity: myTrigger,
+      opts: {
+        layer: Player
+      }
+    },
+    function () {
+      DiconnectFromVoiceChat()
+    }
+  )
+```
+
+In this example, a trigger area is conencting to a hardcoded room number *1*. The scene could have N trigger areas, each with its own separate room number ID hardcoded. 
+
+If on the other hand, the scene would have to query the backend to know what room IDs are available, it would be a lot more complex for the scene to coordinate this simple use case. It would need to sync information between players to know which ID is being assigned to which trigger area and pick the right one.
+
+### Query open rooms
+
+For more advanced use cases, the scene could query the backend to know what room IDs are available for this scene. This would allow the scene to have a dynamic number of voice chats based on whatever logic they want.
+
+We'll introduce a new function to query the backend to know what room IDs are available for this scene: `GetAvailableVoiceChatRooms()`.
+
+This function will return a promise that will resolve to an array of room IDs and the list of users in each room.
+
+```ts	
+const await availableRooms = GetAvailableVoiceChatRooms()
+
+if (availableRooms.length > 0) {
+  ConnectToVoiceChat(availableRooms[0])
+}
+
+```
+
+The scene could use this function to know what room IDs are available and connect to the first one.
+
+
+### Disconnect from a voice chat
+
+
+
 
 
 
@@ -111,16 +134,28 @@ As in other avatar modifier areas, the `excludeIds` field can be used to exclude
 Voice chat area:
 
 ```ts
-const entity = engine.addEntity()
-
-AvatarModifierArea.create(entity, {
-	area: Vector3.create(4, 3, 4),
-	modifiers: [AvatarModifierType.AMT_VOICE_CHAT],
-	excludeIds: []
-})
-
-Transform.create(entity, {
-	position: Vector3.create(8, 0, 8),
-})
+triggerEventsSystem.OnTriggerEnter(
+    {
+      entity: myTrigger,
+      opts: {
+        layer: Player
+      }
+    },
+    function () {
+      ConnectToVoiceChat(1)
+    }
+  )
+  
+  triggerEventsSystem.OnTriggerLeave(
+    {
+      entity: myTrigger,
+      opts: {
+        layer: Player
+      }
+    },
+    function () {
+      DiconnectFromVoiceChat(1)
+    }
+  )
 ```
 
