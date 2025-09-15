@@ -3,7 +3,7 @@ adr: 287
 date: 2025-09-01
 title: Update Emote schema with outcomes (Social Emotes)
 authors:
-  - gabrieldiaz31
+  - cyaiox
 status: Draft
 type: Standards Track
 spdx-license: CC0-1.0
@@ -31,26 +31,78 @@ These new emotes will have a new property named `outcomes`, where the author can
 - **Only a discriminator on-chain (chosen)** — Minimal, backward compatible; rich data stays off-chain in JSON; aligns with ADR-74’s approach of small, append-only metadata changes.
 - **No on-chain hint** — Rejected. Runtimes benefit from a cheap, parse-time discriminator to quickly branch behavior.
 
+## GLB Authoring: Naming Convention
+
+To standardize clips exported in GLBs, we adopt: `Action_(Start | Avatar)`
+
+Examples:
+
+- `HighFive_Start`
+- `HighFive_Avatar`
+- `HighFive_AvatarOther`
+
+**Rationale**
+
+- Self-describing names improve readability, maintenance, and debugging.
+- Decouples DCC tooling (e.g., Blender NLA tracks) from runtime configuration.
+- Builder can enforce/validate this pattern on import and provide dropdowns filtered by action/step.
+
 ## Specification
 
 ### Versioned schema (off-chain)
 
 ```ts
+export type ArmatureId = 'Avatar' | 'Avatar_Other' | string
+
+export type EmoteClip = {
+  armature: ArmatureId
+  animation: string // GLB clip name (e.g., "HighFive_Avatar")
+  loop: boolean
+  randomize: boolean
+}
+
+export type OutcomeGroup = EmoteClip[]
+
 export type EmoteDataADR287 = {
   category: EmoteCategory
   representations: EmoteRepresentationADR74[]
   tags: string[]
   loop: boolean
-  outcomes: {
-    animation: string
-    loop: boolean
-    randomize: boolean
-  }[]
+  startAnimation?: Omit<EmoteClip, 'randomize'>[]
+  outcomes: OutcomeGroup[]
 }
 ```
 
 - Reuses ADR-74 `EmoteCategory` and `EmoteRepresentationADR74` to avoid churn.
 - Keeps top-level `loop` for compatibility, but **emote SHOULD prefer the selected outcome’s `loop`** if present.
+
+Example (two-armature outcomes):
+
+```ts
+startAnimation: [
+  {
+    armature: "Avatar",
+    animation: "HighFive_Start",
+    loop: true
+  },
+],
+outcomes: [
+  [
+    {
+      armature: "Avatar",
+      animation: "HighFive_Avatar",
+      loop: false,
+      randomize: false
+    },
+    {
+      armature: "Avatar_Other",
+      animation: "HighFive_AvatarOther",
+      loop: false,
+      randomize: false
+    }
+  ],
+]
+```
 
 ### Outcome semantics
 
@@ -98,8 +150,8 @@ export type EmoteADR287 = BaseItem & (StandardProps | ThirdPartyProps) & { emote
 
 ### Validation
 
-- Each outcome’s `animation` MUST be a non-empty string.
-- Each outcome’s `loop` and `randomize` MUST be booleans.
+- Each outcome's `animation` MUST be a non-empty string.
+- Each outcome's `loop` and `randomize` MUST be booleans.
 - The on-chain `outcomeType` MUST be consistent with the off-chain `outcomes[]` derivation.
 - `additionalProperties` continues to accept `s | g | sg` (sound/geometry) as per ADR-74.
 - Older clients that parse up to `additionalProperties` MUST continue to function.
@@ -110,8 +162,34 @@ export type EmoteADR287 = BaseItem & (StandardProps | ThirdPartyProps) & { emote
 
 ```ts
 outcomes: [
-  { animation: 'hug_short', loop: false, randomize: true },
-  { animation: 'hug_long', loop: false, randomize: true },
+  [
+    {
+      armature: 'Avatar',
+      animation: 'HugShort_Avatar',
+      loop: false,
+      randomize: true,
+    },
+    {
+      armature: 'Avatar_Other',
+      animation: 'HugShort_AvatarOther',
+      loop: false,
+      randomize: true,
+    },
+  ],
+  [
+    {
+      armature: 'Avatar',
+      animation: 'HugLong_Avatar',
+      loop: false,
+      randomize: true,
+    },
+    {
+      armature: 'Avatar_Other',
+      animation: 'HugLong_AvatarOther',
+      loop: false,
+      randomize: true,
+    },
+  ],
 ]
 // outcomeType => "ro"
 ```
