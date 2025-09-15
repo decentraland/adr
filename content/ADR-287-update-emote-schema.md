@@ -52,10 +52,8 @@ Examples:
 ### Versioned schema (off-chain)
 
 ```ts
-export type ArmatureId = 'Avatar' | 'Avatar_Other' | string
-
 export type EmoteClip = {
-  armature: ArmatureId
+  armature: string // Avatar, Avatar_Other, or any other armature name
   animation: string // GLB clip name (e.g., "HighFive_Avatar")
   loop: boolean
   randomize: boolean
@@ -81,22 +79,22 @@ Example (two-armature outcomes):
 ```ts
 startAnimation: [
   {
-    armature: "Avatar",
-    animation: "HighFive_Start",
+    armature: 'Avatar',
+    animation: 'HighFive_Start',
     loop: true
   },
 ],
 outcomes: [
   [
     {
-      armature: "Avatar",
-      animation: "HighFive_Avatar",
+      armature: 'Avatar',
+      animation: 'HighFive_Avatar',
       loop: false,
       randomize: false
     },
     {
-      armature: "Avatar_Other",
-      animation: "HighFive_AvatarOther",
+      armature: 'Avatar_Other',
+      animation: 'HighFive_AvatarOther',
       loop: false,
       randomize: false
     }
