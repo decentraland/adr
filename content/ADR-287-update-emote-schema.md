@@ -77,29 +77,35 @@ export type EmoteDataADR287 = {
 Example (two-armature outcomes):
 
 ```ts
-startAnimation: [
-  {
-    armature: 'Avatar',
-    animation: 'HighFive_Start',
-    loop: true
+const emoteWithADR287Data = {
+  // ...,
+  emoteDataADR287: {
+    // ...,
+    startAnimation: [
+      {
+        armature: 'Avatar',
+        animation: 'HighFive_Start',
+        loop: true,
+      },
+    ],
+    outcomes: [
+      [
+        {
+          armature: 'Avatar',
+          animation: 'HighFive_Avatar',
+          loop: false,
+          randomize: false,
+        },
+        {
+          armature: 'Avatar_Other',
+          animation: 'HighFive_AvatarOther',
+          loop: false,
+          randomize: false,
+        },
+      ],
+    ],
   },
-],
-outcomes: [
-  [
-    {
-      armature: 'Avatar',
-      animation: 'HighFive_Avatar',
-      loop: false,
-      randomize: false
-    },
-    {
-      armature: 'Avatar_Other',
-      animation: 'HighFive_AvatarOther',
-      loop: false,
-      randomize: false
-    }
-  ],
-]
+}
 ```
 
 ### Outcome semantics
