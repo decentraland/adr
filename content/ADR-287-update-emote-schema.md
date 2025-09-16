@@ -52,13 +52,12 @@ Examples:
 ### Versioned schema (off-chain)
 
 ```ts
-export type ArmatureId = 'Avatar' | 'Avatar_Other' | string
+export type ArmatureId = 'Avatar' | 'Avatar_Other' | 'Avatar_Prop' | string
 
 export type EmoteClip = {
-  armature: ArmatureId // Avatar, Avatar_Other, or any other armature name
+  armature: ArmatureId // Avatar, Avatar_Other, Avatar_Prop, or any other armature name
   animation: string // GLB clip name (e.g., "HighFive_Avatar")
   loop: boolean
-  randomize: boolean
 }
 
 export type OutcomeGroup = {
@@ -71,7 +70,8 @@ export type EmoteDataADR287 = {
   representations: EmoteRepresentationADR74[]
   tags: string[]
   loop: boolean
-  startAnimation?: Omit<EmoteClip, 'randomize'>[]
+  randomizeOutcomes: boolean
+  startAnimation: EmoteClip[]
   outcomes: OutcomeGroup[]
 }
 ```
@@ -93,21 +93,23 @@ const emoteWithADR287Data = {
         loop: true,
       },
     ],
+    randomizeOutcomes: false,
     outcomes: [
-      [
-        {
-          armature: 'Avatar',
-          animation: 'HighFive_Avatar',
-          loop: false,
-          randomize: false,
-        },
-        {
-          armature: 'Avatar_Other',
-          animation: 'HighFive_AvatarOther',
-          loop: false,
-          randomize: false,
-        },
-      ],
+      {
+        title: 'High Five',
+        clips: [
+          {
+            armature: 'Avatar',
+            animation: 'HighFive_Avatar',
+            loop: false,
+          },
+          {
+            armature: 'Avatar_Other',
+            animation: 'HighFive_AvatarOther',
+            loop: false,
+          },
+        ],
+      },
     ],
   },
 }
@@ -116,8 +118,8 @@ const emoteWithADR287Data = {
 ### Outcome semantics
 
 - **so**: `outcomes.length === 1` always that outcome.
-- **mo**: `outcomes.length > 1` **and** no `randomize: true` deterministic selection policy (implementation-defined).
-- **ro**: any outcome with `randomize: true` choose randomly among those with `randomize: true`; if none marked, fall back to **mo**.
+- **mo**: `outcomes.length > 1` **and** no `randomizeOutcomes: true` deterministic selection policy (implementation-defined).
+- **ro**: `outcomes.length > 1` **and** `randomizeOutcomes: true` choose randomly among all outcomes.
 
 ### Contract metadata (on-chain)
 
@@ -143,7 +145,7 @@ Where:
 ### Deriving `outcomeType` from the schema
 
 - If `outcomes.length === 1`: `so`
-- Else if `outcomes.some(o => o.randomize)`: `ro`
+- Else if `outcomes.length > 1 && randomizeoutcomes === true`: `ro`
 - Else: `mo`
 - If `outcomes` is empty (legacy), treat as `so` using the default animation.
 
@@ -159,8 +161,9 @@ export type EmoteADR287 = BaseItem & (StandardProps | ThirdPartyProps) & { emote
 
 ### Validation
 
+- Each outcome's `armature` MUST be a non-empty string.
 - Each outcome's `animation` MUST be a non-empty string.
-- Each outcome's `loop` and `randomize` MUST be booleans.
+- Each outcome's `loop` MUST be boolean.
 - The on-chain `outcomeType` MUST be consistent with the off-chain `outcomes[]` derivation.
 - `additionalProperties` continues to accept `s | g | sg` (sound/geometry) as per ADR-74.
 - Older clients that parse up to `additionalProperties` MUST continue to function.
@@ -170,36 +173,52 @@ export type EmoteADR287 = BaseItem & (StandardProps | ThirdPartyProps) & { emote
 **Random outcomes (off-chain)**
 
 ```ts
-outcomes: [
-  [
-    {
-      armature: 'Avatar',
-      animation: 'HugShort_Avatar',
-      loop: false,
-      randomize: true,
-    },
-    {
-      armature: 'Avatar_Other',
-      animation: 'HugShort_AvatarOther',
-      loop: false,
-      randomize: true,
-    },
-  ],
-  [
-    {
-      armature: 'Avatar',
-      animation: 'HugLong_Avatar',
-      loop: false,
-      randomize: true,
-    },
-    {
-      armature: 'Avatar_Other',
-      animation: 'HugLong_AvatarOther',
-      loop: false,
-      randomize: true,
-    },
-  ],
-]
+const emoteWithADR287Data = {
+  // ...,
+  emoteDataADR287: {
+    // ...,
+    startAnimation: [
+      {
+        armature: 'Avatar',
+        animation: 'Hug_Start',
+        loop: true,
+      },
+    ],
+    randomizeOutcomes: true,
+    outcomes: [
+      {
+        title: 'Hug Short',
+        clips: [
+          {
+            armature: 'Avatar',
+            animation: 'HugShort_Avatar',
+            loop: false,
+          },
+          {
+            armature: 'Avatar_Other',
+            animation: 'HugShort_AvatarOther',
+            loop: false,
+          },
+        ],
+      },
+      {
+        title: 'Hug Long',
+        clips: [
+          {
+            armature: 'Avatar',
+            animation: 'HugLong_Avatar',
+            loop: false,
+          },
+          {
+            armature: 'Avatar_Other',
+            animation: 'HugLong_AvatarOther',
+            loop: false,
+          },
+        ],
+      },
+    ],
+  },
+}
 // outcomeType => "ro"
 ```
 
