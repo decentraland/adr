@@ -52,14 +52,19 @@ Examples:
 ### Versioned schema (off-chain)
 
 ```ts
+export type ArmatureId = 'Avatar' | 'Avatar_Other' | string
+
 export type EmoteClip = {
-  armature: string // Avatar, Avatar_Other, or any other armature name
+  armature: ArmatureId // Avatar, Avatar_Other, or any other armature name
   animation: string // GLB clip name (e.g., "HighFive_Avatar")
   loop: boolean
   randomize: boolean
 }
 
-export type OutcomeGroup = EmoteClip[]
+export type OutcomeGroup = {
+  title: string
+  clips: EmoteClip[]
+}
 
 export type EmoteDataADR287 = {
   category: EmoteCategory
