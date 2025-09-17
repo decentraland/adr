@@ -71,7 +71,7 @@ export type EmoteDataADR287 = {
   tags: string[]
   loop: boolean
   randomizeOutcomes: boolean
-  startAnimation: EmoteClip[]
+  startAnimation: EmoteClip
   outcomes: OutcomeGroup[]
 }
 ```
@@ -86,13 +86,11 @@ const emoteWithADR287Data = {
   // ...,
   emoteDataADR287: {
     // ...,
-    startAnimation: [
-      {
-        armature: 'Avatar',
-        animation: 'HighFive_Start',
-        loop: true,
-      },
-    ],
+    startAnimation: {
+      armature: 'Avatar',
+      animation: 'HighFive_Start',
+      loop: true,
+    },
     randomizeOutcomes: false,
     outcomes: [
       {
@@ -145,7 +143,7 @@ Where:
 ### Deriving `outcomeType` from the schema
 
 - If `outcomes.length === 1`: `so`
-- Else if `outcomes.length > 1 && randomizeoutcomes === true`: `ro`
+- Else if `outcomes.length > 1 && randomizeOutcomes === true`: `ro`
 - Else: `mo`
 - If `outcomes` is empty (legacy), treat as `so` using the default animation.
 
@@ -162,8 +160,10 @@ export type EmoteADR287 = BaseItem & (StandardProps | ThirdPartyProps) & { emote
 ### Validation
 
 - Each outcome's `armature` MUST be a non-empty string.
+- Within a given outcome, each `armature` MUST be unique across all clips (no duplicates).
 - Each outcome's `animation` MUST be a non-empty string.
 - Each outcome's `loop` MUST be boolean.
+- An emote MUST define at most **4 outcomes** (hard limit to ensure manageable complexity).
 - The on-chain `outcomeType` MUST be consistent with the off-chain `outcomes[]` derivation.
 - `additionalProperties` continues to accept `s | g | sg` (sound/geometry) as per ADR-74.
 - Older clients that parse up to `additionalProperties` MUST continue to function.
@@ -177,13 +177,11 @@ const emoteWithADR287Data = {
   // ...,
   emoteDataADR287: {
     // ...,
-    startAnimation: [
-      {
-        armature: 'Avatar',
-        animation: 'Hug_Start',
-        loop: true,
-      },
-    ],
+    startAnimation: {
+      armature: 'Avatar',
+      animation: 'Hug_Start',
+      loop: true,
+    },
     randomizeOutcomes: true,
     outcomes: [
       {
