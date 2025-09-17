@@ -52,11 +52,11 @@ Examples:
 ### Versioned schema (off-chain)
 
 ```ts
-export type ArmatureId = 'Avatar' | 'Avatar_Other' | 'Avatar_Prop' | string
+export type ArmatureId = 'Armature' | 'Armature_Other' | 'Armature_Prop' | string
 
 export type EmoteClip = {
-  armature: ArmatureId // Avatar, Avatar_Other, Avatar_Prop, or any other armature name
-  animation: string // GLB clip name (e.g., "HighFive_Avatar")
+  armature: ArmatureId // Armature, Armature_Other, Armature_Prop, or any other armature name
+  animation: string // GLB clip name (e.g., "HighFive_Armature")
   loop: boolean
 }
 
@@ -87,7 +87,7 @@ const emoteWithADR287Data = {
   emoteDataADR287: {
     // ...,
     startAnimation: {
-      armature: 'Avatar',
+      armature: 'Armature',
       animation: 'HighFive_Start',
       loop: true,
     },
@@ -97,12 +97,12 @@ const emoteWithADR287Data = {
         title: 'High Five',
         clips: [
           {
-            armature: 'Avatar',
+            armature: 'Armature',
             animation: 'HighFive_Avatar',
             loop: false,
           },
           {
-            armature: 'Avatar_Other',
+            armature: 'Armature_Other',
             animation: 'HighFive_AvatarOther',
             loop: false,
           },
@@ -178,7 +178,7 @@ const emoteWithADR287Data = {
   emoteDataADR287: {
     // ...,
     startAnimation: {
-      armature: 'Avatar',
+      armature: 'Armature',
       animation: 'Hug_Start',
       loop: true,
     },
@@ -188,12 +188,12 @@ const emoteWithADR287Data = {
         title: 'Hug Short',
         clips: [
           {
-            armature: 'Avatar',
+            armature: 'Armature',
             animation: 'HugShort_Avatar',
             loop: false,
           },
           {
-            armature: 'Avatar_Other',
+            armature: 'Armature_Other',
             animation: 'HugShort_AvatarOther',
             loop: false,
           },
@@ -203,12 +203,12 @@ const emoteWithADR287Data = {
         title: 'Hug Long',
         clips: [
           {
-            armature: 'Avatar',
+            armature: 'Armature',
             animation: 'HugLong_Avatar',
             loop: false,
           },
           {
-            armature: 'Avatar_Other',
+            armature: 'Armature_Other',
             animation: 'HugLong_AvatarOther',
             loop: false,
           },
