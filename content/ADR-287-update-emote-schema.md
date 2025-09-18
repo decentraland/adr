@@ -70,8 +70,8 @@ export type EmoteDataADR287 = {
   representations: EmoteRepresentationADR74[]
   tags: string[]
   loop: boolean
+  startAnimation: { avatar: EmoteClip; prop?: Emoteclip }
   randomizeOutcomes: boolean
-  startAnimation: EmoteClip
   outcomes: OutcomeGroup[]
 }
 ```
@@ -87,9 +87,11 @@ const emoteWithADR287Data = {
   emoteDataADR287: {
     // ...,
     startAnimation: {
-      armature: 'Armature',
-      animation: 'HighFive_Start',
-      loop: true,
+      avatar: {
+        armature: 'Armature',
+        animation: 'HighFive_Start',
+        loop: true,
+      },
     },
     randomizeOutcomes: false,
     outcomes: [
@@ -178,9 +180,11 @@ const emoteWithADR287Data = {
   emoteDataADR287: {
     // ...,
     startAnimation: {
-      armature: 'Armature',
-      animation: 'Hug_Start',
-      loop: true,
+      avatar: {
+        armature: 'Armature',
+        animation: 'Hug_Start',
+        loop: true,
+      },
     },
     randomizeOutcomes: true,
     outcomes: [
