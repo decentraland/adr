@@ -165,7 +165,7 @@ export type EmoteADR287 = BaseItem & (StandardProps | ThirdPartyProps) & { emote
 - Within a given outcome, each `armature` MUST be unique across all clips (no duplicates).
 - Each outcome's `animation` MUST be a non-empty string.
 - Each outcome's `loop` MUST be boolean.
-- An emote MUST define at most **4 outcomes** (hard limit to ensure manageable complexity).
+- An emote MUST define at most **3 outcomes** (hard limit to ensure manageable complexity).
 - The on-chain `outcomeType` MUST be consistent with the off-chain `outcomes[]` derivation.
 - `additionalProperties` continues to accept `s | g | sg` (sound/geometry) as per ADR-74.
 - Older clients that parse up to `additionalProperties` MUST continue to function.
