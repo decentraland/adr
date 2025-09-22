@@ -11,9 +11,9 @@ spdx-license: CC0-1.0
 
 ## Abstract
 
-We are implementing a new feature named **Social Emotes**, which will allow multiple players to interact with this new kind of emotes.
+We are implementing a new feature named **Social Emotes**, which will allow multiple players to interact with this new kind of emote.
 
-These new emotes will have a new property named `outcomes`, where the author can define the animation to be executed and whether it loops or not.
+These new emotes will have a new property named `outcomes`, which lets authors define the animation to execute and specify whether it loops or not.
 
 ## Context, Reach & Prioritization
 
@@ -33,36 +33,50 @@ These new emotes will have a new property named `outcomes`, where the author can
 
 ## GLB Authoring: Naming Convention
 
-To standardize clips exported in GLBs, we adopt: `Action_(Start | Avatar)`
+To ensure consistency across exported GLB clips, we suggest the use of the following pattern: `<Action>_(Start | Start_Prop | Avatar | Prop | AvatarOther)`
+
+### Rules
+
+- **Action**: Should be written in PascalCase (e.g., `HighFive`, `WaveHello`).
+- **Multiple words**: Combine into PascalCase (no spaces or underscores).
+- **Suffix**: Always appended with an underscore `_`, followed by one of the predefined roles (`Start`, `Start_Prop`, `Avatar`, `Prop`, `AvatarOther`).
+- **Compound suffixes**: Use underscores between suffix parts (e.g., `Start_Prop`, `AvatarOther`).
 
 Examples:
 
 - `HighFive_Start`
+- `HighFive_Start_Prop`
 - `HighFive_Avatar`
+- `HighFive_Prop`
 - `HighFive_AvatarOther`
 
 **Rationale**
 
-- Self-describing names improve readability, maintenance, and debugging.
+- Improves readability, maintenance, and debugging through self-describing names.
 - Decouples DCC tooling (e.g., Blender NLA tracks) from runtime configuration.
-- Builder can enforce/validate this pattern on import and provide dropdowns filtered by action/step.
+- Enables Builder to validate naming patterns on import and provide filtered dropdowns by action/step.
 
 ## Specification
 
 ### Versioned schema (off-chain)
 
 ```ts
-export type ArmatureId = 'Armature' | 'Armature_Other' | 'Armature_Prop' | string
+export type ArmatureId = 'Armature' | 'Armature_Prop' | 'Armature_Other'
 
 export type EmoteClip = {
-  armature: ArmatureId // Armature, Armature_Other, Armature_Prop, or any other armature name
-  animation: string // GLB clip name (e.g., "HighFive_Armature")
+  animation: string // GLB clip name "HighFive_Avatar" (suggested, not enforced)
   loop: boolean
+}
+
+export type StartAnimation = {
+  Armature: EmoteClip
+  Armature_Prop?: EmoteClip
 }
 
 export type OutcomeGroup = {
   title: string
-  clips: EmoteClip[]
+  // Any subset of armatures; validated at runtime to ensure at least one
+  clips: Partial<Record<ArmatureId, EmoteClip>>
 }
 
 export type EmoteDataADR287 = {
@@ -70,7 +84,7 @@ export type EmoteDataADR287 = {
   representations: EmoteRepresentationADR74[]
   tags: string[]
   loop: boolean
-  startAnimation: { avatar: EmoteClip; prop?: Emoteclip }
+  startAnimation: StartAnimation
   randomizeOutcomes: boolean
   outcomes: OutcomeGroup[]
 }
@@ -87,8 +101,7 @@ const emoteWithADR287Data = {
   emoteDataADR287: {
     // ...,
     startAnimation: {
-      avatar: {
-        armature: 'Armature',
+      Armature: {
         animation: 'HighFive_Start',
         loop: true,
       },
@@ -97,18 +110,16 @@ const emoteWithADR287Data = {
     outcomes: [
       {
         title: 'High Five',
-        clips: [
-          {
-            armature: 'Armature',
+        clips: {
+          Armature: {
             animation: 'HighFive_Avatar',
             loop: false,
           },
-          {
-            armature: 'Armature_Other',
+          Armature_Other: {
             animation: 'HighFive_AvatarOther',
             loop: false,
           },
-        ],
+        },
       },
     ],
   },
@@ -164,7 +175,7 @@ export type EmoteADR287 = BaseItem & (StandardProps | ThirdPartyProps) & { emote
 - Each outcome's `armature` MUST be a non-empty string.
 - Within a given outcome, each `armature` MUST be unique across all clips (no duplicates).
 - Each outcome's `animation` MUST be a non-empty string.
-- Each outcome's `loop` MUST be boolean.
+- Each outcome's `loop` MUST be a boolean.
 - An emote MUST define at most **3 outcomes** (hard limit to ensure manageable complexity).
 - The on-chain `outcomeType` MUST be consistent with the off-chain `outcomes[]` derivation.
 - `additionalProperties` continues to accept `s | g | sg` (sound/geometry) as per ADR-74.
@@ -180,8 +191,7 @@ const emoteWithADR287Data = {
   emoteDataADR287: {
     // ...,
     startAnimation: {
-      avatar: {
-        armature: 'Armature',
+      Armature: {
         animation: 'Hug_Start',
         loop: true,
       },
@@ -190,33 +200,29 @@ const emoteWithADR287Data = {
     outcomes: [
       {
         title: 'Hug Short',
-        clips: [
-          {
-            armature: 'Armature',
+        clips: {
+          Armature: {
             animation: 'HugShort_Avatar',
             loop: false,
           },
-          {
-            armature: 'Armature_Other',
+          Armature_Other: {
             animation: 'HugShort_AvatarOther',
             loop: false,
           },
-        ],
+        },
       },
       {
         title: 'Hug Long',
-        clips: [
-          {
-            armature: 'Armature',
+        clips: {
+          Armature: {
             animation: 'HugLong_Avatar',
             loop: false,
           },
-          {
-            armature: 'Armature_Other',
+          Armature_Other: {
             animation: 'HugLong_AvatarOther',
             loop: false,
           },
-        ],
+        },
       },
     ],
   },
