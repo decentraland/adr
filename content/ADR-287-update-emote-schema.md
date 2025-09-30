@@ -76,6 +76,7 @@ export type StartAnimation = {
 
 export type OutcomeGroup = {
   title: string
+  loop: boolean
   // Any subset of armatures; validated at runtime to ensure at least one
   clips: Partial<Record<ArmatureId, EmoteClip>>
 }
