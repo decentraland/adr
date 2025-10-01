@@ -19,6 +19,9 @@ The new protocol leverages the existing Social Service infrastructure and follow
 the established patterns for real-time communication, providing a more robust and
 maintainable solution for managing friendship relationships between users.
 
+The complete protocol definition can be found in the
+[Decentraland Protocol repository](https://github.com/decentraland/protocol/blob/experimental/proto/decentraland/social_service/v2/social_service_v2.proto).
+
 ## Context
 
 The original friend request implementation described in ADR-137 was designed to work
@@ -67,6 +70,10 @@ message UpsertFriendshipPayload {
     User user = 1;
     optional string message = 3;
   }
+  message AcceptPayload { User user = 1; }
+  message RejectPayload { User user = 1; }
+  message DeletePayload { User user = 1; }
+  message CancelPayload { User user = 1; }
 
   oneof action {
     RequestPayload request = 1;
@@ -188,6 +195,17 @@ sequenceDiagram
 ```protobuf
 message GetFriendshipRequestsPayload {
   optional Pagination pagination = 1;
+}
+
+message FriendshipRequestResponse {
+  FriendProfile friend = 1;
+  int64 created_at = 2;
+  optional string message = 3;
+  string id = 4;
+}
+
+message FriendshipRequests {
+  repeated FriendshipRequestResponse requests = 1;
 }
 
 message PaginatedFriendshipRequestsResponse {
@@ -331,26 +349,24 @@ sequenceDiagram
   U1->>SS: Subscribe to friendship updates
   U2->>SS: Subscribe to friendship updates
 
-  alt Friend request sent
-    SS-->>U2: FriendshipUpdate(request: {
-        friend: {...},
-        created_at: 123,
-        message: "Hello!",
-        id: "...",
-        status: REQUEST_SENT
-    })
-  else Friend request accepted
-    SS-->>U1: FriendshipUpdate(accept: { user: "0x..." })
-  else Friend request rejected
-    SS-->>U1: FriendshipUpdate(reject: { user: "0x..." })
-  else Friend request canceled
-    SS-->>U2: FriendshipUpdate(cancel: { user: "0x..." })
-  else Friendship deleted
-    SS-->>U1: FriendshipUpdate(delete: { user: "0x..." })
-    SS-->>U2: FriendshipUpdate(delete: { user: "0x..." })
-  else User blocked
-    SS-->>U1: FriendshipUpdate(block: { user: "0x..." })
-    SS-->>U2: FriendshipUpdate(block: { user: "0x..." })
+  alt Friend request sent by U1
+    U1->>SS: UpsertFriendship(request: { user: U2, message: "Hello!" })
+    SS-->>U2: FriendshipUpdate(request: RequestResponse)
+  else Friend request accepted by U2
+    U2->>SS: UpsertFriendship(accept: { user: U1 })
+    SS-->>U1: FriendshipUpdate(accept: AcceptResponse)
+  else Friend request rejected by U2
+    U2->>SS: UpsertFriendship(reject: { user: U1 })
+    SS-->>U1: FriendshipUpdate(reject: RejectResponse)
+  else Friend request canceled by U1
+    U1->>SS: UpsertFriendship(cancel: { user: U2 })
+    SS-->>U2: FriendshipUpdate(cancel: CancelResponse)
+  else Friendship deleted by U1
+    U1->>SS: UpsertFriendship(delete: { user: U2 })
+    SS-->>U2: FriendshipUpdate(delete: DeleteResponse)
+  else User U2 blocked by U1
+    U1->>SS: BlockUser(user: U2)
+    SS-->>U2: FriendshipUpdate(block: BlockResponse)
   end
 ```
 
@@ -578,7 +594,10 @@ upon connecting to the Social Service and maintained throughout the session.
 
 ### Error Handling
 
-The client must handle various error scenarios gracefully:
+The client must handle various error scenarios gracefully.
+All error types are defined in the
+[`decentraland/social_service/errors.proto`](https://github.com/decentraland/protocol/blob/experimental/proto/decentraland/social_service/errors.proto)
+file and include:
 
 - **InvalidFriendshipAction**: Display appropriate error messages when friendship
   actions are not allowed (e.g., blocked users, invalid requests)
