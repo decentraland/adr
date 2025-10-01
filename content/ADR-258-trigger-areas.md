@@ -108,18 +108,14 @@ We’ll create a system and helper functions for reacting to a trigger events fr
 It will look something like this:
 
 ```ts
-triggerEventsSystem.OnTriggerEnter(
-    {
-      entity: myTrigger,
-      opts: {
-        layer: Player
-      }
-    },
-    function (otherEntity) {
-      // Do whatever I want
-    }
-  )
-```
+TriggerArea.setBox(myTrigger)
+Transform.create(myTrigger, {
+  position: Vector3.create(8, 0, 8),
+  scale: Vector3.create(1, 1, 1),
+})
+triggerAreaEventsSystem.onTriggerEnter(myTrigger, function(result) {
+  // Do whatever I want
+})
 
 ## Triggers embedded in 3D models
 
