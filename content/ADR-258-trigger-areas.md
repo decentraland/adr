@@ -80,7 +80,7 @@ This component will be added by the engine, similarly to how pointer events are 
 - `triggeredEntity`: The entity that was triggered (this is the entity that owns the trigger area)
 - `triggeredEntityPosition`: The position of the triggered entity at the time of the trigger.
 - `triggeredEntityRotation`: The rotation of the triggered entity at the time of the trigger.
-- `state`: The state of the trigger event (ENTER, EXIT, STAY)
+- `eventType`: The state of the trigger event (ENTER, EXIT, STAY)
 - `timestamp`: The timestamp of the trigger event
 - `trigger`: An object with the following fields:
   - `entity`: The entity that triggered the trigger
