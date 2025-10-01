@@ -36,8 +36,8 @@ The shape of a trigger area is given by a collider. It can use a simple primitiv
 
 We will create a new component for this, called `TriggerArea`. It will have the following fields:
 
-- `mesh`: An object similar to the one used for [MeshCollider](https://github.com/decentraland/protocol/blob/main/proto/decentraland/sdk/components/mesh_collider.proto#L33), that allows to define the shape of the trigger area.
-- `triggerLayer`: The collision layer that triggers the trigger
+- `mesh`: An enum, that allows to define the shape of the trigger area. `TAMT_BOX` (default) or `TAMT_SPHERE`
+- `collisionMask`: The collision layer mask that triggers the trigger
 
 
 ### Collision layers
