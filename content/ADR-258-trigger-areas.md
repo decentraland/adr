@@ -84,7 +84,7 @@ This component will be added by the engine, similarly to how pointer events are 
 - `timestamp`: The timestamp of the trigger event
 - `trigger`: An object with the following fields:
   - `entity`: The entity that triggered the trigger
-  - `layer`: The collision layer of the entity that triggered the trigger (this is the same as the trigger layer of the trigger area)
+  - `layers`: The collision layermask of the entity that triggered the Trigger Area
   - `position`: The position of the entity that triggered the trigger
   - `rotation`: The rotation of the entity that triggered the trigger
   - `scale`: The scale of the entity that triggered the trigger
