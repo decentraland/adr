@@ -65,13 +65,13 @@ export type ArmatureId = 'Armature' | 'Armature_Prop' | 'Armature_Other'
 
 export type EmoteClip = {
   animation: string // GLB clip name "HighFive_Avatar" (suggested, not enforced)
-  sound?: string // Sound file name "HighFive_Avatar.ogg" (suggested, not enforced)
 }
 
 export type StartAnimation = {
   loop: boolean
   Armature: EmoteClip
   Armature_Prop?: EmoteClip
+  audio?: string
 }
 
 export type OutcomeGroup = {
@@ -79,6 +79,7 @@ export type OutcomeGroup = {
   loop: boolean
   // Any subset of armatures; validated at runtime to ensure at least one
   clips: Partial<Record<ArmatureId, EmoteClip>>
+  audio?: string
 }
 
 export type EmoteDataADR287 = {
