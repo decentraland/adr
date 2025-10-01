@@ -65,18 +65,21 @@ export type ArmatureId = 'Armature' | 'Armature_Prop' | 'Armature_Other'
 
 export type EmoteClip = {
   animation: string // GLB clip name "HighFive_Avatar" (suggested, not enforced)
-  loop: boolean
 }
 
 export type StartAnimation = {
+  loop: boolean
   Armature: EmoteClip
   Armature_Prop?: EmoteClip
+  audio?: string
 }
 
 export type OutcomeGroup = {
   title: string
+  loop: boolean
   // Any subset of armatures; validated at runtime to ensure at least one
   clips: Partial<Record<ArmatureId, EmoteClip>>
+  audio?: string
 }
 
 export type EmoteDataADR287 = {
@@ -101,23 +104,22 @@ const emoteWithADR287Data = {
   emoteDataADR287: {
     // ...,
     startAnimation: {
+      loop: true,
       Armature: {
         animation: 'HighFive_Start',
-        loop: true,
       },
     },
     randomizeOutcomes: false,
     outcomes: [
       {
         title: 'High Five',
+        loop: false,
         clips: {
           Armature: {
             animation: 'HighFive_Avatar',
-            loop: false,
           },
           Armature_Other: {
             animation: 'HighFive_AvatarOther',
-            loop: false,
           },
         },
       },
@@ -191,36 +193,34 @@ const emoteWithADR287Data = {
   emoteDataADR287: {
     // ...,
     startAnimation: {
+      loop: true,
       Armature: {
         animation: 'Hug_Start',
-        loop: true,
       },
     },
     randomizeOutcomes: true,
     outcomes: [
       {
         title: 'Hug Short',
+        loop: false,
         clips: {
           Armature: {
             animation: 'HugShort_Avatar',
-            loop: false,
           },
           Armature_Other: {
             animation: 'HugShort_AvatarOther',
-            loop: false,
           },
         },
       },
       {
         title: 'Hug Long',
+        loop: false,
         clips: {
           Armature: {
             animation: 'HugLong_Avatar',
-            loop: false,
           },
           Armature_Other: {
             animation: 'HugLong_AvatarOther',
-            loop: false,
           },
         },
       },
