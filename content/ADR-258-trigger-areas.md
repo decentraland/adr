@@ -73,7 +73,7 @@ Note: If a collider with the same shape blocks a player from entering a trigger 
 
 Trigger areas can trigger events when the player (or any other entity on the trigger layer) enters, exits or stays in the area.
 
-Trigger events would have to be shared from the engine to the SDK via a component, following a similar approach as we do with pointer events and raycasts. We should create a `TriggerCollisionResult` component. Creators are not expected to read values or make use of this component in any way, unless they really want to fine tune their scene’s behavior.
+Trigger events would have to be shared from the engine to the SDK via a component, following a similar approach as we do with pointer events and raycasts. We should create a `TriggerAreaResult` component. Creators are not expected to read values or make use of this component in any way, unless they really want to fine tune their scene’s behavior.
 
 This component will be added by the engine, similarly to how pointer events are handled. The event will be triggered when the entity enters, exits or stays in the area. Each event will have the following fields:
 
