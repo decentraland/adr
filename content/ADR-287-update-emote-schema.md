@@ -82,26 +82,27 @@ export type OutcomeGroup = {
   audio?: string
 }
 
-export type EmoteDataADR287 = {
+export type EmoteDataADR74 = {
   category: EmoteCategory
   representations: EmoteRepresentationADR74[]
   tags: string[]
   loop: boolean
-  startAnimation: StartAnimation
-  randomizeOutcomes: boolean
-  outcomes: OutcomeGroup[]
+  startAnimation?: StartAnimation
+  randomizeOutcomes?: boolean
+  outcomes?: OutcomeGroup[]
 }
 ```
 
-- Reuses ADR-74 `EmoteCategory` and `EmoteRepresentationADR74` to avoid churn.
-- Keeps top-level `loop` for compatibility, but **emote SHOULD prefer the selected outcome’s `loop`** if present.
+- Extends ADR-74 schema, adding properties startAnimation, randomizeOutcomes and outcomes optional to avoid churn.
+- When one of those new properties is present, all of them **MUST** be present.
+- **Social emote SHOULD prefer the selected outcome’s `loop`** if present.
 
 Example (two-armature outcomes):
 
 ```ts
-const emoteWithADR287Data = {
+const emoteWithADR74Data = {
   // ...,
-  emoteDataADR287: {
+  emoteDataADR74: {
     // ...,
     startAnimation: {
       loop: true,
@@ -162,16 +163,6 @@ Where:
 - Else: `mo`
 - If `outcomes` is empty (legacy), treat as `so` using the default animation.
 
-### Type unions
-
-```ts
-export type Emote = EmoteADR74 | EmoteADR287
-
-export type EmoteADR287 = BaseItem & (StandardProps | ThirdPartyProps) & { emoteDataADR287: EmoteDataADR287 }
-```
-
-(Union pattern follows ADR-74’s versioned types approach.)
-
 ### Validation
 
 - Each outcome's `armature` MUST be a non-empty string.
@@ -188,9 +179,9 @@ export type EmoteADR287 = BaseItem & (StandardProps | ThirdPartyProps) & { emote
 **Random outcomes (off-chain)**
 
 ```ts
-const emoteWithADR287Data = {
+const emoteWithADR74Data = {
   // ...,
-  emoteDataADR287: {
+  emoteDataADR74: {
     // ...,
     startAnimation: {
       loop: true,
