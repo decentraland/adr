@@ -33,10 +33,10 @@ The existing Decentraland sign-in process works as follows:
 
 ```mermaid
 sequenceDiagram
-    participant User
-    participant Client as Decentraland Client
-    participant Browser
-    participant Server as Auth Server
+    participant User as 👤 User
+    participant Client as 💻 Decentraland Client
+    participant Browser as 🌐 Browser
+    participant Server as 🔒 Auth Server
 
     User->>Client: Presses "Sign In" button
     Client->>Client: Generates session & displays verification code (e.g., "67")
@@ -84,36 +84,36 @@ This vulnerability exists because:
 
 ```mermaid
 sequenceDiagram
-    participant AttackerUser as Malicious User
-    participant AttackerClient as Malicious User's Client
-    participant LegitUser as Legitimate User
-    participant LegitBrowser as Legitimate User's Browser
-    participant Server as Auth Server
+    participant AttackerUser as 🔴 Malicious User
+    participant AttackerClient as 🔴 Malicious User's Client
+    participant LegitUser as ✅ Legitimate User
+    participant LegitBrowser as ✅ Legitimate User's Browser
+    participant Server as 🔒 Auth Server
 
-    Note over AttackerUser,AttackerClient: 1. Attacker initiates sign-in on their client
-    AttackerUser->>AttackerClient: Presses "Sign In"
-    AttackerClient->>AttackerClient: Generates session & displays verification code "67"
-    AttackerClient->>AttackerClient: Creates auth URL
+    rect rgb(255, 230, 230)
+        Note over AttackerUser,AttackerClient: 🔴 MALICIOUS: Attacker initiates sign-in
+        AttackerUser->>AttackerClient: Presses "Sign In"
+        AttackerClient->>AttackerClient: Generates session & displays verification code "67"
+        AttackerClient->>AttackerClient: Creates auth URL
+    end
 
-    Note over AttackerUser,LegitUser: 2. Attacker sends URL to victim (social engineering)
+    Note over AttackerUser,LegitUser: ⚠️ ATTACK VECTOR: Social engineering
     AttackerUser->>LegitUser: Sends auth URL (e.g., via email, chat, phishing)
 
-    Note over LegitUser,LegitBrowser: 3. Victim opens URL and authenticates
-    LegitUser->>LegitBrowser: Opens auth URL
-    LegitUser->>LegitBrowser: Completes their social login (Google, etc.)
-    LegitBrowser->>LegitUser: Shows "Verify code: is it 67? YES/NO"
-
-    Note over LegitUser: Victim assumes this is legitimate
-    LegitUser->>LegitBrowser: Clicks YES
-
-    Note over LegitBrowser,Server: 4. Server authenticates legitimate user's identity
-    LegitBrowser->>Server: Confirms verification with legitimate user's identity
-
-    Note over Server,AttackerClient: 5. AUTH CHAIN sent to ATTACKER's client!
-    Server->>AttackerClient: Sends AUTH CHAIN (with legitimate user's identity)
+    rect rgb(230, 255, 230)
+        Note over LegitUser,LegitBrowser: ✅ VICTIM: Unsuspecting legitimate user
+        LegitUser->>LegitBrowser: Opens auth URL (thinks it's safe)
+        LegitUser->>LegitBrowser: Completes their social login (Google, etc.)
+        LegitBrowser->>LegitUser: Shows "Verify code: is it 67? YES/NO"
+        Note over LegitUser: Victim assumes this is legitimate
+        LegitUser->>LegitBrowser: Clicks YES
+        LegitBrowser->>Server: Confirms verification with legitimate user's identity
+    end
 
     rect rgb(255, 200, 200)
-        Note over AttackerClient: ATTACK SUCCESS: Attacker's client authenticated<br/>with legitimate user's identity!
+        Note over Server,AttackerClient: ⚠️ VULNERABILITY: AUTH CHAIN sent to wrong client!
+        Server->>AttackerClient: Sends AUTH CHAIN (with legitimate user's identity)
+        Note over AttackerClient: 🔴 ATTACK SUCCESS!<br/>Attacker's client authenticated with victim's identity
         AttackerClient->>AttackerClient: Can now impersonate legitimate user
     end
 ```
@@ -179,11 +179,11 @@ The AUTH CHAIN grants critical capabilities within Decentraland, including the a
 
 ```mermaid
 sequenceDiagram
-    participant User
-    participant Client as Decentraland Client
-    participant Browser
-    participant OS as Operating System
-    participant Server as Auth Server
+    participant User as 👤 User
+    participant Client as 💻 Decentraland Client
+    participant Browser as 🌐 Browser
+    participant OS as ⚙️ Operating System
+    participant Server as 🔒 Auth Server
 
     User->>Client: Presses "Sign In" button
     Client->>Browser: Opens auth URL (use_token=true)
@@ -219,47 +219,47 @@ The following diagram demonstrates why the deep link approach prevents the imper
 
 ```mermaid
 sequenceDiagram
-    participant AttackerUser as Malicious User
-    participant AttackerClient as Malicious User's Client
-    participant LegitUser as Legitimate User
-    participant LegitBrowser as Legitimate User's Browser
-    participant LegitOS as Legitimate User's OS
-    participant LegitClient as Legitimate User's Client (if installed)
-    participant Server as Auth Server
+    participant AttackerUser as 🔴 Malicious User
+    participant AttackerClient as 🔴 Malicious User's Client
+    participant LegitUser as ✅ Legitimate User
+    participant LegitBrowser as ✅ Legitimate User's Browser
+    participant LegitOS as ✅ Legitimate User's OS
+    participant Server as 🔒 Auth Server
 
-    Note over AttackerUser,AttackerClient: 1. Attacker initiates sign-in on their client
-    AttackerUser->>AttackerClient: Presses "Sign In"
-    AttackerClient->>AttackerClient: Generates session
-    AttackerClient->>AttackerClient: Creates auth URL (use_token=true)
+    rect rgb(255, 230, 230)
+        Note over AttackerUser,AttackerClient: 🔴 MALICIOUS: Attacker initiates sign-in
+        AttackerUser->>AttackerClient: Presses "Sign In"
+        AttackerClient->>AttackerClient: Generates session
+        AttackerClient->>AttackerClient: Creates auth URL (use_token=true)
+    end
 
-    Note over AttackerUser,LegitUser: 2. Attacker sends URL to victim
+    Note over AttackerUser,LegitUser: ⚠️ ATTACK VECTOR: Social engineering
     AttackerUser->>LegitUser: Sends auth URL (social engineering)
 
-    Note over LegitUser,LegitBrowser: 3. Victim opens URL on THEIR machine
-    LegitUser->>LegitBrowser: Opens auth URL
-    LegitUser->>LegitBrowser: Completes their social login
-
-    Note over LegitBrowser,Server: 4. Server authenticates and generates token
-    LegitBrowser->>Server: Authentication successful (legitimate user's identity)
-    Server->>Server: Generates secure token for session
-    Server->>LegitBrowser: Return success with token
-
-    Note over LegitBrowser,LegitOS: 5. Deep link opens on VICTIM'S machine
-    LegitBrowser->>LegitOS: Opens deep link decentraland://?token=abc123...
+    rect rgb(230, 255, 230)
+        Note over LegitUser,Server: ✅ VICTIM: Opens URL on THEIR machine
+        LegitUser->>LegitBrowser: Opens auth URL
+        LegitUser->>LegitBrowser: Completes their social login
+        LegitBrowser->>Server: Authentication successful (legitimate user's identity)
+        Server->>Server: Generates secure token for session
+        Server->>LegitBrowser: Return success with token
+    end
 
     rect rgb(200, 255, 200)
-        Note over LegitOS,LegitClient: ATTACK BLOCKED: Token delivered to victim's machine,<br/>NOT attacker's client!
-        LegitOS->>LegitClient: Routes deep link to victim's client (if installed)
+        Note over LegitBrowser,LegitOS: 🛡️ PROTECTION: Deep link opens on victim's machine
+        LegitBrowser->>LegitOS: Opens deep link decentraland://?token=abc123...
+        LegitOS->>LegitOS: OS routes to local Decentraland client
+        Note over LegitOS: ✅ Token delivered to victim's machine ONLY<br/>Cannot reach attacker's client!
     end
-
-    Note over AttackerClient: Attacker's client never receives the token!
-    Note over AttackerClient: Token was delivered via OS on victim's machine
 
     rect rgb(255, 200, 200)
-        Note over AttackerClient: ✗ ATTACK FAILS: Attacker cannot get AUTH CHAIN<br/>Token is isolated to victim's machine
+        Note over AttackerClient: 🔴 ATTACK BLOCKED!
+        Note over AttackerClient: ✗ Attacker's client never receives the token<br/>✗ Token was delivered via OS on victim's machine<br/>✗ Attacker CANNOT get AUTH CHAIN
     end
 
-    Note over LegitClient: Victim's client (if installed) receives token<br/>but it's for THEIR session, not attacker's
+    rect rgb(230, 255, 230)
+        Note over LegitUser: ✅ Security preserved:<br/>Only victim's machine can receive the token
+    end
 ```
 
 **Drawbacks**:
