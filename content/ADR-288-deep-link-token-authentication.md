@@ -20,12 +20,14 @@ This ADR proposes adding a new opt-in alternative to the current verification co
 
 The existing Decentraland sign-in process works as follows:
 
-1. User opens a website URL with an embedded token
-2. The Decentraland client displays a verification code (e.g., "67")
-3. User completes social login (Google, etc.) on the website
-4. Website displays a confirmation screen: "Verify code, is it 67 correct? YES/NO"
-5. Upon confirmation, the server sends the AUTH CHAIN to the client
-6. The AUTH CHAIN enables cryptographic signing capabilities within Decentraland
+1. User presses "Sign In" button in the Decentraland client
+2. Client generates a session and displays a verification code (e.g., "67")
+3. Client automatically opens the browser with the authentication URL
+4. User completes social login (Google, etc.) in the browser
+5. Website displays a confirmation screen: "Verify code, is it 67 correct? YES/NO"
+6. User manually checks the code displayed in the client and confirms in the browser
+7. Upon confirmation, the server sends the AUTH CHAIN to the client
+8. The AUTH CHAIN enables cryptographic signing capabilities within Decentraland
 
 ```mermaid
 sequenceDiagram
@@ -34,11 +36,12 @@ sequenceDiagram
     participant Browser
     participant Server as Auth Server
 
-    User->>Browser: Opens auth URL with token
-    Client->>Client: Displays verification code (e.g., "67")
+    User->>Client: Presses "Sign In" button
+    Client->>Client: Generates session & displays verification code (e.g., "67")
+    Client->>Browser: Opens auth URL with session token
     User->>Browser: Completes social login (Google, etc.)
     Browser->>User: Shows "Verify code: is it 67? YES/NO"
-    User->>User: Manually checks code on Client
+    User->>User: Manually checks code displayed in Client
     User->>Browser: Clicks YES
     Browser->>Server: Confirms verification
     Server->>Client: Sends AUTH CHAIN
@@ -121,13 +124,15 @@ The AUTH CHAIN grants critical capabilities within Decentraland, including the a
 **Description**: Implement a new authentication flow using OS-level deep link protocol handling as an alternative to the verification code.
 
 **Flow**:
-1. User opens authentication URL in browser (with `use_token=true` parameter)
-2. User completes social login on website
-3. Website generates a secure token and opens deep link: `decentraland://?token=<secure_token>`
-4. Operating system routes the deep link to the registered Decentraland client application
-5. Client receives the token via the deep link
-6. Client sends the token to the server
-7. Server validates the token and returns the AUTH CHAIN
+1. User presses "Sign In" button in the Decentraland client
+2. Client automatically opens the browser with the authentication URL (with `use_token=true` parameter)
+3. User completes social login on website
+4. Server generates a secure token
+5. Website opens deep link: `decentraland://?token=<secure_token>`
+6. Operating system routes the deep link to the registered Decentraland client application
+7. Client receives the token via the deep link
+8. Client sends the token to the server
+9. Server validates the token and returns the AUTH CHAIN
 
 ```mermaid
 sequenceDiagram
@@ -137,11 +142,12 @@ sequenceDiagram
     participant OS as Operating System
     participant Server as Auth Server
 
-    User->>Browser: Opens auth URL (use_token=true)
+    User->>Client: Presses "Sign In" button
+    Client->>Browser: Opens auth URL (use_token=true)
     User->>Browser: Completes social login (Google, etc.)
     Browser->>Server: Authentication successful
     Server->>Server: Generates secure token
-    Server->>Browser: Return success
+    Server->>Browser: Return success with token
     Browser->>OS: Opens deep link decentraland://?token=abc123...
     OS->>Client: Routes deep link to Client
     Client->>Client: Extracts token from deep link
