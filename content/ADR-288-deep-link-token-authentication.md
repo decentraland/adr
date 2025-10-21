@@ -63,19 +63,60 @@ This friction contributes to a **high entry flow drop rate**, where users abando
 
 ### Security Vulnerability: Session Hijacking via URL Sharing
 
-The current implementation is vulnerable to **URL-based session fixation/hijacking attacks**. If a user shares the authentication URL with another person (intentionally or accidentally), that person can:
+The current implementation is vulnerable to **URL-based session fixation/hijacking attacks**. A malicious user can execute this attack:
 
-1. Open the shared URL
-2. Complete their own social login
-3. Confirm the verification code (which they can see in the original user's client if they have access, or simply guess/brute force since it's a short numeric code)
-4. Receive the AUTH CHAIN intended for the original user
-5. Successfully impersonate the original user with full signing privileges
+1. Malicious user presses "Sign In" on their Decentraland client
+2. Malicious user's client generates a session and displays a verification code
+3. Malicious user sends the authentication URL to a legitimate user (social engineering)
+4. Legitimate user opens the URL and completes their social login
+5. Legitimate user sees "Verify code: is it [code]? YES/NO" and clicks YES
+6. Server sends the AUTH CHAIN to the **malicious user's client**
+7. Malicious user's client is now authenticated with the **legitimate user's identity**
+8. Malicious user can now impersonate the legitimate user with full signing privileges
 
 This vulnerability exists because:
 - The authentication state is tied to a URL that can be transferred
-- The verification code provides weak security (short numeric, manually verified)
-- No cryptographic binding between the web session and the local client
-- The server has no way to verify the person completing authentication is the same as the person who initiated it
+- Anyone who completes the social login gets their identity bound to the client that generated the URL
+- No cryptographic binding between the web session and the specific client/user who should authenticate
+- The server cannot verify that the person completing authentication is the same as the person who should own that client session
+
+#### Attack Scenario Diagram
+
+```mermaid
+sequenceDiagram
+    participant AttackerUser as Malicious User
+    participant AttackerClient as Malicious User's Client
+    participant LegitUser as Legitimate User
+    participant LegitBrowser as Legitimate User's Browser
+    participant Server as Auth Server
+
+    Note over AttackerUser,AttackerClient: 1. Attacker initiates sign-in on their client
+    AttackerUser->>AttackerClient: Presses "Sign In"
+    AttackerClient->>AttackerClient: Generates session & displays verification code "67"
+    AttackerClient->>AttackerClient: Creates auth URL
+
+    Note over AttackerUser,LegitUser: 2. Attacker sends URL to victim (social engineering)
+    AttackerUser->>LegitUser: Sends auth URL (e.g., via email, chat, phishing)
+
+    Note over LegitUser,LegitBrowser: 3. Victim opens URL and authenticates
+    LegitUser->>LegitBrowser: Opens auth URL
+    LegitUser->>LegitBrowser: Completes their social login (Google, etc.)
+    LegitBrowser->>LegitUser: Shows "Verify code: is it 67? YES/NO"
+
+    Note over LegitUser: Victim assumes this is legitimate
+    LegitUser->>LegitBrowser: Clicks YES
+
+    Note over LegitBrowser,Server: 4. Server authenticates legitimate user's identity
+    LegitBrowser->>Server: Confirms verification with legitimate user's identity
+
+    Note over Server,AttackerClient: 5. AUTH CHAIN sent to ATTACKER's client!
+    Server->>AttackerClient: Sends AUTH CHAIN (with legitimate user's identity)
+
+    rect rgb(255, 200, 200)
+        Note over AttackerClient: ATTACK SUCCESS: Attacker's client authenticated<br/>with legitimate user's identity!
+        AttackerClient->>AttackerClient: Can now impersonate legitimate user
+    end
+```
 
 ### Why This Decision Is Important
 
@@ -172,16 +213,66 @@ sequenceDiagram
 - **Cryptographic security**: Can use long, random tokens instead of short numeric codes
 - **Same-machine guarantee**: Deep links only work on the machine where both the browser and client are running
 
+#### Security Protection Diagram
+
+The following diagram demonstrates why the deep link approach prevents the impersonation attack:
+
+```mermaid
+sequenceDiagram
+    participant AttackerUser as Malicious User
+    participant AttackerClient as Malicious User's Client
+    participant LegitUser as Legitimate User
+    participant LegitBrowser as Legitimate User's Browser
+    participant LegitOS as Legitimate User's OS
+    participant LegitClient as Legitimate User's Client (if installed)
+    participant Server as Auth Server
+
+    Note over AttackerUser,AttackerClient: 1. Attacker initiates sign-in on their client
+    AttackerUser->>AttackerClient: Presses "Sign In"
+    AttackerClient->>AttackerClient: Generates session
+    AttackerClient->>AttackerClient: Creates auth URL (use_token=true)
+
+    Note over AttackerUser,LegitUser: 2. Attacker sends URL to victim
+    AttackerUser->>LegitUser: Sends auth URL (social engineering)
+
+    Note over LegitUser,LegitBrowser: 3. Victim opens URL on THEIR machine
+    LegitUser->>LegitBrowser: Opens auth URL
+    LegitUser->>LegitBrowser: Completes their social login
+
+    Note over LegitBrowser,Server: 4. Server authenticates and generates token
+    LegitBrowser->>Server: Authentication successful (legitimate user's identity)
+    Server->>Server: Generates secure token for session
+    Server->>LegitBrowser: Return success with token
+
+    Note over LegitBrowser,LegitOS: 5. Deep link opens on VICTIM'S machine
+    LegitBrowser->>LegitOS: Opens deep link decentraland://?token=abc123...
+
+    rect rgb(200, 255, 200)
+        Note over LegitOS,LegitClient: ATTACK BLOCKED: Token delivered to victim's machine,<br/>NOT attacker's client!
+        LegitOS->>LegitClient: Routes deep link to victim's client (if installed)
+    end
+
+    Note over AttackerClient: Attacker's client never receives the token!
+    Note over AttackerClient: Token was delivered via OS on victim's machine
+
+    rect rgb(255, 200, 200)
+        Note over AttackerClient: ✗ ATTACK FAILS: Attacker cannot get AUTH CHAIN<br/>Token is isolated to victim's machine
+    end
+
+    Note over LegitClient: Victim's client (if installed) receives token<br/>but it's for THEIR session, not attacker's
+```
+
 **Drawbacks**:
 - Requires deep link protocol handler registration
 - May have different behavior across platforms (desktop vs. mobile)
 - Needs fallback mechanism for environments where deep links don't work
 
 **Security Analysis**: This approach is fundamentally more secure because:
-- Deep links are handled by the OS, not the web browser or network layer
-- Even if an attacker intercepts the web session, they cannot receive the deep link token on their machine
-- The token can be a cryptographically secure random string (e.g., 256-bit) instead of a 2-digit code
-- Provides proof that the person who authenticated on the web is on the same machine as the client
+- **OS-level token delivery**: Deep links are handled by the operating system on the machine where the browser is running
+- **Prevents session fixation attacks**: Even if an attacker tricks a victim into authenticating via a malicious URL, the token is delivered to the victim's machine via OS deep link, NOT to the attacker's client
+- **Physical machine binding**: The token can only be received on the same physical machine where the browser session is active
+- **No reliance on verification codes**: The token can be a cryptographically secure random string (e.g., 256-bit) instead of a 2-digit code that can be observed or guessed
+- **Breaks the attack chain**: In the verification code flow, the attacker's client receives the AUTH CHAIN. With deep links, the attacker's client never receives the token, so it cannot complete authentication
 
 ### Option 3: IP-Based Verification (Additional Security Measure)
 
