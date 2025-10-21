@@ -7,7 +7,7 @@ status: Draft
 type: RFC
 spdx-license: CC0-1.0
 authors:
-  - kuruk-mm
+  - Mateo (kuruk-mm), Leandro (leanmendoza), Gonzalo (gonpombo8)
 ---
 
 ## Abstract
