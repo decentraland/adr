@@ -3,7 +3,7 @@ layout: adr
 adr: 285
 title: Friend Request Protocol V2
 date: 2025-07-25
-status: Draft
+status: Living
 type: Standards Track
 spdx-license: CC0-1.0
 authors:
