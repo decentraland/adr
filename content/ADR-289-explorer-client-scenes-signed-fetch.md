@@ -1,6 +1,6 @@
 ---
 layout: adr
-adr: 288
+adr: 289
 title: Explorer Client Scenes Signed Fetch
 date: 2025-11-07
 status: Living
