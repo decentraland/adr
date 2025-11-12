@@ -73,6 +73,52 @@ Starting from `ADR_290_PHASE_2_TIMESTAMP`, the validation updates for the profil
   - If profile.metadata.avatars[].avatar.snapshots is present, reject the deployment
 ```
 
+As an example, a valid deployed entity MUST be of the form:
+
+```json
+{
+  // Empty contents array
+  "content": [],
+  "metadata": {
+    "avatars": [
+      {
+        // ... Rest of a valid avatar
+        "avatar" {
+          // No snapshot property in the avatar property
+          "bodyShape": "urn:decentraland:off-chain:base-avatars:BaseMale",
+          "eyes": {
+            "color": {
+              "r": 100,
+              "g": 100,
+              "b": 100,
+            }
+          },
+          "hair": {
+            "color": {
+              "r": 100,
+              "g": 100,
+              "b": 100,
+            }
+          },
+          "skin": {
+            "color": {
+              "r": 100,
+              "g": 100,
+              "b": 100,
+            }
+          },
+          "wearables": [],
+          "forceRender": [],
+          "emotes": []
+        }
+      }
+    ]
+  }
+}
+```
+
+And MUST not include any type of files along the deployment.
+
 ### Client Updates
 
 All clients that deploy profile entities MUST be updated before `ADR_290_PHASE_2_TIMESTAMP` to:
