@@ -13,7 +13,7 @@ authors:
 
 ## Abstract
 
-This ADR proposes the deprecation and eventual removal of the snapshots property from profile entities. The change will be implemented in two phases: first, making snapshot files optional for profile deployments, and second, rejecting any profile deployment that includes snapshot properties or content files after a three-month transition period. This change is enabled by the profile-images service, which generates these images on-demand, eliminating the need for clients to upload them during profile deployment.
+This ADR proposes the deprecation and eventual removal of the snapshots from profile entities. The change will be implemented in two phases: first, making the snapshot property and its related files optional for profile deployments, and second, rejecting any profile deployment that includes the snapshot property or any content files after a three-month transition period. This change is enabled by the profile-images service, which generates these images on-demand, eliminating the need for clients to upload them during profile deployment.
 
 ## Context, Reach & Prioritization
 
@@ -21,18 +21,18 @@ Profile entities currently require clients to upload snapshot images (`face256.p
 
 However, this approach has several drawbacks:
 
-1. **Storage inefficiency**: Requiring every profile to store snapshot images significantly increases storage requirements across all Catalyst nodes. With thousands of profiles deployed, this adds up to substantial storage costs.
+1. **Storage inefficiency**: Requiring every profile to store snapshot images significantly increases storage requirements across all Catalyst nodes. With an unbounded amount of profiles deployed per player, this adds up to substantial storage costs.
 
 2. **Consistency issues**: Different clients may generate and upload different profile images for the same avatar configuration. This can lead to inconsistent representations of the same user across different platforms and applications.
 
 3. **Security concerns**: The current validation only checks that uploaded images meet the format and size requirements defined in [ADR-51](/adr/ADR-51). Any image that matches these criteria (256x256 PNG for face, valid PNG for body) can be deployed, even if it doesn't accurately represent the user's actual avatar. This allows users to upload arbitrary images that may not match their 3D avatar configuration.
 
-The [profile-images service](https://github.com/decentraland/profile-images) now provides a solution to these problems by generating consistent, accurate profile images from the avatar's 3D model on-demand.
+The profile image generation will be leveraged by each client, considering all the information to generate them is available on the content server, giving them the ability to build the most suitable snapshots depending on their needs. The reference client will make use of the centralized [profile-images service](https://github.com/decentraland/profile-images) which automatically generate these snapshot images and feeds them through the catalysts lambdas profile endpoint.
 
 This decision is important because it:
 
 - Reduces infrastructure costs by eliminating redundant storage
-- Ensures consistency across all profile image representations
+- Removes inconsistency across all profile image representations
 - Improves security by preventing arbitrary image uploads
 - Simplifies the profile deployment process for developers
 
