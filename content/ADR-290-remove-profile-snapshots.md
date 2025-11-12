@@ -83,28 +83,28 @@ As an example, a valid deployed entity MUST be of the form:
     "avatars": [
       {
         // ... Rest of a valid avatar
-        "avatar" {
+        "avatar": {
           // No snapshot property in the avatar property
           "bodyShape": "urn:decentraland:off-chain:base-avatars:BaseMale",
           "eyes": {
             "color": {
               "r": 100,
               "g": 100,
-              "b": 100,
+              "b": 100
             }
           },
           "hair": {
             "color": {
               "r": 100,
               "g": 100,
-              "b": 100,
+              "b": 100
             }
           },
           "skin": {
             "color": {
               "r": 100,
               "g": 100,
-              "b": 100,
+              "b": 100
             }
           },
           "wearables": [],
