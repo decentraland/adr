@@ -15,7 +15,7 @@ authors:
 
 ## Abstract
 
-This document describes how the Signed Fetch functionality works in the Explorer Client for Decentraland scenes. It details the structure and purpose of the scene-specific metadata headers that are included when scenes perform HTTP requests. The Explorer Client extends the Signed Fetch mechanism defined in [ADR-44](/adr/ADR-44) with additional contextual metadata including scene identity, parcel location, and realm information, enabling external services to verify the origin and context of requests.
+This document describes how the Signed Fetch functionality works in the Explorer Client for Decentraland scenes. It details the structure and purpose of the scene-specific metadata headers that are included when scenes perform HTTP requests. The Explorer Client extends the Signed Fetch mechanism defined in [ADR-44](/adr/ADR-44) with additional contextual metadata including scene identity, parcel location, realm information and a specific signer, the `decentraland-kernel-scene` enabling external services to verify the origin and context of requests.
 
 ## Context, Reach & Prioritization
 
@@ -27,6 +27,7 @@ The Explorer Client runs scenes that interact with external HTTP services. When 
 - Realm information (where the user is connected)
 - Environment context (production, staging, development)
 - Request body integrity verification
+- Signer identification (to identify who made the request)
 
 This additional metadata enables external services to verify not only the user's identity but also the scene context from which the request originates.
 
@@ -112,6 +113,7 @@ The Signed Fetch process is implemented and executed exclusively within the Expl
 - Scenes cannot falsify their location by changing `parcel` coordinates
 - Scenes cannot manipulate realm information to appear connected to different servers
 - Scenes cannot bypass body integrity checks by modifying `hashPayload`
+- Scenes cannot change the `signer`, being always `decentraland-kernel-scene`
 
 The Explorer Client validates and populates all metadata fields based on its internal state before generating the signature. This prevents malicious scenes from crafting fraudulent signed requests.
 
