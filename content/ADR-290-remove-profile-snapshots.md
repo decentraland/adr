@@ -21,7 +21,7 @@ Profile entities currently require clients to upload snapshot images (`face256.p
 
 However, this approach has several drawbacks:
 
-1. **Storage inefficiency**: Requiring every profile to store snapshot images significantly increases storage requirements across all Catalyst nodes. With an unbounded amount of profiles deployed per player, this adds up to substantial storage costs.
+1. **Storage inefficiency**: Requiring every profile to store snapshot images significantly increases storage requirements across all Catalyst nodes. With an unbounded amount of profiles, this adds up to substantial storage costs.
 
 2. **Consistency issues**: Different clients may generate and upload different profile images for the same avatar configuration. This can lead to inconsistent representations of the same user across different platforms and applications.
 
