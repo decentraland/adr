@@ -69,7 +69,7 @@ The signature metadata includes contextual information about the scene making th
 
 #### Metadata Fields
 
-- **`sceneId`** (string, required): The unique identifier of the scene making the request, typically the IPFS hash of the scene entity.
+- **`sceneId`** (string, required): The unique identifier of the scene making the request, typically the hash of the scene entity.
 
 - **`parcel`** (string, required): The base parcel coordinates in the format `"x,y"` where the scene is located. For Genesis City, these are integer coordinates. For Worlds, this represents the decoded base coordinates.
 
