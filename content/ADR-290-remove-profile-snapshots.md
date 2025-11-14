@@ -13,7 +13,7 @@ authors:
 
 ## Abstract
 
-This ADR proposes the deprecation and eventual removal of the snapshots from profile entities. The change will be implemented in two phases: first, making the snapshot property and its related files optional for profile deployments, and second, rejecting any profile deployment that includes the snapshot property or any content files after a three-month transition period. This change is enabled by the profile-images service, which generates these images on-demand, eliminating the need for clients to upload them during profile deployment.
+This ADR proposes the deprecation and eventual removal of the snapshots from profile entities. The change will be implemented in two phases: first, making the snapshot property and its related files optional for profile deployments, and second, rejecting any profile deployment that includes the snapshot property or any content files after a three-month transition period. This change is enabled by the profile-images service, which generates these images on demand for official Catalyst in the DAO, eliminating the need for clients to upload them during profile deployment.
 
 ## Context, Reach & Prioritization
 
