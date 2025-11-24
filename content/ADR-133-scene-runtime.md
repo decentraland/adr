@@ -314,11 +314,11 @@ module.exports.onUpdate = function (deltaTime: number) {
 
 ### Explorers overriding of SDK Runtime features
 
-There is logic and systems running in the SDK Runtime to handle certain components feature or helpers to make it easier for creators to use the SDK with less boilerplate on their code.
+The SDK Runtime includes logic and systems that handle specific component features, and helpers making it easier for creators to use the SDK with less boilerplate in their code.
 
-If an Explorer wants to override such specific cases (for example to run the logic in a more native way, agnostic to the scene's update frequency) then a `globalThis` dedicated VAR should be used.
+If an Explorer wants to override such cases (for example, to execute the logic in a more native way, independent of the scene's update frequency), a `globalThis` dedicated VAR should be used.
 
-Additionally, [since scene's installed SDK version is exposed in the scene's medatada](https://github.com/decentraland/js-sdk-toolchain/commit/6268935795bce1dc41d3f6ec9d63f230605f4a16) the Explorers that want to do such and override have to parse that to know from which SDK version to start running their overwritten logic, and avoid running it for older scenes that already contain the embedded SDK with the running logic on the SDK Runtime side.
+Additionally, [since the scene's installed SDK version is exposed in the scene's medatada](https://github.com/decentraland/js-sdk-toolchain/commit/6268935795bce1dc41d3f6ec9d63f230605f4a16) Explorers wishing to perform such an override have to parse this version to determine from which SDK version their custom logic should apply, and avoid running it for older scenes that embed the logic in the SDK Runtime.
 
 #### Example for `TweenSequence` logic override on the Foundation Explorer (to run natively and more smoothly)
 Global var used: `ENABLE_SDK_TWEEN_SEQUENCE`.
@@ -326,4 +326,4 @@ Global var used: `ENABLE_SDK_TWEEN_SEQUENCE`.
 - SDK Runtime logic: https://github.com/decentraland/js-sdk-toolchain/blob/7df9c3029b7e9d824a41fdecdd9f63024b16e25b/packages/@dcl/ecs/src/systems/tween.ts#L91-L159
 - `globalThis` var filter to avoid running the logic on the SDK Runtime if an Explorer injects its specific global var: https://github.com/decentraland/js-sdk-toolchain/blob/7df9c3029b7e9d824a41fdecdd9f63024b16e25b/packages/@dcl/ecs/src/systems/tween.ts#L161-L163
 - Foundation Explorer enabling/disabling its native overwritten `TweenSequence` logic based on the scene installed SDK version: https://github.com/decentraland/unity-explorer/blob/e8c82fb80589361b2b514385ccba935c75954ac2/Explorer/Assets/DCL/PluginSystem/World/TweenPlugin.cs#L21
-- Foundation Explporer parsing the SDK version from the scene's metadata: https://github.com/decentraland/unity-explorer/blob/e8c82fb80589361b2b514385ccba935c75954ac2/Explorer/Assets/DCL/Infrastructure/SceneRunner/Scene/SceneData.cs#L141-L217
+- Foundation Explorer parsing the SDK version from the scene's metadata: https://github.com/decentraland/unity-explorer/blob/e8c82fb80589361b2b514385ccba935c75954ac2/Explorer/Assets/DCL/Infrastructure/SceneRunner/Scene/SceneData.cs#L141-L217
