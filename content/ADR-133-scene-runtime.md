@@ -311,3 +311,30 @@ module.exports.onUpdate = function (deltaTime: number) {
   ])
 }
 ```
+
+### Explorers overriding of SDK Runtime features
+
+The SDK Runtime includes logic and systems that handle specific component features, and helpers making it easier for creators to use the SDK with less boilerplate in their code.
+
+If an Explorer wants to override such cases (for example, to execute the logic in a more native way, independent of the scene's update frequency and have it bound to the application framerate itself), a dedicated VAR in the `globalThis` object should be used.
+
+New branching code has to be introduced in the SDK Runtime to avoid running the old handling logic in there when the specific VAR is detected in the `globalThis` object, since that means the Explorer who injected the VAR will be running the desired logic on their side.
+
+Additionally, [since the scene's installed SDK version is exposed in the scene's medatada](https://github.com/decentraland/js-sdk-toolchain/commit/6268935795bce1dc41d3f6ec9d63f230605f4a16) Explorers wishing to perform such an override have to parse this version to determine from which SDK version their custom logic should apply, and avoid running it for older scenes that embed the original logic in the SDK Runtime.
+
+#### Real example case: `TweenSequence` component handling. 
+
+The handling logic for Tween sequences was originally implemented [in the SDK runtime](https://github.com/decentraland/js-sdk-toolchain/blob/7df9c3029b7e9d824a41fdecdd9f63024b16e25b/packages/@dcl/ecs/src/systems/tween.ts#L91-L159) by injecting a dedicated ECS System.
+
+Since that system runs bound to the scenes Update frequency (naturally different than the Explorer framerate, usually lower), normally for complex tweens or "looped" tweens, the steps in between tweens of the sequence are clunky and have micro freezings that can be easily perceived in runtime.
+
+By migrating the handling of Tween Sequences to the Explorer native code itself, that problem gets solved since the handling logic runs bound to the framerate of the application itself.
+
+That migration was implemented in the Foundation Explorer at https://github.com/decentraland/unity-explorer/pull/5790 . The improvement can be seen in [this comment](https://github.com/decentraland/unity-explorer/pull/5790#issuecomment-3416096245) of the same PR.
+
+Global var used: `ENABLE_SDK_TWEEN_SEQUENCE`.
+
+- SDK Runtime logic: https://github.com/decentraland/js-sdk-toolchain/blob/7df9c3029b7e9d824a41fdecdd9f63024b16e25b/packages/@dcl/ecs/src/systems/tween.ts#L91-L159
+- `globalThis` var filter to avoid running the logic on the SDK Runtime if an Explorer injects its specific global var: https://github.com/decentraland/js-sdk-toolchain/blob/7df9c3029b7e9d824a41fdecdd9f63024b16e25b/packages/@dcl/ecs/src/systems/tween.ts#L161-L163
+- Foundation Explorer enabling/disabling its native overwritten `TweenSequence` logic based on the scene installed SDK version: https://github.com/decentraland/unity-explorer/blob/e8c82fb80589361b2b514385ccba935c75954ac2/Explorer/Assets/DCL/PluginSystem/World/TweenPlugin.cs#L21
+- Foundation Explorer parsing the SDK version from the scene's metadata: https://github.com/decentraland/unity-explorer/blob/e8c82fb80589361b2b514385ccba935c75954ac2/Explorer/Assets/DCL/Infrastructure/SceneRunner/Scene/SceneData.cs#L141-L217
