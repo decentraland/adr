@@ -48,8 +48,6 @@ The `Transform` component can be READ/WRITE from the scene. Under normal circums
 
 The Cinematic Camera will be implemented applying components to the `CameraEntity`. The Cinematic Camera is still in the design phase.
 
-The `PointerLocked` component (READ ONLY) presence signals the status of the pointer-locking of the renderer.
-
 The `WindowIdle` component (READ ONLY) presence signals if the renderer is in background-mode or it is actively rendering.
 
 The `CameraMode { mode = ThirdPerson/FirstPerson }` component is used to get the current camera mode; it is only set from the Renderer.
