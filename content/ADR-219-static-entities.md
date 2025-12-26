@@ -8,6 +8,8 @@ type: Standards Track
 spdx-license: CC0-1.0
 authors:
   - menduz
+  - kuruk-mm
+  - pravusjif
 ---
 
 ## Abstract
@@ -32,25 +34,35 @@ All the components presented in this document MUST be updated at the physics pha
 
 ### RootEntity
 
-The `Transform` component of the RootEntity cannot be modified by any system. All updates coming from the scene MAY be ignored or have no effect.
+The `Transform` component (READ ONLY) of the RootEntity cannot be modified by any system. All updates coming from the scene are be ignored and have no effect.
 
-The `UiCanvasInformation` component of the RootEntity MUST be set by the renderer to inform the scene about the current canvas size and the current UI scale. This component is described in the [ADR-124](/adr/ADR-124)
+The `UiCanvasInformation` component (READ ONLY) of the RootEntity MUST be set by the renderer to inform the scene about the current canvas size and the current UI scale. This component is described in the [ADR-124](/adr/ADR-124).
 
-The `EngineInformation` component of the RootEntity contains information about the current frame number, tick number and total elapsed time counters. The component MUST be updated by the renderer each frame.
+The `EngineInformation` component (READ ONLY) of the RootEntity contains information about the current frame number, tick number and total elapsed time counters. The component MUST be updated by the renderer each frame.
+
+The `RealmInformation` component (READ ONLY) of the RootEntity contains information about the current realm: base URL, realm name, network ID, comms adapter, preview status, room info.
+
+The `PrimaryPointerInformation` component (READ ONLY) of the RootEntity contains screen coordinates, screen delta, and world ray direction for the pointer.
 
 ### PlayerEntity
 
-The `Transform` component can be READ/WRITE from the scene. Under normal circumstances, the `Transform` updates will be ignored by the renderer, but it is possible to override the player position when the scene is in control of the `PlayerEntity`, this behavior is yet to be formalized.
+The `Transform` component (READ ONLY) of the PlayerEntity is updated by the renderer and cannot be modified by any system. All updates coming from the scene are be ignored and have no effect.
+
+The `AvatarBase` component (READ ONLY) of the PlayerEntity contains player name, body shape URN, skin color, eyes color, hair color.
+
+The `AvatarEquippedData` component (READ ONLY) of the PlayerEntity contains lists of wearable URNs and emote URNs.
+
+The `PlayerIdentityData` component (READ ONLY) of the PlayerEntity contains player address and guest status.
 
 ### CameraEntity
 
-The `Transform` component can be READ/WRITE from the scene. Under normal circumstances, the `Transform` updates will be ignored by the renderer, but it is possible to override the camera position when the scene is in control of the `CameraEntity`, this behavior is yet to be formalized.
+The `Transform` component (READ ONLY) of the CameraEntity is updated by the renderer and cannot be modified by any system. All updates coming from the scene are be ignored and have no effect.
 
-The Cinematic Camera will be implemented applying components to the `CameraEntity`. The Cinematic Camera is still in the design phase.
+The `PointerLock` component (READ & WRITE) presence signals the status of the pointer-locking of the renderer.
 
-The `WindowIdle` component (READ ONLY) presence signals if the renderer is in background-mode or it is actively rendering.
+The `CameraMode` component (READ ONLY) is updated by the renderer with the current camera mode.
 
-The `CameraMode { mode = ThirdPerson/FirstPerson }` component is used to get the current camera mode; it is only set from the Renderer.
+The `MainCamera` component (READ & WRITE) contains any virtual camera entity reference. In conjunction with the `VirtualCamera` component put on the referenced entity, cinematic sequences can be achieved.
 
 ## RFC 2119 and RFC 8174
 
