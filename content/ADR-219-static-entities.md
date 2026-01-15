@@ -46,7 +46,7 @@ The `PrimaryPointerInformation` component (READ ONLY) of the RootEntity contains
 
 ### PlayerEntity
 
-The `Transform` component (READ ONLY) of the PlayerEntity is updated by the renderer and cannot be modified by any system. All updates coming from the scene are be ignored and have no effect.
+The `Transform` component (READ ONLY) of the PlayerEntity is updated by the renderer and cannot be modified by any system. All updates coming from the scene are ignored and have no effect.
 
 The `AvatarBase` component (READ ONLY) of the PlayerEntity contains player name, body shape URN, skin color, eyes color, hair color.
 
