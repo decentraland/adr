@@ -3,7 +3,7 @@ layout: adr
 adr: 290
 title: Remove Profile Snapshots
 date: 2025-11-10
-status: Draft
+status: Living
 type: Standards Track
 spdx-license: CC0-1.0
 authors:
