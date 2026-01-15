@@ -56,7 +56,7 @@ The `PlayerIdentityData` component (READ ONLY) of the PlayerEntity contains play
 
 ### CameraEntity
 
-The `Transform` component (READ ONLY) of the CameraEntity is updated by the renderer and cannot be modified by any system. All updates coming from the scene are be ignored and have no effect.
+The `Transform` component (READ ONLY) of the CameraEntity is updated by the renderer and cannot be modified by any system. All updates coming from the scene are ignored and have no effect.
 
 The `PointerLock` component (READ & WRITE) presence signals the status of the pointer-locking of the renderer.
 
