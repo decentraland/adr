@@ -34,7 +34,7 @@ All the components presented in this document MUST be updated at the physics pha
 
 ### RootEntity
 
-The `Transform` component (READ ONLY) of the RootEntity cannot be modified by any system. All updates coming from the scene are be ignored and have no effect.
+The `Transform` component (READ ONLY) of the RootEntity cannot be modified by any system. All updates coming from the scene are ignored and have no effect.
 
 The `UiCanvasInformation` component (READ ONLY) of the RootEntity MUST be set by the renderer to inform the scene about the current canvas size and the current UI scale. This component is described in the [ADR-124](/adr/ADR-124).
 
