@@ -1,6 +1,6 @@
 ---
 layout: adr
-adr: 291 # replace this number for the PR or ISSUE number
+adr: 292 # replace this number for the PR or ISSUE number
 title: Customize Nametag Color
 date: 2026-01-23
 status: Draft # pick one of these
