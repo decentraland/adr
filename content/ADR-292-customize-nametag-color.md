@@ -51,15 +51,13 @@ Discuss the potential alternatives and their impact. What alternatives are being
 1. UI changes
   - Add a color picker available only to users with a claimed name
 
-2. Color picker behavior
-  - Adjustable Hue value via a slider.
+2. Color logic
+  - Adjustable Hue value.
   - Saturation and Value are fixed to 0.75 and 1.0 respectively.
   - This constraint ensures sufficient contrast against the black nametag background and avoids unreadable colors.
 
 3. Preview and persistence
-  - Color changes are reflected in real time on:
-    - The Passport animated background, and
-    - The displayed username.
+  - Color changes are reflected in real time as a way for the user to preview them before submitting.
 
 4. Data model changes
   - Introduce a new nullable `nameColor` field in the Profile JSON.
