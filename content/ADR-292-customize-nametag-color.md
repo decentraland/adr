@@ -16,7 +16,7 @@ authors:
 Abstract is a multi-sentence (short paragraph) technical summary. This should be a very terse and human-readable version of the document section. **Someone should be able to read only the abstract to get the gist of what this document is about in its current state.** Abstracts should be always up to date with the current state of the document.
 -->
 
-This ADR proposes allowing users with a claimed name to customize the color of their nametag via a constrained color picker. The selected color is persisted in the user profile and overrides the currently deterministic, username-based color generation. To preserve readability against the black nametag background, color selection is limited to a fixed Saturation and Value, with only Hue being adjustable.
+This ADR proposes allowing users with a claimed name to customize the color of their nametag. The selected color is persisted in the user profile and overrides the currently deterministic, username-based color generation. To preserve readability against the black nametag background, color selection is limited to a fixed Saturation and Value, with only Hue being adjustable.
 
 ## Context, Reach & Prioritization
 
@@ -30,18 +30,7 @@ Discuss and go into detail about the subject in question. Make sure you cover:
 
 ### Background
 
-The `unity-explorer` client currently derives a user’s displayed name color deterministically from the username. The algorithm maps the username hash to an index in a predefined color palette:
-
-```c#
-public static Color GetNameColor(string? username)
-{
-    if (nameColors.Count == 0 || string.IsNullOrEmpty(username)) return DEFAULT_COLOR;
-
-    var rand1 = new Unity.Mathematics.Random((uint)username.GetHashCode());
-    return nameColors[rand1.NextInt(nameColors.Count)];
-}
-```
-
+The `unity-explorer` client currently derives a user’s displayed name color deterministically from the username.
 This approach guarantees consistency across sessions, but offers no agency to users who have claimed their name. As a result, users may be locked into a color they dislike, which negatively impacts personalization and satisfaction.
 
 ### Why this matters
@@ -60,14 +49,10 @@ Discuss the potential alternatives and their impact. What alternatives are being
 -->
 
 1. UI changes
-  - Add a button next to the displayed username in the Passport UI.
-  - The button is visible only if the user has a claimed name.
-  - Clicking the button opens a color picker.
+  - Add a color picker available only to users with a claimed name
 
 2. Color picker behavior
-  - Users can:
-    - Choose from a predefined list of color presets, or
-    - Adjust the Hue value via a slider.
+  - Adjustable Hue value via a slider.
   - Saturation and Value are fixed to 0.75 and 1.0 respectively.
   - This constraint ensures sufficient contrast against the black nametag background and avoids unreadable colors.
 
@@ -75,10 +60,9 @@ Discuss the potential alternatives and their impact. What alternatives are being
   - Color changes are reflected in real time on:
     - The Passport animated background, and
     - The displayed username.
-  - When the color picker is closed (by clicking outside its bounds), the selected color is saved.
 
 4. Data model changes
-  - Introduce a new nullable nameColor field in the Profile JSON.
+  - Introduce a new nullable `nameColor` field in the Profile JSON.
   - Structure mirrors existing color fields (e.g. /avatar/eyes/color/):
   ```json
   "eyes": {
@@ -92,7 +76,6 @@ Discuss the potential alternatives and their impact. What alternatives are being
   ```
   - If nameColor is present:
     - Deserialize it into a Color struct.
-    - Assign it to CompactInfo.UserNameColor.
   - If nameColor is absent:
     - Fall back to the existing deterministic color generation algorithm.
 
@@ -100,7 +83,7 @@ Discuss the potential alternatives and their impact. What alternatives are being
 
 - The `unity-explorer` client enforces fixed Saturation and Value when writing Profile.nameColor.
 - Other clients may choose to allow arbitrary color values.
-- Consumers of `Profile.CompactInfo.UserNameColor` must therefore not assume constrained HSV values and should treat the color as arbitrary RGBA input.
+- Consumers of this `nameColor` must therefore not assume constrained HSV values and should treat the color as arbitrary RGBA input.
 
 ## Specification
 
@@ -128,8 +111,6 @@ Addition of the `nameColor` member to the profile:
     ]
 }
 ```
-
-This will map to the `Profile.CompactInfo.UserNameColor` property on the `unity-explorer` client.
 
 ## RFC 2119 and RFC 8174
 
