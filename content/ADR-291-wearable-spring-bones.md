@@ -1,0 +1,234 @@
+---
+layout: adr
+adr: 316
+title: Wearable Spring Bones
+date: 2026-03-13
+status: Draft
+type: Standards Track
+spdx-license: CC0-1.0
+authors:
+  - rociocm
+---
+
+## Abstract
+
+This ADR defines the standard for embedding spring bone physics parameters in Decentraland wearable `.gltf` model files. Spring bones are extra bones — not part of the base avatar armature — whose transforms are driven by a physics simulation rather than animation clips, enabling hair, earrings, capes, belts, and similar wearable elements to move dynamically in response to avatar locomotion and gravity. A spring root bone is identified by the `SpringBone_` name prefix combined with the presence of at least one spring parameter directly in its glTF node `extras` field. All descendant bones of a root automatically form its spring chain. The parameter set mirrors the VRM `VRMC_springBone` convention. Colliders are out of scope for this version.
+
+## Context, Reach & Prioritization
+
+Currently all wearable elements that extend beyond the base avatar armature — hair, earrings, ponytails, capes, belts, and similar accessories — are completely static. They do not react to the avatar's movement, animations, or environmental forces such as gravity. This is a significant visual quality gap compared to industry-standard avatar formats such as VRM and MMD, which have supported spring/physics bones for years.
+
+Decentraland avatars use a custom armature in `gltf` format (see [ADR-57](/adr/ADR-57)). Each wearable carries only the bones it needs and is fully autonomous. This architecture is compatible with adding optional spring bone definitions without affecting wearables that do not use them.
+
+The implementation will use the UniVRM `VRMSpringBone` component in the Unity-based Explorer. The parameter set defined here is chosen to be directly compatible with that component's expectations, avoiding any translation layer between stored data and the simulation runtime.
+
+This standard affects every system that renders avatars: the Explorer (local and remote players), the Builder wearable editor, the Marketplace avatar preview, and the login/backpack screen. A shared spec is required for all of these to interoperate correctly.
+
+**Vocabulary:**
+
+- **Spring bone / jiggle bone / physics bone:** A bone not part of the base armature whose transform is driven by physics simulation.
+- **Spring root bone:** A bone that owns a spring configuration. Identified by the `SpringBone_` name prefix and the presence of at least one spring parameter in its `extras` field.
+- **Spring chain:** The spring root bone and all its glTF node descendants, simulated together.
+- **Chain tip:** The deepest descendant in a spring chain. Acts as the geometric endpoint; its parameters are not used by the simulation.
+- **`center`:** An optional reference node. When specified, inertia is calculated relative to that node's space rather than world space, preventing excessive sway during locomotion.
+
+## Solution Space Exploration
+
+Multiple approaches were considered for where to store spring bone parameters.
+
+### Option A: Formal glTF Vendor Extension (`DCL_springBone`)
+
+Data lives in the root `extensions` object following the formal glTF extension mechanism. Requires registering the `DCL_` prefix with Khronos and publishing a maintained JSON Schema spec.
+
+**Rejected** because the schema is not yet stable (colliders are out of scope for this version and will be added later), and publishing a formal public spec during an active first iteration creates a costly breaking-change problem. The Decentraland ecosystem is closed — only the Explorer and Builder read these files — so the overhead of a formal extension is not justified at this stage. Migration to a formal extension remains straightforward if needed in the future.
+
+### Option B: Root-level `extras`
+
+Data lives in the root glTF object's `extras` field under a `DCL_springBones` key, with an explicit `springs` array listing chains and joints by node index. This mirrors how VRM's extension is structured.
+
+**Not chosen** because it does not allow creators to set parameters directly in Blender using bone Custom Properties. This approach would require parameters to be entered entirely through the Builder UI or a future Blender plugin, which is an unnecessary constraint. Node-level `extras` are natively exported by Blender without any plugin.
+
+### Option C: Parameters in Item Metadata
+
+Spring bone parameters live in the wearable item's metadata, stored externally as JSON and fetched independently from the `gltf` model at runtime. The model contains only the bone nodes; the physics configuration is not embedded in the file.
+
+```json
+{
+  "springBones": [
+    {
+      "name": "SpringBone_hair_l",
+      "stiffness": 2.0,
+      "gravityPower": 0.3,
+      "gravityDir": [0, -1, 0],
+      "dragForce": 0.5
+    }
+  ]
+}
+```
+
+**Not chosen** because it introduces two sources of truth that must be kept in sync indefinitely. If a creator renames or restructures `SpringBone_` nodes in their model and re-uploads the `.glb`, the metadata references break silently. This desynchronization risk is structural, it cannot be fully engineered away. Additionally, the Explorer would need to reconcile two separate resources at avatar load time, adding error surface. Backend schema changes and migrations would be required. Creators coming from Blender or any DCC tool would lose any authoring work done outside the Builder, as there is no mechanism to carry node-level properties into external metadata.
+
+### Option D: Node-level `extras`
+
+Physics parameters live directly in each spring root bone's glTF node `extras` field. Chains are inferred at load time from the node hierarchy. No armature-level declaration is required.
+
+This approach is natively supported by Blender's "Export Custom Properties" feature, making it the simplest authoring path. It maps directly to the per-bone configuration model used by the UniVRM component. It requires no backend schema changes and no new API endpoints.
+
+The trade-off is that chain topology must be reconstructed from the hierarchy at load time rather than read from an explicit list. This is addressed by the `SpringBone_` naming convention, which makes spring bone nodes unambiguous to both artists and tooling.
+
+## Specification
+
+### Node Naming Convention
+
+All spring bone nodes MUST follow this naming pattern:
+
+```
+SpringBone_<descriptor>
+```
+
+| Segment | Required | Description |
+| --- | --- | --- |
+| `SpringBone_` | Yes | Fixed prefix. Always this exact casing. |
+| `<descriptor>` | Yes | Identifies what the chain represents. Lowercase. Examples: `hair`, `earring`, `ponytail_left`, `cape`, `belt`. |
+
+Examples:
+
+| Node name              | Meaning                              |
+| ---------------------- | ------------------------------------ |
+| `SpringBone_hair_left` | Left hair chain root                 |
+| `SpringBone_earring_r` | Right earring chain root             |
+| `SpringBone_ponytail`  | Ponytail chain root                  |
+| `SpringBone_skirt_1`   | First skirt chain root (if multiple) |
+| `SpringBone_cape`      | Cape chain root (no laterality)      |
+
+The `SpringBone_` prefix is the convention by which artists and tooling identify spring bone nodes in the hierarchy. The Explorer identifies spring root bones by the combination of the `SpringBone_` prefix and the presence of at least one known spring parameter directly in the node's `extras`. Neither signal alone is sufficient.
+
+### Spring Root Bone
+
+A node is a **spring root bone** if and only if its name begins with `SpringBone_` and its `extras` field contains at least one of the known spring parameters (`stiffness`, `gravityPower`, `gravityDir`, `dragForce`, or `center`). No additional declaration is required.
+
+The spring chain owned by a root consists of the root bone itself and all its glTF node descendants, traversed depth-first.
+
+Each node in a spring chain SHOULD have at most one child that is also part of the chain, forming a linear sequence from root to tip. Branching topologies — where a node has more than one spring bone child — are not enforced against but MAY produce unexpected simulation behavior.
+
+### Node `extras` Schema
+
+```json
+{
+  "name": "SpringBone_hair_l",
+  "extras": {
+    "stiffness": 1.0,
+    "gravityPower": 1.0,
+    "gravityDir": [0, -1, 0],
+    "dragForce": 0.5,
+    "center": 4
+  }
+}
+```
+
+All parameters are OPTIONAL. When absent, the defaults defined below apply.
+
+### Parameter Reference
+
+| Parameter | Type | Range | Default | Description |
+| --- | --- | --- | --- | --- |
+| `stiffness` | float | ≥ 0 | `1.0` | Rigidity, how strongly the bone returns to its rest pose. `0` = fully loose, follows gravity only. Higher values = firmer, follows the body more closely. |
+| `gravityPower` | float | ≥ 0 | `1.0` | Magnitude of the gravity force applied to the bone every frame. `0` = unaffected by gravity. |
+| `gravityDir` | vec3 normalized | — | `[0, -1, 0]` | Direction of the gravity force in world space. Default simulates natural downward gravity. Can be used to simulate wind or a floating effect. |
+| `dragForce` | float | 0–1 | `0.5` | Deceleration / damping. `0` = bone swings freely for a long time. `1` = bone settles almost instantly. |
+| `center` | integer | valid node index | none | OPTIONAL. glTF node index of a reference bone. When set, inertia is evaluated relative to that node's space, preventing excessive sway during locomotion. The referenced node MUST exist and MUST NOT be part of any spring chain. |
+
+`gravityDir` SHOULD be a unit vector. If the provided vector is not normalized, the Explorer MUST normalize it before use.
+
+`gravityDir` reference values:
+
+| Value        | Effect                                  |
+| ------------ | --------------------------------------- |
+| `[0, -1, 0]` | Downward (natural gravity, default)     |
+| `[0, 1, 0]`  | Upward (floating / supernatural effect) |
+| `[1, 0, 0]`  | Leftward                                |
+| `[-1, 0, 0]` | Rightward                               |
+| `[0, 0, 1]`  | Forward                                 |
+| `[0, 0, -1]` | Backward                                |
+
+Axes are in **world space**. Diagonal values are valid.
+
+### Runtime Reconstruction
+
+The Explorer MUST reconstruct spring chains at load time using the following procedure:
+
+1. **Discovery**: traverse all nodes in the file. Collect every node whose name begins with `SpringBone_` and whose `extras` field contains at least one known spring parameter (`stiffness`, `gravityPower`, `gravityDir`, `dragForce`, or `center`).
+2. **Chain construction**: starting from each discovered node (spring root), collect all descendant nodes depth-first to form the chain. Descendant nodes do not need to carry spring parameters in their `extras` — they are chain members by hierarchy. If a discovered node is already a descendant of another discovered node, the Explorer MAY discard it as a root and treat it solely as a chain member.
+3. **Tip identification**: the deepest node in each chain is the tip. Its parameters, if any, are not applied by the simulation. It exists solely to define the chain's geometric endpoint.
+4. **Center resolution**: if `center` is specified, resolve the node index. If the index is invalid or points to a spring bone node, the Explorer SHOULD log a warning and MUST fall back to world space.
+
+### Explorer Behaviour
+
+The Explorer MUST apply spring bone simulation to all spring root bones found in any loaded wearable. This applies to the local player's avatar and all other players' avatars in the scene.
+
+For performance reasons, the Explorer SHOULD disable spring bone simulation for avatars beyond a distance threshold from the local player. The threshold value is an implementation detail.
+
+Spring bone simulation MUST also be active in all avatar renderers outside the main world, including but not limited to the login screen and the backpack/wearables preview.
+
+### Builder Behaviour
+
+The Builder MUST detect all spring root bones in an uploaded `.glb` by scanning for nodes whose name begins with `SpringBone_` and whose `extras` contains at least one known spring parameter. For each detected root, the Builder MUST expose its parameters as editable controls and prefill them with the values found in the file.
+
+When a creator saves changes, the Builder MUST write the updated parameter values back directly into the `extras` field of each affected node in the `.glb`. The `.glb` is always the authoritative source of spring bone configuration.
+
+### Features Not Included in this version:
+
+The following are explicitly excluded and MAY be addressed in a future revision:
+
+- **Colliders and collider groups**: spring bones have no bone colliders defined.
+- **`hitRadius`**: only relevant for collision; excluded for the same reason.
+- **Shared parameter groups**: each root bone owns its configuration independently.
+- **Cross-wearable chain interactions**: chains are self-contained within a single wearable file.
+- **Global wind system**: `gravityDir` can approximate per-wearable wind, but there is no scene-level wind force.
+
+The schema is designed to allow future addition of colliders and other parameters without breaking existing files.
+
+### Full Example
+
+```json
+{
+  "asset": {"version": "2.0"},
+  "nodes": [
+    {"name": "Hips", "children": [1, 2, 5, 7]},
+    {"name": "Spine"},
+    {"name": "Head", "children": [3, 5]},
+    {"name": "Ear_R", "children": [4]},
+    {
+      "name": "SpringBone_earring_r",
+      "children": [8],
+      "extras": {
+        "stiffness": 0.5,
+        "gravityPower": 1.0,
+        "gravityDir": [0, -1, 0],
+        "dragForce": 0.6,
+        "center": 0
+      }
+    },
+    {"name": "Neck", "children": [6]},
+    {
+      "name": "SpringBone_hair_l",
+      "children": [9],
+      "extras": {
+        "stiffness": 2.0,
+        "gravityPower": 0.8,
+        "gravityDir": [0, -1, 0],
+        "dragForce": 0.4,
+        "center": 0
+      }
+    },
+    {"name": "SpringBone_earring_r_tip"},
+    {"name": "SpringBone_hair_l_tip"}
+  ]
+}
+```
+
+In this example there are two independent spring chains. `SpringBone_earring_r → SpringBone_earring_r_tip` hangs from `Ear_R`. `SpringBone_hair_l → SpringBone_hair_l_tip` hangs from `Neck`. Both use `Hips` (node index `0`) as their `center`. The `_tip` nodes are chain tips and their parameters are not used by the simulation.
+
+## RFC 2119 and RFC 8174
+
+> The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.
