@@ -3,6 +3,7 @@ adr: 26
 date: 2020-06-08
 title: Port signup screen to unity
 status: Deprecated
+deprecated-reason: The old Decentraland client has been deprecated. The kernel-to-renderer porting has been completed and the kernel no longer exists in the new explorer client (decentraland/unity-explorer).
 authors:
 - AjimenezDCL
 type: Standards Track

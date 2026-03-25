@@ -3,6 +3,7 @@ adr: 24
 date: 2021-04-06
 title: Decouple kernel and unity APIs
 status: Deprecated
+deprecated-reason: The kernel component has been entirely eliminated in the new explorer client (decentraland/unity-explorer), making the kernel/renderer decoupling approach described here obsolete.
 type: Standards Track
 spdx-license: CC0-1.0
 ---

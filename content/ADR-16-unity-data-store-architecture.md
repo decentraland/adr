@@ -3,6 +3,7 @@ adr: 16
 date: 2020-11-05
 title: Unity data store architecture
 status: Deprecated
+deprecated-reason: The old Decentraland client (unity-renderer) has been deprecated. The ScriptableObject-based DataStore architecture has been replaced by an ECS approach with single-instance entities in the new explorer client (decentraland/unity-explorer).
 type: Standards Track
 spdx-license: CC0-1.0
 ---

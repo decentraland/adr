@@ -3,6 +3,7 @@ adr: 53
 date: 2022-01-20
 title: Test collections in the explorer
 status: Deprecated
+deprecated-reason: The old Decentraland client (unity-renderer) has been deprecated. The query parameter approach for testing wearable collections is specific to the old explorer and no longer applies to the new explorer client (decentraland/unity-explorer).
 authors:
   - menduz
   - ShibuyaMartin

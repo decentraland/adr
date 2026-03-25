@@ -3,6 +3,7 @@ adr: 25
 date: 2021-04-16
 title: Explorer repositories decoupling
 status: Deprecated
+deprecated-reason: The old Decentraland client has been deprecated. The repository split into Renderer/Kernel/Web Shell/Desktop Shell is no longer applicable. The new explorer client (decentraland/unity-explorer) is a unified repository.
 authors:
   - menduz
 type: Standards Track

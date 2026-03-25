@@ -3,6 +3,7 @@ adr: 66
 date: 2022-04-07
 title: Emotes System for Renderer (Unity)
 status: Deprecated
+deprecated-reason: The old Decentraland client (unity-renderer) has been deprecated. The emotes system has been replaced by a Mecanim-based AnimatorController system in the new explorer client (decentraland/unity-explorer). See ADR-293.
 authors:
 - AjimenezDCL
 type: Standards Track

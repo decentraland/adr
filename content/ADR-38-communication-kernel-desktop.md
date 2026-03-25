@@ -3,6 +3,7 @@ adr: 38
 date: 2021-08-05
 title: Communication between Desktop unity and Kernel
 status: Deprecated
+deprecated-reason: The old Decentraland client has been deprecated. The kernel component and its WebSocket-based communication with the renderer no longer exist in the new explorer client (decentraland/unity-explorer).
 authors:
   - kuruk-mm
 type: Standards Track

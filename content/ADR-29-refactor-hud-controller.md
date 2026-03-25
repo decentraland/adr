@@ -3,6 +3,7 @@ adr: 29
 date: 2021-06-18
 title: Refactor HUD control
 status: Deprecated
+deprecated-reason: The old Decentraland client (unity-renderer) has been deprecated. The HUDController pattern has been replaced by a new MVC architecture with ControllerBase/ViewBase in the new explorer client (decentraland/unity-explorer).
 authors:
   - kuruk-mm
   - BrianAmadori

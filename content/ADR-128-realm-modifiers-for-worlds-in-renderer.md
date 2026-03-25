@@ -3,6 +3,7 @@ adr: 128
 title: Realms modifiers for Worlds in Renderer
 date: 2021-11-15
 status: Deprecated
+deprecated-reason: The old Decentraland client (unity-renderer) has been deprecated. The realm modifier plugin approach has been reimplemented in the new explorer client (decentraland/unity-explorer) using its ECS-based plugin system. See ADR-295.
 type: RFC
 spdx-license: CC0-1.0
 authors:

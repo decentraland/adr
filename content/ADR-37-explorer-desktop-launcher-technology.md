@@ -3,6 +3,7 @@ adr: 37
 date: 2021-07-30
 title: Explorer Desktop Launcher Technology
 status: Deprecated
+deprecated-reason: The Electron-based desktop launcher has been replaced by a new launcher built with Rust.
 authors:
   - kuruk-mm
 type: Standards Track

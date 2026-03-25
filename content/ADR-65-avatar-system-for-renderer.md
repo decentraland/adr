@@ -3,6 +3,7 @@ adr: 65
 date: 2022-04-07
 title: Avatar System for Renderer (Unity)
 status: Deprecated
+deprecated-reason: The old Decentraland client (unity-renderer) has been deprecated. The avatar system has been replaced by a GPU skinning pipeline using compute shaders and a Global Vertex Buffer in the new explorer client (decentraland/unity-explorer). See ADR-292.
 authors:
 - AjimenezDCL
 type: Standards Track

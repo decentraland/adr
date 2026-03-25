@@ -4,6 +4,7 @@ team: sdk
 date: 2021-07-27
 title: Kernel repository separation
 status: Deprecated
+deprecated-reason: The kernel has been entirely eliminated in the new explorer client (decentraland/unity-explorer), making the kernel repository separation described here obsolete.
 authors:
   - menduz
 type: Standards Track

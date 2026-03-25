@@ -6,6 +6,7 @@ authors:
   - LautaroPetaccio
   - nachomazzara
 status: Deprecated
+deprecated-reason: The old Decentraland client has been deprecated. The React-based UI dependencies are no longer applicable, as the new explorer client (decentraland/unity-explorer) uses native Unity UI instead of React.
 type: Standards Track
 spdx-license: CC0-1.0
 ---

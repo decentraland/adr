@@ -3,6 +3,7 @@ adr: 20
 date: 2020-12-11
 title: Explorer Settings Panel Architecture
 status: Deprecated
+deprecated-reason: The old Decentraland client (unity-renderer) has been deprecated. The ScriptableObject-based Settings Panel architecture has been replaced by a new MVC-based UI system in the new explorer client (decentraland/unity-explorer).
 type: Standards Track
 spdx-license: CC0-1.0
 ---

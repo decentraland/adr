@@ -3,6 +3,7 @@ adr: 67
 date: 2022-04-27
 title: Runtime Architecture For Renderer
 status: Deprecated
+deprecated-reason: The old Decentraland client (unity-renderer) has been deprecated. The runtime architecture has been replaced by an ECS-based architecture with ComponentsContainer and plugin-level component registration in the new explorer client (decentraland/unity-explorer). See ADR-294.
 authors:
   - brianamadori
 type: Standards Track
