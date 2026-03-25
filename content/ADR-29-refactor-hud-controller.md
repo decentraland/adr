@@ -2,7 +2,7 @@
 adr: 29
 date: 2021-06-18
 title: Refactor HUD control
-status: Stagnant
+status: Deprecated
 authors:
   - kuruk-mm
   - BrianAmadori
@@ -95,3 +95,7 @@ We're going to discuss this stage in another ADR.
 
 - Mateo Miccino
 - Brian Amadori
+
+## Deprecation Reason
+
+This ADR has been marked as **Deprecated** as of 2026-03-23 due to the deprecation of the old Decentraland client (unity-renderer). The HUDController pattern described here has been replaced by a new MVC architecture with ControllerBase/ViewBase in the new explorer client (decentraland/unity-explorer).

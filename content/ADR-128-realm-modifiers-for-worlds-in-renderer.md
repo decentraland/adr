@@ -2,7 +2,7 @@
 adr: 128
 title: Realms modifiers for Worlds in Renderer
 date: 2021-11-15
-status: Living
+status: Deprecated
 type: RFC
 spdx-license: CC0-1.0
 authors:
@@ -160,3 +160,7 @@ classDiagram
 ## RFC 2119 and RFC 8174
 
 > The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.
+
+## Deprecation Reason
+
+This ADR has been marked as **Deprecated** as of 2026-03-23 due to the deprecation of the old Decentraland client (unity-renderer). The realm modifier plugin approach described here is specific to the old renderer architecture and has been reimplemented in the new explorer client (decentraland/unity-explorer) using its ECS-based plugin system. Refer to [ADR-295: Explorer realm modifiers for Worlds](/adr/ADR-295) for the current architecture.

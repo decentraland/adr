@@ -2,7 +2,7 @@
 adr: 16
 date: 2020-11-05
 title: Unity data store architecture
-status: Living
+status: Deprecated
 type: Standards Track
 spdx-license: CC0-1.0
 ---
@@ -111,3 +111,7 @@ Also, we have the added benefit of a more cohesive design between Kernel and Uni
 - Pravus
 
 - Brian
+
+## Deprecation Reason
+
+This ADR has been marked as **Deprecated** as of 2026-03-23 due to the deprecation of the old Decentraland client (unity-renderer). The ScriptableObject-based DataStore architecture described here has been replaced by an ECS (Entity Component System) approach with single-instance entities in the new explorer client (decentraland/unity-explorer).

@@ -2,7 +2,7 @@
 adr: 20
 date: 2020-12-11
 title: Explorer Settings Panel Architecture
-status: Living
+status: Deprecated
 type: Standards Track
 spdx-license: CC0-1.0
 ---
@@ -187,3 +187,7 @@ And it is all! When you run the application, you will notice that the `SettingsP
 ##  Participants
 
 - Santi Andrade
+
+## Deprecation Reason
+
+This ADR has been marked as **Deprecated** as of 2026-03-23 due to the deprecation of the old Decentraland client (unity-renderer). The ScriptableObject-based Settings Panel architecture described here has been replaced by a new MVC-based UI system in the new explorer client (decentraland/unity-explorer).

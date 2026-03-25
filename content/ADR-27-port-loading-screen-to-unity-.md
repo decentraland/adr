@@ -2,7 +2,7 @@
 adr: 27
 date: 2020-06-14
 title: Port loading screen to unity
-status: Living
+status: Deprecated
 authors:
   - AjimenezDCL
   - kuruk-mm
@@ -86,3 +86,7 @@ The implementation in _Unity_ is pretty straight-forward. A HUD reacting to the 
 ## Participants
 
 - World Team
+
+## Deprecation Reason
+
+This ADR has been marked as **Deprecated** as of 2026-03-23 due to the deprecation of the old Decentraland client. The kernel-to-renderer porting described here has been completed and the kernel no longer exists in the new explorer client (decentraland/unity-explorer).

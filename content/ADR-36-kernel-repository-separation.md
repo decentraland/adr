@@ -3,7 +3,7 @@ adr: 36
 team: sdk
 date: 2021-07-27
 title: Kernel repository separation
-status: Living
+status: Deprecated
 authors:
   - menduz
 type: Standards Track
@@ -30,3 +30,7 @@ The context of the problem is around the tactical/execution aspect. Since the ch
 We choose to create a separated repository to not block the releases and development of explorer during this migration stage.
 
 Also having separated repositories, will foster external contributions, ensuring clear scopes and responsibilities for each repository.
+
+## Deprecation Reason
+
+This ADR has been marked as **Deprecated** as of 2026-03-23 due to the deprecation of the old Decentraland client. The kernel has been entirely eliminated in the new explorer client (decentraland/unity-explorer), making the kernel repository separation described here obsolete.

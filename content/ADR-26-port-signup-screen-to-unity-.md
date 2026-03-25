@@ -2,7 +2,7 @@
 adr: 26
 date: 2020-06-08
 title: Port signup screen to unity
-status: Living
+status: Deprecated
 authors:
 - AjimenezDCL
 type: Standards Track
@@ -54,3 +54,7 @@ The new flow should go as this:
 ## Participants
 
 - World Team
+
+## Deprecation Reason
+
+This ADR has been marked as **Deprecated** as of 2026-03-23 due to the deprecation of the old Decentraland client. The kernel-to-renderer porting described here has been completed and the kernel no longer exists in the new explorer client (decentraland/unity-explorer).

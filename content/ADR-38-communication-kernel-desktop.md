@@ -2,7 +2,7 @@
 adr: 38
 date: 2021-08-05
 title: Communication between Desktop unity and Kernel
-status: Living
+status: Deprecated
 authors:
   - kuruk-mm
 type: Standards Track
@@ -120,3 +120,7 @@ renderer.onAuthenticateMessage(message => {
 - Brian
 - Mateo
 - Mendez
+
+## Deprecation Reason
+
+This ADR has been marked as **Deprecated** as of 2026-03-23 due to the deprecation of the old Decentraland client. The kernel component and its WebSocket-based communication with the renderer described here no longer exist in the new explorer client (decentraland/unity-explorer).

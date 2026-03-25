@@ -2,7 +2,7 @@
 adr: 37
 date: 2021-07-30
 title: Explorer Desktop Launcher Technology
-status: Living
+status: Deprecated
 authors:
   - kuruk-mm
 type: Standards Track
@@ -79,3 +79,7 @@ Date: 2021-07-29
 - Brian
 - Mateo
 - Mendez
+
+## Deprecation Reason
+
+This ADR has been marked as **Deprecated** as of 2026-03-23. The Electron-based desktop launcher described here has been replaced by a new launcher built with Rust.

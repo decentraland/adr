@@ -2,7 +2,7 @@
 adr: 25
 date: 2021-04-16
 title: Explorer repositories decoupling
-status: Stagnant
+status: Deprecated
 authors:
   - menduz
 type: Standards Track
@@ -108,3 +108,7 @@ Inevitably, some testing helpers would need to be set in place to enable the suc
 All the repositories would manage their own versioning using semantic versioning to control compatibility.
 
 Protocol changes would require now two PR in different repositories (i.e. kernel and renderer). That is a known issue that was not ignored during the planning of this process. Even though changes in the protocol are less and less common over time, it would require an extra work of coordination and verification.
+
+## Deprecation Reason
+
+This ADR has been marked as **Deprecated** as of 2026-03-23 due to the deprecation of the old Decentraland client. The repository split into Renderer/Kernel/Web Shell/Desktop Shell described here is no longer applicable. The new explorer client (decentraland/unity-explorer) is a unified repository that has replaced the old architecture.

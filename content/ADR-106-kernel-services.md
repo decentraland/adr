@@ -5,7 +5,7 @@ title: Kernel services code generation
 authors:
   - kuruk-mm
   - menduz
-status: Draft
+status: Withdrawn
 type: RFC
 spdx-license: CC0-1.0
 redirect_from:
@@ -97,3 +97,7 @@ message JumpIn {
   int32 parcel_y = 3;
 }
 ```
+
+## Withdrawal Reason
+
+This ADR has been marked as **Withdrawn** as of 2026-03-23. It was never implemented beyond Draft status. The kernel component has been entirely eliminated in the new explorer client (decentraland/unity-explorer), making the kernel services code generation described here obsolete.

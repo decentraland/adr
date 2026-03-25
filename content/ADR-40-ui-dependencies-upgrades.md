@@ -5,7 +5,7 @@ title: DCL UI dependencies upgrades
 authors:
   - LautaroPetaccio
   - nachomazzara
-status: Living
+status: Deprecated
 type: Standards Track
 spdx-license: CC0-1.0
 ---
@@ -164,3 +164,7 @@ const isMobile = useMobileMediaQuery()
 const classes = isMobile ? "dcl mobile" : "dcl"
 return <div className={classes}>...</div>
 ```
+
+## Deprecation Reason
+
+This ADR has been marked as **Deprecated** as of 2026-03-23 due to the deprecation of the old Decentraland client. The React-based UI dependencies described here are no longer applicable, as the new explorer client (decentraland/unity-explorer) uses native Unity UI instead of React.

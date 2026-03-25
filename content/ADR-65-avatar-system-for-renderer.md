@@ -2,7 +2,7 @@
 adr: 65
 date: 2022-04-07
 title: Avatar System for Renderer (Unity)
-status: Living
+status: Deprecated
 authors:
 - AjimenezDCL
 type: Standards Track
@@ -376,3 +376,7 @@ public class EmoteAnimationEquipperShould
 ## Competition
 
 The system competes directly against its previous implementation. The whole system was a single class in a god object anti-pattern (refer to "Existent Solution" above). The new avatar system, while sticking to best practices in the industry, improves the design flaws from the previous implementation (refer to "Benefits").
+
+## Deprecation Reason
+
+This ADR has been marked as **Deprecated** as of 2026-03-23 due to the deprecation of the old Decentraland client (unity-renderer). The avatar system architecture described here has been replaced by a GPU skinning pipeline using compute shaders, AvatarCelShading, and a Global Vertex Buffer (GVB) in the new explorer client (decentraland/unity-explorer). Refer to [ADR-292: Explorer avatar rendering pipeline](/adr/ADR-292) for the current architecture.

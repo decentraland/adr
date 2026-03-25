@@ -2,7 +2,7 @@
 adr: 53
 date: 2022-01-20
 title: Test collections in the explorer
-status: Living
+status: Deprecated
 authors:
   - menduz
   - ShibuyaMartin
@@ -24,3 +24,7 @@ Support query params in the explorer:
 
 - WITH_COLLECTIONS: Collections urn or UUIDs comma separated. If the collection is an `urn` it should fetch the collection from the catalyst. The catalyst to be used will be the one set in the `CATALYST_URL` query param or the connected catalyst if the query param is not set. If the collection is a UUID, it should fetch the collection from the `BUILDER_SERVER_URL`.
   `WITH_COLLECTIONS` must work only when the `NETWORK` query parameter is set to `ropsten`. E.g: `urn:decentraland:collection1,urn:decentraland:collection2,1234-123123-1231231`.
+
+## Deprecation Reason
+
+This ADR has been marked as **Deprecated** as of 2026-03-23 due to the deprecation of the old Decentraland client (unity-renderer). The query parameter approach for testing wearable collections described here is specific to the old explorer and no longer applies to the new explorer client (decentraland/unity-explorer).
