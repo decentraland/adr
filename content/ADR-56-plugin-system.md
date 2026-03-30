@@ -2,7 +2,8 @@
 adr: 56
 date: 2022-01-26
 title: Plugin pattern for Renderer features
-status: Living
+status: Deprecated
+deprecated-reason: The old Decentraland client (unity-renderer) has been deprecated. The DataStore/Bridge/HUD plugin pattern has been replaced by an ECS-based plugin system with IDCLPlugin in the new explorer client (decentraland/unity-explorer). See ADR-291.
 authors:
 - BrianAmadori
 type: Standards Track
@@ -269,3 +270,7 @@ other. Cases of contributions that aren't worthy of being a plugin can include:
 ## Participants
 
 - Unity Team
+
+## Deprecation Reason
+
+This ADR has been marked as **Deprecated** as of 2026-03-23 due to the deprecation of the old Decentraland client (unity-renderer). The DataStore/Bridge/HUD plugin pattern described here has been replaced by an ECS-based plugin system with IDCLPlugin (Global/World scopes) in the new explorer client (decentraland/unity-explorer). Refer to [ADR-291: ECS-based plugin system for Explorer](/adr/ADR-291) for the current architecture.

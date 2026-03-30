@@ -2,7 +2,8 @@
 adr: 66
 date: 2022-04-07
 title: Emotes System for Renderer (Unity)
-status: Living
+status: Deprecated
+deprecated-reason: The old Decentraland client (unity-renderer) has been deprecated. The emotes system has been replaced by a Mecanim-based AnimatorController system in the new explorer client (decentraland/unity-explorer). See ADR-293.
 authors:
 - AjimenezDCL
 type: Standards Track
@@ -92,3 +93,7 @@ Downloading animations, controlling their lifecycle and disposing them is the he
 
 Since the plugin system is already consolidated in the renderer architecture, there's no need to stray apart from it. You can read about the benefits of using it
 [here](/adr/ADR-56).
+
+## Deprecation Reason
+
+This ADR has been marked as **Deprecated** as of 2026-03-23 due to the deprecation of the old Decentraland client (unity-renderer). The emotes system described here, which relied on DataStore and the old plugin approach, has been replaced by a Mecanim-based AnimatorController system with EmotePlayer and CharacterEmoteComponent in the new explorer client (decentraland/unity-explorer). Refer to [ADR-293: Explorer emotes system](/adr/ADR-293) for the current architecture.

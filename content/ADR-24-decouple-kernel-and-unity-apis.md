@@ -2,7 +2,8 @@
 adr: 24
 date: 2021-04-06
 title: Decouple kernel and unity APIs
-status: Stagnant
+status: Deprecated
+deprecated-reason: The kernel component has been entirely eliminated in the new explorer client (decentraland/unity-explorer), making the kernel/renderer decoupling approach described here obsolete.
 type: Standards Track
 spdx-license: CC0-1.0
 ---
@@ -106,3 +107,7 @@ CLI should be handled in the same way as the kernel and SDK developments.
 - Brian
 - Mendez
 - Nico Chamo
+
+## Deprecation Reason
+
+This ADR has been marked as **Deprecated** as of 2026-03-23 due to the deprecation of the old Decentraland client. The kernel component has been entirely eliminated in the new explorer client (decentraland/unity-explorer), making the kernel/renderer decoupling approach described here obsolete.

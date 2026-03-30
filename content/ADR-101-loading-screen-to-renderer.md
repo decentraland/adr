@@ -5,7 +5,7 @@ title: Move loading screen logic from kernel to renderer
 authors:
   - menduz
   - AjimenezDCL
-status: Draft
+status: Withdrawn
 type: RFC
 spdx-license: CC0-1.0
 redirect_from:
@@ -159,3 +159,7 @@ demonstrate that the competition is clearly understood. Include the
 -->
 
 Do nothing: keep the logic in Kernel
+
+## Withdrawal Reason
+
+This ADR has been marked as **Withdrawn** as of 2026-03-23. It was never implemented beyond Draft status. The kernel component has been entirely eliminated in the new explorer client (decentraland/unity-explorer), making the kernel-to-renderer loading screen migration described here moot.
