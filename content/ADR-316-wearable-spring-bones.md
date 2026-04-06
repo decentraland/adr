@@ -12,7 +12,7 @@ authors:
 
 ## Abstract
 
-This ADR defines the standard for embedding spring bone physics parameters in Decentraland wearable `.gltf` model files using a glTF vendor extension. Spring bones are extra bones — not part of the base avatar armature — whose transforms are driven by a physics simulation rather than animation clips, enabling hair, earrings, capes, belts, and similar wearable elements to move dynamically in response to avatar locomotion and gravity. A spring root bone is identified by a node name containing `springbone` (case-insensitive) combined with the presence of the `DCL_spring_bone_joint` extension in its glTF node `extensions` field. All descendant bones of a root automatically form its spring chain. The parameter set mirrors the VRM `VRMC_springBone` convention. Basic collider support via `hitRadius` is defined for future use; collision logic is out of scope for this version.
+This ADR defines the standard for embedding spring bone physics parameters in Decentraland wearable `.gltf` model files using a glTF vendor extension. Spring bones are extra bones — not part of the base avatar armature — whose transforms are driven by a physics simulation rather than animation clips, enabling hair, earrings, capes, belts, and similar wearable elements to move dynamically in response to avatar locomotion and gravity. A spring root bone is identified by a node name containing `springbone` (case-insensitive) combined with the presence of the `DCL_spring_bone_joint` extension in its glTF node `extensions` field. All descendant bones of a root automatically form its spring chain. The parameter set mirrors the VRM `VRMC_springBone` convention. Colliders are out of scope for this version.
 
 ## Context, Reach & Prioritization
 
@@ -127,7 +127,6 @@ Each node in a spring chain SHOULD have at most one child that is also part of t
           "gravityPower": 1.0,
           "gravityDir": [0, -1, 0],
           "drag": 0.5,
-          "hitRadius": 0.02,
           "isRoot": true,
           "center": "Avatar_Hips"
         }
@@ -148,8 +147,7 @@ The `DCL_spring_bone_joint` extension object resides within a node's `extensions
 | `gravityPower` | float | ≥ 0 | `1.0` | Magnitude of the gravity force applied to the bone every frame. `0` = unaffected by gravity. |
 | `gravityDir` | vec3 normalized | — | `[0, -1, 0]` | Direction of the gravity force in world space. Default simulates natural downward gravity. Can be used to simulate wind or a floating effect. |
 | `drag` | float | 0–1 | `0.5` | Deceleration / damping. `0` = bone swings freely for a long time. `1` = bone settles almost instantly. |
-| `isRoot` | boolean | — | `true` | Declares this node as the root of a spring chain. Reserved for future use; currently, presence of the extension automatically marks a node as root. |
-| `hitRadius` | float | ≥ 0 | `0.02` | Radius used for collision detection. Currently unused; reserved for future collider implementation. |
+| `isRoot` | boolean | — | `true` | Declares whether this node is the root of a spring chain (`true`) or a chain member that overrides inherited parameters (`false`). |
 | `center` | string (node name) | valid node name | none | OPTIONAL. Name of a reference bone node. When set, inertia is evaluated relative to that node's space, preventing excessive sway during locomotion. The referenced node MUST exist and MUST NOT be part of any spring chain. |
 
 `gravityDir` SHOULD be a unit vector. If the provided vector is not normalized, the Explorer MUST normalize it before use.
@@ -172,7 +170,7 @@ Axes are in **world space**. Diagonal values are valid.
 The Explorer MUST reconstruct spring chains at load time using the following procedure:
 
 1. **Extension Declaration Check**: verify that the root `extensionsUsed` array includes `DCL_spring_bone_joint`. If not, no spring bones are present in the file.
-2. **Discovery**: traverse all nodes in the file. Collect every node whose name contains `springbone` (case-insensitive) and whose `extensions` field contains the key `DCL_spring_bone_joint`.
+2. **Discovery**: traverse all nodes in the file. Collect every node whose name contains `springbone` (case-insensitive) and whose `extensions` field contains the key `DCL_spring_bone_joint`. The Explorer MAY also use the `isRoot` field to distinguish root bones (`isRoot: true` or absent) from chain members that override inherited parameters (`isRoot: false`).
 3. **Version Check**: for each discovered node, read the `version` field in the extension. If `version` is not `1`, log a warning and skip that node (or handle according to implementation strategy for unknown versions).
 4. **Chain construction**: starting from each discovered node (spring root), collect all descendant nodes depth-first to form the chain. Descendant nodes do not need to carry the extension — they are chain members by hierarchy. If a discovered node is already a descendant of another discovered node, the Explorer MAY discard it as a root and treat it solely as a chain member.
 5. **Tip identification**: the deepest node in each chain is the tip. Its parameters, if any, are not applied by the simulation. It exists solely to define the chain's geometric endpoint.
@@ -196,7 +194,7 @@ When a creator saves changes, the Builder MUST write the updated parameter value
 
 The following are explicitly excluded and MAY be addressed in a future revision:
 
-- **Colliders logic**: `hitRadius` is defined in the schema and MAY be exported/imported by tools, but collision detection and response are not implemented in this version.
+- **Colliders`**: collision detection, response, and per-bone hit radius are not included in this version.
 - **Collider groups**: springs have no grouping mechanism for selective collision.
 - **Shared parameter groups**: each root bone owns its configuration independently.
 - **Cross-wearable chain interactions**: chains are self-contained within a single wearable file.
@@ -222,7 +220,6 @@ The schema is designed to allow future addition of colliders logic and other par
           "gravityPower": 1.0,
           "gravityDir": [0, -1, 0],
           "drag": 0.6,
-          "hitRadius": 0.02,
           "isRoot": true,
           "center": "Avatar_Hips"
         }
@@ -238,7 +235,6 @@ The schema is designed to allow future addition of colliders logic and other par
           "gravityPower": 0.8,
           "gravityDir": [0, -1, 0],
           "drag": 0.4,
-          "hitRadius": 0.02,
           "isRoot": true,
           "center": "Avatar_Hips"
         }
