@@ -2,7 +2,8 @@
 adr: 67
 date: 2022-04-27
 title: Runtime Architecture For Renderer
-status: Living
+status: Deprecated
+deprecated-reason: The old Decentraland client (unity-renderer) has been deprecated. The runtime architecture has been replaced by an ECS-based architecture with ComponentsContainer and plugin-level component registration in the new explorer client (decentraland/unity-explorer). See ADR-294.
 authors:
   - brianamadori
 type: Standards Track
@@ -89,3 +90,7 @@ This allows easier external contributions, and in fact allow easier segregation 
 ## Competition
 
 No competitions are considered in this document.
+
+## Deprecation Reason
+
+This ADR has been marked as **Deprecated** as of 2026-03-23 due to the deprecation of the old Decentraland client (unity-renderer). The runtime architecture and component registration approach described here has been replaced by an ECS-based architecture with ComponentsContainer and plugin-level component registration in the new explorer client (decentraland/unity-explorer). Refer to [ADR-294: Explorer ECS runtime architecture](/adr/ADR-294) for the current architecture.
