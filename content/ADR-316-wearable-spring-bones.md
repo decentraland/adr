@@ -212,7 +212,6 @@ Catalyst's content validator (`@dcl/content-validator`) enforces the following r
 - The `springBones` value MUST conform to the `SpringBonesData` JSON schema in `@dcl/schemas` (parameter ranges, required fields, `gravityDir` as a 3-tuple of numbers, optional `center`/`isRoot`).
 - Every key in `models` MUST equal the content hash of some current representation's `mainFile`. Filename-keyed entries and stale hashes from prior uploads are rejected.
 - Every bone name in `models[<hash>]` MUST contain the `springbone` token (case-insensitive), matching the discovery rule.
-- Each `models[<hash>]` entry MUST NOT contain more than 12 spring bone entries. Wearables that define more than 12 spring bones per GLB representation are rejected.
 
 Structural and per-parameter range validation is delegated to the schema; the validator only enforces the cross-references that the schema cannot express on its own.
 
