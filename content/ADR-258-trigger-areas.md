@@ -73,14 +73,14 @@ Note: If a collider with the same shape blocks a player from entering a trigger 
 
 Trigger areas can trigger events when the player (or any other entity on the trigger layer) enters, exits or stays in the area.
 
-Trigger events would have to be shared from the engine to the SDK via a component, following a similar approach as we do with pointer events and raycasts. We should create a `TriggerAreaResult` component. Creators are not expected to read values or make use of this component in any way, unless they really want to fine tune their scene’s behavior.
+Trigger events are shared from the engine to the SDK via a component, following a similar approach as we do with pointer events and raycasts. We define a `TriggerAreaResult` component for this purpose. Creators are not expected to read values or make use of this component directly, unless they really want to fine tune their scene’s behavior — the `triggerAreaEventsSystem` helpers (see _Code helpers_ below) are the supported entry point.
 
-This component will be added by the engine, similarly to how pointer events are handled. The event will be triggered when the entity enters, exits or stays in the area. Each event will have the following fields:
+The `TriggerAreaResult` component is grow-only (GOVS): every event is appended as a discrete entry rather than overwriting the previous one. Each entry has the following fields:
 
 - `triggeredEntity`: The entity that was triggered (this is the entity that owns the trigger area)
 - `triggeredEntityPosition`: The position of the triggered entity at the time of the trigger.
 - `triggeredEntityRotation`: The rotation of the triggered entity at the time of the trigger.
-- `eventType`: The state of the trigger event (ENTER, EXIT, STAY)
+- `eventType`: The state of the trigger event (`TAET_ENTER`, `TAET_EXIT`, `TAET_STAY`)
 - `timestamp`: The timestamp of the trigger event
 - `trigger`: An object with the following fields:
   - `entity`: The entity that triggered the trigger
@@ -88,6 +88,18 @@ This component will be added by the engine, similarly to how pointer events are 
   - `position`: The position of the entity that triggered the trigger
   - `rotation`: The rotation of the entity that triggered the trigger
   - `scale`: The scale of the entity that triggered the trigger
+
+#### Emission contract: ENTER/EXIT on the wire, STAY synthesized by the SDK
+
+The three event types are split across two layers:
+
+- **`TAET_ENTER` and `TAET_EXIT`** are emitted by the engine (Explorer) as discrete state transitions: one entry per (trigger area, triggerer) pair when the triggerer crosses into the area, and one when it crosses out. These are the only event types that travel over the CRDT wire. Explorer implementations **MUST NOT** emit `TAET_STAY` entries — emitting them every frame floods the CRDT channel and overflows the GOVS buffer, which is capped at a small number of entries.
+
+- **`TAET_STAY`** is the responsibility of the SDK runtime. The SDK's `triggerAreaEventsSystem` maintains a per-trigger-area set of "currently inside" triggerers, driven entirely by the wire `TAET_ENTER` and `TAET_EXIT` events: on `TAET_ENTER` the triggerer is added to the set, on `TAET_EXIT` it is removed. On every tick, for each triggerer still in the set, the SDK synthesizes a `PBTriggerAreaResult` with `eventType = TAET_STAY` and dispatches it to any `onTriggerStay` callback registered for the trigger area. Synthesized payloads refresh `position`, `rotation` and `scale` from the live `Transform` component of the trigger area and triggerer entities when those are scene-owned; for triggerers without a scene-side `Transform` (e.g. the reserved player-avatar entity) the synthesized payload falls back to the cached values from the most recent `TAET_ENTER`.
+
+This split means scene developers see no behavioral difference: an `onTriggerStay` callback continues to fire every frame while a triggerer remains inside, with `result.eventType === TriggerAreaEventType.TAET_STAY` on every call. Only the wire footprint changes: at 60 fps with N triggerers inside, traffic drops from O(60·N) `TriggerAreaResult` appends per second to O(1) — exactly one append on enter and one on exit per (trigger area, triggerer) session.
+
+For backward compatibility, SDK runtimes **MUST** silently ignore any `TAET_STAY` entries that arrive on the wire from legacy Explorer implementations that have not yet adopted this contract. The synthesized per-tick dispatch is the single source of truth; wire `TAET_STAY` events must not be forwarded to `onTriggerStay` callbacks, to avoid double-firing.
 
 ### Ensure detection
 
