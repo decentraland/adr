@@ -81,7 +81,7 @@ Here is the list of officially supported protocols
 
 The signed login exists as part of a "handshake" mechanism to enable authenticated log-ins and access control to different communication services like Livekit.
 
-The verifications of the [signed fetch](/adr/ADR-44) must look for the following properties: `intent`, `signer`, and `isGuest`.
+The verifications of the [signed fetch](/adr/ADR-44) must look for the following properties: `intent`, `signer`, and `isGuest`. These properties are bound to the signature exactly as delivered, so they must be compared exactly: a value or property name differing only in case must be refused rather than case-folded, which would otherwise let a re-spelled property read as absent.
 
 ```typescript
 // connectionString = "signed-login:https://my-server/authenticate-comms"
