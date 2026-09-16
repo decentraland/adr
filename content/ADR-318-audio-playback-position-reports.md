@@ -12,7 +12,7 @@ authors:
 
 # Abstract
 
-Scenes that need to line gameplay or visuals up with sound (rhythm games, beat-driven effects, video-synchronized audio) have no way to learn where an `AudioSource` clip's playhead actually is. This document extends the `AudioEvent` component so renderers report the clip position periodically while a clip plays, in addition to the media state changes they already report. The change is additive and backwards compatible.
+Scenes that need to line gameplay or visuals up with sound (rhythm games, beat-driven effects, video-synchronized audio) have no way to learn where an `AudioSource` clip's playhead actually is. This document extends the `AudioEvent` component so renderers report the clip position periodically while a clip plays, in addition to the media state changes they already report. It mirrors what `PBVideoEvent` already does for video: the position travels in the renderer-owned event component, and the scene-owned `PBAudioSource` is not touched. The change is additive and backwards compatible.
 
 ## Context and problem statement
 
@@ -20,7 +20,7 @@ A scene controls audio through `PBAudioSource`: it sets `playing`, and optionall
 
 Measured on the Unity explorer with a rhythm-game scene that plays a 64-second song as four synchronized instrument stems and judges key presses against a note chart, the audible drums started 100 to 250 ms after the scene's song clock, with a different value on each start. That game accepts a press within 150 ms of the charted note, so a player who plays by ear is judged late, and the scene had no signal it could use to correct itself.
 
-The only feedback channel today is `PBAudioEvent`, which carries a `MediaState` and a monotonic counter. It says that playback started, but not when in scene time or from which clip position. Its video counterpart, `PBVideoEvent`, already reports `current_offset`, `video_length` and `tick_number`, so scenes can do for video exactly what they cannot do for audio.
+The only feedback channel today is `PBAudioEvent`, which carries a `MediaState` and a monotonic counter. It says that playback started, but not when in scene time or from which clip position. Its video counterpart, `PBVideoEvent`, already reports `current_offset`, `video_length` and `tick_number`, written by the renderer at a fixed cadence while the video plays, so scenes can do for video exactly what they cannot do for audio.
 
 Workarounds are poor. Manual calibration (tapping to a click) covers a player's own input chain but not the per-start playback latency. Onset detection through `AudioAnalysis` works, and was used to measure the numbers above, but it is Unity-only, indirect, and blind to the last tens of milliseconds of the pipeline.
 
@@ -44,7 +44,8 @@ message PBAudioEvent {
 ### Renderer behaviour
 
 - Renderers keep appending an `AudioEvent` on every media state change, as today.
-- While an `AudioSource` is in `MS_PLAYING`, renderers also append a report at least every 15 scene ticks (about twice a second at the reference tick rate), carrying `tick_number`, `current_offset` and `clip_length`.
+- While an `AudioSource` is in `MS_PLAYING`, renderers also append a report at least every 15 scene ticks (about twice a second at the reference tick rate), carrying `tick_number`, `current_offset` and `clip_length`. This is the same mechanism the Unity explorer uses for `PBVideoEvent` in [`VideoEventsSystem`](https://github.com/decentraland/unity-explorer/blob/fe6974465b0d2e3a70eeb1ba2da3cb87df27e654/Explorer/Assets/DCL/SDKComponents/MediaStream/Systems/VideoEventsSystem.cs#L63), applied to audio sources.
+- Renderers never write `PBAudioSource`. That component stays scene-owned, and `current_time` keeps its meaning as a seek command.
 - `tick_number` is the tick, as defined by ADR-148, in which the position was sampled. `current_offset` is the clip position at that same frame, so the pair can be compared with any scene-side clock that is also sampled per tick. State-change events written while a clip is attached carry the same fields.
 - For `AudioStream` entities the fields may be omitted when the underlying player exposes no position.
 - `AudioEvent` remains a grow-only value set with a bounded size; periodic reports evict the oldest entries like any other value.
@@ -76,7 +77,7 @@ The result is exact to one tick, needs no analysis component, and works on every
 ## Alternatives considered
 
 - **Scheduled playback** (`play_at` in scene time): the most precise option for rhythm games, but it needs a clock shared by scene and renderer and a sample-accurate scheduling path in every renderer. It composes with this proposal and can follow it; the report is still needed to verify what was scheduled.
-- **Making `current_time` readable**: it is a command with put semantics in a last-write-wins component; turning it into a clock would fight the scene's own writes on every tick.
+- **Making `current_time` readable**: rejected for two reasons. First, `PBAudioSource` is a last-write-wins component owned by the scene; if the renderer also wrote `current_time`, both sides would be updating the same property at the same time and each write would clobber the other. Second, a CRDT put carries the whole component, so when a scene changes any other property (for example `volume`) it re-sends `current_time` as well, and the renderer cannot tell a re-sent value from a real seek. The property was designed to tell the renderer where to start, and only that use survives if it stays write-only. Keeping the position in the renderer-owned event component avoids both problems, exactly as `PBVideoEvent` does.
 - **Higher tick rates**: they improve resolution but do not expose the playhead at all.
 - **Onset detection with `AudioAnalysis`**: the workaround used to gather the measurements; Unity-only and indirect.
 
