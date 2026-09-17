@@ -41,6 +41,14 @@ message PBAudioEvent {
 }
 ```
 
+### Why a tick number
+
+A position report has two halves: where the clip is (`current_offset`) and when that reading was taken. The second half is what makes the first usable. A report travels through the CRDT queue and is processed by the scene some frames after the renderer sampled it, so comparing `current_offset` with the scene's clock at processing time would make every report look late by an unknown and variable amount.
+
+The scene and the renderer do not share a clock, so the sampling moment cannot be expressed as a wall-clock time either side would trust. They do share the tick: ADR-148 defines it as one round of the scene-to-renderer message exchange, and the renderer publishes the current one in `EngineInfo.tick_number` every frame. A report stamped with the tick lets a scene reason as follows: at tick N my clock read T, the renderer says the clip was at offset X in that same tick, therefore the audio runs T minus X behind my clock. The correlation costs the scene one lookup in a short history of its own clock per tick.
+
+This is the established convention for renderer-written results. `PBVideoEvent.tick_number` and `PBPointerEventsResult.tick_number` both carry "the tick in which the event was produced, equals to EngineInfo.tick_number", and `PBEngineInfo` documents its tick and frame numbers as correlation values. The Unity explorer fills `PBVideoEvent.TickNumber` from the scene's current tick at sampling time; the audio report is filled the same way. The monotonic `timestamp` field that already existed on `PBAudioEvent` stays what it was, a per-entity ordering counter, and is not a time.
+
 ### Renderer behaviour
 
 - Renderers keep appending an `AudioEvent` on every media state change, as today.
@@ -61,7 +69,7 @@ message PBAudioEvent {
 
 ### Scene usage
 
-A scene that keeps its own song clock records the wall-clock time at which it processed each tick, then aligns on every report:
+A scene that keeps its own song clock records that clock against `EngineInfo.tickNumber` each frame, keeping a short history so a report's tick can be looked up after the fact, then aligns on every report:
 
 ```ts
 audioEventsSystem.registerAudioPlaybackEntity(drums, report => {
