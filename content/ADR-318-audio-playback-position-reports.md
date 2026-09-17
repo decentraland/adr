@@ -65,7 +65,6 @@ This is the established convention for renderer-written results. `PBVideoEvent.t
 
 - `registerAudioPlaybackEntity(entity, callback)` and `removeAudioPlaybackEntity(entity)`: the callback runs once per scene frame with the newest report for that entity, position updates included, and is skipped when nothing new arrived. A renderer sampling faster than the scene ticks will have appended several reports; the callback sees the freshest, which is the one a scene aligning to the playhead wants.
 - `getAudioPlayback(entity)`: the latest report that carries `current_offset`, or `undefined`.
-
 - `registerAudioPlaybackSampleEntity(entity, callback)` and `removeAudioPlaybackSampleEntity(entity)`: the same delivery, already resolved against the scene clock, as `{ report, sceneTime, offset }`, where `sceneTime` is the scene clock in the tick the renderer sampled the position. This is the form most scenes should use.
 - `getSceneTimeAtTick(tickNumber)`: the scene clock recorded in a given tick, or `undefined` outside the history window. It resolves `PBVideoEvent` reports the same way.
 
