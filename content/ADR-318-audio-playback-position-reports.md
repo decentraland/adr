@@ -52,11 +52,11 @@ This is the established convention for renderer-written results. `PBVideoEvent.t
 ### Renderer behaviour
 
 - Renderers keep appending an `AudioEvent` on every media state change, as today.
-- While an `AudioSource` is in `MS_PLAYING`, renderers also append a report at least every 15 scene ticks (about twice a second at the reference tick rate), carrying `tick_number`, `current_offset` and `clip_length`. This is the same mechanism the Unity explorer uses for `PBVideoEvent` in [`VideoEventsSystem`](https://github.com/decentraland/unity-explorer/blob/fe6974465b0d2e3a70eeb1ba2da3cb87df27e654/Explorer/Assets/DCL/SDKComponents/MediaStream/Systems/VideoEventsSystem.cs#L63), applied to audio sources.
+- Renderers also append a report whenever the clip position has changed since the last report, carrying `tick_number`, `current_offset` and `clip_length`. For a playing clip that is every frame; a paused or stopped clip emits nothing until something changes. This is exactly the rule the Unity explorer applies to `PBVideoEvent` in [`VideoEventsSystem`](https://github.com/decentraland/unity-explorer/blob/fe6974465b0d2e3a70eeb1ba2da3cb87df27e654/Explorer/Assets/DCL/SDKComponents/MediaStream/Systems/VideoEventsSystem.cs#L52), which writes when the state or the current time differs from the last propagated value; no fixed cadence is involved.
 - Renderers never write `PBAudioSource`. That component stays scene-owned, and `current_time` keeps its meaning as a seek command.
 - `tick_number` is the tick, as defined by ADR-148, in which the position was sampled. `current_offset` is the clip position at that same frame, so the pair can be compared with any scene-side clock that is also sampled per tick. State-change events written while a clip is attached carry the same fields.
 - For `AudioStream` entities the fields may be omitted when the underlying player exposes no position.
-- `AudioEvent` remains a grow-only value set with a bounded size; periodic reports evict the oldest entries like any other value.
+- `AudioEvent` remains a grow-only value set with a bounded size; position reports evict the oldest entries like any other value.
 
 ### SDK
 
@@ -65,22 +65,43 @@ This is the established convention for renderer-written results. `PBVideoEvent.t
 - `registerAudioPlaybackEntity(entity, callback)` and `removeAudioPlaybackEntity(entity)`: the callback runs for every report, position updates included.
 - `getAudioPlayback(entity)`: the latest report that carries `current_offset`, or `undefined`.
 
-`registerAudioEventsEntity` keeps its current semantics and only fires on state changes, so existing scenes receive no extra callbacks from the periodic reports.
+- `registerAudioPlaybackSampleEntity(entity, callback)` and `removeAudioPlaybackSampleEntity(entity)`: the callback receives each position report already resolved against the scene clock, as `{ report, sceneTime, offset }`, where `sceneTime` is the scene clock in the tick the renderer sampled the position. This is the form most scenes should use.
+- `getSceneTimeAtTick(tickNumber)`: the scene clock recorded in a given tick, or `undefined` outside the history window. It resolves `PBVideoEvent` reports the same way.
+
+`registerAudioEventsEntity` keeps its current semantics and only fires on state changes, so existing scenes receive no extra callbacks from the position reports.
+
+The scene-clock history behind the last two functions lives in the SDK rather than in each scene. It is the one piece a scene could get wrong, and every scene that aligns anything with audio or video needs the same one:
+
+```ts
+// Inside audioEventsSystem. The scene clock is the engine's accumulated delta time.
+const sceneTimeByTick = new Map<number, number>()   // tick -> scene clock (s), ~128 ticks kept
+let sceneTime = 0
+engine.addSystem((dt) => {
+  sceneTime += dt
+  const tick = EngineInfo.getOrNull(engine.RootEntity)?.tickNumber
+  if (tick === undefined) return
+  sceneTimeByTick.set(tick, sceneTime)
+  if (sceneTimeByTick.size > 128) sceneTimeByTick.delete(sceneTimeByTick.keys().next().value!)
+}, SYSTEMS_REGULAR_PRIORITY + 1)                   // runs before reports are delivered in the same tick
+
+function getSceneTimeAtTick(tick: number) { return sceneTimeByTick.get(tick) }
+```
+
+Nothing in it estimates a round trip. The renderer stamps the report with the tick in which it read the position, and the scene records its clock under that same tick, so the transport delay between the two cancels out by construction: whether a report takes one tick or ten to arrive, `getSceneTimeAtTick(report.tickNumber)` returns the clock at the sampling moment. The remaining error is the width of one tick.
 
 ### Scene usage
 
-A scene that keeps its own song clock records that clock against `EngineInfo.tickNumber` each frame, keeping a short history so a report's tick can be looked up after the fact, then aligns on every report:
+A scene started its music at scene clock `songStart` (seconds). The lag between what is heard and the scene's idea of the song position is then one subtraction per report:
 
 ```ts
-audioEventsSystem.registerAudioPlaybackEntity(drums, report => {
-  if (report.currentOffset === undefined || report.tickNumber === undefined) return
-  const heardAt = songTimeAtTick(report.tickNumber)          // ms, from EngineInfo.tickNumber samples
-  const offset = heardAt - report.currentOffset * 1000       // > 0: audio runs behind the chart
-  applyOffset(offset)                                        // shift the chart, seek once, or start earlier next time
+audioEventsSystem.registerAudioPlaybackSampleEntity(drums, ({ sceneTime, offset }) => {
+  const expected = sceneTime - songStart     // where the scene thought the clip was, at the sampling tick
+  const lag = expected - offset              // > 0: the audible clip runs behind the scene clock
+  applyLag(lag)                              // shift the chart, seek once, or start earlier next time
 })
 ```
 
-The result is exact to one tick, needs no analysis component, and works on every renderer that reports positions.
+The result is exact to one tick, needs no analysis component, and works on every renderer that reports positions. A scene that prefers raw reports can still use `registerAudioPlaybackEntity` together with `getSceneTimeAtTick`.
 
 ## Alternatives considered
 
