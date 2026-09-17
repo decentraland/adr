@@ -63,14 +63,15 @@ This is the established convention for renderer-written results. `PBVideoEvent.t
 
 `audioEventsSystem` in `@dcl/ecs` gains:
 
-- `registerAudioPlaybackEntity(entity, callback)` and `removeAudioPlaybackEntity(entity)`: the callback runs once per scene frame with the newest report for that entity, position updates included, and is skipped when nothing new arrived. A renderer sampling faster than the scene ticks will have appended several reports; the callback sees the freshest, which is the one a scene aligning to the playhead wants.
+- `registerAudioPlaybackEntity(entity, callback)` and `removeAudioPlaybackEntity(entity)`: the callback runs once per scene frame with the newest position report for that entity, already resolved against the scene clock, as `{ report, sceneTime, offset }` where `sceneTime` is the scene clock in the tick the renderer sampled the position. It is skipped when no new position arrived. A renderer sampling faster than the scene ticks will have appended several reports; the callback sees the freshest, which is the one a scene aligning to the playhead wants.
 - `getAudioPlayback(entity)`: the latest report that carries `current_offset`, or `undefined`.
-- `registerAudioPlaybackSampleEntity(entity, callback)` and `removeAudioPlaybackSampleEntity(entity)`: the same delivery, already resolved against the scene clock, as `{ report, sceneTime, offset }`, where `sceneTime` is the scene clock in the tick the renderer sampled the position. This is the form most scenes should use.
 - `getSceneTimeAtTick(tickNumber)`: the scene clock recorded in a given tick, or `undefined` outside the history window. It resolves `PBVideoEvent` reports the same way.
+
+Only one registration is offered, and it hands over the resolved reading rather than the raw report. A second entry point delivering the raw report was considered and dropped: it would have been the shorter name and the simpler-looking signature, so it would have been the one scenes reached for, and it leads straight back to every scene keeping its own history of clock snapshots. Reports that carry no position are media-state changes, which `registerAudioEventsEntity` already delivers.
 
 `registerAudioEventsEntity` keeps its current semantics and only fires on state changes, so existing scenes receive no extra callbacks from the position reports.
 
-The scene-clock history behind the last two functions lives in the SDK rather than in each scene. It is the one piece a scene could get wrong, and every scene that aligns anything with audio or video needs the same one:
+The scene-clock history behind those functions lives in the SDK rather than in each scene. It is the one piece a scene could get wrong, and every scene that aligns anything with audio or video needs the same one:
 
 ```ts
 // Inside audioEventsSystem. The scene clock is the engine's accumulated delta time.
@@ -103,14 +104,14 @@ The sum of the two behaves as a per-session constant, so a scene that needs alig
 A scene started its music at scene clock `songStart` (seconds). The lag between what is heard and the scene's idea of the song position is then one subtraction per report:
 
 ```ts
-audioEventsSystem.registerAudioPlaybackSampleEntity(drums, ({ sceneTime, offset }) => {
+audioEventsSystem.registerAudioPlaybackEntity(drums, ({ sceneTime, offset }) => {
   const expected = sceneTime - songStart     // where the scene thought the clip was, at the sampling tick
   const lag = expected - offset              // > 0: the audible clip runs behind the scene clock
   applyLag(lag)                              // shift the chart, seek once, or start earlier next time
 })
 ```
 
-The result needs no analysis component and works on every renderer that reports positions. Its accuracy is bounded by the sampling granularity and the output latency described above, so a scene needing finer alignment than a tick should calibrate that residual once and subtract it here. A scene that prefers raw reports can still use `registerAudioPlaybackEntity` together with `getSceneTimeAtTick`.
+The result needs no analysis component and works on every renderer that reports positions. Its accuracy is bounded by the sampling granularity and the output latency described above, so a scene needing finer alignment than a tick should calibrate that residual once and subtract it here. A scene that prefers raw reports can read the `AudioEvent` values directly and resolve them with `getSceneTimeAtTick`.
 
 ## Alternatives considered
 
