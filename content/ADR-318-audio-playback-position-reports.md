@@ -56,6 +56,7 @@ This is the established convention for renderer-written results. `PBVideoEvent.t
 - Renderers never write `PBAudioSource`. That component stays scene-owned, and `current_time` keeps its meaning as a seek command.
 - `tick_number` is the tick, as defined by ADR-148, in which the position was sampled. `current_offset` is the clip position at that same frame, so the pair can be compared with any scene-side clock that is also sampled per tick. State-change events written while a clip is attached carry the same fields.
 - For `AudioStream` entities the fields may be omitted when the underlying player exposes no position.
+- `current_offset` reports where the playhead is, not how much of the clip was consumed. Players commonly rewind the playhead to zero when a clip is stopped or reaches its end, so the last report of a finished clip carries zero rather than `clip_length`. A scene tracking completion should read the state transition out of `MsPlaying`, not wait for the offset to approach the length.
 - `AudioEvent` remains a grow-only value set with a bounded size; position reports evict the oldest entries like any other value.
 
 ### SDK
