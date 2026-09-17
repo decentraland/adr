@@ -128,7 +128,7 @@ All new fields are optional. Renderers that do not implement the reports keep wr
 
 - `decentraland/protocol`: the field additions (branch `feat/audio-event-playback-position`).
 - `decentraland/js-sdk-toolchain`: the `audioEventsSystem` additions with tests, on `main`; the commit cherry-picks cleanly onto `auth-server`.
-- `decentraland/unity-explorer`: periodic reports in `AudioEventsSystem` with a test, pending the regenerated bindings.
+- `decentraland/unity-explorer`: `AudioEventsSystem` reports on playhead movement, with the emit rule extracted so it is covered without an audio device; the protocol bindings are regenerated.
 - `decentraland/bevy-explorer`: pending; the playhead is available from the audio backend's playback state.
 
 ## References
