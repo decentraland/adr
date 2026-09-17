@@ -62,10 +62,10 @@ This is the established convention for renderer-written results. `PBVideoEvent.t
 
 `audioEventsSystem` in `@dcl/ecs` gains:
 
-- `registerAudioPlaybackEntity(entity, callback)` and `removeAudioPlaybackEntity(entity)`: the callback runs for every report, position updates included.
+- `registerAudioPlaybackEntity(entity, callback)` and `removeAudioPlaybackEntity(entity)`: the callback runs once per scene frame with the newest report for that entity, position updates included, and is skipped when nothing new arrived. A renderer sampling faster than the scene ticks will have appended several reports; the callback sees the freshest, which is the one a scene aligning to the playhead wants.
 - `getAudioPlayback(entity)`: the latest report that carries `current_offset`, or `undefined`.
 
-- `registerAudioPlaybackSampleEntity(entity, callback)` and `removeAudioPlaybackSampleEntity(entity)`: the callback receives each position report already resolved against the scene clock, as `{ report, sceneTime, offset }`, where `sceneTime` is the scene clock in the tick the renderer sampled the position. This is the form most scenes should use.
+- `registerAudioPlaybackSampleEntity(entity, callback)` and `removeAudioPlaybackSampleEntity(entity)`: the same delivery, already resolved against the scene clock, as `{ report, sceneTime, offset }`, where `sceneTime` is the scene clock in the tick the renderer sampled the position. This is the form most scenes should use.
 - `getSceneTimeAtTick(tickNumber)`: the scene clock recorded in a given tick, or `undefined` outside the history window. It resolves `PBVideoEvent` reports the same way.
 
 `registerAudioEventsEntity` keeps its current semantics and only fires on state changes, so existing scenes receive no extra callbacks from the position reports.
@@ -87,7 +87,16 @@ engine.addSystem((dt) => {
 function getSceneTimeAtTick(tick: number) { return sceneTimeByTick.get(tick) }
 ```
 
-Nothing in it estimates a round trip. The renderer stamps the report with the tick in which it read the position, and the scene records its clock under that same tick, so the transport delay between the two cancels out by construction: whether a report takes one tick or ten to arrive, `getSceneTimeAtTick(report.tickNumber)` returns the clock at the sampling moment. The remaining error is the width of one tick.
+The history does not estimate the round trip, and does not need to. The renderer stamps the report with the tick in which it read the position, and the scene records its clock under that same tick, so the comparison is made against the clock at the sampling moment instead of at processing time: whether a report takes one tick or ten to arrive, `getSceneTimeAtTick(report.tickNumber)` returns the same value. Removing the transport delay from the comparison is what the tick number is for.
+
+In practice a renderer publishes `EngineInfo.tick_number` and the reports sampled in that tick in the same batch, so the lookup usually resolves inside the frame that receives the report. The history still has to tolerate a tick it has not recorded, and a scene must not discard a report on a miss.
+
+Removing the transport delay does not make the result exact. Two terms remain, and a scene aligning to the audio it can actually hear is affected by both:
+
+- **Sampling granularity.** `current_offset` is read once per renderer frame, from a playhead that advances in audio-buffer steps. The reading is quantised to the coarser of the two.
+- **Output latency.** The playhead a renderer exposes is the decoder's read position, not the moment a sample leaves the speaker. The mixer buffer, the driver and the device add a further delay, typically tens of milliseconds, in the same direction and roughly constant for a given machine and output device. Nothing in this report captures it.
+
+The sum of the two behaves as a per-session constant, so a scene that needs alignment finer than a tick can measure it once and subtract it. A renderer able to estimate its own output latency should expose it, and a later revision of this component may carry it as a field; until then the residual is the scene's to calibrate.
 
 ### Scene usage
 
@@ -101,7 +110,7 @@ audioEventsSystem.registerAudioPlaybackSampleEntity(drums, ({ sceneTime, offset 
 })
 ```
 
-The result is exact to one tick, needs no analysis component, and works on every renderer that reports positions. A scene that prefers raw reports can still use `registerAudioPlaybackEntity` together with `getSceneTimeAtTick`.
+The result needs no analysis component and works on every renderer that reports positions. Its accuracy is bounded by the sampling granularity and the output latency described above, so a scene needing finer alignment than a tick should calibrate that residual once and subtract it here. A scene that prefers raw reports can still use `registerAudioPlaybackEntity` together with `getSceneTimeAtTick`.
 
 ## Alternatives considered
 
