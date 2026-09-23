@@ -56,7 +56,7 @@ A batch is a regular multipart `POST /entities` request with these fields:
 | `entityId` | Yes | The entity ID. Identifies the upload. |
 | `authChain` | Yes | The auth chain signing `entityId`, exactly as in a regular deployment. Sent on every batch. |
 | `partial` | Yes | The literal string `true`. |
-| `<entityId>` file | First batch | The entity file. The original signer MAY omit it on later batches; any other signer MUST include it. |
+| `<entityId>` file | First batch | The entity file. The original signer MAY omit it on later batches while the upload is live; any other signer MUST include it. |
 | `<hash>` files | No | Content files, keyed by their content hash. Any subset of the entity's content. |
 
 Rules:
@@ -73,17 +73,17 @@ Rules:
 | --- | --- | --- | --- |
 | `200` | `{ creationTimestamp, ...serviceFields }` | The entity is published, by this request or an earlier one. | Done. |
 | `202` | `{ missing: string[] }` | The files in this batch are stored; the entity is not published. `missing` lists the content hashes the server still needs. | Upload the hashes in `missing`. |
-| `400` | Error body | Terminal: validation failure, expired upload, a newer entity already live on these parcels, missing permission at publication. | Stop. Do not retry the same entity. |
+| `400` | Error body | Terminal: validation failure, expired upload, a newer entity already live on these parcels, missing permission at publication, or a quota rejection (upload count, staged bytes, byte rate). | Stop. Do not retry the same entity. |
 | `408` | Error body | The server's processing deadline elapsed. Staged files persist. | Retry the batch. |
 | `409` | Error body | Worlds only: the parcel replacement authorization changed while publishing. | Retry the batch. |
-| `429` | Error body, `Retry-After` header | Throttled: byte rate window, staging budget, or another deployment in progress on the same parcels. Staged files persist. | Wait at least `Retry-After`, then retry. |
+| `429` | Error body, `Retry-After` header | Catalyst only: the per-pointer deployment rate limit, or another deployment in progress on the same pointers. Staged files persist. | Wait at least `Retry-After`, then retry. |
 | `5xx` / network error | — | Transient. Staged files persist. | Retry with exponential backoff. |
 
 Rules:
 
 1. A `202` acknowledges storage, not publication. Clients MUST NOT report success on `202`.
 2. `missing` is authoritative for this upload. Clients MUST upload the hashes it lists, including hashes they skipped because a global availability check (`/available-content`) reported them present. Clients MAY use `/available-content` to plan the first batch only.
-3. Servers MUST send `Retry-After` with every `429`. A rate rejection uses a fixed one-minute accounting window, so retrying sooner cannot succeed.
+3. Servers MUST send `Retry-After` with every `429`.
 4. A `200` body MUST contain `creationTimestamp`. Each server MAY add its own fields (Worlds adds a preview message).
 
 ### Upload lifecycle
@@ -108,7 +108,7 @@ sequenceDiagram
 1. **Admission.** The first batch creates the upload. The server runs every validation that does not depend on content completeness: entity structure, signature, metadata, scene rules, deployment permission, entity freshness and size budgets. Freshness is measured once, at admission: the entity timestamp MUST be within the server's regular deployment freshness window of the moment the upload is admitted, not of each later batch.
 2. **Staging.** Each batch stores its files and answers `202` with what is still missing. Batches for the same upload MAY be sent concurrently. The server serializes batches for one entity; batches for different entities proceed in parallel.
 3. **Completion.** The batch after which every referenced file is stored runs the full deployment validation against current state, then publishes the entity and answers `200`. Deployment permission is checked again here against current ownership, so a creator who lost the land or name during the upload is rejected with `400`.
-4. **Replay.** When the original signer repeats the completing request, or sends any batch for an already-published entity, the server answers `200` with the original `creationTimestamp`. It never publishes the entity again, including when it has since been replaced or undeployed. Catalyst servers answer this for as long as the deployment is recorded; Worlds servers keep a completion receipt for at least 24 hours.
+4. **Replay.** When the original signer repeats the completing request, or sends any batch for an already-published entity, the server answers `200` with the original `creationTimestamp`. It never publishes the entity again, including when it has since been replaced or undeployed. Catalyst servers answer this for as long as the deployment is recorded; Worlds servers keep a completion receipt for a configurable period (default 24 hours). Servers MAY answer other signers with `200` or `400`.
 5. **Expiry.** An upload expires a fixed time after admission (default 24 hours). Batches do not extend it. A batch for an expired upload answers `400`; the client MUST create a new entity with a fresh timestamp and signature.
 
 ### Overlapping uploads
@@ -119,17 +119,17 @@ sequenceDiagram
 
 ### Quotas
 
-Servers MUST bound staging with quotas and MUST keep an expired upload charged until its content is physically deleted. The defaults below are the Worlds server's; each server MAY configure its own:
+Servers MUST bound staging with quotas and MUST keep an expired upload charged, both its upload slot and its bytes, until its content is physically deleted. Both servers use these defaults, and operators MAY configure them:
 
 | Quota | Default |
 | --- | --- |
-| Concurrent uploads per account | 10 |
+| Uploads per account, including expired uploads awaiting cleanup | 10 |
 | Staged bytes per account | 1 GiB |
 | Staged bytes per server | 50 GiB |
 | Accepted batch bytes per account per minute, retries included | 512 MiB |
 | Upload lifetime | 24 hours |
 
-Per-scene size limits are the same as for regular deployments and are checked from the first batch, before any content beyond the limit is stored.
+A batch that would exceed a quota is rejected with `400` before any of its files are stored. The byte rate uses a fixed one-minute window per account, so retrying within the same window cannot succeed. Per-scene size limits are the same as for regular deployments and are checked from the first batch, before any content beyond the limit is stored.
 
 ### Visibility and synchronization
 
@@ -157,7 +157,7 @@ A server that does not implement this ADR ignores `partial` and validates the fi
 ### Open questions
 
 1. Feature detection currently relies on the `400` described in Compatibility. A positive signal, such as a field in the server's `/about` response, would let clients choose the protocol before uploading.
-2. The Worlds server currently answers byte rate and staging budget rejections with `400`; it MUST switch to `429` with `Retry-After` to conform.
+2. Quota rejections are `400`, so the reference client treats them as terminal and abandons the upload even when waiting would succeed, as with the byte rate window. Both servers could move them to `429` with `Retry-After` together in a later revision.
 
 ## RFC 2119 and RFC 8174
 
