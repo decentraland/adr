@@ -56,7 +56,7 @@ A batch is a regular multipart `POST /entities` request with these fields:
 | `entityId` | Yes | The entity ID. Identifies the upload. |
 | `authChain` | Yes | The auth chain signing `entityId`, exactly as in a regular deployment. Sent on every batch. |
 | `partial` | Yes | The literal string `true`. |
-| `<entityId>` file | First batch | The entity file. The original signer MAY omit it on later batches while the upload is live; any other signer MUST include it. |
+| `<entityId>` file | First batch | The entity file. The signer who started the upload MAY omit it on later batches while the upload is live. |
 | `<hash>` files | No | Content files, keyed by their content hash. Any subset of the entity's content. |
 
 Rules:
@@ -66,6 +66,7 @@ Rules:
 3. A file MUST NOT be split across batches.
 4. Clients SHOULD keep each request under 100 MiB of file bytes, which leaves margin under the infrastructure's request ceiling.
 5. A batch MAY contain no content files, for example a first batch that carries only the entity file.
+6. Only the signer who started an upload may add batches to it while it is live. Servers MUST reject batches from any other signer with `400`, because the upload's reservations are charged to its creator.
 
 ### Responses
 
