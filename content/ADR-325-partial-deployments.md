@@ -12,7 +12,7 @@ authors:
 
 ## Abstract
 
-This ADR defines how a client deploys a scene whose content is too large for a single request, by splitting it across several `POST /entities` requests. Each request carries the multipart field `partial=true` and a subset of the files. The signed entity ID identifies the upload, so there is no session creation or explicit commit step. The server answers `202` with the hashes it still needs until the last one arrives, then validates and publishes the scene in that same request and answers `200`. Uploads that target overlapping parcels coexist instead of evicting each other; which one ends up live is decided at publication by entity timestamp order. Staged content is private to the receiving server until publication and is never synchronized. The protocol applies to Catalyst content servers and to the Worlds content server.
+This ADR defines how a client deploys a scene whose content is too large for a single request, by splitting it across several `POST /entities` requests. Each request carries the multipart field `partial=true`, declared also in the URL as `?partial=true`, and a subset of the files. The signed entity ID identifies the upload, so there is no session creation or explicit commit step. The server answers `202` with the hashes it still needs until the last one arrives, then validates and publishes the scene in that same request and answers `200`. Uploads that target overlapping parcels coexist instead of evicting each other; which one ends up live is decided at publication by entity timestamp order. Staged content is private to the receiving server until publication and is never synchronized. The protocol applies to Catalyst content servers and to the Worlds content server.
 
 ## Context, Reach & Prioritization
 
@@ -37,7 +37,7 @@ Vocabulary:
 
 **Chunked single files.** Splitting individual files across requests would remove the per-file size limit, but it requires byte-range assembly and partial-hash state on the server. Files stay atomic; a single file must fit in one request.
 
-**Chosen: entity-keyed batches.** The existing endpoint gains one field. Uploads are keyed by the signed entity ID, coexist within quotas, and publish on the completing request. A server without support rejects the first multi-batch request instead of misbehaving silently.
+**Chosen: entity-keyed batches.** The existing endpoint gains one field, mirrored by a query parameter. Uploads are keyed by the signed entity ID, coexist within quotas, and publish on the completing request. A server without support rejects the first multi-batch request instead of misbehaving silently.
 
 ## Specification
 
@@ -49,7 +49,7 @@ Vocabulary:
 
 ### Request
 
-A batch is a regular multipart `POST /entities` request with these fields:
+A batch is a regular multipart `POST /entities?partial=true` request with these fields:
 
 | Field | Required | Description |
 | --- | --- | --- |
@@ -59,6 +59,12 @@ A batch is a regular multipart `POST /entities` request with these fields:
 | `<entityId>` file | First batch | The entity file. The signer who started the upload MAY omit it on later batches while the upload is live. |
 | `<hash>` files | No | Content files, keyed by their content hash. Any subset of the entity's content. |
 
+And this query parameter:
+
+| Parameter | Required | Description |
+| --- | --- | --- |
+| `partial` | Recommended | The literal string `true`. Declares the request as a batch before its body is read. Any other value is ignored. |
+
 Rules:
 
 1. Each file field name MUST be the file's content hash. The server MUST reject a batch where a file does not hash to its field name.
@@ -67,6 +73,9 @@ Rules:
 4. Clients SHOULD keep each request under 100 MiB of file bytes, which leaves margin under the infrastructure's request ceiling.
 5. A batch MAY contain no content files, for example a first batch that carries only the entity file.
 6. Only the signer who started an upload may add batches to it while it is live. Servers MUST reject batches from any other signer with `400`, because the upload's reservations are charged to its creator.
+7. Clients SHOULD send both the `partial=true` query parameter and the `partial=true` form field on every batch. The form field is what makes a request a batch; the query parameter lets the server know before reading the body.
+8. A request with the `partial=true` query parameter whose `partial` form field is missing or not `true` MUST be rejected with `400`, before it is counted or deployed. The error message is `The 'partial=true' query parameter requires the 'partial=true' form field`.
+9. Servers MUST accept a batch that carries the form field without the query parameter. Such a batch MAY be subject to limits that apply to regular deployments and are enforced before the body is read (see `429` below).
 
 ### Responses
 
@@ -77,7 +86,7 @@ Rules:
 | `400` | Error body | Terminal: validation failure, expired upload, a newer entity already live on these parcels, missing permission at publication, or a quota rejection (upload count, staged bytes, byte rate). | Stop. Do not retry the same entity. |
 | `408` | Error body | The server's processing deadline elapsed. Staged files persist. | Retry the batch. |
 | `409` | Error body | Worlds only: the parcel replacement authorization changed while publishing. | Retry the batch. |
-| `429` | Error body, `Retry-After` header | Catalyst only: the per-pointer deployment rate limit, or another deployment in progress on the same pointers. Staged files persist. | Wait at least `Retry-After`, then retry. |
+| `429` | Error body, `Retry-After` header | Catalyst only: the per-pointer deployment rate limit, another deployment in progress on the same pointers, or the per-source daily limit on regular deployments when the batch omits the `partial=true` query parameter. Staged files persist. | Wait at least `Retry-After`, then retry. |
 | `5xx` / network error | — | Transient. Staged files persist. | Retry with exponential backoff. |
 
 Rules:
@@ -95,13 +104,13 @@ sequenceDiagram
     participant S as Content server
     C->>S: GET /available-content?cid=... (optional planning)
     S-->>C: which hashes are already stored
-    C->>S: POST /entities partial=true, entity file + batch 1
+    C->>S: POST /entities?partial=true, entity file + batch 1
     S-->>C: 202 { missing: [h2, h3, h4] }
     par concurrent batches
-        C->>S: POST /entities partial=true, batch 2 (h2, h3)
+        C->>S: POST /entities?partial=true, batch 2 (h2, h3)
         S-->>C: 202 { missing: [h4] }
     and
-        C->>S: POST /entities partial=true, batch 3 (h4)
+        C->>S: POST /entities?partial=true, batch 3 (h4)
         S-->>C: 200 { creationTimestamp }
     end
 ```
@@ -109,7 +118,7 @@ sequenceDiagram
 1. **Admission.** The first batch creates the upload. The server runs every validation that does not depend on content completeness: entity structure, signature, metadata, scene rules, deployment permission, entity freshness and size budgets. Freshness is measured once, at admission: the entity timestamp MUST be within the server's regular deployment freshness window of the moment the upload is admitted, not of each later batch.
 2. **Staging.** Each batch stores its files and answers `202` with what is still missing. Batches for the same upload MAY be sent concurrently. The server serializes batches for one entity; batches for different entities proceed in parallel.
 3. **Completion.** The batch after which every referenced file is stored runs the full deployment validation against current state, then publishes the entity and answers `200`. Deployment permission is checked again here against current ownership, so a creator who lost the land or name during the upload is rejected with `400`.
-4. **Replay.** When the original signer repeats the completing request, or sends any batch for an already-published entity, the server answers `200` with the original `creationTimestamp`. It never publishes the entity again, including when it has since been replaced or undeployed. Catalyst servers answer this for as long as the deployment is recorded; Worlds servers keep a completion receipt for a configurable period (default 24 hours). Servers MAY answer other signers with `200` or `400`.
+4. **Replay.** When the original signer repeats the completing request, or sends any batch for an already-published entity, the server answers `200` with the original `creationTimestamp`. It never publishes the entity again, including when it has since been replaced or undeployed. The guarantee covers the entity's latest publication: if the same entity ID is published again after an undeploy, the new publication replaces the earlier signer's answer, and the earlier signer is treated as any other signer. Catalyst servers answer this for as long as the deployment is recorded; Worlds servers keep a completion receipt for a configurable period (default 24 hours). Servers MAY answer other signers with `200` or `400`.
 5. **Expiry.** An upload expires a fixed time after admission (default 24 hours). Batches do not extend it. A batch for an expired upload answers `400`; the client MUST create a new entity with a fresh timestamp and signature.
 
 ### Overlapping uploads
@@ -153,7 +162,7 @@ A conforming client:
 
 ### Compatibility
 
-A server that does not implement this ADR ignores `partial` and validates the first batch as a regular deployment. If that batch contains every missing file it succeeds as a regular deployment; otherwise it answers `400` for the missing content. Clients MAY treat that `400` as "partial deployments not supported" and fall back to a regular deployment when the scene fits in one request.
+A server that does not implement this ADR ignores `partial`, in the query and in the form, and validates the first batch as a regular deployment. If that batch contains every missing file it succeeds as a regular deployment; otherwise it answers `400` for the missing content. Clients MAY treat that `400` as "partial deployments not supported" and fall back to a regular deployment when the scene fits in one request.
 
 ### Open questions
 
