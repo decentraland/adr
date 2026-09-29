@@ -84,7 +84,7 @@ Rules:
 | `200` | `{ creationTimestamp, ...serviceFields }` | The entity is published, by this request or an earlier one. | Done. |
 | `202` | `{ missing: string[] }` | The files in this batch are stored; the entity is not published. `missing` lists the content hashes the server still needs. | Upload the hashes in `missing`. |
 | `400` | Error body | Terminal: validation failure, expired upload, a newer entity already live on these parcels, or missing permission at publication. | Stop. Do not retry the same entity. |
-| `408` | Error body | The server's processing deadline elapsed, or the batch body was not received in time or arrived below the server's minimum receive rate. Staged files persist. | Retry the batch, smaller if its body was too slow. |
+| `408` | Error body | The server's processing deadline elapsed, or the batch body was not received in time. Staged files persist. | Retry the batch, smaller if its body was too slow. |
 | `409` | Error body | Worlds only: the parcel replacement authorization changed while publishing. | Retry the batch. |
 | `429` | Error body, `Retry-After` header | A quota is full (upload count, staged bytes, byte rate; see Quotas), or too many uploads in progress from the same client (concurrent requests or in-flight bytes). On Catalyst also: the per-pointer deployment rate limit, another deployment in progress on the same pointers, or the per-source daily limit on regular deployments when the batch omits the `partial=true` query parameter. Staged files persist. | Wait at least `Retry-After`, then retry. |
 | `5xx` / network error | — | Transient. Staged files persist. | Retry with exponential backoff. |
