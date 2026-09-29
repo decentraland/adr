@@ -118,8 +118,8 @@ sequenceDiagram
 1. **Admission.** The first batch creates the upload. The server runs every validation that does not depend on content completeness: entity structure, signature, metadata, scene rules, deployment permission, entity freshness and size budgets. Freshness is measured once, at admission: the entity timestamp MUST be within the server's regular deployment freshness window of the moment the first batch arrived (before its body was read), not of each later batch.
 2. **Staging.** Each batch stores its files and answers `202` with what is still missing. Batches for the same upload MAY be sent concurrently. The server serializes batches for one entity; batches for different entities proceed in parallel.
 3. **Completion.** The batch after which every referenced file is stored runs the full deployment validation against current state, then publishes the entity and answers `200`. Deployment permission is checked again here against current ownership, so a creator who lost the land or name during the upload is rejected with `400`.
-4. **Replay.** When the original signer repeats the completing request, or sends any batch for an already-published entity, the server answers `200` with the original `creationTimestamp`. It never publishes the entity again, including when it has since been replaced or undeployed. The guarantee covers the entity's latest publication: if the same entity ID is published again after an undeploy, the new publication replaces the earlier signer's answer, and the earlier signer is treated as any other signer. Catalyst servers answer this for as long as the deployment is recorded; Worlds servers keep a completion receipt for a configurable period (default 24 hours). Servers MAY answer other signers with `200` or `400`.
-5. **Expiry.** An upload expires a fixed time after its first batch arrived (default 24 hours). Batches do not extend it. Servers MUST NOT store a batch's files or publish the entity once the upload has expired, even when the batch arrived before; such a batch, and any later one, answers `400`. The client MUST create a new entity with a fresh timestamp and signature.
+4. **Replay.** Any batch, from any signer, for an entity that is currently published answers `200` with its `creationTimestamp`: the entity ID is the hash of the entity file, so the live entity is exactly the one being uploaded. The server never publishes the entity again. The signer that completed the upload also gets that `200` after the entity has been replaced or undeployed: Catalyst servers answer it for as long as the deployment is recorded; Worlds servers keep a completion receipt for a configurable period (default 24 hours). If the same entity ID is published again after an undeploy, the new publication replaces that answer.
+5. **Expiry.** An upload expires a fixed time after its first batch arrived (default 1 hour). Batches do not extend it. Servers MUST NOT store a batch's files or publish the entity once the upload has expired, even when the batch arrived before; such a batch, and any later one, answers `400`. The client MUST create a new entity with a fresh timestamp and signature.
 
 ### Overlapping uploads
 
@@ -129,7 +129,7 @@ sequenceDiagram
 
 ### Quotas
 
-Servers MUST bound staging with quotas and MUST keep an expired upload charged, both its upload slot and its bytes, until its content is physically deleted. Both servers use these defaults, and operators MAY configure them:
+Servers MUST bound staging with quotas and MUST keep an expired upload charged, both its upload slot and its bytes, until its content is physically deleted. Servers SHOULD reclaim expired uploads within minutes of their expiry; both servers run cleanup every 5 minutes. Both servers use these defaults, and operators MAY configure them:
 
 | Quota | Default |
 | --- | --- |
@@ -137,7 +137,7 @@ Servers MUST bound staging with quotas and MUST keep an expired upload charged, 
 | Staged bytes per account | 1 GiB |
 | Staged bytes per server | 50 GiB |
 | Accepted batch bytes per account per minute, retries included | 512 MiB |
-| Upload lifetime | 24 hours |
+| Upload lifetime | 1 hour |
 
 Servers MAY also bound the uploads in progress from one client before their bodies are read, and answer `429` when a client exceeds that bound. A batch that would exceed a quota is rejected with `429` before any of its files are stored, and its `Retry-After` is the earliest time a retry can succeed: for the byte rate, which uses a fixed one-minute window per account, the end of that window; for the upload count and staged bytes, no earlier than when the oldest upload holding that quota expires, since expired uploads stay charged until cleanup (servers MAY add their cleanup schedule). The error message names the quota, its usage and its limit. Per-scene size limits are the same as for regular deployments and are checked from the first batch, before any content beyond the limit is stored.
 
