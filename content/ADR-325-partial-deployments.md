@@ -83,7 +83,8 @@ Rules:
 | --- | --- | --- | --- |
 | `200` | `{ creationTimestamp, ...serviceFields }` | The entity is published, by this request or an earlier one. | Done. |
 | `202` | `{ missing: string[] }` | The files in this batch are stored; the entity is not published. `missing` lists the content hashes the server still needs. | Upload the hashes in `missing`. |
-| `400` | Error body | Terminal: validation failure, expired upload, a newer entity already live on these parcels, or missing permission at publication. | Stop. Do not retry the same entity. |
+| `400` | Error body | Terminal: validation failure, expired upload, a newer entity already live on these parcels, missing permission at publication, or a batch or upload that alone exceeds a quota (see Quotas). | Stop. Do not retry the same entity. |
+| `413` | Error body | The batch exceeds a request size or count limit (a file, the total body, or the number or size of form fields). Nothing from the batch is staged. | Stop; send smaller batches. Do not retry the same batch. |
 | `408` | Error body | The server's processing deadline elapsed, or the batch body was not received in time. Staged files persist. | Retry the batch, smaller if its body was too slow. |
 | `409` | Error body | Worlds only: the parcel replacement authorization changed while publishing. | Retry the batch. |
 | `429` | Error body, `Retry-After` header | A quota is full (upload count, staged bytes, byte rate; see Quotas), or too many uploads in progress from the same client (concurrent requests or in-flight bytes). On Catalyst also: the per-pointer deployment rate limit, another deployment in progress on the same pointers, or the per-source daily limit on regular deployments when the batch omits the `partial=true` query parameter. Staged files persist. | Wait at least `Retry-After`, then retry. |
@@ -139,7 +140,7 @@ Servers MUST bound staging with quotas and MUST keep an expired upload charged, 
 | Accepted batch bytes per account per minute, retries included | 512 MiB |
 | Upload lifetime | 1 hour |
 
-Servers MAY also bound the uploads in progress from one client before their bodies are read, and answer `429` when a client exceeds that bound. A batch that would exceed a quota is rejected with `429` before any of its files are stored, and its `Retry-After` is the earliest time a retry can succeed: for the byte rate, which uses a fixed one-minute window per account, the end of that window; for the upload count and staged bytes, no earlier than when the oldest upload holding that quota expires, since expired uploads stay charged until cleanup (servers MAY add their cleanup schedule). The error message names the quota, its usage and its limit. Per-scene size limits are the same as for regular deployments and are checked from the first batch, before any content beyond the limit is stored.
+Servers MAY also bound the uploads in progress from one client before their bodies are read, and answer `429` when a client exceeds that bound. Only content an upload actually stores counts against its staging quotas: files already present on the server count toward the scene's size limit but not toward staged bytes, and a batch file the server already has is dropped on receipt (its bytes still count toward the byte rate). A batch or upload that alone exceeds a quota (a batch larger than the byte rate, or an upload whose own staged bytes exceed the account or server budget) can never be admitted and is rejected with `400`. A batch that would exceed a quota because of other uploads or traffic is rejected with `429` before any of its files are stored, and its `Retry-After` is the earliest time a retry can succeed: for the byte rate, which uses a fixed one-minute window per account, the end of that window; for the upload count and staged bytes, no earlier than when the oldest upload holding that quota expires, since expired uploads stay charged until cleanup (servers MAY add their cleanup schedule). The error message names the quota, its usage and its limit. Per-scene size limits are the same as for regular deployments and are checked from the first batch, before any content beyond the limit is stored.
 
 ### Visibility and synchronization
 
@@ -158,7 +159,7 @@ A conforming client:
 5. Sends the remaining batches with bounded concurrency and treats the first `200` as the result.
 6. If every batch answered `202` and none answered `200`, sends the hashes from the latest `missing` list and repeats until a `200` or a terminal error.
 7. Retries `408`, `409`, `429`, `5xx` and network failures with exponential backoff, never waiting less than `Retry-After`. When `Retry-After` is longer than the client is willing to wait, it stops and surfaces the server's error and the retry time instead of retrying early.
-8. Stops on `400` and surfaces the server's error.
+8. Stops on `400` and `413` and surfaces the server's error.
 
 ### Compatibility
 
