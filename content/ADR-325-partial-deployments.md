@@ -76,6 +76,8 @@ Rules:
 7. Clients SHOULD send both the `partial=true` query parameter and the `partial=true` form field on every batch. The form field is what makes a request a batch; the query parameter lets the server know before reading the body.
 8. A request with the `partial=true` query parameter whose `partial` form field is missing or not `true` MUST be rejected with `400`, before it is counted or deployed. The error message is `The 'partial=true' query parameter requires the 'partial=true' form field`.
 9. Servers MUST accept a batch that carries the form field without the query parameter. Such a batch MAY be subject to limits that apply to regular deployments and are enforced before the body is read (see `429` below).
+10. When a batch omits the entity file, the server reads it back from its own storage and MUST verify that it hashes to `entityId` before using it. If it cannot, it answers `400` asking for the entity file; a later batch that includes the entity file replaces the stored copy.
+11. Clients SHOULD send `Content-Length` on every batch. Servers bound uploads in progress per client before reading the body, and without a declared length they MAY reserve the client's whole allowance for one request.
 
 ### Responses
 
@@ -83,19 +85,21 @@ Rules:
 | --- | --- | --- | --- |
 | `200` | `{ creationTimestamp, ...serviceFields }` | The entity is published, by this request or an earlier one. | Done. |
 | `202` | `{ missing: string[] }` | The files in this batch are stored; the entity is not published. `missing` lists the content hashes the server still needs. | Upload the hashes in `missing`. |
-| `400` | Error body | Terminal: validation failure, expired upload, a newer entity already live on these parcels, missing permission at publication, or a batch or upload that alone exceeds a quota (see Quotas). | Stop. Do not retry the same entity. |
+| `400` | Error body | Terminal: validation failure, expired upload, a newer entity already live on these parcels (including an upload the server released for that reason, see Overlapping uploads), missing permission at publication, or a batch or upload that alone exceeds a quota (see Quotas). | Stop. Do not retry the same entity. |
 | `413` | Error body | The batch exceeds a request size or count limit (a file, the total body, or the number or size of form fields). Nothing from the batch is staged. | Stop; send smaller batches. Do not retry the same batch. |
 | `408` | Error body | The server's processing deadline elapsed, or the batch body was not received in time. Staged files persist. | Retry the batch, smaller if its body was too slow. |
 | `409` | Error body | Worlds only: the parcel replacement authorization changed while publishing. | Retry the batch. |
-| `429` | Error body, `Retry-After` header | A quota is full (upload count, staged bytes, byte rate; see Quotas), or too many uploads in progress from the same client (concurrent requests or in-flight bytes). On Catalyst also: the per-pointer deployment rate limit, another deployment in progress on the same pointers, or the per-source daily limit on regular deployments when the batch omits the `partial=true` query parameter. Staged files persist. | Wait at least `Retry-After`, then retry. |
-| `5xx` / network error | — | Transient. Staged files persist. | Retry with exponential backoff. |
+| `429` | Error body, `Retry-After` header | A quota is full (upload count, staged bytes, byte rate; see Quotas), or too many uploads in progress from the same client (concurrent requests or in-flight bytes). On Catalyst also: the per-pointer deployment rate limit, another deployment in progress on the same pointers, or the per-source daily deployment limit. Partial batches rejected before their upload is created count against that daily limit, and once a source has spent it, only batches that continue the signer's own live upload are accepted. Staged files persist. | Wait at least `Retry-After`, then retry. |
+| `503` | Error body, `Retry-After` header | Transient server condition: the server's upload capacity is exhausted (bytes in flight, temporary storage or memory), a lock wait timed out, or publication failed for a server-side reason. Staged files persist and the upload stays live. | Wait at least `Retry-After`, then retry. |
+| Other `5xx` / network error | — | Transient. Staged files persist. | Retry with exponential backoff. |
 
 Rules:
 
 1. A `202` acknowledges storage, not publication. Clients MUST NOT report success on `202`.
 2. `missing` is authoritative for this upload. Clients MUST upload the hashes it lists, including hashes they skipped because a global availability check (`/available-content`) reported them present. Clients MAY use `/available-content` to plan the first batch only.
-3. Servers MUST send `Retry-After` with every `429`.
+3. Servers MUST send `Retry-After` with every `429` and SHOULD send it with every `503`. Clients MUST NOT retry before it elapses.
 4. A `200` body MUST contain `creationTimestamp`. Each server MAY add its own fields (Worlds adds a preview message).
+5. A server MUST NOT answer `400` for a failure that a retry could fix, such as a database or storage error while publishing, because clients stop on `400`. It answers `503` and keeps the upload.
 
 ### Upload lifecycle
 
@@ -118,19 +122,20 @@ sequenceDiagram
 
 1. **Admission.** The first batch creates the upload. The server runs every validation that does not depend on content completeness: entity structure, signature, metadata, scene rules, deployment permission, entity freshness and size budgets. Freshness is measured once, at admission: the entity timestamp MUST be within the server's regular deployment freshness window of the moment the first batch arrived (before its body was read), not of each later batch.
 2. **Staging.** Each batch stores its files and answers `202` with what is still missing. Batches for the same upload MAY be sent concurrently. The server serializes batches for one entity; batches for different entities proceed in parallel.
-3. **Completion.** The batch after which every referenced file is stored runs the full deployment validation against current state, then publishes the entity and answers `200`. Deployment permission is checked again here against current ownership, so a creator who lost the land or name during the upload is rejected with `400`.
+3. **Completion.** The batch after which every referenced file is stored runs the full deployment validation against current state, then publishes the entity and answers `200`. Deployment permission is checked again here against current ownership, so a creator who lost the land or name during the upload is rejected with `400`. If publication fails for a server-side reason instead, the server answers `503` and the upload stays live, so the client can retry the completing batch.
 4. **Replay.** Any batch, from any signer, for an entity that is currently published answers `200` with its `creationTimestamp`: the entity ID is the hash of the entity file, so the live entity is exactly the one being uploaded. The server never publishes the entity again. The signer that completed the upload also gets that `200` after the entity has been replaced or undeployed: Catalyst servers answer it for as long as the deployment is recorded; Worlds servers keep a completion receipt for a configurable period (default 24 hours). If the same entity ID is published again after an undeploy, the new publication replaces that answer.
-5. **Expiry.** An upload expires a fixed time after its first batch arrived (default 1 hour). Batches do not extend it. Servers MUST NOT store a batch's files or publish the entity once the upload has expired, even when the batch arrived before; such a batch, and any later one, answers `400`. The client MUST create a new entity with a fresh timestamp and signature.
+5. **Expiry.** An upload expires a fixed time after its first batch arrived (default 1 hour). Batches do not extend it. Servers MUST NOT store a batch's files or publish the entity once the upload has expired, even when the batch arrived before; such a batch, and any later one, answers `400`. The client MUST create a new entity with a fresh timestamp and signature. A server MUST NOT delete the staged content of an upload it can still publish: the decision that an upload has expired MUST be the same for content cleanup and for publication, for example by judging both on a single clock.
 
 ### Overlapping uploads
 
 1. Uploads targeting overlapping parcels MUST coexist. A server MUST NOT discard or replace an upload because another one overlaps it.
 2. Publication follows entity ordering: the entity with the greater `timestamp` is newer, and ties are broken by the greater entity ID. A completing request whose entity is older than an entity already live on any of its parcels MUST be rejected with `400`. The order in which uploads complete never lets an older entity overwrite a newer one.
 3. A server MAY reject a new upload at admission when a newer entity is already live on its parcels, so the client learns before sending content.
+4. A server MAY release an upload as soon as it finds a newer entity live on any of its parcels, since entity ordering means it can never be published. Its later batches answer `400`. A server MUST NOT release an upload for a failure that may not be permanent, such as a permission check that could not reach its data source.
 
 ### Quotas
 
-Servers MUST bound staging with quotas and MUST keep an expired upload charged, both its upload slot and its bytes, until its content is physically deleted. Servers SHOULD reclaim expired uploads within minutes of their expiry; both servers run cleanup every 5 minutes. Both servers use these defaults, and operators MAY configure them:
+Servers MUST bound staging with quotas. Per-account and per-server quotas MUST keep an expired upload charged, both its upload slot and its bytes, until its content is physically deleted. Servers SHOULD reclaim expired uploads within minutes of their expiry; both servers run cleanup every 5 minutes. Both servers use these defaults, and operators MAY configure them:
 
 | Quota | Default |
 | --- | --- |
@@ -139,8 +144,13 @@ Servers MUST bound staging with quotas and MUST keep an expired upload charged, 
 | Staged bytes per server | 50 GiB |
 | Accepted batch bytes per account per minute, retries included | 512 MiB |
 | Upload lifetime | 1 hour |
+| Worlds: live uploads per world, across accounts | 4, of which one account may hold at most 3 |
+| Worlds: staged bytes per world, across accounts | 2 × the world's scene size cap |
+| Catalyst: live uploads holding any one parcel, across accounts | 4, of which one account may hold at most 3 |
 
-Servers MAY also bound the uploads in progress from one client before their bodies are read, and answer `429` when a client exceeds that bound. Only content an upload actually stores counts against its staging quotas: files already present on the server count toward the scene's size limit but not toward staged bytes, and a batch file the server already has is dropped on receipt (its bytes still count toward the byte rate). A batch or upload that alone exceeds a quota (a batch larger than the byte rate, or an upload whose own staged bytes exceed the account or server budget) can never be admitted and is rejected with `400`. A batch that would exceed a quota because of other uploads or traffic is rejected with `429` before any of its files are stored, and its `Retry-After` is the earliest time a retry can succeed: for the byte rate, which uses a fixed one-minute window per account, the end of that window; for the upload count and staged bytes, no earlier than when the oldest upload holding that quota expires, since expired uploads stay charged until cleanup (servers MAY add their cleanup schedule). The error message names the quota, its usage and its limit. Per-scene size limits are the same as for regular deployments and are checked from the first batch, before any content beyond the limit is stored.
+Deploy permission for a world or a parcel can be granted to any number of addresses, so per-account quotas alone let one world or parcel set take most of the server budget. The per-world and per-parcel quotas bound what any one world or parcel set can stage, however many accounts may deploy to it. They count only live uploads, so an expired upload stops blocking its world or parcels as soon as it expires. The Worlds byte quota uses the world's fixed scene size cap (its whitelist size, the ENS cap or the default scene cap), not the owner's remaining allowance, so every upload to a world sees the same budget.
+
+Servers MAY also bound the uploads in progress from one client before their bodies are read, and answer `429` when a client exceeds that bound. Only content an upload actually stores counts against its staging quotas: files already present on the server count toward the scene's size limit but not toward staged bytes, and a batch file the server already has is dropped on receipt (its bytes still count toward the byte rate). A batch or upload that alone exceeds a quota (a batch larger than the byte rate, or an upload whose own staged bytes exceed the account, world or server budget) can never be admitted and is rejected with `400`. A batch that would exceed a quota because of other uploads or traffic is rejected with `429` before any of its files are stored, and its `Retry-After` is the earliest time a retry can succeed: for the byte rate, which uses a fixed one-minute window per account, the end of that window; for the upload count and staged bytes, no earlier than when the oldest upload holding that quota expires, since expired uploads stay charged until cleanup (servers MAY add their cleanup schedule). The error message names the quota, its usage and its limit. Per-scene size limits are the same as for regular deployments and are checked from the first batch, before any content beyond the limit is stored.
 
 ### Visibility and synchronization
 
@@ -158,8 +168,11 @@ A conforming client:
 4. Sends the first batch with the entity file and waits for its response, so the upload exists before concurrent batches arrive.
 5. Sends the remaining batches with bounded concurrency and treats the first `200` as the result.
 6. If every batch answered `202` and none answered `200`, sends the hashes from the latest `missing` list and repeats until a `200` or a terminal error.
-7. Retries `408`, `409`, `429`, `5xx` and network failures with exponential backoff, never waiting less than `Retry-After`. When `Retry-After` is longer than the client is willing to wait, it stops and surfaces the server's error and the retry time instead of retrying early.
+7. Retries `408`, `409`, `429`, `503`, other `5xx` and network failures with exponential backoff, never waiting less than `Retry-After`. When `Retry-After` is longer than the client is willing to wait, it stops and surfaces the server's error and the retry time instead of retrying early.
 8. Stops on `400` and `413` and surfaces the server's error.
+9. Sends `Content-Length` on every batch.
+
+Clients MAY use a regular single-request deployment when the scene is small enough that batching adds nothing; the SDK uses partial deployments from 50 MiB. Clients MAY report upload progress from the bytes they have sent; this is not part of the protocol.
 
 ### Compatibility
 
