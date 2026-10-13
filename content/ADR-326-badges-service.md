@@ -1,6 +1,6 @@
 ---
 layout: adr
-adr: 0
+adr: 326
 title: Badges Service
 date: 2026-10-13
 status: Draft
@@ -210,7 +210,7 @@ Once badges with identifiers outside the compiled catalog exist, a build that kn
 | Decision | Owner |
 | --- | --- |
 | Runtime evidence per environment (flags, active service, queue consumer, migrations, DDL, S3/IAM) | Platform |
-| Administrative identity: signed fetch (ADR-44) with a server-side allowlist, or an authenticated proxy | Badges service owners with Platform |
+| Administrative identity: signed fetch ([ADR-44](/adr/ADR-44)) with a server-side allowlist, or an authenticated proxy | Badges service owners with Platform |
 | Per-environment administrative permissions and who holds them | Badges service owners |
 | Promotion transport: service-to-service copy, or an exported bundle with verifiable provenance | Badges service owners with Platform |
 | Asset limits and dimensions | Teams that produce badge assets |
