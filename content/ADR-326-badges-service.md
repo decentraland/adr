@@ -111,7 +111,7 @@ Later deliveries add, at least: an asset manifest per badge and environment; adm
 
 The database is the only catalog source. There is no setting to choose another source and no compiled catalog to fall back to. If the published catalog is missing or invalid, the service MUST fail to start. The catalog is read once per process start; there is no hot reload in this phase.
 
-Validation of the database catalog rejects empty or incomplete snapshots and any published badge whose identifier is not in the `BadgeId` enum. It requires each badge to be structurally consistent (progress kind against tiers, tier identifiers and order, thresholds, asset paths) and its evaluator binding to match the observers and backfill mergers that exist in code.
+Validation of the database catalog rejects empty or incomplete snapshots. Until the runtime prerequisites for the editor (see Administrative API) are delivered, it also rejects any published badge whose identifier is not in the `BadgeId` enum, because observers and backfill mergers are still selected by that enum; that delivery replaces this rule with binding by evaluator. An archived badge is not part of the published catalog and does not make it incomplete. Validation also requires each badge to be structurally consistent (progress kind against tiers, tier identifiers and order, thresholds, asset paths) and its evaluator binding to match the observers and backfill mergers that exist in code.
 
 Parity with the former compiled catalog is a test, not a runtime mode: a frozen fixture records the compiled catalog as it was served, and tests build the catalog from the seeded rows and require it to equal the fixture. The fixture is never regenerated; once the compiled definitions are removed it is the only record of them.
 
@@ -121,7 +121,7 @@ The API's backfill route and its validation MUST use the same table of evaluator
 
 ### Awarding
 
-Automatic awards keep this flow: platform services publish events to SNS, the processor consumes them from SQS, the matching observers compute progress in `user_progress`, and each newly granted badge is published to SNS for notifications. `POST /badges/:id/backfill` remains for historical and participant imports, keeps its current payloads and credentials, and does not send notifications by default.
+Automatic awards keep this flow: platform services publish events to SNS, the processor consumes them from SQS, the matching observers compute progress in `user_progress`, and each newly granted badge is published to SNS for notifications. `POST /badges/:id/backfill` remains for historical and participant imports, keeps its current payloads and credentials, and does not send notifications.
 
 Known gaps are not solved by the catalog migration and MUST be closed before any new automatic mechanism claims duplicate-safe awards:
 
@@ -185,12 +185,12 @@ The API validates and publishes rules and exposes them to authorized workers. A 
 
 ### Integration with scene badges
 
-Scene badges are owned by NAME or LAND holders and awarded by authoritative scene servers. They use server-assigned identifiers prefixed `bdg_`, their own `scene_badge_*` tables and their own routes, and they are merged into `GET /users/:address/badges` and its preview as single-step badges with category `Scene`.
+Scene badges are in progress in separate pull requests and are not yet on the main branch. They are owned by NAME or LAND holders and awarded by authoritative scene servers. They use server-assigned identifiers prefixed `bdg_`, their own `scene_badge_*` tables and their own routes, and they are merged into `GET /users/:address/badges` and its preview as single-step badges with category `Scene`.
 
 - The two schemas are independent; no foreign key crosses them.
 - Migration timestamps MUST follow the order in which migrations reach shared environments. The services do not check migration order at startup, but the `migrate` command does, so the scene badges migration is numbered after the catalog migration and the two features can merge in either order.
 - Shared read paths MUST read the catalog lazily, so scene badge merging does not reintroduce a catalog captured at construction.
-- The administrative route namespace MUST NOT collide. Scene badge moderation already uses `DELETE /admin/badges/:badgeId` and `POST /admin/badges/:badgeId/restore`, so catalog administration needs a distinct namespace or an agreed dispatch rule.
+- Route namespaces MUST NOT collide. Scene badges add owner routes (`POST /badges`, `PUT /badges/:badgeId`, `DELETE /badges/:badgeId`) and moderation routes (`DELETE /admin/badges/:badgeId`, `POST /admin/badges/:badgeId/restore`), so catalog administration needs a distinct namespace or an agreed dispatch rule. The ban on the shared backfill token for administrative routes applies to scene badge moderation too.
 
 ### Public compatibility
 
