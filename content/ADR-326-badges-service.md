@@ -169,7 +169,9 @@ Textures stay in S3, owned by the Badges service. The proposed initial policy, t
 | Dimensions | 2D 256x256; 3D maps 1024x1024 |
 | Maximum size | 8 MiB per PNG; 50 MiB per ZIP; 256 MiB extracted; 256 entries; 8 folder levels |
 
-Every badge or tier MUST have the 2D image. The 3D set is optional and all or nothing: if present it MUST contain `normal`, `hrm` and `basecolor`; if absent, responses MUST NOT contain 3D URLs. Existing badges keep their current paths, all of which include the 3D set.
+Every badge or tier MUST have the 2D image. The 3D set is optional and all or nothing: if present it MUST contain `normal`, `hrm` and `basecolor`; if absent, responses MUST NOT contain 3D URLs.
+
+Every existing catalog badge has the 3D set, and the public API serves it today; the database catalog MUST keep serving it unchanged. The 3D maps are not stored as separate paths: they are derived from `asset_base_path` and the tier `asset_slot` by the existing convention (`2d/normal.png`, `3d/{normal,hrm,basecolor}.png`), so a partial set cannot be represented. The first delivery that allows a catalog badge without 3D adds a non-null `has_3d` flag to `badge_definitions` through a forward migration, set to true for existing rows; the flag applies to the badge and all its tiers.
 
 Flow: the API issues a presigned, size-limited upload to private staging for one badge; a worker validates the pinned object asynchronously and records a manifest with hashes, sizes, dimensions and slots; the administrator previews and corrects associations; publication activates the badge together with its exact, immutable assets. Content is validated by decoding it, never by trusting file names, extensions or declared sizes. Ambiguous associations are reported, never resolved silently. An incomplete upload MUST NOT enable a badge. Existing badges keep their current asset paths. Once the service manages a badge's assets, direct writes that skip validation MUST be retired for that badge.
 
@@ -189,6 +191,7 @@ Scene badges are in progress in separate pull requests and are not yet on the ma
 
 - The two schemas are independent; no foreign key crosses them.
 - Migration timestamps MUST follow the order in which migrations reach shared environments. The services do not check migration order at startup, but the `migrate` command does, so the scene badges migration is numbered after the catalog migration and the two features can merge in either order.
+- Scene badges serve only their 2D image in their first phase; 3D assets for scene badges follow in a later phase under the same all-or-nothing rule. A badge without 3D MUST be represented the same way by catalog and scene badge responses.
 - Shared read paths MUST read the catalog lazily, so scene badge merging does not reintroduce a catalog captured at construction.
 - Route namespaces MUST NOT collide. Scene badges add owner routes (`POST /badges`, `PUT /badges/:badgeId`, `DELETE /badges/:badgeId`) and moderation routes (`DELETE /admin/badges/:badgeId`, `POST /admin/badges/:badgeId/restore`), so catalog administration needs a distinct namespace or an agreed dispatch rule. The ban on the shared backfill token for administrative routes applies to scene badge moderation too.
 
@@ -221,6 +224,7 @@ Once badges with identifiers outside the compiled catalog exist, a build that kn
 | Notification changes for multi-tier awards | Badges service owners with notification consumers |
 | Recurrence semantics (resetting periods, editions or tiers) | Product |
 | Custom tier names and counts | Product with Explorer client owners |
+| Response shape for a badge without 3D (`"3d": null` or the field omitted) | Badges service owners with scene badges owners and Explorer client owners |
 
 ## RFC 2119 and RFC 8174
 
