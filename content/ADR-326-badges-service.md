@@ -80,7 +80,7 @@ Moving only the definitions into the database is not enough. Identifier validati
 
 **Keep the 3D set required for every badge. Not chosen.** It blocks badges whose 3D art is not ready, including the first phase of scene badges, which ships with 2D images only.
 
-**2D required, 3D optional and all or nothing. CHOSEN.** Every badge and tier has its 2D image. A badge either has the complete 3D set for itself and all its tiers, or none of it; a partial set is invalid. Existing badges keep their 3D set and keep serving it unchanged. The accepted cost is that clients must handle a badge without 3D.
+**2D required, 3D optional and all or nothing. CHOSEN.** Every badge and tier has its 2D image. A badge either has the complete 3D set for itself and all its tiers, or none of it; a partial set is invalid. Existing badges keep their asset locations and their 3D set, and keep serving them unchanged; making 3D optional does not allow removing it from an existing badge. The accepted cost is that clients must handle a badge without 3D.
 
 ### How event attendance is evaluated
 
@@ -111,7 +111,8 @@ Moving only the definitions into the database is not enough. Identifier validati
 - The initial catalog migration seeds every existing badge, published and with its current asset locations and its 3D set, from a frozen, deterministic snapshot. Seed data MUST NOT be read from mutable source code at migration time.
 - Applied migrations MUST NOT be edited.
 - Until the editor's runtime prerequisites (see Administrative API) are delivered, a new catalog badge needs its identifier and any evaluator code added to the service in the same release as the forward migration that inserts it. A migration MUST NOT publish a badge that the release carrying it does not know: migrations commit before the catalog is validated, so such a badge would stop both services from starting, and redeploying the previous release would not remove it.
-- For the same reason, a new badge is added in two steps. The release that adds its code inserts it unpublished; a migration in a later release publishes it. Validation only checks published badges, so the release before the first step still starts and rollback across it stays safe. Rolling back past the release that published a badge is not supported; the way back is a forward migration that unpublishes or archives it.
+- For the same reason, a new badge is added in two steps. The release that adds its code inserts it as a draft; a migration in a later release publishes it, and full validation applies at that point. Rollback to the release before the first step is safe only if that release already tolerates draft badges it does not know (see Catalog loading); this tolerance MUST ship in a release before any badge is added this way, and is not assumed to exist otherwise.
+- Rolling back past the release that published a badge is not supported. The way back is a forward migration that archives the badge, which keeps it resolvable for players who earned it. Returning a published badge to draft is allowed only while no player has progress on it.
 - A catalog migration MUST stay readable by the release before it: it adds data or fields and never rewrites existing rows in a way that release's validation would reject. A migration that cannot meet this is a rollback exception and MUST say so in its review.
 - A migration MUST be numbered after every migration already merged. Services do not check migration order at startup, but the command-line migration tool does. When two features developed in parallel (such as the catalog and scene badges) both add migrations, the one that merges second renumbers its migrations after the other's before it is deployed.
 - Deploying the schema requires the migration history and DDL permissions of each environment to be verified first.
@@ -119,10 +120,13 @@ Moving only the definitions into the database is not enough. Identifier validati
 ### Catalog loading
 
 - The database is the only catalog source. There is no setting to choose another source and no compiled catalog to fall back to. If the published catalog is missing or invalid, the service MUST fail to start. The catalog is read once per process start; there is no hot reload in this phase.
-- Validation rejects empty or incomplete catalogs (incomplete: an identifier known to the code has no published or archived badge), structurally inconsistent badges (progress kind against tiers, tier order and thresholds, asset locations) and evaluator bindings that do not match the observers and backfill imports that exist in code. An archived badge is not part of the published catalog and does not make it incomplete.
-- Until the editor's runtime prerequisites (see Administrative API) are delivered, validation also rejects published badges whose identifier is not one of the identifiers known to the code, because observers and imports are still selected by identifier. That delivery replaces this rule with binding by evaluator.
+- Loading separates three concerns:
+  - **Stored completeness.** Every identifier known to the code MUST exist as a stored badge, whether draft, published or archived. A missing one stops startup.
+  - **Active catalog validation.** The active catalog is the set of published, non-archived badges. It MUST NOT be empty, and each of its badges MUST be structurally consistent (progress kind against tiers, tier order and thresholds, asset locations) and have an evaluator binding that matches the observers and backfill imports that exist in code. Until the editor's runtime prerequisites (see Administrative API) are delivered, an active badge whose identifier is not known to the code also stops startup, because observers and imports are still selected by identifier; that delivery replaces this rule with binding by evaluator.
+  - **Award eligibility.** Only active badges are public, receive progress or can be awarded.
+- Draft badges, including drafts whose identifier the release does not know, do not stop startup and are not part of the active catalog. Being a draft never bypasses active validation: a badge is fully validated when it is published. Archived badges are not part of the active catalog either, and stay resolvable for players who earned them.
 - Parity with the former compiled catalog is a test, not a runtime mode: a frozen fixture records what the compiled catalog served, and the parity test applies migrations only up to and including the initial catalog migration and requires that catalog to equal the fixture. Later catalog migrations carry their own tests. The fixture is never regenerated; once the compiled definitions are removed it is their only record.
-- Startup order is: database connection and migrations, catalog load and validation, then (in the processor) observer registration, and only then queue consumption. A service whose catalog fails to load MUST NOT consume or delete queue messages. Readiness MUST stay false until the catalog is loaded. Components MUST read the catalog when they need it, not capture it when they are constructed.
+- Startup order is: database connection and migrations, catalog load and validation, then (in the processor) observer registration, and only then queue consumption. Observers are registered, and events dispatched, only for active badges; an observer whose code exists for a draft or archived badge is not registered. A service whose catalog fails to load MUST NOT consume or delete queue messages. Readiness MUST stay false until the catalog is loaded. Components MUST read the catalog when they need it, not capture it when they are constructed.
 - The backfill endpoint and its validation MUST use the same evaluator bindings, so a badge cannot be accepted by one and routed differently by the other.
 
 ### Awarding
@@ -159,12 +163,12 @@ Every administrative change writes its audit entry in the same transaction as th
 Rules for definitions:
 
 - New badge and tier identifiers follow a restricted lowercase format. Legacy identifiers are preserved as they are. Catalog identifiers MUST NOT use the prefix reserved for scene badge identifiers.
-- Badge and tier identifiers are immutable after the first publication. Progress kind, rules, thresholds and tier structure are also fixed after publication; changing them requires a new badge or an explicit progress migration. Presentation fields (name, description, category, tier descriptions and assets) MAY be edited after publication and apply in place. Publishing never awards past activity on its own.
+- Badge and tier identifiers are immutable after the first publication. Progress kind, rules, thresholds and tier structure are also fixed after publication; changing them requires a new badge or an explicit progress migration. Presentation fields (name, description, category and tier descriptions) MAY be edited after publication and apply in place. Assets MAY be replaced after publication only through the validated replacement described in Assets. Publishing never awards past activity on its own.
 - Drafts are never public and never award progress.
 - Until the public contract and its clients are updated, a tiered badge MUST have exactly the six existing tiers, with their existing names, in their existing order. A single badge has no tiers. Tier names are fixed after publication; tier descriptions are presentation.
 - The scene badge category is reserved for scene badges and MUST be rejected for catalog badges.
 - Criteria, evaluator parameters and attendance rules MUST match a closed schema per adapter that rejects unknown fields and uses strict formats for identifiers. Evaluators pass rule values only as query parameters, never as query text. Promotion runs the same validation again.
-- A badge's asset location is generated by the server inside the badges asset root, never taken from administrator input. Legacy locations are fixed by the seed.
+- A badge's asset location is generated by the server inside the badges asset root, never taken from administrator input. Legacy locations are fixed by the seed and change only through the validated replacement described in Assets.
 
 Before an editor is enabled, the runtime MUST accept identifiers unknown to the code, select backfill imports by adapter instead of by badge identifier, and refresh the catalog without a restart (proposed target: under 30 seconds). Publication, archive and progress writes MUST share a concurrency boundary, so an award cannot commit against a badge archived in the same instant.
 
@@ -174,7 +178,7 @@ Textures stay in object storage, owned by the Badges service.
 
 - Every badge, and every tier of a tiered badge, MUST have its 2D image.
 - The 3D set is optional and all or nothing. A badge with 3D MUST have all three maps for itself and every tier; a badge without 3D has none. A partial set MUST be rejected at upload and validation, and MUST NOT be representable in the catalog.
-- Existing badges keep their current asset locations and their 3D set, and the public API keeps serving them unchanged.
+- The catalog migration preserves the asset locations and the 3D set of every existing badge, and the public API keeps serving them unchanged. A published asset location is immutable: its objects are never overwritten. The only way to change a badge's assets is a validated replacement that activates a new location. A replacement for a badge that has the 3D set MUST include it; 3D is not removed from existing badges.
 - The public API MUST state the absence of 3D explicitly: the 3D field is present with a null value, never omitted and never filled with locations of files that do not exist. Catalog badges and scene badges MUST use this same representation. The public contract MUST be updated to mark the 3D field as nullable, and client owners MUST be told before the first badge without 3D is published.
 
 The proposed initial policy, to be confirmed with the teams that produce the assets:
@@ -188,7 +192,7 @@ The proposed initial policy, to be confirmed with the teams that produce the ass
 
 Flow: the API issues a size-limited upload to private staging for one badge; a worker validates the uploaded object asynchronously and records a manifest with hashes, sizes, dimensions and slots; the administrator previews and corrects associations; publication activates the badge together with its exact, immutable assets. Content is validated by decoding it, never by trusting file names, extensions or declared sizes. Ambiguous associations are reported, never resolved silently. An incomplete upload MUST NOT enable a badge. Once the service manages a badge's assets, direct writes that skip validation MUST be retired for that badge.
 
-Replacing the assets of a published badge goes through the same flow and publishes a new asset set at a new location. Published asset objects are never overwritten, so caches stay consistent and promotion always refers to exact bytes.
+Replacing the assets of a published badge goes through the same flow and activates a new asset set at a new location. Objects at a published location are never overwritten, so caches stay consistent and promotion always refers to exact bytes.
 
 Upload requirements:
 
