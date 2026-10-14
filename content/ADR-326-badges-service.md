@@ -109,22 +109,23 @@ Moving only the definitions into the database is not enough. Identifier validati
 
 - The API and the processor carry the same migrations and run pending ones at startup, serialized by a database lock, before the catalog is loaded. A running service therefore never sees the schema without its seed. A separate pre-deployment migration step is a possible later improvement, not a requirement.
 - The initial catalog migration seeds every existing badge, published and with its current asset locations and its 3D set, from a frozen, deterministic snapshot. Seed data MUST NOT be read from mutable source code at migration time.
-- Applied migrations MUST NOT be edited. Until the administrative API exists, a new badge is added with a forward migration.
-- Migration numbering MUST follow the order in which migrations reach shared environments. Services do not check migration order at startup, but the command-line migration tool does, so features developed in parallel (such as scene badges) number their migrations after the ones already queued for release.
+- Applied migrations MUST NOT be edited.
+- Until the editor's runtime prerequisites (see Administrative API) are delivered, a new catalog badge needs its identifier and any evaluator code added to the service in the same release as the forward migration that inserts it. A migration MUST NOT publish a badge that the release carrying it does not know: migrations commit before the catalog is validated, so such a badge would stop both services from starting, and redeploying the previous release would not remove it.
+- A migration MUST be numbered after every migration already merged. Services do not check migration order at startup, but the command-line migration tool does. When two features developed in parallel (such as the catalog and scene badges) both add migrations, the one that merges second renumbers its migrations after the other's before it is deployed.
 - Deploying the schema requires the migration history and DDL permissions of each environment to be verified first.
 
 ### Catalog loading
 
 - The database is the only catalog source. There is no setting to choose another source and no compiled catalog to fall back to. If the published catalog is missing or invalid, the service MUST fail to start. The catalog is read once per process start; there is no hot reload in this phase.
-- Validation rejects empty or incomplete catalogs, structurally inconsistent badges (progress kind against tiers, tier order and thresholds, asset locations) and evaluator bindings that do not match the observers and backfill imports that exist in code. An archived badge is not part of the published catalog and does not make it incomplete.
+- Validation rejects empty or incomplete catalogs (incomplete: an identifier known to the code has no published or archived badge), structurally inconsistent badges (progress kind against tiers, tier order and thresholds, asset locations) and evaluator bindings that do not match the observers and backfill imports that exist in code. An archived badge is not part of the published catalog and does not make it incomplete.
 - Until the editor's runtime prerequisites (see Administrative API) are delivered, validation also rejects published badges whose identifier is not one of the identifiers known to the code, because observers and imports are still selected by identifier. That delivery replaces this rule with binding by evaluator.
-- Parity with the former compiled catalog is a test, not a runtime mode: a frozen fixture records what the compiled catalog served, and tests require the catalog built from the seed to equal it. The fixture is never regenerated; once the compiled definitions are removed it is their only record.
+- Parity with the former compiled catalog is a test, not a runtime mode: a frozen fixture records what the compiled catalog served, and the parity test applies migrations only up to and including the initial catalog migration and requires that catalog to equal the fixture. Later catalog migrations carry their own tests. The fixture is never regenerated; once the compiled definitions are removed it is their only record.
 - Startup order is: database connection and migrations, catalog load and validation, then (in the processor) observer registration, and only then queue consumption. A service whose catalog fails to load MUST NOT consume or delete queue messages. Readiness MUST stay false until the catalog is loaded. Components MUST read the catalog when they need it, not capture it when they are constructed.
 - The backfill endpoint and its validation MUST use the same evaluator bindings, so a badge cannot be accepted by one and routed differently by the other.
 
 ### Awarding
 
-Automatic awards keep this flow: platform services publish events, the processor consumes them from a queue, the matching observers compute progress, and each newly granted badge is announced for notifications. The backfill endpoint remains for historical and participant imports, keeps its current payloads and credentials, and does not send notifications.
+Automatic awards keep this flow: platform services publish events, the processor consumes them from a queue, the matching observers compute progress, and each newly granted badge is announced for notifications. The backfill endpoint remains for historical and participant imports, keeps its current payloads and does not send notifications. It MUST reject draft and archived badges. Before backfill imports are selected by adapter instead of by badge identifier (which would let its credential award any published badge), backfill MUST use a credential separate per environment and write each import to the audit log.
 
 Known gaps are not solved by the catalog migration and MUST be closed before any new automatic mechanism claims duplicate-safe awards:
 
@@ -137,7 +138,7 @@ Delivery is at least once with deduplication, not exactly once.
 
 ### Administrative API
 
-The administrative API is specified here as a contract and is not yet implemented. Each API instance administers only its own environment (Zone or production). Unknown environment values MUST be rejected, never mapped to production.
+The administrative API is specified here as a contract and is not yet implemented. Each API instance administers only its own environment (Zone or production), taken from its deployment configuration and never from a request. Any environment stated in a request MUST equal the instance's own, and authorization is always checked against the server-side value.
 
 Every administrative route MUST verify a human actor's identity and authorize the action for the environment on the server. The shared backfill token MAY remain for machine backfills but MUST NOT authorize administrative routes.
 
@@ -149,15 +150,19 @@ Every administrative route MUST verify a human actor's identity and authorize th
 | Validation and publication | Validate a badge and return field errors with a path, a code and a message. Publishing revalidates the badge and is idempotent. |
 | Archive and audit | Archive stops new objectives and awards while existing achievements stay resolvable. Audit history is paginated and append-only. Long operations return an operation identifier to poll. |
 
-Creation, publication, archive and promotion accept an idempotency key: the same payload returns the same result and a different payload is rejected as a conflict. Responses never include stack traces.
+Creation, publication, archive and promotion accept an idempotency key, scoped to the actor, the environment, the operation and the target badge. The current actor is authorized before a stored result is looked up or returned. The same payload returns the same result and a different payload is rejected as a conflict. Responses never include stack traces.
+
+Every administrative change writes its audit entry in the same transaction as the change, recording the verified actor, the environment and the before and after values. The service can only append to and read the audit log, never change or delete entries, and reading it requires administrative authorization for that environment.
 
 Rules for definitions:
 
-- New badge and tier identifiers follow a restricted lowercase format. Legacy identifiers are preserved as they are.
+- New badge and tier identifiers follow a restricted lowercase format. Legacy identifiers are preserved as they are. Catalog identifiers MUST NOT use the prefix reserved for scene badge identifiers.
 - Badge and tier identifiers are immutable after the first publication. Progress kind, rules, thresholds and tier structure are also fixed after publication; changing them requires a new badge or an explicit progress migration. Presentation fields (name, description, category, tier descriptions and assets) MAY be edited after publication and apply in place. Publishing never awards past activity on its own.
 - Drafts are never public and never award progress.
-- Until the public contract and its clients are updated, publication MUST require the six existing tier names.
-- The scene badge category and scene badge identifiers are reserved for scene badges and MUST be rejected for catalog badges.
+- Until the public contract and its clients are updated, a tiered badge MUST have exactly the six existing tiers, with their existing names, in their existing order. A single badge has no tiers. Tier names are fixed after publication; tier descriptions are presentation.
+- The scene badge category is reserved for scene badges and MUST be rejected for catalog badges.
+- Criteria, evaluator parameters and attendance rules MUST match a closed schema per adapter that rejects unknown fields and uses strict formats for identifiers. Evaluators pass rule values only as query parameters, never as query text. Promotion runs the same validation again.
+- A badge's asset location is generated by the server inside the badges asset root, never taken from administrator input. Legacy locations are fixed by the seed.
 
 Before an editor is enabled, the runtime MUST accept identifiers unknown to the code, select backfill imports by adapter instead of by badge identifier, and refresh the catalog without a restart (proposed target: under 30 seconds). Publication, archive and progress writes MUST share a concurrency boundary, so an award cannot commit against a badge archived in the same instant.
 
@@ -181,15 +186,28 @@ The proposed initial policy, to be confirmed with the teams that produce the ass
 
 Flow: the API issues a size-limited upload to private staging for one badge; a worker validates the uploaded object asynchronously and records a manifest with hashes, sizes, dimensions and slots; the administrator previews and corrects associations; publication activates the badge together with its exact, immutable assets. Content is validated by decoding it, never by trusting file names, extensions or declared sizes. Ambiguous associations are reported, never resolved silently. An incomplete upload MUST NOT enable a badge. Once the service manages a badge's assets, direct writes that skip validation MUST be retired for that badge.
 
+Replacing the assets of a published badge goes through the same flow and publishes a new asset set at a new location. Published asset objects are never overwritten, so caches stay consistent and promotion always refers to exact bytes.
+
+Upload requirements:
+
+- The storage layer enforces the size limit of each upload; a limit only declared by the client is not enough.
+- The server generates the storage key, and the upload grant is short-lived and issued only after checking that the actor may edit that badge in that environment.
+- Corrected associations may only reference objects in the same badge's manifest.
+- Archives are rejected if they contain absolute paths, parent references, backslashes, links, non-regular files, or duplicate or case-colliding names. Extracted size and entry limits are enforced while extracting, not from headers. Storage keys are never derived from entry names.
+- Image dimensions are checked from the header before a full decode.
+- Published images are served with a fixed image content type and without content sniffing.
+
 ### Promotion between environments
 
-A badge can be published directly in Zone or in production, or promoted from Zone to production. Promotion exports the complete definition (badge, tiers and evaluator binding) and the exact verified asset bytes, and production creates or updates the badge by identifier. It MUST revalidate under production policy, require production authorization, preserve identifiers, be idempotent by a hash of the exported content, detect conflicts with fields that are fixed after publication, and be audited. Player progress, awards and credentials are never promoted.
+A badge can be published directly in Zone or in production, or promoted from Zone to production. Promotion exports the complete definition (badge, tiers and evaluator binding) and the exact verified asset bytes, and production creates or updates the badge by identifier. It MUST revalidate under production policy, require production authorization, preserve identifiers, be idempotent by a hash of the exported content, and be audited. It MUST be rejected as a conflict when the production badge differs in fields that are fixed after publication, or was created or edited in production since its last promotion, unless the request explicitly overrides it. Player progress, awards and credentials are never promoted.
+
+Whichever transport is chosen, promotion is initiated in production by a production-authorized actor and reads from a fixed, configured Zone source, never from a location given in the request. Asset bytes are verified against the manifest hashes, and no Zone credential can write to production. An exported bundle MUST be signed and verified by production.
 
 ### Attendance rules
 
 Attendance requirements are stored as a typed rule with each badge: a location selector (place, scene, parcel set, event or subevent) with an explicit subevent policy; a UTC time window with an inclusive start and exclusive end; entry only or a minimum duration with defined continuity; client, realm and world constraints; the evidence source and evaluator version; and a deterministic achievement timestamp. Nothing defaults to a particular location, client or realm.
 
-The API validates and publishes rules and exposes them to authorized workers. A generic scheduled evaluator in the data warehouse evaluates them and submits idempotent results with provenance and per-record failures. Warehouse scans MUST NOT run inside browser-facing requests. A preview returns matched counts without granting anything. If a streaming evaluator is added later, the same evidence MUST NOT be counted twice across both paths.
+The API validates and publishes rules and exposes them to authorized workers. Each worker has its own credential per environment, separate from the backfill credential and from human administrative identity. The API accepts a result only for a published, non-archived badge whose rule is bound to that worker's evaluator, with an achievement time inside the rule's window. A generic scheduled evaluator in the data warehouse evaluates them and submits idempotent results with provenance and per-record failures. Warehouse scans MUST NOT run inside browser-facing requests. A preview returns matched counts without granting anything. If a streaming evaluator is added later, the same evidence MUST NOT be counted twice across both paths.
 
 ### Integration with scene badges
 
@@ -199,6 +217,7 @@ Scene badges are in progress in separate pull requests and are not yet released.
 - Scene badges ship 2D only in their first phase and add 3D later under the same all-or-nothing rule and the same explicit null representation.
 - Shared read paths MUST read the catalog when they need it, so merging scene badges does not reintroduce a catalog captured at startup.
 - Route namespaces MUST NOT collide. Scene badges add owner routes and moderation routes under the same badge paths that catalog administration would use, so catalog administration needs a distinct namespace or an agreed dispatch rule. The ban on the shared backfill token for administrative routes applies to scene badge moderation too.
+- Each family of routes resolves only its own identifiers: scene badge owner and moderation routes act only on scene badges and answer not found for catalog identifiers, and catalog administration rejects scene badge identifiers. An ownership or moderation check can therefore never apply to the other feature's badges.
 
 ### Public compatibility
 
@@ -219,7 +238,7 @@ Once badges unknown to the compiled code exist, a release that knows only the co
 | Decision | Owner |
 | --- | --- |
 | Runtime evidence per environment (flags, active service, queue consumer, migrations, DDL, storage permissions) | Platform |
-| Administrative identity: signed fetch ([ADR-44](/adr/ADR-44)) with a server-side allowlist, or an authenticated proxy | Badges service owners with Platform |
+| Administrative identity: signed fetch ([ADR-44](/adr/ADR-44)) with a per-environment allowlist checked against the verified signer, with replay protection and a short timestamp window, or an authenticated proxy. Either way, audit records store the verified actor | Badges service owners with Platform |
 | Per-environment administrative permissions and who holds them | Badges service owners |
 | Promotion transport: service-to-service copy, or an exported bundle with verifiable provenance | Badges service owners with Platform |
 | Asset limits and dimensions | Teams that produce badge assets |
