@@ -62,7 +62,7 @@ Moving only the definitions into the database is not enough. Identifier validati
 
 **A startup selector with a shadow mode (compiled, shadow, database). Not chosen.** It keeps a second, compiled catalog path alive in every service, adds a per-environment setting that Platform has to manage, and only postpones its own removal. The case it protects against, a database without the catalog, cannot happen: the catalog migration creates and seeds the catalog in the same deploy, before the catalog is loaded.
 
-**Read the catalog from the database only, in one deploy. CHOSEN.** The seed is a frozen, deterministic snapshot of the compiled catalog, and tests prove that the catalog built from the seeded data equals that snapshot before anything is deployed. A missing or invalid catalog stops the service instead of falling back. Rollback is redeploying the previous release: the migration is additive, so a previous release keeps working and ignores the new data. The accepted cost is losing a gradual, configuration-only rollout and rollback.
+**Read the catalog from the database only, in one deploy. CHOSEN.** The seed is a frozen, deterministic snapshot of the compiled catalog, and tests prove that the catalog built from the seeded data equals that snapshot before anything is deployed. A missing or invalid catalog stops the service instead of falling back. Rollback is redeploying a previous release: catalog migrations stay readable by the release before them, so it keeps working and ignores data it does not use (see Migrations and seed for the rules that keep this true). The accepted cost is losing a gradual, configuration-only rollout and rollback.
 
 ### Who administers badges
 
@@ -102,8 +102,8 @@ Moving only the definitions into the database is not enough. Identifier validati
 - Player progress is unchanged: no progress record is rewritten, and existing badge and tier identifiers are preserved literally so stored achievements keep resolving.
 - A badge is visible when it is published and not archived. It MUST NOT be published before all of its tiers exist, and its progress kind MUST match whether it has tiers.
 - Asset file locations are derived from the badge's asset location and each tier's slot by one fixed convention; they are not stored file by file. Whether the 3D set exists is recorded once per badge and applies to all its tiers. Together, these make a partial 3D set impossible to represent.
-- Fields are added when a feature uses them, each through its own forward migration, never reserved in advance. Time windows, recurrence, alternative asset layouts and optimistic locking for the editor follow this rule. When a second kind of evaluator exists (attendance rules), the evaluator binding gains an explicit kind in the same change, with existing badges migrated to it.
-- Later deliveries add, at least: an asset manifest per badge and environment, administrative operations with idempotency keys, an append-only audit log and, for reliable automatic awards, event receipts, award records and an outbox.
+- Fields are added when a feature uses them, each through its own forward migration, never reserved in advance. Time windows, recurrence, alternative asset layouts and optimistic locking for the editor follow this rule. When a second kind of evaluator exists (attendance rules), the evaluator binding gains an explicit kind in the same change. Existing badges are not rewritten: a binding without a kind means the existing one, so the previous release can still read every existing badge.
+- Later deliveries add, at least: an asset manifest per badge and environment, administrative operations with idempotency keys, an append-only audit log, per-badge promotion state (the hash of the last promoted content and of the last local edit, which the promotion conflict rule needs) and, for reliable automatic awards, event receipts, award records and an outbox.
 
 ### Migrations and seed
 
@@ -111,6 +111,8 @@ Moving only the definitions into the database is not enough. Identifier validati
 - The initial catalog migration seeds every existing badge, published and with its current asset locations and its 3D set, from a frozen, deterministic snapshot. Seed data MUST NOT be read from mutable source code at migration time.
 - Applied migrations MUST NOT be edited.
 - Until the editor's runtime prerequisites (see Administrative API) are delivered, a new catalog badge needs its identifier and any evaluator code added to the service in the same release as the forward migration that inserts it. A migration MUST NOT publish a badge that the release carrying it does not know: migrations commit before the catalog is validated, so such a badge would stop both services from starting, and redeploying the previous release would not remove it.
+- For the same reason, a new badge is added in two steps. The release that adds its code inserts it unpublished; a migration in a later release publishes it. Validation only checks published badges, so the release before the first step still starts and rollback across it stays safe. Rolling back past the release that published a badge is not supported; the way back is a forward migration that unpublishes or archives it.
+- A catalog migration MUST stay readable by the release before it: it adds data or fields and never rewrites existing rows in a way that release's validation would reject. A migration that cannot meet this is a rollback exception and MUST say so in its review.
 - A migration MUST be numbered after every migration already merged. Services do not check migration order at startup, but the command-line migration tool does. When two features developed in parallel (such as the catalog and scene badges) both add migrations, the one that merges second renumbers its migrations after the other's before it is deployed.
 - Deploying the schema requires the migration history and DDL permissions of each environment to be verified first.
 
@@ -227,7 +229,7 @@ Catalog, detail, tier, player badge and preview responses keep their shapes, wit
 
 1. Platform records, per environment, the runtime flags, the service and release serving the badges API, the real queue consumer, the migration history, DDL permissions and storage permissions. If the shared workers runtime serves badges, its copy needs its own update and release.
 2. Merge only after the parity tests pass against the frozen fixture.
-3. Deploy to Zone and compare catalog, categories, tiers and player responses (empty, partial, complete, multi-tier) with the previous release. Rollback is redeploying the previous release, never dropping data or running down migrations in shared environments.
+3. Deploy to Zone and compare catalog, categories, tiers and player responses (empty, partial, complete, multi-tier) with the previous release. Rollback is redeploying a previous release that knows every published badge, never dropping data or running down migrations in shared environments.
 4. Deploy to production as a separate operational decision, with the same comparison.
 5. Deliver the administrative API, dynamic runtime, assets, Internal Tools and promotion, then reliable awarding before enabling new automatic mechanisms.
 
