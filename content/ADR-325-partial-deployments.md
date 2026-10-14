@@ -16,7 +16,7 @@ This ADR defines how a client deploys a scene whose content is too large for a s
 
 ## Context, Reach & Prioritization
 
-A deployment is a single multipart `POST /entities` request carrying the entity file, its auth chain and every content file that is not already stored (see [ADR-45](/adr/ADR-45) and [ADR-51](/adr/ADR-51)). The infrastructure in front of the Decentraland content servers times out requests larger than roughly 200 MB, so large scenes cannot be deployed at all, and a transient failure near the end of a large upload forces the creator to send everything again.
+A deployment is a single multipart `POST /entities` request carrying the entity file, its auth chain and every content file that is not already stored (see [ADR-45](/adr/ADR-45) and [ADR-51](/adr/ADR-51)). The infrastructure in front of the Decentraland content servers times out requests larger than roughly 300 MB, so large scenes cannot be deployed at all, and a transient failure near the end of a large upload forces the creator to send everything again.
 
 Partial deployments fix both problems. Content is sent in bounded batches, a failed batch is retried on its own, and progress survives dropped connections, client restarts and server restarts until the upload expires.
 
