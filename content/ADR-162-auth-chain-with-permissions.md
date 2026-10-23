@@ -394,8 +394,12 @@ A chain with a scoped link MUST have this structure:
 2. zero or more `ECDSA_EPHEMERAL` or `ECDSA_EIP_1654_EPHEMERAL` links;
 3. exactly one `ECDSA_SCOPED_EPHEMERAL` or `ECDSA_EIP_1654_SCOPED_EPHEMERAL`
    link;
-4. exactly one `ECDSA_SIGNED_ENTITY` link, signed by the scoped link's
+4. at most one `ECDSA_SIGNED_ENTITY` link, signed by the scoped link's
    ephemeral key.
+
+A chain that ends at the scoped link is the scoped identity itself, and its
+final authority is the `Ephemeral` address: that is how a client checks an
+identity it stored. A request adds the `ECDSA_SIGNED_ENTITY` link.
 
 So a scoped key cannot delegate to another key, and a chain cannot widen its
 scope after narrowing it. Step 2 allows a key that already holds a full login,
