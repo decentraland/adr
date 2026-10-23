@@ -175,7 +175,7 @@ A grant `<service>:<operation>` names a service and one of its operations.
 
 - `service` is the identifier of the service the grant is for. Each service MUST document its identifier, its operations and its resource forms.
 - `operation` is one of that service's operations. `*` means every operation of that service, including operations added later. Clients SHOULD list operations instead of using `*`. There is no wildcard across services.
-- `for <resource>` limits the grant to one resource. A service defines its resource forms, and SHOULD write them as `<kind>:<value>`, for example `world:example.dcl.eth` or `parcel:10,-20`. Resources are compared as exact strings: no case folding, prefixes or wildcards.
+- `for <resource>` limits the grant to one resource. A service defines its resource forms, and SHOULD write them as `<kind>:<value>`, for example `world:example.dcl.eth` or `parcel:10,-20`. Resources are compared as exact strings: no case folding, prefixes or wildcards. Each service MUST define a canonical form for its resources, for example lowercase world names, and MUST build the resource of a request in that form before comparing it. Clients MUST write grants in that form.
 - Without `for`, the grant covers every resource of that service.
 
 There are no `deny` grants: a grant list is an allow-list, so an operation not listed is denied.
@@ -208,17 +208,23 @@ A verifier that accepts scoped logins is configured with its own service identif
    - it MUST reject the chain if no grant has service `S`;
    - it MUST ignore grants for other services;
    - it MAY reject a scoped link expiring further from now than a maximum it configures.
-4. For each operation, the verifier checks `can(operation, resource?)`:
+4. Each request performs exactly one operation, which the verifier chooses from the request it serves: the endpoint, and where the endpoint's behavior depends on it, the request's parameters. The verifier also chooses the resource the request acts on, if any. A verifier that configures `S` MUST assign an operation to every endpoint that accepts signed requests, and MUST reject a scoped chain on any request it cannot assign one.
+5. The verifier checks `can(operation, resource?)`:
    - for a chain without a scoped link, `can` is always true;
    - for a scoped chain, `can` is true when a grant for `S` has the same `operation` or `*`, and either has no `for`, or has a `for` equal to the `resource` of the request.
 
-A request whose chain is valid but whose grants don't allow the operation SHOULD be answered with HTTP 403.
+A request has one operation, not a list of them. An endpoint that does several things at once needs an operation of its own, and a grant never implies another grant: `Allow: insights:logs-admin` permits `logs-admin`, and nothing else unless the service defines it to.
+
+A request whose chain is valid but whose grants don't allow the operation SHOULD be answered with HTTP 403. A scoped chain on a request the verifier assigns no operation SHOULD be answered with HTTP 401, as a verifier that doesn't accept scoped logins does.
+
+These checks run after the [ADR-44](/adr/ADR-44) signed fetch is verified. The signed metadata of the request may name the resource the request acts on, such as a scene, since the scoped key signed it; the verifier MUST then act on that same resource. The metadata never names the operation, and nothing in it can widen a grant.
 
 ### Backwards compatibility
 
 - Chains in use today are not affected and keep granting every operation.
-- Verifiers that don't know the new link types reject scoped chains: `@dcl/schemas` validates the link `type` against a fixed list, and `@dcl/crypto` validates a link of unknown type as an error and ends the chain with no authority. This covers catalysts, Worlds content servers, the signature validation of the lambdas, and every service using `@dcl/crypto-middleware`.
+- Verifiers that don't know the new link types reject scoped chains: `@dcl/crypto` validates a link of unknown type as an error and ends the chain with no authority. This covers catalysts, Worlds content servers, the signature validation of the lambdas, and every service using `@dcl/crypto-middleware`. Schema validation with `@dcl/schemas`, which checks the link `type` against a fixed list, rejects them as well while the list doesn't include the new types.
 - Upgrading those libraries doesn't change what a service accepts: a scoped chain is valid only for a verifier that configures its service identifier.
+- `@dcl/schemas` can add the new link types at any time, before or after `@dcl/crypto` supports them. Adding them makes no verifier accept a scoped chain: earlier versions of `@dcl/crypto` still reject the link, and later ones still require a service identifier.
 - [ADR-44](/adr/ADR-44) signed fetch is unchanged: the request is still signed by the final key of the chain.
 - Contract-wallet scoped logins can be validated only by verifiers that check EIP-1654 signatures themselves. Verifiers that delegate that check to the catalyst reject them until the catalyst supports scoped links.
 
@@ -239,8 +245,8 @@ A request whose chain is valid but whose grants don't allow the operation SHOULD
   - a service identifier option for `validateSignature`, whose result then includes the grants for that service.
 - `@dcl/crypto-middleware`:
   - a service identifier option;
-  - the grants on the verification result;
-  - a helper that rejects requests whose grants don't allow an operation.
+  - an option, set per endpoint, naming the operation it performs and the resource it acts on, so a scoped chain is rejected on any endpoint that doesn't name one;
+  - the grants on the verification result.
 - Verifiers in other languages reject scoped chains until they support them.
 
 ### Example
