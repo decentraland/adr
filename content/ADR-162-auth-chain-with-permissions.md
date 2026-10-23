@@ -9,6 +9,7 @@ spdx-license: CC0-1.0
 authors:
 
 - marianogoldman
+- LautaroPetaccio
 
 ---
 
@@ -296,13 +297,210 @@ work as before.
 
 ## Specification
 
-<!--
-The technical specification should describe the syntax and semantics of ackaony 
-new feature.
--->
+A **scoped login** delegates to an ephemeral key only a listed set of
+operations, called grants. It is a new auth link type with its own message.
+The `Decentraland Login` delegation (`ECDSA_EPHEMERAL`) does not change, and
+keeps granting access to every operation.
 
-The technical specification should describe the syntax and semantics of any new
-feature.
+### Why a new link type
+
+Options 1 and 2 above add the permissions to the `Decentraland Login` message.
+Verifiers that exist today read only the ephemeral address (line 2) and the
+expiration (line 3) of that message, and ignore every other line. A key
+delegated with permissions in that message would still be a full login for
+every catalyst, Worlds content server and service that has not been updated:
+the risk this document describes would stay open until every verifier
+upgrades.
+
+A new link type is rejected by every verifier that doesn't know it, so a scoped
+key is never accepted as a full login, by old verifiers included.
+
+### Link types
+
+| Type | Signed with | Validated like |
+| ---- | ----------- | -------------- |
+| `ECDSA_SCOPED_EPHEMERAL` | an EOA personal signature | `ECDSA_EPHEMERAL` |
+| `ECDSA_EIP_1654_SCOPED_EPHEMERAL` | a contract wallet ([EIP-1654](https://github.com/ethereum/EIPs/issues/1654)) | `ECDSA_EIP_1654_EPHEMERAL` |
+
+The `signature` of the link is the current authority's signature of its
+`payload`, the same as for the `ECDSA_EPHEMERAL` and `ECDSA_EIP_1654_EPHEMERAL`
+links. The authority that comes out of the link is its `Ephemeral` address.
+
+### Message
+
+```text
+Decentraland Scoped Login
+Ephemeral: 0x1111111111111111111111111111111111111111
+Expiration: 2026-10-23T18:00:00.000Z
+Allow: insights:logs-read
+Allow: insights:metrics-read for world:example.dcl.eth
+```
+
+```abnf
+payload    = prefix LF ephemeral LF expiration 1*( LF grant )
+prefix     = "Decentraland Scoped Login"
+ephemeral  = "Ephemeral: 0x" 40( DIGIT / %x61-66 )   ; lowercase hex
+expiration = "Expiration: " timestamp
+grant      = "Allow: " service ":" operation [ " for " resource ]
+service    = 1*64( %x61-7A / DIGIT / "-" )
+operation  = 1*64( %x61-7A / DIGIT / "-" ) / "*"
+resource   = 1*256( %x21-7E )                        ; visible ASCII, no space
+```
+
+- `timestamp` MUST be in the form JavaScript's `Date.prototype.toISOString()`
+  writes, in UTC with milliseconds: `YYYY-MM-DDTHH:mm:ss.sssZ`.
+- Lines MUST be separated by a single LF. The payload MUST NOT contain CR, empty
+  lines or a trailing LF.
+- The first three lines MUST be the prefix, `Ephemeral` and `Expiration`, in
+  that order, followed by 1 to 32 `Allow` lines. Two identical `Allow` lines
+  MUST NOT appear.
+- The payload MUST NOT be longer than 4096 bytes.
+- A verifier MUST reject a link whose payload deviates from this format in any
+  way. It MUST NOT trim, case-fold or otherwise normalize a value before
+  comparing it.
+
+The field is `Ephemeral:`, not `Ephemeral address:`, so that code reading the
+payload as a `Decentraland Login` message, whatever the link type, fails on it.
+
+### Grants
+
+A grant `<service>:<operation>` names a service and one of its operations.
+
+- `service` is the identifier of the service the grant is for, for example
+  `insights` or `worlds`. It is not a hostname: every environment of a service
+  shares it. Each service MUST document its identifier, its operations and its
+  resource forms.
+- `operation` is one of that service's operations. `*` means every operation of
+  that service, including operations added later. Clients SHOULD list
+  operations instead of using `*`. There is no wildcard across services.
+- `for <resource>` limits the grant to one resource. A service defines its
+  resource forms, and SHOULD write them as `<kind>:<value>`, for example
+  `world:example.dcl.eth` or `parcel:10,-20`. Resources are compared as exact
+  strings: no case folding, prefixes or wildcards.
+- Without `for`, the grant covers every resource of that service.
+
+There are no `deny` grants: a grant list is an allow-list, so an operation not
+listed is denied.
+
+A grant never adds access. The service still authorizes the signer as it does
+for a full login, for example by checking that the address owns the world; the
+grant only limits what the ephemeral key may do with that access.
+
+### Auth chain structure
+
+A chain with a scoped link MUST have this structure:
+
+1. a `SIGNER` link;
+2. zero or more `ECDSA_EPHEMERAL` or `ECDSA_EIP_1654_EPHEMERAL` links;
+3. exactly one `ECDSA_SCOPED_EPHEMERAL` or `ECDSA_EIP_1654_SCOPED_EPHEMERAL`
+   link;
+4. exactly one `ECDSA_SIGNED_ENTITY` link, signed by the scoped link's
+   ephemeral key.
+
+So a scoped key cannot delegate to another key, and a chain cannot widen its
+scope after narrowing it. Step 2 allows a key that already holds a full login,
+such as a browser dApp's ephemeral key, to delegate a narrower one; the
+`ECDSA_EIP_1654_SCOPED_EPHEMERAL` link only follows `SIGNER` directly.
+
+The chain expires at the earliest expiration of its links.
+
+### Validation
+
+A verifier that accepts scoped logins is configured with its own service
+identifier `S`.
+
+1. It validates the chain as it does today, with the validators for the new
+   link types, and checks the structure above.
+2. If the chain has no scoped link, the request has access to every operation,
+   as today.
+3. If the chain has a scoped link:
+   - a verifier without a configured `S` MUST reject it;
+   - it MUST reject the chain if no grant has service `S`;
+   - it MUST ignore grants for other services;
+   - it MAY reject a scoped link expiring further from now than a maximum it
+     configures.
+4. For each operation, the verifier checks `can(operation, resource?)`:
+   - for a chain without a scoped link, `can` is always true;
+   - for a scoped chain, `can` is true when a grant for `S` has the same
+     `operation` or `*`, and either has no `for`, or has a `for` equal to the
+     `resource` of the request.
+
+A request whose chain is valid but whose grants don't allow the operation
+SHOULD be answered with HTTP 403.
+
+### Backwards compatibility
+
+- Chains in use today are not affected and keep granting every operation.
+- Verifiers that don't know the new link types reject scoped chains:
+  `@dcl/schemas` validates the link `type` against a fixed list, and
+  `@dcl/crypto` validates a link of unknown type as an error and ends the chain
+  with no authority. This covers catalysts, Worlds content servers, the
+  signature validation of the lambdas, and every service using
+  `@dcl/crypto-middleware`.
+- Upgrading those libraries doesn't change what a service accepts. A scoped
+  chain is valid only for a verifier that configures its service identifier.
+- [ADR-44](/adr/ADR-44) signed fetch is unchanged: the request is still signed
+  by the final key of the chain.
+
+### Libraries
+
+- `@dcl/schemas`: the two link types.
+- `@dcl/crypto`:
+  - the two link validators;
+  - a builder and a strict parser for the message;
+  - a service identifier option for `validateSignature`, whose result then
+    includes the grants for that service.
+- `@dcl/crypto-middleware`:
+  - a service identifier option;
+  - the grants on the verification result;
+  - a helper that rejects requests whose grants don't allow an operation.
+- Verifiers in other languages reject scoped chains until they support them.
+
+### Example
+
+A command line tool that reads a creator's scene logs and metrics delegates a
+key that can do nothing else:
+
+```text
+Decentraland Scoped Login
+Ephemeral: 0x1111111111111111111111111111111111111111
+Expiration: 2026-10-23T18:00:00.000Z
+Allow: insights:logs-read
+Allow: insights:metrics-read
+```
+
+```json
+[
+  {
+    "type": "SIGNER",
+    "payload": "0x2222222222222222222222222222222222222222",
+    "signature": ""
+  },
+  {
+    "type": "ECDSA_SCOPED_EPHEMERAL",
+    "payload": "Decentraland Scoped Login\nEphemeral: 0x1111111111111111111111111111111111111111\nExpiration: 2026-10-23T18:00:00.000Z\nAllow: insights:logs-read\nAllow: insights:metrics-read",
+    "signature": "0x<signature of the payload by 0x2222…2222>"
+  },
+  {
+    "type": "ECDSA_SIGNED_ENTITY",
+    "payload": "get:/v1/logs:1792756800000:{}",
+    "signature": "0x<signature of the payload by 0x1111…1111>"
+  }
+]
+```
+
+If the key leaks, it can read the logs and metrics of the scenes that address
+may read until it expires. Catalysts, Worlds content servers and every other
+service reject it.
+
+### Typed data
+
+A later revision MAY add a link type signed as
+[EIP-712](https://eips.ethereum.org/EIPS/eip-712) typed data, so wallets show
+each grant as fields, with the same grants and the same validation. Its domain
+would be `{ name: "Decentraland Scoped Login", version: "1" }`, without
+`chainId`, since wallets refuse to sign a domain whose chain differs from the
+one they are connected to and the signature is never used on chain.
 
 ## RFC 2119 and RFC 8174
 
