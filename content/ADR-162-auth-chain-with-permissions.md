@@ -174,7 +174,7 @@ The field is `Ephemeral:`, not `Ephemeral address:`, so code that reads the payl
 A grant `<service>:<operation>` names a service and one of its operations.
 
 - `service` is the identifier of the service the grant is for. Each service MUST document its identifier, its operations and its resource forms.
-- `operation` is one of that service's operations. `*` means every operation of that service, including operations added later. Clients SHOULD list operations instead of using `*`. There is no wildcard across services.
+- `operation` is one of that service's operations. `*` means every operation of that service, including operations added later. Clients SHOULD list operations instead of using `*`. When requesting `*`, clients MUST prominently warn that it grants every current and future operation of that service, including future destructive or administrative operations. Read-only clients such as the Insights CLI MUST request their explicit read operations. There is no wildcard across services.
 - `for <resource>` limits the grant to one resource. A service defines its resource forms, and SHOULD write them as `<kind>:<value>`, for example `world:example.dcl.eth` or `parcel:10,-20`. Resources are compared as exact strings: no case folding, prefixes or wildcards. Each service MUST define a canonical form for its resources, for example lowercase world names, and MUST build the resource of a request in that form before comparing it. Clients MUST write grants in that form.
 - Without `for`, the grant covers every resource of that service.
 
@@ -195,7 +195,7 @@ A chain that ends at the scoped link is the scoped identity itself, and its fina
 
 So a scoped key cannot delegate to another key, and a chain cannot widen its scope after narrowing it. Step 2 allows a key that already holds a full login, such as a browser dApp's ephemeral key, to delegate a narrower one. An `ECDSA_EIP_1654_SCOPED_EPHEMERAL` link only follows `SIGNER` directly.
 
-The chain expires at the earliest expiration of its links.
+The chain expires at the earliest expiration of its links. Any exposed expiration, including `scope.expiration`, MUST be this effective chain expiration, so a derived session cannot outlive a parent delegation.
 
 ### Validation
 
@@ -207,7 +207,7 @@ A verifier that accepts scoped logins is configured with its own service identif
    - a verifier without a configured `S` MUST reject it;
    - it MUST reject the chain if no grant has service `S`;
    - it MUST ignore grants for other services;
-   - it MAY reject a scoped link expiring further from now than a maximum it configures.
+   - it MUST enforce a positive maximum remaining validity against the effective chain expiration. The default maximum is 24 hours from validation time. A service MAY explicitly configure another positive maximum as its policy; omitting the setting MUST NOT disable the cap. This bounds remaining validity, not the total lifetime since issuance, because the message has no issuance time.
 4. Each request performs exactly one operation, which the verifier chooses from the request it serves: the endpoint, and where the endpoint's behavior depends on it, the request's parameters. The verifier also chooses the resource the request acts on, if any. A verifier that configures `S` MUST assign an operation to every endpoint that accepts signed requests, and MUST reject a scoped chain on any request it cannot assign one.
 5. The verifier checks `can(operation, resource?)`:
    - for a chain without a scoped link, `can` is always true;
@@ -215,25 +215,64 @@ A verifier that accepts scoped logins is configured with its own service identif
 
 A request has one operation, not a list of them. An endpoint that does several things at once needs an operation of its own, and a grant never implies another grant: `Allow: insights:logs-admin` permits `logs-admin`, and nothing else unless the service defines it to.
 
-A request whose chain is valid but whose grants don't allow the operation SHOULD be answered with HTTP 403. A scoped chain on a request the verifier assigns no operation SHOULD be answered with HTTP 401, as a verifier that doesn't accept scoped logins does.
+A request whose chain is valid but whose grants don't allow the operation SHOULD be answered with HTTP 403. A scoped chain on a request the verifier assigns no operation SHOULD be answered with HTTP 403 and a distinct `SCOPED_OPERATION_REQUIRED` error code. A verifier that does not accept scoped logins continues to return HTTP 401.
 
 These checks run after the [ADR-44](/adr/ADR-44) signed fetch is verified. The signed metadata of the request may name the resource the request acts on, such as a scene, since the scoped key signed it; the verifier MUST then act on that same resource. The metadata never names the operation, and nothing in it can widen a grant.
+
+#### Identity validation and request authorization
+
+Cryptographic identity validation and authorization of an action are distinct APIs.
+A stored scoped identity can be checked against its ephemeral address without
+performing an operation. Such a result proves identity validity only. Callers of
+low-level identity/signature APIs MUST NOT treat `ok: true`, an address, or the
+presence of a service grant as authorization to act.
+
+An API that authorizes a scoped request MUST require the verifier's service and
+one operation, plus the canonical resource when the request acts on a resource.
+It MUST return success only after the grant check, including for WebSocket
+handshakes and non-HTTP consumers. Compatibility helpers that return only an
+address or `void` without checking an action MUST reject scoped credentials.
+Request authorization requires a final signature over the request payload; a
+stored delegation alone is not proof that its ephemeral key signed a request.
+The reference libraries expose `authorizeSignature` for generic actions and
+`verify` for signed-fetch requests; `validateSignature` validates stored identities
+and signatures and is not request authorization.
+
+#### One resolved resource
+
+The verifier MUST resolve the canonical resource once, authorize that value, and
+pass that same value to the handler as read-only authorization context. Generic
+action authorization similarly returns its checked resource read-only. The
+reference middleware exposes it as `ctx.verification.resource`, including for
+full logins on routes that declare a resource resolver. Handlers MUST act on that
+value and MUST NOT re-resolve it independently from URL parameters, metadata, a
+body, or a differently cased value. Permission checks on the signer still apply.
+The library cannot enforce which value application code ultimately uses.
+
+An operation/resource resolver that throws, or a declared resource resolver that
+cannot resolve its resource, MUST reject the request before running the handler.
+The reference middleware responds with a controlled HTTP 403 and a distinct
+resolution error code, without exposing exception details. `optional` authentication
+MUST NOT bypass a failed action or resource resolution.
+
 
 ### Backwards compatibility
 
 - Chains in use today are not affected and keep granting every operation.
-- Verifiers that don't know the new link types reject scoped chains: `@dcl/crypto` validates a link of unknown type as an error and ends the chain with no authority. This covers catalysts, Worlds content servers, the signature validation of the lambdas, and every service using `@dcl/crypto-middleware`. Schema validation with `@dcl/schemas`, which checks the link `type` against a fixed list, rejects them as well while the list doesn't include the new types.
+- Verifiers that don't know the new link types reject scoped chains: `@dcl/crypto` selects `ERROR_VALIDATOR` for an unknown link type. It returns no next authority rather than throwing; the current authority becomes empty and validation fails at a later signed-entity or final-authority check. This covers catalysts, Worlds content servers, the signature validation of the lambdas, and every service using `@dcl/crypto-middleware`. Schema validation with `@dcl/schemas`, which checks the link `type` against a fixed list, rejects them as well while the list doesn't include the new types.
 - Upgrading those libraries doesn't change what a service accepts: a scoped chain is valid only for a verifier that configures its service identifier.
-- `@dcl/schemas` can add the new link types at any time, before or after `@dcl/crypto` supports them. Adding them makes no verifier accept a scoped chain: earlier versions of `@dcl/crypto` still reject the link, and later ones still require a service identifier.
+- `@dcl/schemas` can add the new link types at any time, before or after `@dcl/crypto` supports them. Adding them makes no verifier accept a scoped chain: earlier versions of `@dcl/crypto` still reject the link, and later ones still require a service identifier. Consumers that schema-validate an auth chain before cryptographic validation MUST upgrade their schema validator to include these link types before adopting scoped logins; otherwise they reject them even with a service configured.
 - [ADR-44](/adr/ADR-44) signed fetch is unchanged: the request is still signed by the final key of the chain.
 - Contract-wallet scoped logins can be validated only by verifiers that check EIP-1654 signatures themselves. Verifiers that delegate that check to the catalyst reject them until the catalyst supports scoped links.
 
 ### Security considerations
 
 - **What a leaked scoped key can do:** the listed operations, on the listed resources, of the listed services, with the wallet's access, until it expires. Nothing on any other verifier.
-- **No revocation.** As with full logins, a scoped login lasts until its expiration. Clients SHOULD keep it short, and verifiers MAY cap it.
-- **Environments share service identifiers.** A scoped login for `insights` is accepted by every environment of that service, as a full login is today. A service that needs to tell environments apart MUST use different identifiers.
+- **No revocation.** As with full logins, a scoped login lasts until its expiration. Clients SHOULD keep it short. Verifiers MUST enforce the remaining-validity cap defined above; the default is 24 hours, and consumers MUST bound session TTLs by the effective chain expiration.
+- **Accepted limitation: cross-environment use.** There is no audience, hostname or environment field, and ADR-44 signed-fetch does not bind the host. A scoped login for `insights` can be used in both `.zone` and `.org`, including when given to an agent. Clients MUST disclose that environments sharing a service identifier share the credential. A service requiring environment isolation MUST use distinct identifiers, for example `insights-zone` and `insights-org`. Audience-bound link types are future work, not part of this format.
 - **Readable text.** Wallets display the message as text before signing, so the user sees every grant. Clients MUST NOT hide grants from the user in the interface that asks for the signature.
+- **Link retyping.** The link type is outside the signed payload. A holder can relabel a scoped link as `ECDSA_EPHEMERAL` without changing its signature. The distinct `Ephemeral:` field and scoped payload grammar MUST remain incompatible with the full-login `Ephemeral address:` format; the payload distinction, in addition to unknown-type rejection, blocks that downgrade. Implementations MUST regression-test retyped signed scoped links against full-login validation.
+- **Wildcards.** `service:*` deliberately includes future operations. Clients MUST show the future-access warning above; services and single-purpose clients SHOULD prefer explicit grants.
 - **Strict parsing.** Any deviation rejects the link, so two verifiers can never read different grants from the same signed bytes.
 
 ### Libraries
@@ -242,11 +281,15 @@ These checks run after the [ADR-44](/adr/ADR-44) signed fetch is verified. The s
 - `@dcl/crypto`:
   - the two link validators;
   - a builder and a strict parser for the message;
-  - a service identifier option for `validateSignature`, whose result then includes the grants for that service.
+  - identity/signature validation through `validateSignature`, with grants and effective expiration for the service;
+  - `authorizeSignature`, requiring the service, operation and optional canonical resource before returning authorization success;
+  - a default 24-hour maximum remaining validity, with an explicit positive service override.
 - `@dcl/crypto-middleware`:
   - a service identifier option;
   - an option, set per endpoint, naming the operation it performs and the resource it acts on, so a scoped chain is rejected on any endpoint that doesn't name one;
-  - the grants on the verification result.
+  - a signed-fetch `verify` API with the same required action check;
+  - effective expiration and grants on the verification result, plus the resolved read-only resource;
+  - controlled errors for unmapped operations and failed resolution, outside optional-authentication fallback.
 - Verifiers in other languages reject scoped chains until they support them.
 
 ### Example
@@ -286,6 +329,7 @@ If the key leaks, it can read the logs and metrics of the scenes that address ma
 ### Future work
 
 - **Typed data.** A link type signed as EIP-712 typed data, with the same grants and validation, so wallets show each grant as fields. Its domain would be `{ name: "Decentraland Scoped Login", version: "1" }`, without `chainId`, since the signature is never used on chain.
+- **Audience binding.** A future link type may bind a host or environment. Until then, use distinct service identifiers when environment isolation is required.
 - **Explorer adoption.** The Explorer could sign in with a scoped login granting only profile deployments and its own services, once the catalysts and those services accept scoped logins.
 
 ## RFC 2119 and RFC 8174
