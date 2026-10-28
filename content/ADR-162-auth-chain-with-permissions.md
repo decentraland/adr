@@ -275,23 +275,6 @@ MUST NOT bypass a failed action or resource resolution.
 - **Wildcards.** `service:*` deliberately includes future operations. Clients MUST show the future-access warning above; services and single-purpose clients SHOULD prefer explicit grants.
 - **Strict parsing.** Any deviation rejects the link, so two verifiers can never read different grants from the same signed bytes.
 
-### Libraries
-
-- `@dcl/schemas`: the two link types.
-- `@dcl/crypto`:
-  - the two link validators;
-  - a builder and a strict parser for the message;
-  - identity/signature validation through `validateSignature`, with grants and effective expiration for the service;
-  - `authorizeSignature`, requiring the service, operation and optional canonical resource before returning authorization success;
-  - a default 24-hour maximum remaining validity, with an explicit positive service override.
-- `@dcl/crypto-middleware`:
-  - a service identifier option;
-  - an option, set per endpoint, naming the operation it performs and the resource it acts on, so a scoped chain is rejected on any endpoint that doesn't name one;
-  - a signed-fetch `verify` API with the same required action check;
-  - effective expiration and grants on the verification result, plus the resolved read-only resource;
-  - controlled errors for unmapped operations and failed resolution, outside optional-authentication fallback.
-- Verifiers in other languages reject scoped chains until they support them.
-
 ### Example
 
 A command line tool that reads a creator's scene logs and metrics delegates a key that can do nothing else:
