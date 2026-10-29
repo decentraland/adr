@@ -44,7 +44,7 @@ This specification impacts:
 
 ### Overview
 
-The Explorer Client Signed Fetch functionality extends [ADR-44](/adr/ADR-44) by including scene-specific metadata in the signature. This metadata is included in the `X-Identity-Metadata` header and is part of the signed payload, ensuring its integrity and authenticity.
+The Explorer Client Signed Fetch functionality extends [ADR-44](/adr/ADR-44) by including scene-specific metadata in the signature. This metadata is included in the `X-Identity-Metadata` header and is part of the signed payload, ensuring its integrity and authenticity. Per [ADR-44](/adr/ADR-44) the metadata is joined into the signed payload **verbatim**, so the property names below — several of which are camelCase — are bound to the signature exactly as written.
 
 ### Signature Metadata Structure
 
@@ -116,6 +116,23 @@ The Signed Fetch process is implemented and executed exclusively within the Expl
 - Scenes cannot change the `signer`, being always `decentraland-kernel-scene`
 
 The Explorer Client validates and populates all metadata fields based on its internal state before generating the signature. This prevents malicious scenes from crafting fraudulent signed requests.
+
+#### Metadata Integrity in Transit
+
+The trust boundary above covers the scene, which cannot reach the metadata the client
+builds. It does not by itself cover the request once it leaves the client: the
+`X-Identity-Metadata` header is delivered as written, so what stops it being rewritten
+in flight is the signature over it.
+
+That holds because [ADR-44](/adr/ADR-44) joins the metadata into the signed payload
+verbatim. Every property here is therefore bound byte-exactly, casing included — which
+matters for this ADR in particular, since `sceneId`, `hashPayload` and
+`realm.serverName` are camelCase and a payload that folded the metadata would have left
+their spelling outside the signature.
+
+Services verifying these requests *MUST* rebuild the payload from the metadata as
+delivered, and *SHOULD* compare a property they authorize on — `signer` above all —
+exactly rather than case-folding it.
 
 #### Request Replay Prevention
 

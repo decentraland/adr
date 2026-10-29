@@ -96,9 +96,54 @@ const METADATA: string = JSON.stringify({
 
 /**
  * Payload
+ *
+ * The method and the path are lowercased so a signature does not depend on how a
+ * client happened to spell them. The metadata is joined verbatim: it is a JSON
+ * document whose property names and values are compared exactly by the services
+ * that authorize on them, so its bytes MUST be the bytes that were signed.
  */
+const payload = [METHOD.toLowerCase(), PATH.toLowerCase(), TIMESTAMP, METADATA].join(":")
+```
+
+### Metadata is signed verbatim
+
+The payload above lowercases the method and the path only. Earlier revisions of this
+document folded the whole joined string, metadata included:
+
+```typescript
+// Superseded. Do not use.
 const payload = [METHOD, PATH, TIMESTAMP, METADATA].join(":").toLowerCase()
 ```
+
+Folding after the metadata was joined in left the metadata's casing **outside** the
+signature. `{"signer":"decentraland-kernel-scene"}` and
+`{"Signer":"decentraland-kernel-scene"}` produce a byte-identical payload and therefore
+share one valid signature, while the `X-Identity-Metadata` header is delivered as
+written. A service comparing `metadata.signer` reads the second as *absent* — so a
+request could be re-spelled in flight, keep a valid signature, and bypass a check that
+the property was there to enforce.
+
+Joining the metadata verbatim binds every property name and value — including
+service-defined ones — to the signature, so what is verified is what the handler reads.
+
+Requests are otherwise unchanged: the `X-Identity-Metadata` header still carries the
+same JSON, and only the string that is signed differs.
+
+#### Notes for implementers
+
+- **Signers** *MUST* build the payload as above. `METADATA` *MUST* be the exact string
+  sent in the `X-Identity-Metadata` header — serialize it once and reuse it, rather than
+  re-serializing, since key order and whitespace are part of the signed bytes.
+- **Verifiers** *MUST* rebuild the payload from the metadata exactly as delivered, and
+  *MUST NOT* normalize it before verifying.
+- Verifiers that authorize on a metadata property *SHOULD* compare it exactly rather
+  than case-folding it, so a value that differs only in case is refused rather than
+  read as something it is not.
+- Signers and verifiers are not deployable atomically. A verifier *MAY*, for the length
+  of a migration, fall back to the superseded payload after the current one fails —
+  but only for the properties it authorizes on, and only while refusing a delivered
+  property name that differs from the expected spelling, since the superseded payload
+  cannot bind it. Such a fallback *SHOULD* be removed once its callers have migrated.
 
 ### Sign the payload
 
